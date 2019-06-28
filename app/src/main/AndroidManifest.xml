@@ -4,10 +4,11 @@
     package="com.mesalabs.cerberus">
 
     <application
+        android:name="com.mesalabs.cerberus.CerberusApp"
         android:allowBackup="false"
         android:persistent="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
+        android:label="@string/mesa_cerberuscore"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
