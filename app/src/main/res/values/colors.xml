@@ -3,4 +3,10 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+
+    <color name="sesl_round_and_bgcolor_dark">#080808</color>
+    <color name="sesl_round_and_bgcolor_light">#F2F2F2</color>
+    <color name="sesl_round_stroke_light">#ffd6d6d6</color>
+    <color name="sesl_round_stroke_dark">#00d6d6d6</color>
+
 </resources>

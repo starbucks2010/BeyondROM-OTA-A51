@@ -1,0 +1,14 @@
+<resources>
+
+    <attr name="roundedCornerColor" format="color" />
+    <attr name="roundedCornerStrokeColor" format="color" />
+
+
+    <declare-styleable name="RoundFrameLayout">
+        <attr name="flCorners" format="string" />
+    </declare-styleable>
+    <declare-styleable name="RoundFrameLayoutWoStroke">
+        <attr name="flwsCorners" format="string" />
+    </declare-styleable>
+
+</resources>
