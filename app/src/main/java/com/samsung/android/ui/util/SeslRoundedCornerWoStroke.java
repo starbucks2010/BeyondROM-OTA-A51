@@ -38,7 +38,6 @@ public class SeslRoundedCornerWoStroke extends SeslRoundedCorner {
     }
 
     // We don't want stroke, so we don't enable it neither if light theme is set
-    @Override
     private void initRoundedCorner() {
         mRoundRadius = (int) TypedValue.applyDimension(1, (float) 26, mRes.getDisplayMetrics());
         boolean darkTheme = Utils.isNightMode(mContext);
