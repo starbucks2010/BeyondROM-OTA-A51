@@ -12,6 +12,7 @@ import android.util.TypedValue;
 import android.view.View;
 
 import com.mesalabs.cerberus.R;
+import com.mesalabs.cerberus.utils.Utils;
 
 /*
  * Cerberus Core App
@@ -122,12 +123,7 @@ public class SeslRoundedCorner {
 
     private void initRoundedCorner() {
         mRoundRadius = (int) TypedValue.applyDimension(1, (float) 26, mRes.getDisplayMetrics());
-        boolean darkTheme = true;
-        TypedValue outValue = new TypedValue();
-        mContext.getTheme().resolveAttribute(R.attr.isLightTheme, outValue, true);
-        if (outValue.data != 0) {
-            darkTheme = false;
-        }
+        boolean darkTheme = Utils.isNightMode(mContext);
         if (darkTheme) {
             mIsStrokeRoundedCorner = false;
         }
