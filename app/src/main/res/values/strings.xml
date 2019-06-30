@@ -1,3 +1,19 @@
 <resources>
     <string name="mesa_cerberuscore">Cerberus Core</string>
+
+    <string name="sesl_action_bar_up_description">Navigate up</string>
+    <string name="sesl_action_menu_overflow_description">More options</string>
+    <string name="sesl_toolbar_collapse_description">Collapse</string>
+
+    <string name="sesl_action_mode_done">Done</string>
+
+    <string name="sesl_search_hint">Search…</string>
+    <string name="sesl_searchview_description_clear">Clear search field</string>
+    <string name="sesl_searchview_description_query">Search query</string>
+    <string name="sesl_searchview_description_search">Search</string>
+    <string name="sesl_searchview_description_submit">Submit query</string>
+    <string name="sesl_searchview_description_voice">Voice search</string>
+
+    <string name="sesl_font_family_condensed">sec-roboto-condensed</string>
+    <string name="sesl_font_family_regular">sec-roboto-light</string>
 </resources>

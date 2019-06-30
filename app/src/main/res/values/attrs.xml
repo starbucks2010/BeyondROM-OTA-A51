@@ -1,7 +1,28 @@
 <resources>
 
+    <attr name="checkMarkGravity">
+        <flag name="end" value="0x00800005" />
+        <flag name="left" value="0x00000003" />
+        <flag name="right" value="0x00000005" />
+        <flag name="start" value="0x00800003" />
+    </attr>
+
+    <attr name="collapsedToolbarLayoutStyle" format="reference" />
+    <attr name="round_and_bgColor" format="string|integer|color|reference" />
+    <attr name="cardBgColor" format="string|integer|color|reference" />
     <attr name="roundedCornerColor" format="color" />
     <attr name="roundedCornerStrokeColor" format="color" />
+    <attr name="dividerColor" format="string|integer|color|reference" />
+    <attr name="primaryTextColor" format="string|integer|color|reference" />
+    <attr name="secondaryTextColor" format="string|integer|color|reference" />
+
+    <attr name="searchViewIconColor" format="color" />
+    <attr name="searchViewTextColor" format="color" />
+    <attr name="searchViewHintTextColor" format="color" />
+
+    <attr name="spinnerDropdownTextColor" format="reference|color" />
+
+    <attr name="useDisabledAlpha" format="boolean" />
 
 
     <declare-styleable name="RoundFrameLayout">
@@ -9,6 +30,9 @@
     </declare-styleable>
     <declare-styleable name="RoundFrameLayoutWoStroke">
         <attr name="flwsCorners" format="string" />
+    </declare-styleable>
+    <declare-styleable name="RoundNestedScrollView">
+        <attr name="nsvCorners" format="string" />
     </declare-styleable>
 
 </resources>

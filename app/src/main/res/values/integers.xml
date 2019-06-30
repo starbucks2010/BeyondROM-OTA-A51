@@ -1,0 +1,6 @@
+<resources>
+
+    <integer name="sesl_config_activityDefaultDur">220</integer>
+    <integer name="sesl_config_activityShortDur">150</integer>
+
+</resources>

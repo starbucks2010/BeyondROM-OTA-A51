@@ -1,0 +1,7 @@
+<resources>
+
+    <!-- App Day/Night Mode Themes -->
+    <style name="mesa_AppStyle.DayNight" parent="@style/mesa_AppStyle" />
+    <style name="mesa_AppStyle.DayNight.NoActionBar" parent="@style/mesa_AppStyle.NoActionBar" />
+
+</resources>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:gravity="center" android:height="20.0dip" android:width="20.0dip">
+        <bitmap android:src="@drawable/sesl_spinner_ic_check" android:tint="@color/sesl_spinner_dropdown_item_checkmark" />
+    </item>
+</layer-list>

@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- App Themes -->
+    <style name="mesa_AppStyle" parent="Theme.AppCompat">
+        <!-- Window colors -->
+        <item name="android:statusBarColor">@color/sesl_round_and_bgcolor_dark</item>
+        <item name="android:navigationBarColor">@color/sesl_round_and_bgcolor_dark</item>
+        <item name="android:colorBackground">@color/sesl_background_color_dark</item>
+        <item name="android:colorBackgroundCacheHint">@color/sesl_background_cache_hint_selector_light</item>
+        <item name="android:disabledAlpha">@dimen/sesl_disabled_color_alpha</item>
+        <item name="android:windowBackground">@color/sesl_background_color_dark</item>
+
+        <!-- Window flags -->
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar">false</item>
+
+        <!-- Text colors -->
+        <item name="android:textColorPrimary">@color/sesl_primary_text_dark</item>
+        <item name="android:textColorPrimaryInverse">@color/sesl_primary_text_light</item>
+        <item name="android:textColorSecondary">@color/sesl_secondary_text_dark</item>
+        <item name="android:textColorSecondaryInverse">@color/sesl_secondary_text_light</item>
+        <item name="android:textColorHighlight">@color/sesl_highlighted_text_color_light</item>
+        <item name="android:textColorAlertDialogListItem">@color/sesl_select_dialog_list_item_text</item>
+
+        <item name="android:listChoiceIndicatorSingle">@drawable/sesl_list_choice_btn_radio</item>
+        <item name="android:listChoiceIndicatorMultiple">@drawable/sesl_list_choice_btn_check</item>
+
+        <item name="android:listPreferredItemPaddingStart">@dimen/sesl_list_item_padding_horizontal</item>
+        <item name="android:listPreferredItemPaddingEnd">@dimen/sesl_list_item_padding_horizontal</item>
+
+        <item name="android:textSelectHandle">@drawable/sesl_text_select_handle_middle_light</item>
+        <item name="android:textSelectHandleLeft">@drawable/sesl_text_select_handle_left_light</item>
+        <item name="android:textSelectHandleRight">@drawable/sesl_text_select_handle_right_light</item>
+
+        <item name="colorBackgroundFloating">@color/sesl_background_floating_light</item>
+
+        <item name="homeAsUpIndicator">@drawable/sesl_ic_ab_back_dark</item>
+
+        <!-- Action Bar Styles -->
+        <item name="actionButtonStyle">@style/mesa_ActionButtonStyle</item>
+        <item name="actionOverflowButtonStyle">@style/mesa_OverflowButtonStyle</item>
+        <item name="actionOverflowMenuStyle">?android:actionOverflowMenuStyle</item>
+        <item name="actionBarPopupTheme">@null</item>
+        <item name="actionBarStyle">@style/mesa_ActionBarStyle</item>
+        <item name="actionBarSplitStyle">?actionBarStyle</item>
+        <item name="actionBarWidgetTheme">@null</item>
+        <item name="actionBarTheme">@null</item>
+        <item name="actionBarSize">@dimen/sesl_action_bar_default_height</item>
+        <item name="actionBarDivider">@null</item>
+        <item name="actionBarItemBackground">@drawable/sesl_action_bar_item_background_dark</item>
+        <item name="actionMenuTextAppearance">@style/mesa_ActionBarMenuTextStyle</item>
+        <item name="actionMenuTextColor">@color/sesl_action_menu_text_dark</item>
+
+        <!-- Dropdown Spinner Attributes -->
+        <item name="actionDropDownStyle">@style/mesa_SpinnerStyle</item>
+
+        <!-- Action Mode -->
+        <item name="actionModeStyle">@style/mesa_ActionModeStyle</item>
+        <item name="actionModeBackground">@drawable/sesl_action_bar_background_dark</item>
+        <item name="actionModeSplitBackground">?android:colorPrimaryDark</item>
+        <item name="actionModeCloseDrawable">@drawable/sesl_ic_cab_done_dark</item>
+        <item name="actionModeCloseButtonStyle">@style/mesa_ActionButtonStyle</item>
+
+        <item name="actionModeCutDrawable">@drawable/sesl_ic_menu_cut_dark</item>
+        <item name="actionModeCopyDrawable">@drawable/sesl_ic_menu_copy_dark</item>
+        <item name="actionModePasteDrawable">@drawable/sesl_ic_menu_paste_dark</item>
+        <item name="actionModeSelectAllDrawable">@drawable/sesl_ic_menu_selectall_dark</item>
+        <item name="actionModeShareDrawable">@drawable/sesl_ic_menu_share_dark</item>
+
+        <!-- Panel attributes -->
+        <item name="panelMenuListWidth">@dimen/sesl_panel_menu_list_width</item>
+        <item name="panelMenuListTheme">@style/mesa_CompactMenuStyle</item>
+        <item name="android:panelBackground">?android:colorBackground</item>
+        <item name="listChoiceBackgroundIndicator">@drawable/sesl_list_selector_dark</item>
+
+        <!-- List attributes -->
+        <item name="textAppearanceListItem">@style/mesa_SubheadTextStyle</item>
+        <item name="textAppearanceListItemSmall">@style/mesa_SubheadTextStyle</item>
+        <item name="listPreferredItemHeight">@dimen/sesl_list_preferred_item_height</item>
+        <item name="listPreferredItemHeightSmall">@dimen/sesl_list_preferred_item_height_small</item>
+        <item name="listPreferredItemPaddingLeft">?android:listPreferredItemPaddingStart</item>
+        <item name="listPreferredItemPaddingRight">?android:listPreferredItemPaddingEnd</item>
+
+        <!-- Spinner styles -->
+        <item name="spinnerStyle">@style/mesa_SpinnerStyle</item>
+        <item name="android:spinnerItemStyle">@style/mesa_SpinnerItemStyle</item>
+        <item name="android:dropDownListViewStyle">@style/mesa_ListViewDropDownStyle</item>
+
+        <!-- Required for use of support_simple_spinner_dropdown_item.xml -->
+        <item name="spinnerDropDownItemStyle">@style/mesa_SpinnerDropDownItemStyle</item>
+        <item name="spinnerDropdownTextColor">@color/sesl_spinner_dropdown_text_color_dark</item>
+        <item name="dropdownListPreferredItemHeight">@dimen/sesl_popup_menu_item_min_height</item>
+
+        <!-- Popup Menu styles -->
+        <item name="popupMenuStyle">?android:actionOverflowMenuStyle</item>
+        <item name="textAppearanceLargePopupMenu">@style/mesa_PopupMenuLargeTextStyle</item>
+        <item name="textAppearanceSmallPopupMenu">@style/mesa_PopupMenuSmallTextStyle</item>
+        <item name="textAppearancePopupMenuHeader">@style/mesa_PopupMenuHeaderTextStyle</item>
+        <item name="listPopupWindowStyle">@style/mesa_ListPopupWindowStyle</item>
+        <item name="dropDownListViewStyle">@style/mesa_ListViewDropDownStyle</item>
+        <item name="listMenuViewStyle">@style/mesa_ListMenuViewStyle</item>
+
+        <!-- SearchView attributes -->
+        <item name="searchViewStyle">@style/mesa_SearchViewStyle</item>
+        <item name="android:dropDownItemStyle">@style/mesa_SpinnerDropDownItemStyle</item>
+        <item name="textColorSearchUrl">@color/sesl_search_url_text</item>
+        <item name="searchViewIconColor">@color/sesl_search_view_icon_color_dark</item>
+        <item name="searchViewTextColor">@color/sesl_search_view_text_color_dark</item>
+        <item name="searchViewHintTextColor">@color/sesl_search_view_hint_text_color_dark</item>
+        <item name="textAppearanceSearchResultTitle">@style/mesa_SearchResultTitleTextStyle</item>
+        <item name="textAppearanceSearchResultSubtitle">@style/mesa_SearchResultSubtitleTextStyle</item>
+
+        <!-- ShareActionProvider attributes -->
+        <item name="activityChooserViewStyle">@style/mesa_ActivityChooserViewStyle</item>
+
+        <!-- Toolbar styles -->
+        <item name="toolbarStyle">@style/mesa_ToolbarStyle</item>
+        <item name="toolbarNavigationButtonStyle">@style/mesa_ToolbarNavButtonStyle</item>
+
+        <!-- Color palette -->
+        <item name="colorPrimaryDark">@color/sesl_primary_dark_color_dark</item>
+        <item name="colorPrimary">@color/sesl_primary_color_dark</item>
+
+        <item name="colorControlNormal">@color/sesl_control_normal_color_light</item>
+        <item name="colorControlActivated">@color/sesl_control_activated_color</item>
+        <item name="colorControlHighlight">@color/sesl_ripple_color_dark</item>
+        <item name="colorButtonNormal">@color/sesl_btn_default_color_dark</item>
+        <item name="controlBackground">?selectableItemBackgroundBorderless</item>
+
+        <item name="checkboxStyle">@style/mesa_CheckBoxButtonStyle</item>
+        <item name="radioButtonStyle">@style/mesa_RadioButtonStyle</item>
+
+        <item name="seekBarStyle">@style/mesa_SeekBarStyle</item>
+
+        <item name="buttonStyle">@style/mesa_ButtonStyle</item>
+        <item name="buttonStyleSmall">@style/mesa_ButtonStyle</item>
+        <item name="android:textAppearanceButton">@style/mesa_ButtonTextStyle</item>
+
+        <item name="imageButtonStyle">@style/mesa_ImageButtonStyle</item>
+
+        <!-- Tooltip attributes -->
+        <item name="tooltipFrameBackground">@color/sesl_tooltip_background_dark</item>
+        <item name="tooltipForegroundColor">@color/sesl_tooltip_foreground_dark</item>
+
+        <item name="colorError">@color/sesl_error_color</item>
+
+        <!-- Misc -->
+        <item name="android:scrollbarThumbHorizontal">@drawable/sesl_scrollbar_handle_dark</item>
+        <item name="android:scrollbarThumbVertical">@drawable/sesl_scrollbar_handle_dark</item>
+
+        <item name="android:windowAnimationStyle">@style/mesa_ActivityAnimStyle</item>
+
+        <item name="collapsedToolbarLayoutStyle">@style/mesa_CollapsingToolbarStyle</item>
+        <item name="round_and_bgColor">@color/sesl_round_and_bgcolor_dark</item>
+        <item name="cardBgColor">@color/sesl_background_color_dark</item>
+        <item name="roundedCornerColor">@color/sesl_round_and_bgcolor_dark</item>
+        <item name="roundedCornerStrokeColor">@color/sesl_round_stroke_dark</item>
+        <item name="dividerColor">@color/sesl_list_divider_color_dark</item>
+        <item name="primaryTextColor">@color/sesl_primary_text_dark</item>
+        <item name="secondaryTextColor">@color/sesl_secondary_text_dark</item>
+    </style>
+    <style name="mesa_AppStyle.Light" parent="Theme.AppCompat.Light">
+        <!-- Window colors -->
+        <item name="android:statusBarColor">@color/sesl_round_and_bgcolor_light</item>
+        <item name="android:navigationBarColor">@color/sesl_round_and_bgcolor_light</item>
+        <item name="android:colorBackground">@color/sesl_background_color_light</item>
+        <item name="android:colorBackgroundCacheHint">@color/sesl_background_cache_hint_selector_light</item>
+        <item name="android:disabledAlpha">@dimen/sesl_disabled_color_alpha</item>
+        <item name="android:windowBackground">@color/sesl_background_color_light</item>
+
+        <!-- Window flags -->
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightNavigationBar">true</item>
+
+        <!-- Text colors -->
+        <item name="android:textColorPrimary">@color/sesl_primary_text_light</item>
+        <item name="android:textColorPrimaryInverse">@color/sesl_primary_text_dark</item>
+        <item name="android:textColorSecondary">@color/sesl_secondary_text_light</item>
+        <item name="android:textColorSecondaryInverse">@color/sesl_secondary_text_dark</item>
+        <item name="android:textColorHighlight">@color/sesl_highlighted_text_color_light</item>
+        <item name="android:textColorAlertDialogListItem">@color/sesl_select_dialog_list_item_text</item>
+
+        <item name="android:listChoiceIndicatorSingle">@drawable/sesl_list_choice_btn_radio</item>
+        <item name="android:listChoiceIndicatorMultiple">@drawable/sesl_list_choice_btn_check</item>
+
+        <item name="android:listPreferredItemPaddingStart">@dimen/sesl_list_item_padding_horizontal</item>
+        <item name="android:listPreferredItemPaddingEnd">@dimen/sesl_list_item_padding_horizontal</item>
+
+        <item name="android:textSelectHandle">@drawable/sesl_text_select_handle_middle_light</item>
+        <item name="android:textSelectHandleLeft">@drawable/sesl_text_select_handle_left_light</item>
+        <item name="android:textSelectHandleRight">@drawable/sesl_text_select_handle_right_light</item>
+
+        <item name="colorBackgroundFloating">@color/sesl_background_floating_light</item>
+
+        <item name="homeAsUpIndicator">@drawable/sesl_ic_ab_back</item>
+
+        <!-- Action Bar Styles -->
+        <item name="actionButtonStyle">@style/mesa_ActionButtonStyle.Light</item>
+        <item name="actionOverflowButtonStyle">@style/mesa_OverflowButtonStyle.Light</item>
+        <item name="actionOverflowMenuStyle">?android:actionOverflowMenuStyle</item>
+        <item name="actionBarPopupTheme">@null</item>
+        <item name="actionBarStyle">@style/mesa_ActionBarStyle.Light</item>
+        <item name="actionBarSplitStyle">?actionBarStyle</item>
+        <item name="actionBarWidgetTheme">@null</item>
+        <item name="actionBarTheme">@null</item>
+        <item name="actionBarSize">@dimen/sesl_action_bar_default_height</item>
+        <item name="actionBarDivider">@null</item>
+        <item name="actionBarItemBackground">@drawable/sesl_action_bar_item_background</item>
+        <item name="actionMenuTextAppearance">@style/mesa_ActionBarMenuTextStyle.Light</item>
+        <item name="actionMenuTextColor">@color/sesl_action_menu_text</item>
+
+        <!-- Dropdown Spinner Attributes -->
+        <item name="actionDropDownStyle">@style/mesa_SpinnerStyle.Light</item>
+
+        <!-- Action Mode -->
+        <item name="actionModeStyle">@style/mesa_ActionModeStyle.Light</item>
+        <item name="actionModeBackground">@drawable/sesl_action_bar_background</item>
+        <item name="actionModeSplitBackground">?android:colorPrimaryDark</item>
+        <item name="actionModeCloseDrawable">@drawable/sesl_ic_cab_done</item>
+        <item name="actionModeCloseButtonStyle">@style/mesa_ActionButtonStyle.Light</item>
+
+        <item name="actionModeCutDrawable">@drawable/sesl_ic_menu_cut</item>
+        <item name="actionModeCopyDrawable">@drawable/sesl_ic_menu_copy</item>
+        <item name="actionModePasteDrawable">@drawable/sesl_ic_menu_paste</item>
+        <item name="actionModeSelectAllDrawable">@drawable/sesl_ic_menu_selectall</item>
+        <item name="actionModeShareDrawable">@drawable/sesl_ic_menu_share</item>
+
+        <!-- Panel attributes -->
+        <item name="panelMenuListWidth">@dimen/sesl_panel_menu_list_width</item>
+        <item name="panelMenuListTheme">@style/mesa_CompactMenuStyle</item>
+        <item name="android:panelBackground">?android:colorBackground</item>
+        <item name="listChoiceBackgroundIndicator">@drawable/sesl_list_selector_light</item>
+
+        <!-- List attributes -->
+        <item name="textAppearanceListItem">@style/mesa_SubheadTextStyle</item>
+        <item name="textAppearanceListItemSmall">@style/mesa_SubheadTextStyle</item>
+        <item name="listPreferredItemHeight">@dimen/sesl_list_preferred_item_height</item>
+        <item name="listPreferredItemHeightSmall">@dimen/sesl_list_preferred_item_height_small</item>
+        <item name="listPreferredItemPaddingLeft">?android:listPreferredItemPaddingStart</item>
+        <item name="listPreferredItemPaddingRight">?android:listPreferredItemPaddingEnd</item>
+
+        <!-- Spinner styles -->
+        <item name="spinnerStyle">@style/mesa_SpinnerStyle.Light</item>
+        <item name="android:spinnerItemStyle">@style/mesa_SpinnerItemStyle.Light</item>
+        <item name="android:dropDownListViewStyle">@style/mesa_ListViewDropDownStyle.Light</item>
+
+        <!-- Required for use of support_simple_spinner_dropdown_item.xml -->
+        <item name="spinnerDropDownItemStyle">@style/mesa_SpinnerDropDownItemStyle</item>
+        <item name="spinnerDropdownTextColor">@color/sesl_spinner_dropdown_text_color_light</item>
+        <item name="dropdownListPreferredItemHeight">@dimen/sesl_popup_menu_item_min_height</item>
+
+        <!-- Popup Menu styles -->
+        <item name="popupMenuStyle">?android:actionOverflowMenuStyle</item>
+        <item name="textAppearanceLargePopupMenu">@style/mesa_PopupMenuLargeTextStyle.Light</item>
+        <item name="textAppearanceSmallPopupMenu">@style/mesa_PopupMenuSmallTextStyle.Light</item>
+        <item name="textAppearancePopupMenuHeader">@style/mesa_PopupMenuHeaderTextStyle.Light</item>
+        <item name="listPopupWindowStyle">@style/mesa_ListPopupWindowStyle.Light</item>
+        <item name="dropDownListViewStyle">@style/mesa_ListViewDropDownStyle.Light</item>
+        <item name="listMenuViewStyle">@style/mesa_ListMenuViewStyle</item>
+
+        <!-- SearchView attributes -->
+        <item name="searchViewStyle">@style/mesa_SearchViewStyle.Light</item>
+        <item name="android:dropDownItemStyle">@style/mesa_SpinnerDropDownItemStyle.Light</item>
+        <item name="textColorSearchUrl">@color/sesl_search_url_text</item>
+        <item name="searchViewIconColor">@color/sesl_search_view_icon_color</item>
+        <item name="searchViewTextColor">@color/sesl_search_view_text_color</item>
+        <item name="searchViewHintTextColor">@color/sesl_search_view_hint_text_color</item>
+        <item name="textAppearanceSearchResultTitle">@style/mesa_SearchResultTitleTextStyle.Light</item>
+        <item name="textAppearanceSearchResultSubtitle">@style/mesa_SearchResultSubtitleTextStyle.Light</item>
+
+        <!-- ShareActionProvider attributes -->
+        <item name="activityChooserViewStyle">@style/mesa_ActivityChooserViewStyle</item>
+
+        <!-- Toolbar styles -->
+        <item name="toolbarStyle">@style/mesa_ToolbarStyle.Light</item>
+        <item name="toolbarNavigationButtonStyle">@style/mesa_ToolbarNavButtonStyle.Light</item>
+
+        <!-- Color palette -->
+        <item name="colorPrimaryDark">@color/sesl_primary_dark_color_light</item>
+        <item name="colorPrimary">@color/sesl_primary_color_light</item>
+
+        <item name="colorControlNormal">@color/sesl_control_normal_color_light</item>
+        <item name="colorControlActivated">@color/sesl_control_activated_color</item>
+        <item name="colorControlHighlight">@color/sesl_ripple_color_light</item>
+        <item name="colorButtonNormal">@color/sesl_btn_default_color_light</item>
+        <item name="controlBackground">?selectableItemBackgroundBorderless</item>
+
+        <item name="checkboxStyle">@style/mesa_CheckBoxButtonStyle.Light</item>
+        <item name="radioButtonStyle">@style/mesa_RadioButtonStyle.Light</item>
+
+        <item name="seekBarStyle">@style/mesa_SeekBarStyle.Light</item>
+
+        <item name="buttonStyle">@style/mesa_ButtonStyle.Light</item>
+        <item name="buttonStyleSmall">@style/mesa_ButtonStyle.Light</item>
+        <item name="android:textAppearanceButton">@style/mesa_ButtonTextStyle.Light</item>
+
+        <item name="imageButtonStyle">@style/mesa_ImageButtonStyle</item>
+
+        <!-- Tooltip attributes -->
+        <item name="tooltipFrameBackground">@color/sesl_tooltip_background_light</item>
+        <item name="tooltipForegroundColor">@color/sesl_tooltip_foreground_light</item>
+
+        <item name="colorError">@color/sesl_error_color</item>
+
+        <!-- Misc -->
+        <item name="android:scrollbarThumbHorizontal">@drawable/sesl_scrollbar_handle_light</item>
+        <item name="android:scrollbarThumbVertical">@drawable/sesl_scrollbar_handle_light</item>
+
+        <item name="android:windowAnimationStyle">@style/mesa_ActivityAnimStyle</item>
+
+        <item name="collapsedToolbarLayoutStyle">@style/mesa_CollapsingToolbarStyle.Light</item>
+        <item name="round_and_bgColor">@color/sesl_round_and_bgcolor_light</item>
+        <item name="cardBgColor">@color/sesl_background_color_light</item>
+        <item name="roundedCornerColor">@color/sesl_round_and_bgcolor_light</item>
+        <item name="roundedCornerStrokeColor">@color/sesl_round_stroke_light</item>
+        <item name="dividerColor">@color/sesl_list_divider_color_light</item>
+        <item name="primaryTextColor">@color/sesl_primary_text_light</item>
+        <item name="secondaryTextColor">@color/sesl_secondary_text_light</item>
+    </style>
+
+</resources>
