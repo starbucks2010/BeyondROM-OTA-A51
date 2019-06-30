@@ -85,4 +85,6 @@
     <item type="dimen" name="sesl_disabled_color_alpha">0.4</item>
 
 
+    <dimen name="mesa_appbar_expanded_height">285dp</dimen>
+
 </resources>

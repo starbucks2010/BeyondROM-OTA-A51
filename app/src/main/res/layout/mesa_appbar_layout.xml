@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.AppBarLayout
+    android:id="@+id/mesa_appbar_appbarlayout"
+    android:fitsSystemWindows="true"
+    android:layout_width="fill_parent"
+    android:layout_height="@dimen/mesa_appbar_expanded_height"
+    app:background="?round_and_bgColor"
+    style="@style/mesa_AppBarLayoutStyle"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <android.support.design.widget.CollapsingToolbarLayout
+        android:id="@+id/mesa_colltoolbar_appbarlayout"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:fitsSystemWindows="true"
+        android:background="?round_and_bgColor"
+        app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
+        app:toolbarId="@+id/mesa_toolbar_appbarlayout"
+        style="?collapsedToolbarLayoutStyle">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/mesa_toolbar_appbarlayout"
+            android:layout_width="fill_parent"
+            android:layout_height="?actionBarSize"
+            android:layout_gravity="bottom"
+            app:layout_collapseMode="pin"
+            app:popupTheme="@style/mesa_AppStyle.DayNight">
+
+            <TextView
+                android:id="@+id/mesa_toolbartitle_appbarlayout"
+                android:layout_width="fill_parent"
+                android:layout_height="?actionBarSize"
+                android:gravity="center_vertical"
+                android:background="@android:color/transparent"
+                android:alpha="0.0"
+                android:singleLine="true"
+                android:textColor="?primaryTextColor"
+                android:textDirection="locale"
+                style="@style/mesa_CollapsedActionBarTitleTextStyle" />
+
+        </android.support.v7.widget.Toolbar>
+
+        <ViewStub
+            android:id="@+id/mesa_viewstub_appbarlayout"
+            android:inflatedId="@+id/mesa_abheaderlayout_appbarlayout"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            app:layout_collapseMode="parallax"/>
+
+    </android.support.design.widget.CollapsingToolbarLayout>
+
+</android.support.design.widget.AppBarLayout>

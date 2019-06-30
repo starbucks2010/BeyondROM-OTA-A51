@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="center"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <TextView
+        android:id="@+id/mesa_abexpatitle_appbarlayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20.0dip"
+        android:layout_marginRight="20.0dip"
+        android:layout_gravity="center"
+        android:background="@android:color/transparent"
+        android:gravity="bottom|center"
+        android:textColor="?primaryTextColor"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:includeFontPadding="false"
+        style="@style/mesa_ExpandedActionBarTitleTextStyle" />
+
+
+</LinearLayout>
