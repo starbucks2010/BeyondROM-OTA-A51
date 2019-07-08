@@ -1,6 +1,8 @@
 package com.mesalabs.cerberus.utils;
 
+import android.app.Activity;
 import android.content.Context;
+import android.os.Build;
 import android.util.TypedValue;
 
 import com.mesalabs.cerberus.R;
@@ -22,6 +24,23 @@ import com.mesalabs.cerberus.R;
  */
 
 public class Utils {
+
+    public static boolean isInMultiWindowMode(Activity activity) {
+        if (isInSamsungMultiWindowMode())
+            return true;
+        else
+            return activity.isInMultiWindowMode();
+    }
+
+    private static boolean isInSamsungMultiWindowMode() {
+        String mwState = PropUtils.get("sys.multiwindow.running", "not-support");
+
+        if (mwState.equals("not-support")) {
+            return false;
+        }
+
+        return mwState.equals("1");
+    }
 
     public static boolean isNightMode(Context mContext) {
         TypedValue outValue = new TypedValue();
