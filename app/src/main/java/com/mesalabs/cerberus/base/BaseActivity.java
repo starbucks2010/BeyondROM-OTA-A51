@@ -67,20 +67,27 @@ public class BaseActivity extends AppCompatActivity {
      * createAppBar (expanded, no homeAsUp, title)
      */
     protected void createAppBar(int titleTextId) {
-        createAppBar(true, false, titleTextId);
+        createAppBar(true, 0, false, titleTextId);
     }
 
     /**
      * createAppBar (expanded, no homeAsUp, title)
      */
     protected void createAppBar(boolean isExpanded, int titleTextId) {
-        createAppBar(isExpanded, false,  titleTextId);
+        createAppBar(isExpanded, 0, false,  titleTextId);
     }
 
     /**
      * createAppBar (expanded, homeAsUp, title)
      */
     protected void createAppBar(boolean isExpanded, boolean showHomeAsUp, int titleTextId) {
+        createAppBar(isExpanded, 0, false,  titleTextId);
+    }
+
+    /**
+     * createAppBar (expanded, custom header, homeAsUp, title)
+     */
+    protected void createAppBar(boolean isExpanded, int customHeaderId, boolean showHomeAsUp, int titleTextId) {
         Toolbar abToolbar = findViewById(R.id.mesa_toolbar_appbarlayout);
         setSupportActionBar(abToolbar);
         if (abToolbar != null) {
@@ -89,10 +96,13 @@ public class BaseActivity extends AppCompatActivity {
 
             abAppBarLayout = findViewById(R.id.mesa_appbar_appbarlayout);
             final CollapsingToolbarLayout abCollapsingToolbarLayout = findViewById(R.id.mesa_colltoolbar_appbarlayout);
-
-            // Inflate header instead of adding it inside AppBar xml for future usages...
+            
             ViewStub abStubAppBarHeader = findViewById(R.id.mesa_viewstub_appbarlayout);
-            abStubAppBarHeader.setLayoutResource(R.layout.mesa_header_appbarlayout);
+
+            if (customHeaderId <= 0)
+                abStubAppBarHeader.setLayoutResource(R.layout.mesa_seslheader_appbarlayout);
+            else
+                abStubAppBarHeader.setLayoutResource(customHeaderId);
 
             abStubAppBarHeader.inflate();
 
@@ -120,7 +130,9 @@ public class BaseActivity extends AppCompatActivity {
             }
 
             if (titleTextId != 0) {
-                abExpandedTitle.setText(getString(titleTextId));
+                if (customHeaderId <= 0)
+                    abExpandedTitle.setText(getString(titleTextId));
+
                 abCollapsedTitle.setText(getString(titleTextId));
             }
 

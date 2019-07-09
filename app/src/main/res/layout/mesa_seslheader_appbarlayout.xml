@@ -19,6 +19,6 @@
         android:ellipsize="end"
         android:maxLines="2"
         android:includeFontPadding="false"
-        style="@style/mesa_ExpandedActionBarTitleTextStyle" />
+        style="@style/mesa_ExpandedActionBarTitleTextSeslStyle" />
 
 </LinearLayout>
