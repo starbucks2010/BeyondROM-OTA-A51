@@ -12,12 +12,15 @@
     <dimen name="sesl_action_button_padding_horizontal">12.0dip</dimen>
     <dimen name="sesl_action_button_src_size">24.0dip</dimen>
 
+    <item type="dimen" format="float" name="sesl_abl_height_proportion">0.0</item>
+
     <dimen name="sesl_action_bar_overflow_padding_end">20.0dip</dimen>
     <dimen name="sesl_action_bar_overflow_padding_start">3.0dip</dimen>
     <dimen name="sesl_action_bar_background_divider_height">2.0px</dimen>
-    <dimen name="sesl_action_bar_content_inset">24.0dip</dimen>
+    <dimen name="sesl_action_bar_content_inset">0.0dip</dimen>
     <dimen name="sesl_action_bar_content_inset_with_nav">56.0px</dimen>
     <dimen name="sesl_action_bar_default_height">56.0dip</dimen>
+    <dimen name="sesl_action_bar_default_height_padding">68.0dip</dimen>
     <dimen name="sesl_action_bar_elevation">0.0dip</dimen>
 
     <dimen name="sesl_action_bar_text_size_title">19.0sp</dimen>
@@ -25,6 +28,7 @@
     <dimen name="sesl_action_bar_text_size_menu">18.0sp</dimen>
 
     <dimen name="sesl_extended_appbar_bottom_padding">12.0dip</dimen>
+    <dimen name="sesl_extended_appbar_title_padding">24.0dip</dimen>
 
     <dimen name="sesl_action_bar_text_size_title_extend">40.0sp</dimen>
 

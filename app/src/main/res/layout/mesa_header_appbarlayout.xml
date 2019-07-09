@@ -21,5 +21,4 @@
         android:includeFontPadding="false"
         style="@style/mesa_ExpandedActionBarTitleTextStyle" />
 
-
 </LinearLayout>
