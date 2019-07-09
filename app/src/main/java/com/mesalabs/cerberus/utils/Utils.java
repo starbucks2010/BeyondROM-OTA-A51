@@ -2,7 +2,6 @@ package com.mesalabs.cerberus.utils;
 
 import android.app.Activity;
 import android.content.Context;
-import android.os.Build;
 import android.util.TypedValue;
 
 import com.mesalabs.cerberus.R;
@@ -36,17 +35,22 @@ public class Utils {
         String mwState = PropUtils.get("sys.multiwindow.running", "not-support");
 
         if (mwState.equals("not-support")) {
+            LogUtils.e("Utils", "S Multi Window feature is not available");
             return false;
         }
 
         return mwState.equals("1");
     }
 
-    public static boolean isNightMode(Context mContext) {
+    public static boolean isNightMode(Context context) {
         TypedValue outValue = new TypedValue();
-        mContext.getTheme().resolveAttribute(R.attr.isLightTheme, outValue, true);
+        context.getTheme().resolveAttribute(R.attr.isLightTheme, outValue, true);
 
         return outValue.data == 0;
+    }
+
+    public static boolean isTabletDevice(Context context) {
+        return ViewUtils.getSmallestDeviceWidthDp(context) >= 685;
     }
 
 }
