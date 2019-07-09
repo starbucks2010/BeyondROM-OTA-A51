@@ -42,6 +42,10 @@ public class CerberusApp extends Application {
         return BuildConfig.VERSION_NAME;
     }
 
+    public static boolean isDebugBuild()  {
+        return BuildConfig.DEBUG;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
