@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
     <!-- App Themes -->
@@ -9,7 +8,7 @@
         <item name="android:colorBackground">@color/sesl_background_color_dark</item>
         <item name="android:colorBackgroundCacheHint">@color/sesl_background_cache_hint_selector_light</item>
         <item name="android:disabledAlpha">@dimen/sesl_disabled_color_alpha</item>
-        <item name="android:windowBackground">@color/sesl_background_color_dark</item>
+        <item name="android:windowBackground">@color/sesl_round_and_bgcolor_dark</item>
 
         <!-- Window flags -->
         <item name="android:windowLightStatusBar">false</item>
@@ -167,7 +166,7 @@
         <item name="android:colorBackground">@color/sesl_background_color_light</item>
         <item name="android:colorBackgroundCacheHint">@color/sesl_background_cache_hint_selector_light</item>
         <item name="android:disabledAlpha">@dimen/sesl_disabled_color_alpha</item>
-        <item name="android:windowBackground">@color/sesl_background_color_light</item>
+        <item name="android:windowBackground">@color/sesl_round_and_bgcolor_light</item>
 
         <!-- Window flags -->
         <item name="android:windowLightStatusBar">true</item>

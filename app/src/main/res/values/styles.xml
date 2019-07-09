@@ -12,7 +12,7 @@
         <item name="android:colorBackground">@color/sesl_background_color_dark</item>
         <item name="android:colorBackgroundCacheHint">@color/sesl_background_cache_hint_selector_light</item>
         <item name="android:disabledAlpha">@dimen/sesl_disabled_color_alpha</item>
-        <item name="android:windowBackground">@color/sesl_background_color_dark</item>
+        <item name="android:windowBackground">@color/sesl_round_and_bgcolor_dark</item>
 
         <!-- Window flags -->
         <item name="android:windowLightStatusBar">false</item>
@@ -173,7 +173,7 @@
         <item name="android:colorBackground">@color/sesl_background_color_light</item>
         <item name="android:colorBackgroundCacheHint">@color/sesl_background_cache_hint_selector_light</item>
         <item name="android:disabledAlpha">@dimen/sesl_disabled_color_alpha</item>
-        <item name="android:windowBackground">@color/sesl_background_color_light</item>
+        <item name="android:windowBackground">@color/sesl_round_and_bgcolor_light</item>
 
         <!-- Window flags -->
         <item name="android:windowLightStatusBar">true</item>
@@ -655,7 +655,7 @@
         <item name="android:paddingRight">0.0dip</item>
         <item name="android:minHeight">?actionBarSize</item>
         <item name="background">@color/sesl_action_bar_background_color_dark</item>
-        <item name="contentInsetStart">@dimen/sesl_action_bar_content_inset</item>
+        <item name="contentInsetStart">0.0dip</item>
         <item name="contentInsetEnd">0.0dip</item>
         <item name="contentInsetStartWithNavigation">@dimen/sesl_action_bar_content_inset_with_nav</item>
         <item name="titleTextAppearance">@style/mesa_CollapsedActionBarTitleTextStyle</item>
