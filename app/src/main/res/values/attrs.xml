@@ -25,6 +25,14 @@
     <attr name="useDisabledAlpha" format="boolean" />
 
 
+    <declare-styleable name="SamsungButton">
+        <attr name="sbDivider" format="boolean" />
+        <attr name="sbIcon" format="reference" />
+        <attr name="sbTitleText" format="string" />
+        <attr name="sbSummaryText" format="string" />
+        <attr name="sbSummaryHighlight" format="boolean" />
+    </declare-styleable>
+
     <declare-styleable name="RoundFrameLayout">
         <attr name="flCorners" format="string" />
     </declare-styleable>

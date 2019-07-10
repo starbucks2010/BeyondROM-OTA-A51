@@ -88,7 +88,9 @@
 
     <item type="dimen" name="sesl_disabled_color_alpha">0.4</item>
 
+    <dimen name="sesl_list_divider_inset">20.0dip</dimen>
 
-    <dimen name="mesa_appbar_expanded_height">285dp</dimen>
+    <dimen name="mesa_samsungiconbutton_divider_height">2.0px</dimen>
+    <dimen name="mesa_samsungbutton_divider_height">3.0px</dimen>
 
 </resources>
