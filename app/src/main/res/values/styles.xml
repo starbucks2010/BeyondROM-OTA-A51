@@ -380,7 +380,7 @@
         <item name="android:textColor">@color/sesl_action_bar_text_color_subtitle_light</item>
     </style>
 
-    <style name="mesa_ExpandedActionBarTitleTextStyle" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
+    <style name="mesa_ExpandedActionBarTitleTextSeslStyle" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
         <item name="android:textSize">@dimen/sesl_action_bar_text_size_title_extend</item>
         <item name="android:fontFamily">sans-serif-light</item>
         <item name="android:textStyle">normal</item>
