@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:mesa="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:background="?round_and_bgColor"
+    tools:context="com.mesalabs.cerberus.activity.TestUXActivity">
+
+    <com.samsung.android.ui.widget.RoundFrameLayoutWoStroke
+        android:layout_width="fill_parent"
+        android:layout_height="0.0dp"
+        android:layout_weight="1"
+        android:background="?round_and_bgColor"
+        mesa:flwsCorners="bottomleft|bottomright">
+
+        <android.support.design.widget.CoordinatorLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:weightSum="1"
+            android:background="?round_and_bgColor">
+
+            <!-- TOOLBAR START -->
+            <include
+                layout="@layout/mesa_appbar_layout"/>
+            <!-- TOOLBAR END -->
+
+            <android.support.v7.widget.LinearLayoutCompat
+                android:theme="@style/mesa_AppStyle.DayNight.NoActionBar"
+                android:orientation="vertical"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+                <ViewStub
+                    android:id="@+id/mesa_viewstub_baseactivity"
+                    android:inflatedId="@+id/mesa_contentlayout_baseactivity"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"/>
+
+            </android.support.v7.widget.LinearLayoutCompat>
+
+        </android.support.design.widget.CoordinatorLayout>
+
+    </com.samsung.android.ui.widget.RoundFrameLayoutWoStroke>
+
+</LinearLayout>

@@ -31,6 +31,14 @@ public class ViewUtils {
         return Math.round(Math.min(((float) displayMetrics.heightPixels) / displayMetrics.density, ((float) displayMetrics.widthPixels) / displayMetrics.density));
     }
 
+    public static int getStatusbarHeight(Context context) {
+        int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            return context.getResources().getDimensionPixelOffset(resourceId);
+        }
+        return 0;
+    }
+
     public static int getWindowWidth(Context context) {
         try {
             WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);

@@ -51,11 +51,19 @@
 
         </android.support.v7.widget.Toolbar>
 
-        <ViewStub
-            android:id="@+id/mesa_viewstub_appbarlayout"
-            android:inflatedId="@+id/mesa_abheaderlayout_appbarlayout"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center">
+
+            <ViewStub
+                android:id="@+id/mesa_viewstub_appbarlayout"
+                android:inflatedId="@+id/mesa_abheaderlayout_appbarlayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="16"/>
+
+        </LinearLayout>
 
     </android.support.design.widget.CollapsingToolbarLayout>
 

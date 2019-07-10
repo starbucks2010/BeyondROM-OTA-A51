@@ -44,7 +44,7 @@ public class BaseActivity extends AppCompatActivity {
 
     private AppBarLayout abAppBarLayout;
     private AppCompatImageButton abHomeButton;
-    private float mDefaultHeightDp;
+    private float mAppBarHeightDp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +52,7 @@ public class BaseActivity extends AppCompatActivity {
 
         mContext = this;
 
+        setContentView(R.layout.mesa_baseactivity_layout);
     }
 
     @Override
@@ -59,6 +60,14 @@ public class BaseActivity extends AppCompatActivity {
         super.onConfigurationChanged(newConfig);
 
         resetAppBarHeight();
+    }
+
+    protected void inflateLayout(int layoutId) {
+        ViewStub contentViewStub = findViewById(R.id.mesa_viewstub_baseactivity);
+
+        contentViewStub.setLayoutResource(layoutId);
+
+        contentViewStub.inflate();
     }
 
     // AppBar related methods
@@ -112,6 +121,12 @@ public class BaseActivity extends AppCompatActivity {
             final TextView abCollapsedTitle = findViewById(R.id.mesa_toolbartitle_appbarlayout);
 
             resetAppBarHeight();
+
+            int statusBarHeight = ViewUtils.getStatusbarHeight(this);
+            if (statusBarHeight > 0)
+                abExpandedTitleLayout.setPadding(0, 0, 0, statusBarHeight / 2);
+
+
             abAppBarLayout.setExpanded(isExpanded);
 
             if (showHomeAsUp) {
@@ -156,7 +171,7 @@ public class BaseActivity extends AppCompatActivity {
 
                     abExpandedTitleLayout.setAlpha(expaTitleAlpha);
 
-                    if (appBarLayout.getHeight() <= ((int) mDefaultHeightDp)) {
+                    if (appBarLayout.getHeight() <= ((int) mAppBarHeightDp)) {
                         abExpandedTitleLayout.setAlpha(0.0f);
                         abCollapsedTitle.setAlpha(1.0f);
                     } else {
@@ -200,9 +215,9 @@ public class BaseActivity extends AppCompatActivity {
             abAppBarLayout.setExpanded(false, false);
             abAppBarLayout.setActivated(false);
 
-            mDefaultHeightDp = getResources().getDimension(R.dimen.sesl_action_bar_default_height_padding);
+            mAppBarHeightDp = getResources().getDimension(R.dimen.sesl_action_bar_default_height_padding);
 
-            params.height = (int) mDefaultHeightDp;
+            params.height = (int) mAppBarHeightDp;
         } else {
             abAppBarLayout.setExpanded(true, false);
             abAppBarLayout.setActivated(true);
@@ -210,7 +225,7 @@ public class BaseActivity extends AppCompatActivity {
             TypedValue outValue = new TypedValue();
             getResources().getValue(R.dimen.sesl_abl_height_proportion, outValue, true);
 
-            mDefaultHeightDp = getResources().getDimension(R.dimen.sesl_action_bar_default_height);
+            mAppBarHeightDp = getResources().getDimension(R.dimen.sesl_action_bar_default_height);
 
             params.height = (int) ((float) windowHeight * outValue.getFloat());
         }
