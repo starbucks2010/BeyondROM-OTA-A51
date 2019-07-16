@@ -18,6 +18,7 @@
         mesa:flwsCorners="bottomleft|bottomright">
 
         <android.support.design.widget.CoordinatorLayout
+            android:id="@+id/mesa_coordinatorlayout_baseactivity"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:weightSum="1"
@@ -33,7 +34,7 @@
                 android:orientation="vertical"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior">
+                app:layout_behavior="@string/sesl_appbar_scrolling_view_behavior">
 
                 <ViewStub
                     android:id="@+id/mesa_viewstub_baseactivity"
