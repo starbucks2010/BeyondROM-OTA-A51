@@ -4,8 +4,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.util.TypedValue;
 
-import com.mesalabs.cerberus.R;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
+import com.mesalabs.cerberus.R;
 
 /*
  * Cerberus Core App
@@ -24,6 +27,86 @@ import com.mesalabs.cerberus.R;
 
 public class Utils {
 
+    public static Object genericGetField(Object obj, String fieldName) {
+        Field field;
+        Object requiredObj = null;
+        try {
+            field = obj.getClass().getDeclaredField(fieldName);
+            field.setAccessible(true);
+            requiredObj = field.get(obj);
+        } catch (NoSuchFieldException e) {
+            LogUtils.e("Utils.genericGetField", e.toString());
+        } catch (IllegalArgumentException e) {
+            LogUtils.e("Utils.genericGetField", e.toString());
+        } catch (IllegalAccessException e) {
+            LogUtils.e("Utils.genericGetField", e.toString());
+        }
+
+        return requiredObj;
+    }
+
+    public static Object genericInvokeMethod(Object obj, String methodName, Object... params) {
+        int paramCount = params.length;
+        Method method;
+        Object requiredObj = null;
+        Class<?>[] classArray = new Class<?>[paramCount];
+        for (int i = 0; i < paramCount; i++) {
+            // FIX
+            if (params[i].getClass() == Boolean.class)
+                classArray[i] = boolean.class;
+            else if (params[i].getClass() == Integer.class)
+                classArray[i] = int.class;
+            else
+                classArray[i] = params[i].getClass();
+        }
+        try {
+            method = obj.getClass().getDeclaredMethod(methodName, classArray);
+            method.setAccessible(true);
+            requiredObj = method.invoke(obj, params);
+        } catch (NoSuchMethodException e) {
+            LogUtils.e("Utils.genericInvokeMethod", e.toString());
+        } catch (IllegalArgumentException e) {
+            LogUtils.e("Utils.genericInvokeMethod", e.toString());
+        } catch (IllegalAccessException e) {
+            LogUtils.e("Utils.genericInvokeMethod", e.toString());
+        } catch (InvocationTargetException e) {
+            LogUtils.e("Utils.genericInvokeMethod", e.toString());
+        }
+
+        return requiredObj;
+    }
+
+    public static Object genericInvokeStaticMethod(Class<?> cl, String methodName, Object... params) {
+        int paramCount = params.length;
+        Method method;
+        Object requiredObj = null;
+        Class<?>[] classArray = new Class<?>[paramCount];
+        for (int i = 0; i < paramCount; i++) {
+            // FIX
+            if (params[i].getClass() == Boolean.class)
+                classArray[i] = boolean.class;
+            else if (params[i].getClass() == Integer.class)
+                classArray[i] = int.class;
+            else
+                classArray[i] = params[i].getClass();
+        }
+        try {
+            method = cl.getDeclaredMethod(methodName, classArray);
+            method.setAccessible(true);
+            requiredObj = method.invoke(null, params);
+        } catch (NoSuchMethodException e) {
+            LogUtils.e("Utils.genericInvokeStaticMethod", e.toString());
+        } catch (IllegalArgumentException e) {
+            LogUtils.e("Utils.genericInvokeStaticMethod", e.toString());
+        } catch (IllegalAccessException e) {
+            LogUtils.e("Utils.genericInvokeStaticMethod", e.toString());
+        } catch (InvocationTargetException e) {
+            LogUtils.e("Utils.genericInvokeStaticMethod", e.toString());
+        }
+
+        return requiredObj;
+    }
+
     public static boolean isInMultiWindowMode(Activity activity) {
         if (isInSamsungMultiWindowMode())
             return true;
@@ -35,7 +118,7 @@ public class Utils {
         String mwState = PropUtils.get("sys.multiwindow.running", "not-support");
 
         if (mwState.equals("not-support")) {
-            LogUtils.e("Utils", "S Multi Window feature is not available");
+            LogUtils.e("Utils.isInSamsungMultiWindowMode", "S Multi Window feature is not available");
             return false;
         }
 
