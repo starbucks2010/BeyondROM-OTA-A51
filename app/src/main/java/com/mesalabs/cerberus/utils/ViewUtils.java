@@ -3,9 +3,10 @@ package com.mesalabs.cerberus.utils;
 import android.content.Context;
 import android.graphics.Point;
 import android.util.DisplayMetrics;
+import android.util.TypedValue;
 import android.view.WindowManager;
 
-import com.mesalabs.cerberus.CerberusApp;
+import com.mesalabs.cerberus.base.BaseActivity;
 
 /*
  * Cerberus Core App
@@ -23,6 +24,18 @@ import com.mesalabs.cerberus.CerberusApp;
  */
 
 public class ViewUtils {
+
+    public static int dp2px(Context context, float f) {
+        try {
+            return (int) ((context.getResources().getDisplayMetrics().density * f) + 0.5f);
+        } catch (Exception e) {
+            return (int) (f + 0.5f);
+        }
+    }
+
+    public static float getDIPForPX(BaseActivity activity, int i) {
+        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, (float) i, activity.getResources().getDisplayMetrics());
+    }
 
     public static int getSmallestDeviceWidthDp(Context context) {
         DisplayMetrics displayMetrics = new DisplayMetrics();
@@ -73,22 +86,16 @@ public class ViewUtils {
         }
     }
 
-    public static boolean isPortrait() {
-        Context context = CerberusApp.getAppContext();
+    public static boolean isLandscape(Context context) {
+        return context.getResources().getConfiguration().orientation == 2;
+    }
 
-        if (context == null)
-            return true;
-
+    public static boolean isPortrait(Context context) {
         return context.getResources().getConfiguration().orientation == 1;
     }
 
-    public static boolean isLandscape() {
-        Context context = CerberusApp.getAppContext();
-
-        if (context == null)
-            return true;
-
-        return context.getResources().getConfiguration().orientation == 2;
+    public static boolean isRTLMode(Context context) {
+        return context.getResources().getConfiguration().getLayoutDirection() == 1;
     }
 
 }
