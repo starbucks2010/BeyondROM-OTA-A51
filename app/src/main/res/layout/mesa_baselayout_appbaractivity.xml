@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    android:id="@+id/mesa_coordinatorlayout_baseactivity"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="?round_and_bgColor"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <include layout="@layout/mesa_appbar_layout"/>
+
+    <FrameLayout
+        android:id="@+id/mesa_container_baseactivity"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        app:layout_behavior="@string/sesl_appbar_scrolling_view_behavior" />
+
+</android.support.design.widget.CoordinatorLayout>

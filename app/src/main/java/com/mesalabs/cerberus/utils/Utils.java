@@ -3,6 +3,7 @@ package com.mesalabs.cerberus.utils;
 import android.app.Activity;
 import android.content.Context;
 import android.util.TypedValue;
+import android.view.ViewGroup;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -26,7 +27,6 @@ import com.mesalabs.cerberus.R;
  */
 
 public class Utils {
-
     public static Object genericGetField(Object obj, String fieldName) {
         Field field;
         Object requiredObj = null;
@@ -61,6 +61,37 @@ public class Utils {
         }
         try {
             method = obj.getClass().getDeclaredMethod(methodName, classArray);
+            method.setAccessible(true);
+            requiredObj = method.invoke(obj, params);
+        } catch (NoSuchMethodException e) {
+            LogUtils.e("Utils.genericInvokeMethod", e.toString());
+        } catch (IllegalArgumentException e) {
+            LogUtils.e("Utils.genericInvokeMethod", e.toString());
+        } catch (IllegalAccessException e) {
+            LogUtils.e("Utils.genericInvokeMethod", e.toString());
+        } catch (InvocationTargetException e) {
+            LogUtils.e("Utils.genericInvokeMethod", e.toString());
+        }
+
+        return requiredObj;
+    }
+
+    public static Object genericInvokeMethod(Class<?> cl, Object obj, String methodName, Object... params) {
+        int paramCount = params.length;
+        Method method;
+        Object requiredObj = null;
+        Class<?>[] classArray = new Class<?>[paramCount];
+        for (int i = 0; i < paramCount; i++) {
+            // FIX
+            if (params[i].getClass() == Boolean.class)
+                classArray[i] = boolean.class;
+            else if (params[i].getClass() == Integer.class)
+                classArray[i] = int.class;
+            else
+                classArray[i] = params[i].getClass();
+        }
+        try {
+            method = cl.getDeclaredMethod(methodName, classArray);
             method.setAccessible(true);
             requiredObj = method.invoke(obj, params);
         } catch (NoSuchMethodException e) {
@@ -114,6 +145,10 @@ public class Utils {
             return activity.isInMultiWindowMode();
     }
 
+    public static boolean isInSamsungDeXMode(Context context) {
+        return context.getResources().getBoolean(R.bool.sesl_desktop_mode);
+    }
+
     private static boolean isInSamsungMultiWindowMode() {
         String mwState = PropUtils.get("sys.multiwindow.running", "not-support");
 
@@ -134,6 +169,15 @@ public class Utils {
 
     public static boolean isTabletDevice(Context context) {
         return ViewUtils.getSmallestDeviceWidthDp(context) >= 685;
+    }
+
+    public static void updateListBothSideMargin(Context context, ViewGroup layout) {
+        if (layout != null) {
+            if (!ViewUtils.isMultiWindowMinSize(context, 801, true))
+                layout.getLayoutParams().width = (int) (((double) context.getResources().getDisplayMetrics().widthPixels) * 0.75d);
+            else
+                layout.getLayoutParams().width = ViewGroup.LayoutParams.MATCH_PARENT;
+        }
     }
 
 }

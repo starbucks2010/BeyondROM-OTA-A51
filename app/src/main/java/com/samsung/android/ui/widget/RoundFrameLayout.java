@@ -7,13 +7,13 @@ import android.util.AttributeSet;
 import android.widget.FrameLayout;
 
 import com.mesalabs.cerberus.R;
+import com.mesalabs.cerberus.utils.Utils;
 import com.samsung.android.ui.util.SeslRoundedCorner;
 
 /*
  * Cerberus Core App
  *
  * Coded by BlackMesa @2019
- * Originally coded by Samsung. All rights reserved to their respective owners.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,6 +26,7 @@ import com.samsung.android.ui.util.SeslRoundedCorner;
  */
 
 public class RoundFrameLayout extends FrameLayout {
+    private Context mContext;
     SeslRoundedCorner mSeslRoundedCorner;
 
     public RoundFrameLayout(Context context) {
@@ -35,21 +36,23 @@ public class RoundFrameLayout extends FrameLayout {
     public RoundFrameLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-        TypedArray obtainStyledAttributes = context.obtainStyledAttributes(attrs, R.styleable.RoundFrameLayout);
-        String corners = obtainStyledAttributes.getString(R.styleable.RoundFrameLayout_flCorners);
+        mContext = context;
 
-        mSeslRoundedCorner = new SeslRoundedCorner(context);
-        mSeslRoundedCorner.setRoundedCorners(getCornersInt(corners));
+        TypedArray obtainStyledAttributes = mContext.obtainStyledAttributes(attrs, R.styleable.RoundFrameLayout);
+
+        boolean cornersStroke = obtainStyledAttributes.getBoolean(R.styleable.RoundFrameLayout_cornersStroke, true);
+        String roundedCorners = obtainStyledAttributes.getString(R.styleable.RoundFrameLayout_roundedCorners);
+
+        mSeslRoundedCorner = new SeslRoundedCorner(mContext, cornersStroke);
+        mSeslRoundedCorner.setRoundedCorners(getCornersInt(roundedCorners));
+        if (!cornersStroke)
+            mSeslRoundedCorner.setRoundedCornerColor(getCornersInt(roundedCorners), getResources().getColor(Utils.isNightMode(mContext) ? R.color.sesl_round_and_bgcolor_dark : R.color.sesl_round_and_bgcolor_light, mContext.getTheme()));
 
         obtainStyledAttributes.recycle();
     }
 
     public RoundFrameLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-    }
-
-    public RoundFrameLayout(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
     }
 
     @Override
@@ -62,14 +65,18 @@ public class RoundFrameLayout extends FrameLayout {
         int corners = 15;
 
         if (cornersS != null && !cornersS.isEmpty()) {
-            if (!cornersS.contains("topleft"))
-                corners -= 1;
-            if (!cornersS.contains("topright"))
-                corners -= 2;
-            if (!cornersS.contains("bottomleft"))
-                corners -= 4;
-            if (!cornersS.contains("bottomright"))
-                corners -= 8;
+            if (cornersS.equals("none"))
+                corners = 0;
+            else {
+                if (!cornersS.contains("topleft"))
+                    corners -= 1;
+                if (!cornersS.contains("topright"))
+                    corners -= 2;
+                if (!cornersS.contains("bottomleft"))
+                    corners -= 4;
+                if (!cornersS.contains("bottomright"))
+                    corners -= 8;
+            }
         }
 
         return corners;

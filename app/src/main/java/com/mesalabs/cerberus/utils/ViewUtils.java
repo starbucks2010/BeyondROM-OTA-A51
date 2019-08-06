@@ -1,12 +1,16 @@
 package com.mesalabs.cerberus.utils;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.graphics.Point;
+import android.provider.Settings;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
+import android.view.Display;
+import android.view.View;
 import android.view.WindowManager;
 
-import com.mesalabs.cerberus.base.BaseActivity;
+import com.mesalabs.cerberus.base.AppBarActivity;
 
 /*
  * Cerberus Core App
@@ -33,8 +37,38 @@ public class ViewUtils {
         }
     }
 
-    public static float getDIPForPX(BaseActivity activity, int i) {
+    private static double getDensity(Context context) {
+        Configuration configuration = context.getResources().getConfiguration();
+        DisplayMetrics metrics = new DisplayMetrics();
+        WindowManager windowManager = (WindowManager) context.getSystemService("window");
+        Display display = windowManager == null ? null : windowManager.getDefaultDisplay();
+        if (display != null) {
+            display.getRealMetrics(metrics);
+        }
+        if (display == null) {
+            return 1.0d;
+        }
+        return ((double) configuration.densityDpi) / ((double) metrics.densityDpi);
+    }
+
+    public static float getDIPForPX(AppBarActivity activity, int i) {
         return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, (float) i, activity.getResources().getDisplayMetrics());
+    }
+
+    public static int getPortraitOrientation(Context context) {
+        try {
+            WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+
+            if (windowManager == null) {
+                return 0;
+            }
+
+
+            return windowManager.getDefaultDisplay().getRotation();
+        } catch (Exception unused) {
+            LogUtils.e("ViewUtils", "cannot get portrait orientation");
+            return 0;
+        }
     }
 
     public static int getSmallestDeviceWidthDp(Context context) {
@@ -87,15 +121,24 @@ public class ViewUtils {
     }
 
     public static boolean isLandscape(Context context) {
-        return context.getResources().getConfiguration().orientation == 2;
+        return context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
+    }
+
+    public static boolean isMultiWindowMinSize(Context context, int minSizeDp, boolean isWidth) {
+        Configuration configuration = context.getResources().getConfiguration();
+        return ((int) (((double) (isWidth ? configuration.screenWidthDp : configuration.screenHeightDp)) * getDensity(context))) <= minSizeDp;
     }
 
     public static boolean isPortrait(Context context) {
-        return context.getResources().getConfiguration().orientation == 1;
+        return context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT;
     }
 
     public static boolean isRTLMode(Context context) {
-        return context.getResources().getConfiguration().getLayoutDirection() == 1;
+        return context.getResources().getConfiguration().getLayoutDirection() == View.LAYOUT_DIRECTION_RTL;
+    }
+
+    public static boolean isVisibleNaviBar(Context context) {
+        return Settings.Global.getInt(context.getContentResolver(), "navigationbar_hide_bar_enabled", 0) == 0;
     }
 
 }

@@ -15,6 +15,7 @@
     <attr name="dividerColor" format="string|integer|color|reference" />
     <attr name="primaryTextColor" format="string|integer|color|reference" />
     <attr name="secondaryTextColor" format="string|integer|color|reference" />
+    <attr name="switchBarActivatedColor" format="string|integer|color|reference" />
 
     <attr name="searchViewIconColor" format="color" />
     <attr name="searchViewTextColor" format="color" />
@@ -25,6 +26,9 @@
     <attr name="useDisabledAlpha" format="boolean" />
 
 
+    <attr name="cornersStroke" format="boolean" />
+    <attr name="roundedCorners" format="string" />
+
     <declare-styleable name="SamsungButton">
         <attr name="sbDivider" format="boolean" />
         <attr name="sbIcon" format="reference" />
@@ -32,15 +36,35 @@
         <attr name="sbSummaryText" format="string" />
         <attr name="sbSummaryHighlight" format="boolean" />
     </declare-styleable>
+    <declare-styleable name="SwitchBar">
+        <attr name="activatedColor" format="color" />
+    </declare-styleable>
 
     <declare-styleable name="RoundFrameLayout">
-        <attr name="flCorners" format="string" />
-    </declare-styleable>
-    <declare-styleable name="RoundFrameLayoutWoStroke">
-        <attr name="flwsCorners" format="string" />
+        <attr name="cornersStroke" />
+        <attr name="roundedCorners" />
     </declare-styleable>
     <declare-styleable name="RoundNestedScrollView">
-        <attr name="nsvCorners" format="string" />
+        <attr name="cornersStroke" />
+        <attr name="roundedCorners" />
+    </declare-styleable>
+    <declare-styleable name="SeslTabLayout">
+        <attr name="tabIndicatorColor" format="color"/>
+        <attr name="tabIndicatorHeight" format="dimension"/>
+        <attr name="tabContentStart" format="dimension"/>
+        <attr name="tabBackground" format="reference"/>
+        <attr name="tabMode" />
+        <attr name="tabGravity" />
+        <attr name="tabMinWidth" format="dimension"/>
+        <attr name="tabMaxWidth" format="dimension"/>
+        <attr name="tabTextAppearance" format="reference"/>
+        <attr name="tabTextColor" format="color"/>
+        <attr name="tabSelectedTextColor" format="color"/>
+        <attr name="tabPaddingStart" format="dimension"/>
+        <attr name="tabPaddingTop" format="dimension"/>
+        <attr name="tabPaddingEnd" format="dimension"/>
+        <attr name="tabPaddingBottom" format="dimension"/>
+        <attr name="tabPadding" format="dimension"/>
     </declare-styleable>
 
 </resources>

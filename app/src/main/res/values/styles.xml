@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
 
     <!-- App Day/Night Mode Themes -->
     <style name="mesa_AppStyle.DayNight" parent="@style/mesa_AppStyle.Light" />
@@ -103,19 +103,6 @@
         <item name="dropDownListViewStyle">@style/mesa_ListViewDropDownStyle</item>
         <item name="listMenuViewStyle">@style/mesa_ListMenuViewStyle</item>
 
-        <!-- SearchView attributes -->
-        <item name="searchViewStyle">@style/mesa_SearchViewStyle</item>
-        <item name="android:dropDownItemStyle">@style/mesa_SpinnerDropDownItemStyle</item>
-        <item name="textColorSearchUrl">@color/sesl_search_url_text</item>
-        <item name="searchViewIconColor">@color/sesl_search_view_icon_color_dark</item>
-        <item name="searchViewTextColor">@color/sesl_search_view_text_color_dark</item>
-        <item name="searchViewHintTextColor">@color/sesl_search_view_hint_text_color_dark</item>
-        <item name="textAppearanceSearchResultTitle">@style/mesa_SearchResultTitleTextStyle</item>
-        <item name="textAppearanceSearchResultSubtitle">@style/mesa_SearchResultSubtitleTextStyle</item>
-
-        <!-- ShareActionProvider attributes -->
-        <item name="activityChooserViewStyle">@style/mesa_ActivityChooserViewStyle</item>
-
         <!-- Toolbar styles -->
         <item name="toolbarStyle">@style/mesa_ToolbarStyle</item>
         <item name="toolbarNavigationButtonStyle">@style/mesa_ToolbarNavButtonStyle</item>
@@ -132,14 +119,13 @@
 
         <item name="checkboxStyle">@style/mesa_CheckBoxButtonStyle</item>
         <item name="radioButtonStyle">@style/mesa_RadioButtonStyle</item>
+        <item name="switchStyle">@style/mesa_SwitchButtonStyle</item>
 
         <item name="seekBarStyle">@style/mesa_SeekBarStyle</item>
 
         <item name="buttonStyle">@style/mesa_ButtonStyle</item>
         <item name="buttonStyleSmall">@style/mesa_ButtonStyle</item>
         <item name="android:textAppearanceButton">@style/mesa_ButtonTextStyle</item>
-
-        <item name="imageButtonStyle">@style/mesa_ImageButtonStyle</item>
 
         <!-- Tooltip attributes -->
         <item name="tooltipFrameBackground">@color/sesl_tooltip_background_dark</item>
@@ -264,19 +250,6 @@
         <item name="dropDownListViewStyle">@style/mesa_ListViewDropDownStyle.Light</item>
         <item name="listMenuViewStyle">@style/mesa_ListMenuViewStyle</item>
 
-        <!-- SearchView attributes -->
-        <item name="searchViewStyle">@style/mesa_SearchViewStyle.Light</item>
-        <item name="android:dropDownItemStyle">@style/mesa_SpinnerDropDownItemStyle.Light</item>
-        <item name="textColorSearchUrl">@color/sesl_search_url_text</item>
-        <item name="searchViewIconColor">@color/sesl_search_view_icon_color</item>
-        <item name="searchViewTextColor">@color/sesl_search_view_text_color</item>
-        <item name="searchViewHintTextColor">@color/sesl_search_view_hint_text_color</item>
-        <item name="textAppearanceSearchResultTitle">@style/mesa_SearchResultTitleTextStyle.Light</item>
-        <item name="textAppearanceSearchResultSubtitle">@style/mesa_SearchResultSubtitleTextStyle.Light</item>
-
-        <!-- ShareActionProvider attributes -->
-        <item name="activityChooserViewStyle">@style/mesa_ActivityChooserViewStyle</item>
-
         <!-- Toolbar styles -->
         <item name="toolbarStyle">@style/mesa_ToolbarStyle.Light</item>
         <item name="toolbarNavigationButtonStyle">@style/mesa_ToolbarNavButtonStyle.Light</item>
@@ -293,14 +266,13 @@
 
         <item name="checkboxStyle">@style/mesa_CheckBoxButtonStyle.Light</item>
         <item name="radioButtonStyle">@style/mesa_RadioButtonStyle.Light</item>
+        <item name="switchStyle">@style/mesa_SwitchButtonStyle.Light</item>
 
         <item name="seekBarStyle">@style/mesa_SeekBarStyle.Light</item>
 
         <item name="buttonStyle">@style/mesa_ButtonStyle.Light</item>
         <item name="buttonStyleSmall">@style/mesa_ButtonStyle.Light</item>
         <item name="android:textAppearanceButton">@style/mesa_ButtonTextStyle.Light</item>
-
-        <item name="imageButtonStyle">@style/mesa_ImageButtonStyle</item>
 
         <!-- Tooltip attributes -->
         <item name="tooltipFrameBackground">@color/sesl_tooltip_background_light</item>
@@ -326,6 +298,39 @@
     <style name="mesa_AppStyle.Light.NoActionBar" parent="@style/mesa_AppStyle.Light">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="mesa_AppOverlayStyle" parent="ThemeOverlay.AppCompat">
+        <item name="android:colorBackground">@color/sesl_background_color_dark</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+
+        <item name="android:textColorPrimary">@color/sesl_primary_text_dark</item>
+        <item name="android:textColorPrimaryInverse">@color/sesl_primary_text_light</item>
+        <item name="android:textColorSecondary">@color/sesl_secondary_text_dark</item>
+        <item name="android:textColorSecondaryInverse">@color/sesl_secondary_text_light</item>
+        <item name="android:textColorHighlight">@color/sesl_highlighted_text_color_light</item>
+
+        <item name="colorPrimary">@color/sesl_primary_color_dark</item>
+        <item name="colorPrimaryDark">@color/sesl_primary_dark_color_dark</item>
+        <item name="colorControlActivated">@color/sesl_control_activated_color</item>
+        <item name="colorControlNormal">@color/sesl_control_normal_color_light</item>
+        <item name="colorControlHighlight">@color/sesl_ripple_color_dark</item>
+    </style>
+    <style name="mesa_AppOverlayStyle.Light" parent="ThemeOverlay.AppCompat.Light">
+        <item name="android:colorBackground">@color/sesl_background_color_light</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+
+        <item name="android:textColorPrimary">@color/sesl_primary_text_light</item>
+        <item name="android:textColorPrimaryInverse">@color/sesl_primary_text_dark</item>
+        <item name="android:textColorSecondary">@color/sesl_secondary_text_light</item>
+        <item name="android:textColorSecondaryInverse">@color/sesl_secondary_text_dark</item>
+        <item name="android:textColorHighlight">@color/sesl_highlighted_text_color_light</item>
+
+        <item name="colorPrimary">@color/sesl_primary_color_light</item>
+        <item name="colorPrimaryDark">@color/sesl_primary_dark_color_light</item>
+        <item name="colorControlActivated">@color/sesl_control_activated_color</item>
+        <item name="colorControlNormal">@color/sesl_control_normal_color_light</item>
+        <item name="colorControlHighlight">@color/sesl_ripple_color_light</item>
     </style>
 
     <!-- App Styles -->
@@ -543,44 +548,6 @@
 
     <style name="mesa_ListMenuViewStyle" parent="@android:style/Widget" />
 
-    <style name="mesa_SearchViewStyle" parent="@android:style/Widget">
-        <item name="layout">@layout/sesl_search_view</item>
-        <item name="defaultQueryHint">@string/sesl_search_hint</item>
-        <item name="closeIcon">@drawable/sesl_ic_clear</item>
-        <item name="goIcon">@drawable/sesl_ic_go_search_api</item>
-        <item name="searchIcon">@drawable/sesl_ic_search_api</item>
-        <item name="searchHintIcon">@drawable/sesl_ic_search_api</item>
-        <item name="voiceIcon">@drawable/sesl_ic_voice_search_api</item>
-        <item name="commitIcon">@drawable/sesl_ic_commit_search_api</item>
-        <item name="suggestionRowLayout">@layout/sesl_search_dropdown_item_icons_2line</item>
-        <item name="queryBackground">@drawable/sesl_textfield_search_dark</item>
-        <item name="submitBackground">@drawable/sesl_textfield_search_dark</item>
-    </style>
-    <style name="mesa_SearchViewStyle.Light" parent="@style/mesa_SearchViewStyle">
-        <item name="queryBackground">@drawable/sesl_textfield_search</item>
-        <item name="submitBackground">@drawable/sesl_textfield_search</item>
-    </style>
-
-    <style name="mesa_SearchResultTitleTextStyle" parent="@android:style/TextAppearance.DeviceDefault.SearchResult.Title">
-        <item name="android:textSize">@dimen/sesl_search_result_title_text_size</item>
-        <item name="android:textColor">@color/sesl_search_result_title_text_color</item>
-        <item name="fontFamily">@string/sesl_font_family_regular</item>
-    </style>
-    <style name="mesa_SearchResultTitleTextStyle.Light" parent="@style/mesa_SearchResultTitleTextStyle" />
-
-    <style name="mesa_SearchResultSubtitleTextStyle" parent="@android:style/TextAppearance.DeviceDefault.SearchResult.Subtitle">
-        <item name="android:textSize">@dimen/sesl_search_result_subtitle_text_size</item>
-        <item name="android:textColor">@color/sesl_search_result_subtitle_text_color</item>
-        <item name="fontFamily">@string/sesl_font_family_regular</item>
-    </style>
-    <style name="mesa_SearchResultSubtitleTextStyle.Light" parent="@style/mesa_SearchResultSubtitleTextStyle" />
-
-    <style name="mesa_ActivityChooserViewStyle" parent="Widget.AppCompat.ActivityChooserView">
-        <item name="android:background">@null</item>
-        <item name="android:divider">?android:dividerVertical</item>
-        <item name="divider">?android:dividerVertical</item>
-    </style>
-
     <style name="mesa_CheckBoxButtonStyle" parent="@android:style/Widget.DeviceDefault.CompoundButton.CheckBox">
         <item name="android:background">@drawable/sesl_control_background</item>
         <item name="android:button">@drawable/sesl_btn_check</item>
@@ -592,6 +559,21 @@
         <item name="android:button">@drawable/sesl_btn_radio</item>
     </style>
     <style name="mesa_RadioButtonStyle.Light" parent="@style/mesa_RadioButtonStyle" />
+
+    <style name="mesa_SwitchButtonStyle" parent="@android:style/Widget.CompoundButton">
+        <item name="android:background">@drawable/sesl_switch_background</item>
+        <item name="android:textOn">@string/sesl_capital_on</item>
+        <item name="android:textOff">@string/sesl_capital_off</item>
+        <item name="android:thumb">@drawable/sesl_switch_thumb_dark_selector</item>
+        <item name="track">@drawable/sesl_switch_track_dark_selector</item>
+        <item name="switchTextAppearance">@style/TextAppearance.AppCompat.Widget.Switch</item>
+        <item name="switchPadding">0.0dip</item>
+        <item name="showText">false</item>
+    </style>
+    <style name="mesa_SwitchButtonStyle.Light" parent="@style/mesa_SwitchButtonStyle">
+        <item name="android:thumb">@drawable/sesl_switch_thumb_selector</item>
+        <item name="track">@drawable/sesl_switch_track_selector</item>
+    </style>
 
     <style name="mesa_SeekBarStyle" parent="@android:style/Widget.DeviceDefault.SeekBar">
         <item name="android:background">@drawable/sesl_seek_bar_background_borderless</item>
@@ -632,8 +614,6 @@
     <style name="mesa_ButtonTextStyle.Light" parent="@style/mesa_ButtonTextStyle">
         <item name="android:textColor">@color/sesl_btn_text_color_light</item>
     </style>
-
-    <style name="mesa_ImageButtonStyle" parent="@android:style/Widget.Material.ImageButton" />
 
     <style name="mesa_AppBarLayoutStyle" parent="Widget.Design.AppBarLayout">
         <item name="android:background">?round_and_bgColor</item>
@@ -695,6 +675,40 @@
         <item name="android:popupBackground">@drawable/sesl_list_popup_background</item>
     </style>
 
+    <style name="mesa_SeslTabLayoutStyle" parent="@android:style/Widget">
+        <item name="tabIndicatorColor">@color/sesl_tablayout_selected_indicator_color</item>
+        <item name="tabIndicatorHeight">2.0dip</item>
+        <item name="tabBackground">@drawable/sesl_tablayout_tab_background_dark</item>
+        <item name="tabMaxWidth">@dimen/sesl_tab_max_width</item>
+        <item name="tabTextAppearance">@style/mesa_SeslTabTextStyle</item>
+        <item name="tabSelectedTextColor">@color/sesl_tablayout_selected_text_color</item>
+        <item name="tabPaddingStart">0.0dip</item>
+        <item name="tabPaddingEnd">0.0dip</item>
+    </style>
+    <style name="mesa_SeslTabLayoutStyle.Light" parent="@style/mesa_SeslTabLayoutStyle">
+        <item name="tabBackground">@drawable/sesl_tablayout_tab_background</item>
+        <item name="tabTextAppearance">@style/mesa_SeslTabTextStyle.Light</item>
+    </style>
+
+    <style name="mesa_SeslTabTextStyle" parent="TextAppearance.AppCompat.Button">
+        <item name="android:textSize">@dimen/sesl_tab_text_size</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/sesl_tablayout_text_color_dark</item>
+        <item name="textAllCaps">false</item>
+        <item name="fontFamily">@string/sesl_font_family_regular</item>
+    </style>
+    <style name="mesa_SeslTabTextStyle.Light" parent="@style/mesa_SeslTabTextStyle">
+        <item name="android:textColor">@color/sesl_tablayout_text_color</item>
+    </style>
+
+    <style name="mesa_TabLayoutStyle" parent="@style/mesa_SeslTabLayoutStyle.Light">
+        <item name="tabMode">scrollable</item>
+        <item name="tabGravity">center</item>
+    </style>
+
+    <style name="mesa_TabLayoutTheme" parent="@style/mesa_AppOverlayStyle.Light" />
+
+
     <style name="mesa_ActivityAnimStyle" parent="@android:style/Animation.Activity" />
 
     <style name="mesa_DropDownUpAnimStyle" parent="@android:style/Animation">
@@ -705,6 +719,16 @@
     <style name="mesa_ListPopupAnimStyle" parent="@android:style/Animation">
         <item name="android:windowEnterAnimation">@anim/sesl_list_popup_enter</item>
         <item name="android:windowExitAnimation">@anim/sesl_list_popup_exit</item>
+    </style>
+
+    <style name="mesa_MenuPopupAnimStyle" parent="@android:style/Animation">
+        <item name="android:windowEnterAnimation">@anim/sesl_menu_popup_enter</item>
+        <item name="android:windowExitAnimation">@anim/sesl_menu_popup_exit</item>
+    </style>
+
+    <style name="mesa_TooltipAnimStyle" parent="@android:style/Animation">
+        <item name="android:windowEnterAnimation">@anim/sesl_tooltip_enter</item>
+        <item name="android:windowExitAnimation">@anim/sesl_tooltip_exit</item>
     </style>
 
 </resources>

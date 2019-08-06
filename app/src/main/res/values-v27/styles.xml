@@ -100,19 +100,6 @@
         <item name="dropDownListViewStyle">@style/mesa_ListViewDropDownStyle</item>
         <item name="listMenuViewStyle">@style/mesa_ListMenuViewStyle</item>
 
-        <!-- SearchView attributes -->
-        <item name="searchViewStyle">@style/mesa_SearchViewStyle</item>
-        <item name="android:dropDownItemStyle">@style/mesa_SpinnerDropDownItemStyle</item>
-        <item name="textColorSearchUrl">@color/sesl_search_url_text</item>
-        <item name="searchViewIconColor">@color/sesl_search_view_icon_color_dark</item>
-        <item name="searchViewTextColor">@color/sesl_search_view_text_color_dark</item>
-        <item name="searchViewHintTextColor">@color/sesl_search_view_hint_text_color_dark</item>
-        <item name="textAppearanceSearchResultTitle">@style/mesa_SearchResultTitleTextStyle</item>
-        <item name="textAppearanceSearchResultSubtitle">@style/mesa_SearchResultSubtitleTextStyle</item>
-
-        <!-- ShareActionProvider attributes -->
-        <item name="activityChooserViewStyle">@style/mesa_ActivityChooserViewStyle</item>
-
         <!-- Toolbar styles -->
         <item name="toolbarStyle">@style/mesa_ToolbarStyle</item>
         <item name="toolbarNavigationButtonStyle">@style/mesa_ToolbarNavButtonStyle</item>
@@ -129,14 +116,13 @@
 
         <item name="checkboxStyle">@style/mesa_CheckBoxButtonStyle</item>
         <item name="radioButtonStyle">@style/mesa_RadioButtonStyle</item>
+        <item name="switchStyle">@style/mesa_SwitchButtonStyle</item>
 
         <item name="seekBarStyle">@style/mesa_SeekBarStyle</item>
 
         <item name="buttonStyle">@style/mesa_ButtonStyle</item>
         <item name="buttonStyleSmall">@style/mesa_ButtonStyle</item>
         <item name="android:textAppearanceButton">@style/mesa_ButtonTextStyle</item>
-
-        <item name="imageButtonStyle">@style/mesa_ImageButtonStyle</item>
 
         <!-- Tooltip attributes -->
         <item name="tooltipFrameBackground">@color/sesl_tooltip_background_dark</item>
@@ -258,19 +244,6 @@
         <item name="dropDownListViewStyle">@style/mesa_ListViewDropDownStyle.Light</item>
         <item name="listMenuViewStyle">@style/mesa_ListMenuViewStyle</item>
 
-        <!-- SearchView attributes -->
-        <item name="searchViewStyle">@style/mesa_SearchViewStyle.Light</item>
-        <item name="android:dropDownItemStyle">@style/mesa_SpinnerDropDownItemStyle.Light</item>
-        <item name="textColorSearchUrl">@color/sesl_search_url_text</item>
-        <item name="searchViewIconColor">@color/sesl_search_view_icon_color</item>
-        <item name="searchViewTextColor">@color/sesl_search_view_text_color</item>
-        <item name="searchViewHintTextColor">@color/sesl_search_view_hint_text_color</item>
-        <item name="textAppearanceSearchResultTitle">@style/mesa_SearchResultTitleTextStyle.Light</item>
-        <item name="textAppearanceSearchResultSubtitle">@style/mesa_SearchResultSubtitleTextStyle.Light</item>
-
-        <!-- ShareActionProvider attributes -->
-        <item name="activityChooserViewStyle">@style/mesa_ActivityChooserViewStyle</item>
-
         <!-- Toolbar styles -->
         <item name="toolbarStyle">@style/mesa_ToolbarStyle.Light</item>
         <item name="toolbarNavigationButtonStyle">@style/mesa_ToolbarNavButtonStyle.Light</item>
@@ -287,14 +260,13 @@
 
         <item name="checkboxStyle">@style/mesa_CheckBoxButtonStyle.Light</item>
         <item name="radioButtonStyle">@style/mesa_RadioButtonStyle.Light</item>
+        <item name="switchStyle">@style/mesa_SwitchButtonStyle.Light</item>
 
         <item name="seekBarStyle">@style/mesa_SeekBarStyle.Light</item>
 
         <item name="buttonStyle">@style/mesa_ButtonStyle.Light</item>
         <item name="buttonStyleSmall">@style/mesa_ButtonStyle.Light</item>
         <item name="android:textAppearanceButton">@style/mesa_ButtonTextStyle.Light</item>
-
-        <item name="imageButtonStyle">@style/mesa_ImageButtonStyle</item>
 
         <!-- Tooltip attributes -->
         <item name="tooltipFrameBackground">@color/sesl_tooltip_background_light</item>

@@ -10,21 +10,12 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/mesa_cerberuscore"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/mesa_AppStyle.DayNight.NoActionBar">
 
-        <meta-data android:name="com.samsung.android.sdk.multiwindow.penwindow.enable" android:value="true"/>
-        <meta-data android:name="com.sec.android.support.multiwindow" android:value="true"/>
+        <meta-data android:name="SamsungBasicInteraction" android:value="SEP10"/>
+        <meta-data android:name="com.samsung.android.icon_container.has_icon_container" android:value="true"/>
+        <meta-data android:name="android.max_aspect" android:value="2.4"/>
 
-        <meta-data android:name="android.max_aspect" android:value="2.1"/>
-
-        <activity android:name=".MainActivity">
-
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-
-        </activity>
     </application>
 
 </manifest>

@@ -35,14 +35,14 @@ public class SeslRoundedCorner {
     Drawable mBottomRightRound;
     int mBottomRightRoundColor;
     Context mContext;
-    boolean mIsMutate;
-    boolean mIsStrokeRoundedCorner;
+    boolean mIsMutate = false;
+    boolean mIsStrokeRoundedCorner = true;
     Resources mRes;
-    int mRoundRadius;
+    int mRoundRadius = -1;
     Drawable mRoundStrokeBottom;
     int mRoundStrokeHeight;
     Drawable mRoundStrokeTop;
-    Rect mRoundedCornerBounds;
+    Rect mRoundedCornerBounds = new Rect();
     int mRoundedCornerMode;
     Drawable mTopLeftRound;
     int mTopLeftRoundColor;
@@ -56,10 +56,6 @@ public class SeslRoundedCorner {
     }
 
     public SeslRoundedCorner(Context context, boolean isStrokeRoundedCorner) {
-        mIsStrokeRoundedCorner = true;
-        mIsMutate = false;
-        mRoundRadius = -1;
-        mRoundedCornerBounds = new Rect();
         mContext = context;
         mRes = context.getResources();
         mIsStrokeRoundedCorner = isStrokeRoundedCorner;
@@ -67,10 +63,6 @@ public class SeslRoundedCorner {
     }
 
     public SeslRoundedCorner(Context context, boolean isStrokeRoundedCorner, boolean isMutate) {
-        mIsStrokeRoundedCorner = true;
-        mIsMutate = false;
-        mRoundRadius = -1;
-        mRoundedCornerBounds = new Rect();
         mContext = context;
         mRes = context.getResources();
         mIsStrokeRoundedCorner = isStrokeRoundedCorner;

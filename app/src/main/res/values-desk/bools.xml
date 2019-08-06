@@ -1,0 +1,3 @@
+<resources>
+    <bool name="sesl_desktop_mode">true</bool>
+</resources>

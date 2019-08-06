@@ -5,16 +5,15 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
 
-import android.support.v4.widget.NestedScrollView;
-
 import com.mesalabs.cerberus.R;
-import com.samsung.android.ui.util.SeslRoundedCornerWoStroke;
+import com.mesalabs.cerberus.utils.LogUtils;
+import com.mesalabs.cerberus.utils.Utils;
+import com.samsung.android.ui.util.SeslRoundedCorner;
 
 /*
  * Cerberus Core App
  *
  * Coded by BlackMesa @2019
- * Originally coded by Samsung. All rights reserved to their respective owners.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,8 +25,9 @@ import com.samsung.android.ui.util.SeslRoundedCornerWoStroke;
  * EXTERNALS IS PROHIBITED AND WILL BE PUNISHED WITH ANAL ABUSE.
  */
 
-public class RoundNestedScrollView extends NestedScrollView {
-    SeslRoundedCornerWoStroke mSeslRoundedCornerWoStroke;
+public class RoundNestedScrollView extends SeslNestedScrollView {
+    private Context mContext;
+    SeslRoundedCorner mSeslRoundedCorner;
 
     public RoundNestedScrollView(Context context) {
         super(context);
@@ -36,11 +36,19 @@ public class RoundNestedScrollView extends NestedScrollView {
     public RoundNestedScrollView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-        TypedArray obtainStyledAttributes = context.obtainStyledAttributes(attrs, R.styleable.RoundNestedScrollView);
-        String corners = obtainStyledAttributes.getString(R.styleable.RoundNestedScrollView_nsvCorners);
+        mContext = context;
 
-        mSeslRoundedCornerWoStroke = new SeslRoundedCornerWoStroke(context);
-        mSeslRoundedCornerWoStroke.setRoundedCorners(getCornersInt(corners));
+        TypedArray obtainStyledAttributes = mContext.obtainStyledAttributes(attrs, R.styleable.RoundNestedScrollView);
+
+        boolean cornersStroke = obtainStyledAttributes.getBoolean(R.styleable.RoundNestedScrollView_cornersStroke, false);
+        String roundedCorners = obtainStyledAttributes.getString(R.styleable.RoundNestedScrollView_roundedCorners);
+
+        if (cornersStroke)
+            LogUtils.w("RoundNestedScrollView", "cornersStroke is not supported in this View!");
+
+        mSeslRoundedCorner = new SeslRoundedCorner(mContext, false);
+        mSeslRoundedCorner.setRoundedCorners(getCornersInt(roundedCorners));
+        mSeslRoundedCorner.setRoundedCornerColor(getCornersInt(roundedCorners), getResources().getColor(Utils.isNightMode(mContext) ? R.color.sesl_round_and_bgcolor_dark : R.color.sesl_round_and_bgcolor_light, mContext.getTheme()));
 
         obtainStyledAttributes.recycle();
     }
@@ -52,21 +60,25 @@ public class RoundNestedScrollView extends NestedScrollView {
     @Override
     protected void dispatchDraw(Canvas canvas) {
         super.dispatchDraw(canvas);
-        mSeslRoundedCornerWoStroke.drawRoundedCorner(canvas);
+        mSeslRoundedCorner.drawRoundedCorner(canvas);
     }
 
     private int getCornersInt(String cornersS) {
         int corners = 15;
 
         if (cornersS != null && !cornersS.isEmpty()) {
-            if (!cornersS.contains("topleft"))
-                corners -= 1;
-            if (!cornersS.contains("topright"))
-                corners -= 2;
-            if (!cornersS.contains("bottomleft"))
-                corners -= 4;
-            if (!cornersS.contains("bottomright"))
-                corners -= 8;
+            if (cornersS.equals("none"))
+                corners = 0;
+            else {
+                if (!cornersS.contains("topleft"))
+                    corners -= 1;
+                if (!cornersS.contains("topright"))
+                    corners -= 2;
+                if (!cornersS.contains("bottomleft"))
+                    corners -= 4;
+                if (!cornersS.contains("bottomright"))
+                    corners -= 8;
+            }
         }
 
         return corners;
