@@ -20,10 +20,10 @@ import java.util.LinkedHashMap;
 
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import com.mesalabs.cerberus.R;
-import com.mesalabs.cerberus.base.AppBarActivity;
 import com.mesalabs.cerberus.ui.widget.ToolbarImageButton;
 import com.mesalabs.cerberus.utils.CerberusException;
 import com.mesalabs.cerberus.utils.LogUtils;
@@ -46,7 +46,7 @@ import com.mesalabs.cerberus.utils.ViewUtils;
  */
 
 public class ActionBarUtils {
-    private AppBarActivity activity;
+    private AppCompatActivity activity;
 
     private AppBarLayout appBarLayout;
     private CollapsingToolbarLayout collapsingToolbarLayout;
@@ -72,7 +72,7 @@ public class ActionBarUtils {
     private boolean isNightMode = false;
 
 
-    public ActionBarUtils(AppBarActivity instance) {
+    public ActionBarUtils(AppCompatActivity instance) {
         activity = instance;
         isNightMode = Utils.isNightMode(activity);
     }
@@ -173,6 +173,23 @@ public class ActionBarUtils {
             resetAppBarHeight();
 
             appBarLayout.addOnOffsetChangedListener(new AppBarOffsetListener());
+        } else
+            throw new CerberusException("Field ActionBarUtils.toolbar is null! Make sure layout in " + activity.getLocalClassName() + "has been inflated.");
+    }
+
+    public void initToolBar() {
+        toolbar = activity.findViewById(R.id.mesa_toolbar_toolbarlayout);
+        activity.setSupportActionBar(toolbar);
+
+        if (toolbar != null) {
+            activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
+            activity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+
+            toolbarHomeButton = activity.findViewById(R.id.mesa_toolbarhome_toolbarlayout);
+            toolbarTitle = activity.findViewById(R.id.mesa_toolbartitle_toolbarlayout);
+            overflowContainer = activity.findViewById(R.id.mesa_overflowcontainer_toolbarlayout);
+
+            moreMenuPopupAnchor = activity.findViewById(R.id.mesa_popupanchor_toolbarlayout);
         } else
             throw new CerberusException("Field ActionBarUtils.toolbar is null! Make sure layout in " + activity.getLocalClassName() + "has been inflated.");
     }
@@ -374,9 +391,9 @@ public class ActionBarUtils {
     private class MoreMenuPopupAdapter extends ArrayAdapter {
         ArrayList<String> keySet;
         ArrayList<Integer> values;
-        AppBarActivity activity;
+        AppCompatActivity activity;
 
-        public MoreMenuPopupAdapter(AppBarActivity instance, LinkedHashMap<String, Integer> linkedHashMap) {
+        public MoreMenuPopupAdapter(AppCompatActivity instance, LinkedHashMap<String, Integer> linkedHashMap) {
             super(instance, 0);
             activity = instance;
             keySet = new ArrayList(linkedHashMap.keySet());

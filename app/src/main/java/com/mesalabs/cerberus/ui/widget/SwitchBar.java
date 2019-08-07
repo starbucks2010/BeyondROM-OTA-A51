@@ -17,6 +17,22 @@ import android.support.v7.app.AppCompatActivity;
 import com.mesalabs.cerberus.R;
 import com.mesalabs.cerberus.utils.Utils;
 
+/*
+ * Cerberus Core App
+ *
+ * Coded by BlackMesa @2019
+ * Originally coded by Samsung. All rights reserved to their respective owners.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * ULTRA-MEGA-PRIVATE SOURCE CODE. SHARING TO DEVKINGS TEAM
+ * EXTERNALS IS PROHIBITED AND WILL BE PUNISHED WITH ANAL ABUSE.
+ */
+
 public class SwitchBar extends LinearLayout implements View.OnClickListener, Checkable, CompoundButton.OnCheckedChangeListener {
     private boolean mChecked = false;
     private boolean mIsNightMode = false;

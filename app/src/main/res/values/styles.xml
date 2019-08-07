@@ -684,6 +684,8 @@
         <item name="tabSelectedTextColor">@color/sesl_tablayout_selected_text_color</item>
         <item name="tabPaddingStart">0.0dip</item>
         <item name="tabPaddingEnd">0.0dip</item>
+        <item name="tabMode">fixed</item>
+        <item name="tabGravity">fill</item>
     </style>
     <style name="mesa_SeslTabLayoutStyle.Light" parent="@style/mesa_SeslTabLayoutStyle">
         <item name="tabBackground">@drawable/sesl_tablayout_tab_background</item>
@@ -700,13 +702,6 @@
     <style name="mesa_SeslTabTextStyle.Light" parent="@style/mesa_SeslTabTextStyle">
         <item name="android:textColor">@color/sesl_tablayout_text_color</item>
     </style>
-
-    <style name="mesa_TabLayoutStyle" parent="@style/mesa_SeslTabLayoutStyle.Light">
-        <item name="tabMode">scrollable</item>
-        <item name="tabGravity">center</item>
-    </style>
-
-    <style name="mesa_TabLayoutTheme" parent="@style/mesa_AppOverlayStyle.Light" />
 
 
     <style name="mesa_ActivityAnimStyle" parent="@android:style/Animation.Activity" />

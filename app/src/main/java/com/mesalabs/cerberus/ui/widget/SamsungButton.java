@@ -4,6 +4,7 @@ import android.content.Context;
 //import android.content.Intent;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -55,10 +56,10 @@ public class SamsungButton extends LinearLayout {
     private void initView(Context context, AttributeSet attrs) {
         TypedArray vars = context.obtainStyledAttributes(attrs, R.styleable.SamsungButton);
 
-        if (vars.getDrawable(R.styleable.SamsungButton_sbIcon) != null) {
+        if (vars.getDrawable(R.styleable.SamsungButton_icon) != null) {
             inflate(context, R.layout.mesa_button_icon_layout, this);
             ImageView bIcon = findViewById(R.id.mesa_icon_button);
-            bIcon.setImageDrawable(vars.getDrawable(R.styleable.SamsungButton_sbIcon));
+            bIcon.setImageDrawable(vars.getDrawable(R.styleable.SamsungButton_icon));
         } else {
             inflate(context, R.layout.mesa_button_layout, this);
         }
@@ -67,10 +68,10 @@ public class SamsungButton extends LinearLayout {
         sbTitleText = findViewById(R.id.mesa_titletext_button);
         sbSummaryText = findViewById(R.id.mesa_summarytext_button);
 
-        setDivider(vars.getBoolean(R.styleable.SamsungButton_sbDivider, false));
-        setTitleText(vars.getString(R.styleable.SamsungButton_sbTitleText));
-        setSummaryText(vars.getString(R.styleable.SamsungButton_sbSummaryText));
-        setSummaryTextHighlight(vars.getBoolean(R.styleable.SamsungButton_sbSummaryHighlight, false));
+        setDivider(vars.getBoolean(R.styleable.SamsungButton_addDivider, false));
+        setTitleText(vars.getString(R.styleable.SamsungButton_titleText));
+        setSummaryText(vars.getString(R.styleable.SamsungButton_summaryText));
+        setSummaryTextHighlight(vars.getBoolean(R.styleable.SamsungButton_summaryHighlight, false));
 
         vars.recycle();
     }
@@ -97,15 +98,15 @@ public class SamsungButton extends LinearLayout {
     }
 
     public void setSummaryTextHighlight(boolean z) {
-        int sbTextColor;
+        TypedValue value = new TypedValue();
 
         if (z) {
-            sbTextColor = CerberusApp.getAppInstance().getColor(R.color.sesl_primary_color_light);
+            getContext().getTheme().resolveAttribute(R.attr.colorPrimary, value, true);
         } else {
-            sbTextColor = CerberusApp.getAppInstance().getColor(R.color.sesl_secondary_text_color_light);
+            getContext().getTheme().resolveAttribute(R.attr.secondaryTextColor, value, true);
         }
 
-        sbSummaryText.setTextColor(sbTextColor);
+        sbSummaryText.setTextColor(value.data);
     }
 
 }

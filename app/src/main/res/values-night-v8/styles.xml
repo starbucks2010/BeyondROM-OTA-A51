@@ -4,13 +4,4 @@
     <style name="mesa_AppStyle.DayNight" parent="@style/mesa_AppStyle" />
     <style name="mesa_AppStyle.DayNight.NoActionBar" parent="@style/mesa_AppStyle.NoActionBar" />
 
-    <!-- App Styles -->
-    <style name="mesa_TabLayoutStyle" parent="@style/mesa_SeslTabLayoutStyle">
-        <item name="tabMode">scrollable</item>
-        <item name="tabGravity">center</item>
-    </style>
-
-    <style name="mesa_TabLayoutTheme" parent="@style/mesa_AppOverlayStyle" />
-
-
 </resources>

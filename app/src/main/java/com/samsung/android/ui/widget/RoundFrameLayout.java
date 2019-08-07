@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.widget.FrameLayout;
 
 import com.mesalabs.cerberus.R;
@@ -27,6 +28,7 @@ import com.samsung.android.ui.util.SeslRoundedCorner;
 
 public class RoundFrameLayout extends FrameLayout {
     private Context mContext;
+    private boolean mIsNightMode;
     SeslRoundedCorner mSeslRoundedCorner;
 
     public RoundFrameLayout(Context context) {
@@ -37,6 +39,7 @@ public class RoundFrameLayout extends FrameLayout {
         super(context, attrs);
 
         mContext = context;
+        mIsNightMode = Utils.isNightMode(mContext);
 
         TypedArray obtainStyledAttributes = mContext.obtainStyledAttributes(attrs, R.styleable.RoundFrameLayout);
 
@@ -45,8 +48,11 @@ public class RoundFrameLayout extends FrameLayout {
 
         mSeslRoundedCorner = new SeslRoundedCorner(mContext, cornersStroke);
         mSeslRoundedCorner.setRoundedCorners(getCornersInt(roundedCorners));
-        if (!cornersStroke)
-            mSeslRoundedCorner.setRoundedCornerColor(getCornersInt(roundedCorners), getResources().getColor(Utils.isNightMode(mContext) ? R.color.sesl_round_and_bgcolor_dark : R.color.sesl_round_and_bgcolor_light, mContext.getTheme()));
+        if (!cornersStroke) {
+            TypedValue value = new TypedValue();
+            mContext.getTheme().resolveAttribute(R.attr.round_and_bgColor, value, true);
+            mSeslRoundedCorner.setRoundedCornerColor(getCornersInt(roundedCorners), value.data);
+        }
 
         obtainStyledAttributes.recycle();
     }

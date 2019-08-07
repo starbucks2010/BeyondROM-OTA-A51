@@ -28,13 +28,18 @@
 
     <attr name="cornersStroke" format="boolean" />
     <attr name="roundedCorners" format="string" />
+    <attr name="addDivider" format="boolean" />
+    <attr name="icon" format="reference" />
+    <attr name="titleText" format="string" />
+    <attr name="summaryText" format="string" />
+    <attr name="summaryHighlight" format="boolean" />
 
     <declare-styleable name="SamsungButton">
-        <attr name="sbDivider" format="boolean" />
-        <attr name="sbIcon" format="reference" />
-        <attr name="sbTitleText" format="string" />
-        <attr name="sbSummaryText" format="string" />
-        <attr name="sbSummaryHighlight" format="boolean" />
+        <attr name="addDivider" />
+        <attr name="icon" />
+        <attr name="titleText" />
+        <attr name="summaryText" />
+        <attr name="summaryHighlight" />
     </declare-styleable>
     <declare-styleable name="SwitchBar">
         <attr name="activatedColor" format="color" />

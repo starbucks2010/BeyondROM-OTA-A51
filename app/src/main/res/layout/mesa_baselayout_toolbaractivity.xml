@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/mesa_linearlayout_baseactivity"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="?round_and_bgColor"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <include layout="@layout/mesa_toolbar_layout"/>
+
+    <FrameLayout
+        android:id="@+id/mesa_container_baseactivity"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"/>
+
+</LinearLayout>

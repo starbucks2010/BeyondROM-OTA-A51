@@ -1,16 +1,18 @@
 package com.mesalabs.cerberus.utils;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Point;
+import android.graphics.drawable.Drawable;
 import android.provider.Settings;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
-
-import com.mesalabs.cerberus.base.AppBarActivity;
+import android.widget.ImageView;
 
 /*
  * Cerberus Core App
@@ -40,7 +42,7 @@ public class ViewUtils {
     private static double getDensity(Context context) {
         Configuration configuration = context.getResources().getConfiguration();
         DisplayMetrics metrics = new DisplayMetrics();
-        WindowManager windowManager = (WindowManager) context.getSystemService("window");
+        WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         Display display = windowManager == null ? null : windowManager.getDefaultDisplay();
         if (display != null) {
             display.getRealMetrics(metrics);
@@ -51,7 +53,7 @@ public class ViewUtils {
         return ((double) configuration.densityDpi) / ((double) metrics.densityDpi);
     }
 
-    public static float getDIPForPX(AppBarActivity activity, int i) {
+    public static float getDIPForPX(Activity activity, int i) {
         return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, (float) i, activity.getResources().getDisplayMetrics());
     }
 
@@ -139,6 +141,96 @@ public class ViewUtils {
 
     public static boolean isVisibleNaviBar(Context context) {
         return Settings.Global.getInt(context.getContentResolver(), "navigationbar_hide_bar_enabled", 0) == 0;
+    }
+
+    public static void nullViewDrawablesRecursive(View view) {
+        if (view == null)
+            return;
+
+        if (view instanceof ViewGroup) {
+            try {
+                ViewGroup viewGroup = (ViewGroup) view;
+                int childCount = viewGroup.getChildCount();
+                for (int index = 0; index < childCount; index++) {
+                    nullViewDrawablesRecursive(viewGroup.getChildAt(index));
+                }
+            } catch (Exception e) {
+                LogUtils.e("ViewUtils", "nullViewDrawablesRecursive InflateException");
+            }
+        } else {
+            nullViewDrawable(view);
+        }
+    }
+
+    private static void nullViewDrawable(View view) {
+        try {
+            view.setOnClickListener(null);
+        } catch (Exception e) {
+            LogUtils.e("ViewUtils", "nullViewDrawable setOnClickListener Exception");
+        }
+        try {
+            view.setOnCreateContextMenuListener(null);
+        } catch (Exception e) {
+            LogUtils.e("ViewUtils", "nullViewDrawable setOnCreateContextMenuListener Exception");
+        }
+        try {
+            view.setOnFocusChangeListener(null);
+        } catch (Exception e) {
+            LogUtils.e("ViewUtils", "nullViewDrawable setOnFocusChangeListener Exception");
+        }
+        try {
+            view.setOnKeyListener(null);
+        } catch (Exception e) {
+            LogUtils.e("ViewUtils", "nullViewDrawable setOnKeyListener Exception");
+        }
+        try {
+            view.setOnLongClickListener(null);
+        } catch (Exception e) {
+            LogUtils.e("ViewUtils", "nullViewDrawable setOnLongClickListener Exception");
+        }
+        try {
+            view.setTouchDelegate(null);
+        } catch (Exception e) {
+            LogUtils.e("ViewUtils", "nullViewDrawable setTouchDelegate Exception");
+        }
+        try {
+            view.setBackground(null);
+        } catch (Exception e) {
+            LogUtils.e("ViewUtils", "nullViewDrawable setBackground Exception");
+        }
+        try {
+            view.setAnimation(null);
+        } catch (Exception e) {
+            LogUtils.e("ViewUtils", "nullViewDrawable setAnimation Exception");
+        }
+        try {
+            view.setContentDescription(null);
+        } catch (Exception e) {
+            LogUtils.e("ViewUtils", "nullViewDrawable setContentDescription Exception");
+        }
+        try {
+            view.setTag(null);
+        } catch (Exception e) {
+            LogUtils.e("ViewUtils", "nullViewDrawable setTag Exception");
+        }
+
+        Drawable d = view.getBackground();
+        if (d != null) {
+            try {
+                d.setCallback(null);
+            } catch (Exception e11) {
+                LogUtils.e("ViewUtils", "nullViewDrawable setCallback Exception");
+            }
+        }
+        if (view instanceof ImageView) {
+            ImageView imageView = (ImageView) view;
+            Drawable d2 = imageView.getDrawable();
+            if (d2 != null) {
+                d2.setCallback(null);
+            }
+            imageView.setImageDrawable(null);
+            imageView.setBackground(null);
+        }
     }
 
 }

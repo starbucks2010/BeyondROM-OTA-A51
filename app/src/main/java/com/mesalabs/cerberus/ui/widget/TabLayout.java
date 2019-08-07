@@ -17,6 +17,22 @@ import com.mesalabs.cerberus.utils.Utils;
 import com.mesalabs.cerberus.utils.ViewUtils;
 import com.samsung.android.ui.widget.SeslTabLayout;
 
+/*
+ * Cerberus Core App
+ *
+ * Coded by BlackMesa @2019
+ * Originally coded by Samsung. All rights reserved to their respective owners.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * ULTRA-MEGA-PRIVATE SOURCE CODE. SHARING TO DEVKINGS TEAM
+ * EXTERNALS IS PROHIBITED AND WILL BE PUNISHED WITH ANAL ABUSE.
+ */
+
 public class TabLayout extends SeslTabLayout implements View.OnSystemUiVisibilityChangeListener {
     private Activity mActivity;
     private boolean mIsResumed = false;

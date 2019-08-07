@@ -45,6 +45,7 @@ public class AppBarActivity extends AppCompatActivity {
             appBar.resetAppBarHeight();
     }
 
+    @Override
     public void setContentView(View view) {
         super.setContentView(R.layout.mesa_baselayout_appbaractivity);
 
@@ -71,6 +72,14 @@ public class AppBarActivity extends AppCompatActivity {
         if (root != null) {
             root.addView(layout);
         }
+    }
+
+    public void setBaseContentView(View view) {
+        super.setContentView(view);
+    }
+
+    public void setBaseContentView(int layoutResID) {
+        super.setContentView(layoutResID);
     }
 
     protected int getAppBarCustomHeaderId() {
