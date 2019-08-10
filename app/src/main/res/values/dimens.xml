@@ -119,6 +119,8 @@
 
     <dimen name="sesl_navigation_bar_height">48.0dip</dimen>
 
+    <dimen name="sesl_switch_width">43.0dip</dimen>
+
     <dimen name="sesl_show_button_background_radius">2.0dip</dimen>
     <dimen name="sesl_tab_max_width">0.0dip</dimen>
     <dimen name="sesl_tab_scrollable_min_width">72.0dip</dimen>

@@ -53,6 +53,22 @@
         <attr name="cornersStroke" />
         <attr name="roundedCorners" />
     </declare-styleable>
+    <declare-styleable name="SeslSwitch">
+        <attr name="android:thumb" />
+        <attr name="thumbTint" format="color" />
+        <attr name="thumbTintMode" />
+        <attr name="track" format="reference" />
+        <attr name="trackTint" format="color" />
+        <attr name="trackTintMode"/>
+        <attr name="android:textOn" />
+        <attr name="android:textOff" />
+        <attr name="thumbTextPadding" format="dimension" />
+        <attr name="switchTextAppearance" format="reference" />
+        <attr name="switchMinWidth" format="dimension" />
+        <attr name="switchPadding" format="dimension" />
+        <attr name="splitTrack" format="boolean" />
+        <attr name="showText" format="boolean" />
+    </declare-styleable>
     <declare-styleable name="SeslTabLayout">
         <attr name="tabIndicatorColor" format="color"/>
         <attr name="tabIndicatorHeight" format="dimension"/>
