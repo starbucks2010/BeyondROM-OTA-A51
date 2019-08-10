@@ -100,7 +100,7 @@ public class SamsungButton extends LinearLayout {
             sbSummaryText.setTextColor(value.data);
         } else {
             getContext().getTheme().resolveAttribute(R.attr.secondaryTextColor, value, true);
-            sbSummaryText.setTextColor(getContext().getResources().getColorStateList(value.resourceId, getContext().getTheme());
+            sbSummaryText.setTextColor(getContext().getResources().getColorStateList(value.resourceId, getContext().getTheme()));
         }
     }
 
