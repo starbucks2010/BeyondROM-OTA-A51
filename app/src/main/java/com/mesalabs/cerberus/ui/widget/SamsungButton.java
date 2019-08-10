@@ -48,11 +48,6 @@ public class SamsungButton extends LinearLayout {
         initView(context, attrs);
     }
 
-    public SamsungButton(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-        initView(context, attrs);
-    }
-
     private void initView(Context context, AttributeSet attrs) {
         TypedArray vars = context.obtainStyledAttributes(attrs, R.styleable.SamsungButton);
 
@@ -102,11 +97,11 @@ public class SamsungButton extends LinearLayout {
 
         if (z) {
             getContext().getTheme().resolveAttribute(R.attr.colorPrimary, value, true);
+            sbSummaryText.setTextColor(value.data);
         } else {
             getContext().getTheme().resolveAttribute(R.attr.secondaryTextColor, value, true);
+            sbSummaryText.setTextColor(getContext().getResources().getColorStateList(value.resourceId, getContext().getTheme());
         }
-
-        sbSummaryText.setTextColor(value.data);
     }
 
 }
