@@ -78,12 +78,16 @@ public class ActionBarUtils {
     }
 
     public void addOverflowButton(int iconResId, int contentDescResId, View.OnClickListener ocl) {
+        addOverflowButton(false, iconResId, contentDescResId, ocl);
+    }
+
+    public void addOverflowButton(boolean big, int iconResId, int contentDescResId, View.OnClickListener ocl) {
         if (moreMenuPopupWindow != null)
             throw new CerberusException("Can't add a new Overflow button! Please make sure to add it BEFORE initializing moreMenuPopupWindow.");
 
         ToolbarImageButton overflowButton = new ToolbarImageButton(activity);
 
-        ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams((int) activity.getResources().getDimension(R.dimen.sesl_action_button_min_width),
+        ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams((int) activity.getResources().getDimension(big ? R.dimen.mesa_toolbar_imagebutton_width : R.dimen.sesl_action_button_min_width),
                 (int) activity.getResources().getDimension(R.dimen.sesl_action_bar_default_height));
 
         overflowButton.setBackgroundResource(isNightMode ? R.drawable.sesl_action_bar_item_background_dark : R.drawable.sesl_action_bar_item_background);
@@ -100,6 +104,10 @@ public class ActionBarUtils {
             moreMenuPopupWindow.dismiss();
         } else
             LogUtils.w("AppBarActivity.createMorePopupWindow", "moreMenuPopupWindow is null or already hidden.");
+    }
+
+    public AppBarLayout getAppBarLayout() {
+        return appBarLayout;
     }
 
     private int getMoreMenuPopupWidth(MoreMenuPopupAdapter adapter) {

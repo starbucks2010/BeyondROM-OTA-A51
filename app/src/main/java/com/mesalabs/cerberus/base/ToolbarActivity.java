@@ -33,7 +33,7 @@ public class ToolbarActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mContext = this;
+        mContext = getApplicationContext();
     }
 
     @Override
