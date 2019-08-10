@@ -70,6 +70,7 @@ public class ActionBarUtils {
 
     private boolean appBarCustomHeader = false;
     private boolean isNightMode = false;
+    private boolean defaultExpandStatus;
 
 
     public ActionBarUtils(AppCompatActivity instance) {
@@ -176,7 +177,7 @@ public class ActionBarUtils {
             if (statusBarHeight > 0)
                 appBarHeaderLayout.setPadding(0, 0, 0, statusBarHeight / 2);
 
-            appBarLayout.setExpanded(isExpanded);
+            defaultExpandStatus = isExpanded;
 
             resetAppBarHeight();
 
@@ -269,7 +270,7 @@ public class ActionBarUtils {
 
                 params.height = (int) mAppBarHeightDp;
             } else {
-                appBarLayout.setExpanded(true, false);
+                appBarLayout.setExpanded(defaultExpandStatus, false);
                 appBarLayout.setActivated(true);
 
                 TypedValue outValue = new TypedValue();
