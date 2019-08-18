@@ -139,7 +139,7 @@
 
         <item name="android:windowAnimationStyle">@style/mesa_ActivityAnimStyle</item>
 
-        <item name="collapsedToolbarLayoutStyle">@style/mesa_CollapsingToolbarStyle</item>
+        <item name="collapsedToolbarLayoutStyle">@style/mesa_SeslCollapsingToolbarStyle</item>
         <item name="round_and_bgColor">@color/sesl_round_and_bgcolor_dark</item>
         <item name="cardBgColor">@color/sesl_background_color_dark</item>
         <item name="roundedCornerColor">@color/sesl_round_and_bgcolor_dark</item>
@@ -286,7 +286,7 @@
 
         <item name="android:windowAnimationStyle">@style/mesa_ActivityAnimStyle</item>
 
-        <item name="collapsedToolbarLayoutStyle">@style/mesa_CollapsingToolbarStyle.Light</item>
+        <item name="collapsedToolbarLayoutStyle">@style/mesa_SeslCollapsingToolbarStyle.Light</item>
         <item name="round_and_bgColor">@color/sesl_round_and_bgcolor_light</item>
         <item name="cardBgColor">@color/sesl_background_color_light</item>
         <item name="roundedCornerColor">@color/sesl_round_and_bgcolor_light</item>
@@ -383,12 +383,6 @@
     </style>
     <style name="mesa_CollapsedActionBarSubtitleTextStyle.Light" parent="@style/mesa_CollapsedActionBarSubtitleTextStyle">
         <item name="android:textColor">@color/sesl_action_bar_text_color_subtitle_light</item>
-    </style>
-
-    <style name="mesa_ExpandedActionBarTitleTextSeslStyle" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
-        <item name="android:textSize">@dimen/sesl_action_bar_text_size_title_extend</item>
-        <item name="android:fontFamily">sans-serif-light</item>
-        <item name="android:textStyle">normal</item>
     </style>
 
     <style name="mesa_ActionBarMenuTextStyle" parent="TextAppearance.AppCompat.Widget.ActionBar.Menu">
@@ -622,15 +616,6 @@
         <item name="layout_behavior">com.mesalabs.cerberus.ui.widget.appbarbehavior.AppBarBehavior</item>
     </style>
 
-    <style name="mesa_CollapsingToolbarStyle" parent="Widget.Design.CollapsingToolbar">
-        <item name="android:background">@color/sesl_action_bar_background_color_dark</item>
-        <item name="statusBarScrim">?round_and_bgColor</item>
-    </style>
-    <style name="mesa_CollapsingToolbarStyle.Light" parent="@style/mesa_CollapsingToolbarStyle">
-        <item name="android:background">@color/sesl_action_bar_background_color_light</item>
-        <item name="statusBarScrim">@android:color/transparent</item>
-    </style>
-
     <style name="mesa_ToolbarStyle" parent="Widget.AppCompat.Toolbar">
         <item name="android:paddingLeft">0.0dip</item>
         <item name="android:paddingRight">0.0dip</item>
@@ -673,6 +658,39 @@
     </style>
     <style name="mesa_ListPopupWindowStyle.Light" parent="@style/mesa_ListPopupWindowStyle">
         <item name="android:popupBackground">@drawable/sesl_list_popup_background</item>
+    </style>
+
+    <style name="mesa_SeslCollapsingToolbarStyle" parent="@android:style/Widget">
+        <item name="android:background">@color/sesl_action_bar_background_color_dark</item>
+        <item name="statusBarScrim">?colorPrimaryDark</item>
+        <item name="extendTitleTextAppearance">@style/mesa_SeslCollapsingToolbarExpandTitleStyle</item>
+        <item name="extendSubTitleTextAppearance">@style/mesa_SeslCollapsingToolbarExpandSubtitleStyle</item>
+        <item name="collapseTitleTextAppearance">@style/mesa_CollapsedActionBarTitleTextStyle</item>
+    </style>
+    <style name="mesa_SeslCollapsingToolbarStyle.Light" parent="@android:style/Widget">
+        <item name="android:background">@color/sesl_action_bar_background_color_light</item>
+        <item name="statusBarScrim">@android:color/transparent</item>
+        <item name="extendTitleTextAppearance">@style/mesa_SeslCollapsingToolbarExpandTitleStyle.Light</item>
+        <item name="extendSubTitleTextAppearance">@style/mesa_SeslCollapsingToolbarExpandSubtitleStyle.Light</item>
+        <item name="collapseTitleTextAppearance">@style/mesa_CollapsedActionBarTitleTextStyle.Light</item>
+    </style>
+
+    <style name="mesa_SeslCollapsingToolbarExpandTitleStyle" parent="@style/mesa_CollapsedActionBarTitleTextStyle">
+        <item name="android:textSize">@dimen/sesl_action_bar_text_size_title_extend</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="fontFamily">sans-serif-light</item>
+    </style>
+    <style name="mesa_SeslCollapsingToolbarExpandTitleStyle.Light" parent="@style/mesa_CollapsedActionBarTitleTextStyle.Light">
+        <item name="android:textSize">@dimen/sesl_action_bar_text_size_title_extend</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="fontFamily">sans-serif-light</item>
+    </style>
+
+    <style name="mesa_SeslCollapsingToolbarExpandSubtitleStyle" parent="@style/mesa_CollapsedActionBarSubtitleTextStyle">
+        <item name="android:textColor">@color/sesl_extended_appbar_subtitle_dark</item>
+    </style>
+    <style name="mesa_SeslCollapsingToolbarExpandSubtitleStyle.Light" parent="@style/mesa_CollapsedActionBarSubtitleTextStyle.Light">
+        <item name="android:textColor">@color/sesl_extended_appbar_subtitle_light</item>
     </style>
 
     <style name="mesa_SeslTabLayoutStyle" parent="@android:style/Widget">

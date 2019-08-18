@@ -20,7 +20,7 @@ import android.support.v4.view.ViewCompat;
  * EXTERNALS IS PROHIBITED AND WILL BE PUNISHED WITH ANAL ABUSE.
  */
 
-class ViewOffsetHelper {
+public class ViewOffsetHelper {
 
     private final View mView;
 

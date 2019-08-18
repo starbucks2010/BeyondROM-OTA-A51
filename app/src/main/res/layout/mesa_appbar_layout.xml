@@ -8,7 +8,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <android.support.design.widget.CollapsingToolbarLayout
+    <com.samsung.android.ui.widget.SeslCollapsingToolbarLayout
         android:id="@+id/mesa_colltoolbar_appbarlayout"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
@@ -77,19 +77,6 @@
 
         </android.support.v7.widget.Toolbar>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center">
-
-            <ViewStub
-                android:id="@+id/mesa_viewstub_appbarlayout"
-                android:inflatedId="@+id/mesa_abheaderlayout_appbarlayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-
-        </LinearLayout>
-
-    </android.support.design.widget.CollapsingToolbarLayout>
+    </com.samsung.android.ui.widget.SeslCollapsingToolbarLayout>
 
 </android.support.design.widget.AppBarLayout>

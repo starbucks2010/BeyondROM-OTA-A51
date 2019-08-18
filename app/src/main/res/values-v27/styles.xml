@@ -136,7 +136,7 @@
 
         <item name="android:windowAnimationStyle">@style/mesa_ActivityAnimStyle</item>
 
-        <item name="collapsedToolbarLayoutStyle">@style/mesa_CollapsingToolbarStyle</item>
+        <item name="collapsedToolbarLayoutStyle">@style/mesa_SeslCollapsingToolbarStyle</item>
         <item name="round_and_bgColor">@color/sesl_round_and_bgcolor_dark</item>
         <item name="cardBgColor">@color/sesl_background_color_dark</item>
         <item name="roundedCornerColor">@color/sesl_round_and_bgcolor_dark</item>
@@ -280,7 +280,7 @@
 
         <item name="android:windowAnimationStyle">@style/mesa_ActivityAnimStyle</item>
 
-        <item name="collapsedToolbarLayoutStyle">@style/mesa_CollapsingToolbarStyle.Light</item>
+        <item name="collapsedToolbarLayoutStyle">@style/mesa_SeslCollapsingToolbarStyle.Light</item>
         <item name="round_and_bgColor">@color/sesl_round_and_bgcolor_light</item>
         <item name="cardBgColor">@color/sesl_background_color_light</item>
         <item name="roundedCornerColor">@color/sesl_round_and_bgcolor_light</item>

@@ -31,6 +31,7 @@
     <dimen name="sesl_extended_appbar_title_padding">24.0dip</dimen>
 
     <dimen name="sesl_action_bar_text_size_title_extend">40.0sp</dimen>
+    <dimen name="sesl_action_bar_text_size_title_extend_with_subtitle">38.0dip</dimen>
 
     <dimen name="sesl_list_primary_text_size">18.0sp</dimen>
     <item type="dimen" name="sesl_text_size_subhead">@dimen/sesl_list_primary_text_size</item>

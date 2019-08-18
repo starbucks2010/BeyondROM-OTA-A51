@@ -47,6 +47,8 @@
     <color name="sesl_action_bar_text_color_subtitle_light">#636363</color>
     <color name="sesl_action_bar_text_color_menu_dark">#FAFAFA</color>
     <color name="sesl_action_bar_text_color_menu_light">@color/sesl_black</color>
+    <color name="sesl_extended_appbar_subtitle_dark">#9C9C9C</color>
+    <color name="sesl_extended_appbar_subtitle_light">#636363</color>
 
     <color name="sesl_appbar_background_black">#080808</color>
 

@@ -51,7 +51,7 @@ public class AppBarActivity extends AppCompatActivity {
         super.setContentView(R.layout.mesa_baselayout_appbaractivity);
 
         appBar = new ActionBarUtils(this);
-        appBar.initAppBar(getIsAppBarExpanded(), getAppBarCustomHeaderId());
+        appBar.initAppBar(getIsAppBarExpanded());
 
         if (view != null) {
             ViewGroup root = findViewById(R.id.mesa_container_baseactivity);
@@ -66,7 +66,7 @@ public class AppBarActivity extends AppCompatActivity {
         super.setContentView(R.layout.mesa_baselayout_appbaractivity);
 
         appBar = new ActionBarUtils(this);
-        appBar.initAppBar(getIsAppBarExpanded(), getAppBarCustomHeaderId());
+        appBar.initAppBar(getIsAppBarExpanded());
 
         View layout = getLayoutInflater().inflate(layoutResID, null);
         ViewGroup root = findViewById(R.id.mesa_container_baseactivity);
@@ -81,10 +81,6 @@ public class AppBarActivity extends AppCompatActivity {
 
     public void setBaseContentView(int layoutResID) {
         super.setContentView(layoutResID);
-    }
-
-    protected int getAppBarCustomHeaderId() {
-        return 0;
     }
 
     protected boolean getIsAppBarExpanded() {

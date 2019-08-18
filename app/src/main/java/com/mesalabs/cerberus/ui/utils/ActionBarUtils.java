@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewStub;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
@@ -19,7 +18,6 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -29,6 +27,7 @@ import com.mesalabs.cerberus.utils.CerberusException;
 import com.mesalabs.cerberus.utils.LogUtils;
 import com.mesalabs.cerberus.utils.Utils;
 import com.mesalabs.cerberus.utils.ViewUtils;
+import com.samsung.android.ui.widget.SeslCollapsingToolbarLayout;
 
 /*
  * Cerberus Core App
@@ -49,13 +48,11 @@ public class ActionBarUtils {
     private AppCompatActivity activity;
 
     private AppBarLayout appBarLayout;
-    private CollapsingToolbarLayout collapsingToolbarLayout;
-    private LinearLayout appBarHeaderLayout;
+    private SeslCollapsingToolbarLayout collapsingToolbarLayout;
     private Toolbar toolbar;
     private LinearLayout overflowContainer;
 
     private ToolbarImageButton toolbarHomeButton;
-    private TextView expandedAppBarTitle;
     private TextView toolbarTitle;
     private ToolbarImageButton moreOverflowButton;
 
@@ -68,9 +65,8 @@ public class ActionBarUtils {
 
     private float mAppBarHeightDp;
 
-    private boolean appBarCustomHeader = false;
-    private boolean isNightMode = false;
-    private boolean defaultExpandStatus;
+    private boolean isNightMode;
+    private boolean defaultExpandStatus = true;
 
 
     public ActionBarUtils(AppCompatActivity instance) {
@@ -88,8 +84,7 @@ public class ActionBarUtils {
 
         ToolbarImageButton overflowButton = new ToolbarImageButton(activity);
 
-        ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams((int) activity.getResources().getDimension(big ? R.dimen.mesa_toolbar_imagebutton_width : R.dimen.sesl_action_button_min_width),
-                (int) activity.getResources().getDimension(R.dimen.sesl_action_bar_default_height));
+        ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams((int) activity.getResources().getDimension(big ? R.dimen.mesa_toolbar_imagebutton_width : R.dimen.sesl_action_button_min_width), (int) activity.getResources().getDimension(R.dimen.sesl_action_bar_default_height));
 
         overflowButton.setBackgroundResource(isNightMode ? R.drawable.sesl_action_bar_item_background_dark : R.drawable.sesl_action_bar_item_background);
         overflowButton.setImageResource(iconResId);
@@ -104,7 +99,7 @@ public class ActionBarUtils {
         if (moreMenuPopupWindow != null || moreMenuPopupWindow.isShowing()) {
             moreMenuPopupWindow.dismiss();
         } else
-            LogUtils.w("AppBarActivity.createMorePopupWindow", "moreMenuPopupWindow is null or already hidden.");
+            LogUtils.w(activity.getLocalClassName() + ".createMorePopupWindow", "moreMenuPopupWindow is null or already hidden.");
     }
 
     public AppBarLayout getAppBarLayout() {
@@ -115,37 +110,37 @@ public class ActionBarUtils {
         int makeMeasureSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
         int makeMeasureSpec2 = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
         View view = null;
-        int count = adapter.getCount();
-        int i = 0;
-        int i2 = 0;
-        int i3 = 0;
         ViewGroup viewGroup = null;
+        int measuredWidth = 0;
+
+        int i = 0;
+        int count = adapter.getCount();
+
         while (i < count) {
             ViewGroup linearLayout;
             int itemViewType = adapter.getItemViewType(i);
-            if (itemViewType != i2) {
-                i2 = itemViewType;
+
+            if (itemViewType != 0)
                 view = null;
-            }
-            if (viewGroup == null) {
+
+            if (viewGroup == null)
                 linearLayout = new LinearLayout(activity);
-            } else {
+            else
                 linearLayout = viewGroup;
-            }
+
             view = adapter.getView(i, view, linearLayout);
             view.measure(makeMeasureSpec, makeMeasureSpec2);
-            int measuredWidth = view.getMeasuredWidth();
-            if (measuredWidth <= i3) {
-                measuredWidth = i3;
+            measuredWidth = view.getMeasuredWidth();
+            if (measuredWidth <= 0) {
+                measuredWidth = 0;
             }
             i++;
-            i3 = measuredWidth;
             viewGroup = linearLayout;
         }
-        return i3 + 25;
+        return measuredWidth + 25;
     }
 
-    public void initAppBar(boolean isExpanded, int customHeaderId) {
+    public void initAppBar(boolean isExpanded) {
         toolbar = activity.findViewById(R.id.mesa_toolbar_appbarlayout);
         activity.setSupportActionBar(toolbar);
 
@@ -156,26 +151,11 @@ public class ActionBarUtils {
             appBarLayout = activity.findViewById(R.id.mesa_appbar_appbarlayout);
             collapsingToolbarLayout = activity.findViewById(R.id.mesa_colltoolbar_appbarlayout);
 
-            ViewStub viewstub = activity.findViewById(R.id.mesa_viewstub_appbarlayout);
-            if (customHeaderId > 0) {
-                viewstub.setLayoutResource(customHeaderId);
-                appBarCustomHeader = true;
-            } else
-                viewstub.setLayoutResource(R.layout.mesa_seslheader_appbarlayout);
-            viewstub.inflate();
-
-            appBarHeaderLayout = activity.findViewById(R.id.mesa_abheaderlayout_appbarlayout);
-
             toolbarHomeButton = activity.findViewById(R.id.mesa_toolbarhome_appbarlayout);
-            expandedAppBarTitle = activity.findViewById(R.id.mesa_abexpatitle_appbarlayout);
             toolbarTitle = activity.findViewById(R.id.mesa_toolbartitle_appbarlayout);
             overflowContainer = activity.findViewById(R.id.mesa_overflowcontainer_appbarlayout);
 
             moreMenuPopupAnchor = activity.findViewById(R.id.mesa_popupanchor_appbarlayout);
-
-            int statusBarHeight = ViewUtils.getStatusbarHeight(activity);
-            if (statusBarHeight > 0)
-                appBarHeaderLayout.setPadding(0, 0, 0, statusBarHeight / 2);
 
             defaultExpandStatus = isExpanded;
 
@@ -283,7 +263,7 @@ public class ActionBarUtils {
 
             appBarLayout.setLayoutParams(params);
         } else
-            LogUtils.w("ActionBarUtils.resetAppBarHeight", "appBarLayout is null.");
+            LogUtils.w(activity.getLocalClassName() + ".resetAppBarHeight", "appBarLayout is null.");
     }
 
     public void setHomeAsUpButton(View.OnClickListener ocl) {
@@ -341,9 +321,16 @@ public class ActionBarUtils {
         initMoreMenuPopupWindow(linkedHashMap, ocl);
     }
 
+    public void setSubtitleText(String subtitleText) {
+        if (collapsingToolbarLayout != null)
+            collapsingToolbarLayout.setSubtitle(subtitleText);
+        else
+            LogUtils.w(activity.getLocalClassName() + ".ActionBarUtils.setSubtitleText", "collapsingToolbarLayout is null.");
+    }
+
     public void setTitleText(String titleText) {
-        if (expandedAppBarTitle != null && !appBarCustomHeader)
-            expandedAppBarTitle.setText(titleText);
+        if (collapsingToolbarLayout != null)
+            collapsingToolbarLayout.setTitle(titleText);
         if (toolbarTitle != null)
             toolbarTitle.setText(titleText);
         else
@@ -354,7 +341,7 @@ public class ActionBarUtils {
         if (moreMenuPopupWindow != null || !moreMenuPopupWindow.isShowing())
             moreMenuPopupWindow.showAsDropDown(moreMenuPopupAnchor, moreMenuPopupWidth, moreMenuPopupHeight);
         else
-            LogUtils.w(activity.getLocalClassName() + ".createMorePopupWindow", "moreMenuPopupWindow is null or already shown.");
+            LogUtils.w(activity.getLocalClassName() + ".showMoreMenuPopupWindow", "moreMenuPopupWindow is null or already shown.");
     }
 
 
@@ -367,20 +354,7 @@ public class ActionBarUtils {
             float alphaRange = ((float) collapsingToolbarLayout.getHeight()) * 0.17999999f;
             float toolbarTitleAlphaStart = ((float) collapsingToolbarLayout.getHeight()) * 0.35f;
 
-            appBarHeaderLayout.setTranslationY((float) ((-verticalOffset) / 3));
-
-            float expaTitleAlpha = 255.0f - ((100.0f / alphaRange) * (((float) layoutPosition) - 0.0f));
-            if (expaTitleAlpha < 0.0f) {
-                expaTitleAlpha = 0.0f;
-            } else if (expaTitleAlpha > 255.0f) {
-                expaTitleAlpha = 255.0f;
-            }
-            expaTitleAlpha /= 255.0f;
-
-            appBarHeaderLayout.setAlpha(expaTitleAlpha);
-
             if (appBarLayout.getHeight() <= ((int) mAppBarHeightDp)) {
-                appBarHeaderLayout.setAlpha(0.0f);
                 toolbarTitle.setAlpha(1.0f);
             } else {
                 double collapsedTitleAlpha = (double) ((150.0f / alphaRange) * (((float) layoutPosition) - toolbarTitleAlphaStart));
