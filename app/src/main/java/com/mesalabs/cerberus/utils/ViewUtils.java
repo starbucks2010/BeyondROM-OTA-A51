@@ -233,4 +233,8 @@ public class ViewUtils {
         }
     }
 
+    public static void semSetRoundedCorners(View view, int roundMode) {
+        Utils.genericInvokeMethod(view, "semSetRoundedCorners", roundMode);
+    }
+
 }
