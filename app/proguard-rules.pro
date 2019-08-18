@@ -20,6 +20,6 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
-# Keep Google AppCompat libraries classes
--keep class android.** { *; }
--keep class androidx.** { *; }
+# com.mesalabs.cerberus.ui.widget.appbarbehavior
+-keep class android.support.design.widget.AppBarLayout { *; }
+-keep class android.support.design.widget.CoordinatorLayout { *; }
