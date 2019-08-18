@@ -593,7 +593,7 @@ public class SeslSwitch extends CompoundButton {
             case MotionEvent.ACTION_CANCEL: {
                 if (mTouchMode == TOUCH_MODE_DRAGGING) {
                     if (Build.VERSION.SDK_INT >= 28 && action == MotionEvent.ACTION_UP && (mTouchMode == TOUCH_MODE_DRAGGING || mTouchMode == TOUCH_MODE_DOWN)) {
-                        performHapticFeedback((int) Utils.genericInvokeStaticMethod(HapticFeedbackConstants.class, "semGetVibrationIndex", 27));
+                        performHapticFeedback((int) Utils.genericInvokeMethod(HapticFeedbackConstants.class, "semGetVibrationIndex", 27));
                     }
                     stopDrag(ev);
                     super.onTouchEvent(ev);

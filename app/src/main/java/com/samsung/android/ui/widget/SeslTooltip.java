@@ -228,10 +228,10 @@ public class SeslTooltip implements View.OnLongClickListener, View.OnHoverListen
     private void showPenPointEffect(MotionEvent event, boolean show) {
         if (event.getToolType(MotionEvent.TOOL_TYPE_UNKNOWN) == MotionEvent.TOOL_TYPE_STYLUS) {
             if (show) {
-                Utils.genericInvokeStaticMethod(InputManager.class, "setPointerIconType", (int) 0x4e2a);
+                Utils.genericInvokeMethod(InputManager.class, "setPointerIconType", (int) 0x4e2a);
                 mIsSPenPointChanged = true;
             } else if (mIsSPenPointChanged) {
-                Utils.genericInvokeStaticMethod(InputManager.class, "setPointerIconType", (int) 0x4e21);
+                Utils.genericInvokeMethod(InputManager.class, "setPointerIconType", (int) 0x4e21);
                 mIsSPenPointChanged = false;
             }
         }

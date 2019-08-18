@@ -148,7 +148,7 @@ public class SeslEdgeEffect extends EdgeEffect {
     public void onAbsorb(int velocity) {
         if (!isEdgeEffectRunning()) {
             if (mSeslHostView != null) {
-                mSeslHostView.performHapticFeedback((int) Utils.genericInvokeStaticMethod(HapticFeedbackConstants.class, "semGetVibrationIndex", 28));
+                mSeslHostView.performHapticFeedback((int) Utils.genericInvokeMethod(HapticFeedbackConstants.class, "semGetVibrationIndex", 28));
 
 
             }
@@ -190,7 +190,7 @@ public class SeslEdgeEffect extends EdgeEffect {
             }
             if (mPullDistance == 0.0f || mOnReleaseCalled) {
                 if (mSeslHostView != null) {
-                    int indexOfHaptic = (int) Utils.genericInvokeStaticMethod(HapticFeedbackConstants.class, "semGetVibrationIndex", 28);
+                    int indexOfHaptic = (int) Utils.genericInvokeMethod(HapticFeedbackConstants.class, "semGetVibrationIndex", 28);
                     if (indexOfHaptic != -1) {
                         mSeslHostView.performHapticFeedback(indexOfHaptic);
                     }

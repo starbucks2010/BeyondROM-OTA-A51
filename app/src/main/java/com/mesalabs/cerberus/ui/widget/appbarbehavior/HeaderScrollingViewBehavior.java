@@ -55,7 +55,7 @@ abstract class HeaderScrollingViewBehavior extends ViewOffsetBehavior<View> {
             final View header = findFirstDependency(dependencies);
             if (header != null) {
                 if (ViewCompat.getFitsSystemWindows(header) && !ViewCompat.getFitsSystemWindows(child)) {
-                    Utils.genericInvokeStaticMethod(ViewCompat.class, "setFitsSystemWindows", child, true);
+                    Utils.genericInvokeMethod(ViewCompat.class, "setFitsSystemWindows", child, true);
 
                     if (ViewCompat.getFitsSystemWindows(child)) {
                         child.requestLayout();

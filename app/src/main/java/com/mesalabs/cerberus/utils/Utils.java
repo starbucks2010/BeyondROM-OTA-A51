@@ -45,6 +45,21 @@ public class Utils {
         return requiredObj;
     }
 
+    public static void genericSetField(Object obj, String fieldName, Object fieldValue) {
+        Field field;
+        try {
+            field = obj.getClass().getDeclaredField(fieldName);
+            field.setAccessible(true);
+            field.set(obj, fieldValue);
+        } catch (NoSuchFieldException e) {
+            LogUtils.e("Utils.genericSetField", e.toString());
+        } catch (IllegalArgumentException e) {
+            LogUtils.e("Utils.genericSetField", e.toString());
+        } catch (IllegalAccessException e) {
+            LogUtils.e("Utils.genericSetField", e.toString());
+        }
+    }
+
     public static Object genericInvokeMethod(Object obj, String methodName, Object... params) {
         int paramCount = params.length;
         Method method;
@@ -63,6 +78,37 @@ public class Utils {
             method = obj.getClass().getDeclaredMethod(methodName, classArray);
             method.setAccessible(true);
             requiredObj = method.invoke(obj, params);
+        } catch (NoSuchMethodException e) {
+            LogUtils.e("Utils.genericInvokeMethod", e.toString());
+        } catch (IllegalArgumentException e) {
+            LogUtils.e("Utils.genericInvokeMethod", e.toString());
+        } catch (IllegalAccessException e) {
+            LogUtils.e("Utils.genericInvokeMethod", e.toString());
+        } catch (InvocationTargetException e) {
+            LogUtils.e("Utils.genericInvokeMethod", e.toString());
+        }
+
+        return requiredObj;
+    }
+
+    public static Object genericInvokeMethod(Class<?> cl, String methodName, Object... params) {
+        int paramCount = params.length;
+        Method method;
+        Object requiredObj = null;
+        Class<?>[] classArray = new Class<?>[paramCount];
+        for (int i = 0; i < paramCount; i++) {
+            // FIX
+            if (params[i].getClass() == Boolean.class)
+                classArray[i] = boolean.class;
+            else if (params[i].getClass() == Integer.class)
+                classArray[i] = int.class;
+            else
+                classArray[i] = params[i].getClass();
+        }
+        try {
+            method = cl.getDeclaredMethod(methodName, classArray);
+            method.setAccessible(true);
+            requiredObj = method.invoke(null, params);
         } catch (NoSuchMethodException e) {
             LogUtils.e("Utils.genericInvokeMethod", e.toString());
         } catch (IllegalArgumentException e) {
@@ -102,37 +148,6 @@ public class Utils {
             LogUtils.e("Utils.genericInvokeMethod", e.toString());
         } catch (InvocationTargetException e) {
             LogUtils.e("Utils.genericInvokeMethod", e.toString());
-        }
-
-        return requiredObj;
-    }
-
-    public static Object genericInvokeStaticMethod(Class<?> cl, String methodName, Object... params) {
-        int paramCount = params.length;
-        Method method;
-        Object requiredObj = null;
-        Class<?>[] classArray = new Class<?>[paramCount];
-        for (int i = 0; i < paramCount; i++) {
-            // FIX
-            if (params[i].getClass() == Boolean.class)
-                classArray[i] = boolean.class;
-            else if (params[i].getClass() == Integer.class)
-                classArray[i] = int.class;
-            else
-                classArray[i] = params[i].getClass();
-        }
-        try {
-            method = cl.getDeclaredMethod(methodName, classArray);
-            method.setAccessible(true);
-            requiredObj = method.invoke(null, params);
-        } catch (NoSuchMethodException e) {
-            LogUtils.e("Utils.genericInvokeStaticMethod", e.toString());
-        } catch (IllegalArgumentException e) {
-            LogUtils.e("Utils.genericInvokeStaticMethod", e.toString());
-        } catch (IllegalAccessException e) {
-            LogUtils.e("Utils.genericInvokeStaticMethod", e.toString());
-        } catch (InvocationTargetException e) {
-            LogUtils.e("Utils.genericInvokeStaticMethod", e.toString());
         }
 
         return requiredObj;
