@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.mesalabs.cerberus.R;
 import com.mesalabs.cerberus.ui.utils.ActionBarUtils;
+import com.mesalabs.cerberus.utils.ViewUtils;
 
 /*
  * Cerberus Core App
@@ -33,7 +34,7 @@ public class ToolbarActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mContext = getApplicationContext();
+        mContext = this;
     }
 
     @Override
@@ -71,6 +72,10 @@ public class ToolbarActivity extends AppCompatActivity {
 
     public void setBaseContentView(int layoutResID) {
         super.setContentView(layoutResID);
+    }
+
+    protected void removeViewRoundedCorners() {
+        ViewUtils.semSetRoundedCorners(getWindow().getDecorView(), 0);
     }
 
 }

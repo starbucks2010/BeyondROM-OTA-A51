@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.mesalabs.cerberus.R;
 import com.mesalabs.cerberus.ui.utils.ActionBarUtils;
+import com.mesalabs.cerberus.utils.ViewUtils;
 
 /*
  * Cerberus Core App
@@ -34,7 +35,7 @@ public class AppBarActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mContext = getApplicationContext();
+        mContext = this;
     }
 
     @Override
@@ -88,6 +89,10 @@ public class AppBarActivity extends AppCompatActivity {
 
     protected boolean getIsAppBarExpanded() {
         return true;
+    }
+
+    protected void removeViewRoundedCorners() {
+        ViewUtils.semSetRoundedCorners(getWindow().getDecorView(), 0);
     }
 
 }
