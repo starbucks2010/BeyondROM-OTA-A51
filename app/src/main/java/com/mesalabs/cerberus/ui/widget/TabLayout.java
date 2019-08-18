@@ -70,6 +70,9 @@ public class TabLayout extends SeslTabLayout implements View.OnSystemUiVisibilit
             tabTextWidthSum += width;
         }
         addTabPaddingValue(tabTextWidthList, tabTextWidthSum);
+        // hax
+        getTabView(getSelectedTabPosition()).setSelected(false);
+        getTabView(getSelectedTabPosition()).setSelected(true);
         setScrollPosition(getSelectedTabPosition(), 0.0f, true);
     }
 
