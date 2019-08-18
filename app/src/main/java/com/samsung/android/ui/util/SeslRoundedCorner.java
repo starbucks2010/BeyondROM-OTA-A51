@@ -7,11 +7,11 @@ import android.graphics.PorterDuff.Mode;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 
 import com.mesalabs.cerberus.R;
+import com.mesalabs.cerberus.utils.LogUtils;
 import com.mesalabs.cerberus.utils.Utils;
 
 /*
@@ -75,19 +75,18 @@ public class SeslRoundedCorner {
             mRoundedCornerMode = corners;
             if (mTopLeftRound == null || mTopRightRound == null || mBottomLeftRound == null || mBottomRightRound == null)
                 initRoundedCorner();
-            return;
-        }
-        throw new IllegalArgumentException("Use wrong rounded corners to the param, corners = " + corners);
+        } else
+            throw new IllegalArgumentException("Use wrong rounded corners to the param, corners = " + corners);
     }
 
     public void setRoundedCornerColor(int corners, int color) {
         if (mIsStrokeRoundedCorner) {
-            Log.d("SeslRoundedCorner", "can not change round color on stroke rounded corners");
+            LogUtils.d("SeslRoundedCorner", "can not change round color on stroke rounded corners");
         } else if (corners == 0) {
             throw new IllegalArgumentException("There is no rounded corner on = " + this);
         } else if ((corners & -16) == 0) {
             if (!(color == mTopLeftRoundColor && color == mBottomLeftRoundColor)) {
-                Log.d("SeslRoundedCorner", "change color = " + color + ", on =" + corners + ", top color = " + mTopLeftRoundColor + ", bottom color = " + mBottomLeftRoundColor);
+                LogUtils.d("SeslRoundedCorner", "change color = " + color + ", on =" + corners + ", top color = " + mTopLeftRoundColor + ", bottom color = " + mBottomLeftRoundColor);
             }
             if (mTopLeftRound == null || mTopRightRound == null || mBottomLeftRound == null || mBottomRightRound == null)
                 initRoundedCorner();
@@ -119,7 +118,7 @@ public class SeslRoundedCorner {
         if (darkTheme) {
             mIsStrokeRoundedCorner = false;
         }
-        Log.d("SeslRoundedCorner", "initRoundedCorner, rounded corner with stroke = " + mIsStrokeRoundedCorner + ", dark theme = " + darkTheme + ", mutate " + mIsMutate);
+        LogUtils.d("SeslRoundedCorner", "initRoundedCorner, rounded corner with stroke = " + mIsStrokeRoundedCorner + ", dark theme = " + darkTheme + ", mutate " + mIsMutate);
         int color;
         if (mIsStrokeRoundedCorner) {
             color = mRes.getColor(R.color.sesl_round_and_bgcolor_light, mContext.getTheme());
