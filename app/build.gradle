@@ -6,11 +6,12 @@ ext.versionPatch = 0
 ext.versionClassifier = null
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 29
+    buildToolsVersion "29.0.2"
     defaultConfig {
         applicationId "com.mesalabs.cerberus"
         minSdkVersion 24
-        targetSdkVersion 28
+        targetSdkVersion 29
         versionCode generateVersionCode()
         versionName generateVersionName()
     }
