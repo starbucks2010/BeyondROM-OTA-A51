@@ -161,4 +161,15 @@
 
     <color name="sesl_error_color">#F4511E</color>
 
+    <color name="sesl_list_go_to_top_arrow_bottom_dark">#fffafafa</color>
+    <color name="sesl_list_go_to_top_arrow_bottom_light">#ff797979</color>
+    <color name="sesl_list_go_to_top_arrow_top_dark">#ffaaaaaa</color>
+    <color name="sesl_list_go_to_top_arrow_top_light">#ffa9a9a9</color>
+    <color name="sesl_list_go_to_top_inner_round_dark">#ff343434</color>
+    <color name="sesl_list_go_to_top_inner_round_light">#fff2f2f2</color>
+    <color name="sesl_list_go_to_top_outer_round_dark">#ff5e5e5e</color>
+    <color name="sesl_list_go_to_top_outer_round_light">#33252525</color>
+    <color name="sesl_list_go_to_top_ripple_dark">#33ffffff</color>
+    <color name="sesl_list_go_to_top_ripple_light">#1a000000</color>
+
 </resources>

@@ -142,6 +142,7 @@
         <item name="collapsedToolbarLayoutStyle">@style/mesa_SeslCollapsingToolbarStyle</item>
         <item name="round_and_bgColor">@color/sesl_round_and_bgcolor_dark</item>
         <item name="cardBgColor">@color/sesl_background_color_dark</item>
+        <item name="goToTopStyle">@drawable/sesl_list_go_to_top_dark</item>
         <item name="roundedCornerColor">@color/sesl_round_and_bgcolor_dark</item>
         <item name="roundedCornerStrokeColor">@color/sesl_round_stroke_dark</item>
         <item name="dividerColor">@color/sesl_list_divider_color_dark</item>
@@ -289,6 +290,7 @@
         <item name="collapsedToolbarLayoutStyle">@style/mesa_SeslCollapsingToolbarStyle.Light</item>
         <item name="round_and_bgColor">@color/sesl_round_and_bgcolor_light</item>
         <item name="cardBgColor">@color/sesl_background_color_light</item>
+        <item name="goToTopStyle">@drawable/sesl_list_go_to_top_light</item>
         <item name="roundedCornerColor">@color/sesl_round_and_bgcolor_light</item>
         <item name="roundedCornerStrokeColor">@color/sesl_round_stroke_light</item>
         <item name="dividerColor">@color/sesl_list_divider_color_light</item>

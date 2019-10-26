@@ -10,6 +10,7 @@
     <attr name="collapsedToolbarLayoutStyle" format="reference" />
     <attr name="round_and_bgColor" format="string|integer|color|reference" />
     <attr name="cardBgColor" format="string|integer|color|reference" />
+    <attr name="goToTopStyle" format="reference" />
     <attr name="roundedCornerColor" format="color" />
     <attr name="roundedCornerStrokeColor" format="color" />
     <attr name="dividerColor" format="string|integer|color|reference" />
@@ -82,6 +83,37 @@
         <attr name="layout_collapseMode" />
         <attr name="layout_collapseParallaxMultiplier" format="float"/>
         <attr name="layout_isTitleCustom" />
+    </declare-styleable>
+    <declare-styleable name="SeslRecyclerView">
+        <attr name="layoutManager" format="string" />
+        <attr name="android:orientation" />
+        <attr name="android:descendantFocusability" />
+        <attr name="spanCount" format="integer"/>
+        <attr name="reverseLayout" format="boolean" />
+        <attr name="stackFromEnd" format="boolean" />
+    </declare-styleable>
+    <declare-styleable name="SeslRecyclerViewFastScroller">
+        <attr name="position">
+            <enum name="aboveThumb" value="2" />
+            <enum name="atThumb" value="1" />
+            <enum name="floating" value="0" />
+        </attr>
+        <attr name="backgroundLeft" format="reference" />
+        <attr name="backgroundRight" format="reference" />
+        <attr name="thumbDrawable" format="reference" />
+        <attr name="trackDrawable" format="reference" />
+        <attr name="android:textAppearance" />
+        <attr name="android:textColor" />
+        <attr name="android:textSize" />
+        <attr name="android:minWidth" />
+        <attr name="android:minHeight" />
+        <attr name="thumbMinWidth" format="dimension" />
+        <attr name="thumbMinHeight" format="dimension" />
+        <attr name="android:padding" />
+        <attr name="thumbPosition">
+            <enum name="inside" value="1" />
+            <enum name="midpoint" value="0" />
+        </attr>
     </declare-styleable>
     <declare-styleable name="SeslSwitch">
         <attr name="android:thumb" />
