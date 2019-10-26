@@ -12,15 +12,15 @@ import android.view.animation.Interpolator;
 import android.view.animation.PathInterpolator;
 import java.lang.ref.WeakReference;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.v4.view.AbsSavedState;
-import android.support.v4.math.MathUtils;
-import android.support.v4.view.MotionEventCompat;
-import android.support.v4.view.NestedScrollingChild;
-import android.support.v4.view.ViewCompat;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.math.MathUtils;
+import androidx.core.view.MotionEventCompat;
+import androidx.core.view.NestedScrollingChild;
+import androidx.core.view.ViewCompat;
+import androidx.customview.view.AbsSavedState;
+import com.google.android.material.appbar.AppBarLayout;
 
 import com.mesalabs.cerberus.CerberusApp;
 import com.mesalabs.cerberus.R;

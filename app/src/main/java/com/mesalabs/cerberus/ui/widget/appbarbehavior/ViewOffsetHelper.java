@@ -2,7 +2,7 @@ package com.mesalabs.cerberus.ui.widget.appbarbehavior;
 
 import android.view.View;
 
-import android.support.v4.view.ViewCompat;
+import androidx.core.view.ViewCompat;
 
 /*
  * Cerberus Core App

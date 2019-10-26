@@ -7,8 +7,8 @@ import android.view.VelocityTracker;
 import android.view.View;
 import android.view.ViewConfiguration;
 
-import android.support.design.widget.CoordinatorLayout;
-import android.support.v4.math.MathUtils;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.math.MathUtils;
 
 /*
  * Cerberus Core App

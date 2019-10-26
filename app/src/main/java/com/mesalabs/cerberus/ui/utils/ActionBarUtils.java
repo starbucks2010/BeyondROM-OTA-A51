@@ -17,9 +17,9 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
-import android.support.design.widget.AppBarLayout;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import com.google.android.material.appbar.AppBarLayout;
 
 import com.mesalabs.cerberus.R;
 import com.mesalabs.cerberus.ui.widget.ToolbarImageButton;
@@ -99,16 +99,11 @@ public class ActionBarUtils {
         if (moreMenuPopupWindow != null || moreMenuPopupWindow.isShowing()) {
             moreMenuPopupWindow.dismiss();
         } else
-            LogUtils.w(activity.getLocalClassName() + ".createMorePopupWindow", "moreMenuPopupWindow is null or already hidden.");
-    }
-
-    public AppBarLayout getAppBarLayout() {
-        return appBarLayout;
+            LogUtils.w(activity.getLocalClassName() + ".dismissMoreMenuPopupWindow", "moreMenuPopupWindow is null or already hidden.");
     }
 
     private int getMoreMenuPopupWidth(MoreMenuPopupAdapter adapter) {
         int makeMeasureSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
-        int makeMeasureSpec2 = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
         View view = null;
         ViewGroup viewGroup = null;
         int measuredWidth = 0;
@@ -129,7 +124,7 @@ public class ActionBarUtils {
                 linearLayout = viewGroup;
 
             view = adapter.getView(i, view, linearLayout);
-            view.measure(makeMeasureSpec, makeMeasureSpec2);
+            view.measure(makeMeasureSpec, makeMeasureSpec);
             measuredWidth = view.getMeasuredWidth();
             if (measuredWidth <= 0) {
                 measuredWidth = 0;
@@ -337,6 +332,14 @@ public class ActionBarUtils {
             throw new CerberusException("ActionBarUtils: Can't set title text: AppBar/Toolbar hasn't been initialized yet!");
     }
 
+    public void setTitleText(String bigTitleText, String smallTitleText) {
+        if (collapsingToolbarLayout != null && toolbarTitle != null) {
+            collapsingToolbarLayout.setTitle(bigTitleText);
+            toolbarTitle.setText(smallTitleText);
+        } else
+            throw new CerberusException("ActionBarUtils: Can't set title text: AppBar/Toolbar hasn't been initialized yet!");
+    }
+
     public void showMoreMenuPopupWindow() {
         if (moreMenuPopupWindow != null || !moreMenuPopupWindow.isShowing())
             moreMenuPopupWindow.showAsDropDown(moreMenuPopupAnchor, moreMenuPopupWidth, moreMenuPopupHeight);
@@ -357,13 +360,13 @@ public class ActionBarUtils {
             if (appBarLayout.getHeight() <= ((int) mAppBarHeightDp)) {
                 toolbarTitle.setAlpha(1.0f);
             } else {
-                double collapsedTitleAlpha = (double) ((150.0f / alphaRange) * (((float) layoutPosition) - toolbarTitleAlphaStart));
+                float collapsedTitleAlpha = ((150.0f / alphaRange) * (((float) layoutPosition) - toolbarTitleAlphaStart));
 
-                if (collapsedTitleAlpha >= 0.0d && collapsedTitleAlpha <= 255.0d) {
-                    collapsedTitleAlpha /= 255.0d;
-                    toolbarTitle.setAlpha((float) collapsedTitleAlpha);
+                if (collapsedTitleAlpha >= 0.0f && collapsedTitleAlpha <= 255.0f) {
+                    collapsedTitleAlpha /= 255.0f;
+                    toolbarTitle.setAlpha(collapsedTitleAlpha);
                 }
-                else if (collapsedTitleAlpha < 0.0d)
+                else if (collapsedTitleAlpha < 0.0f)
                     toolbarTitle.setAlpha(0.0f);
                 else
                     toolbarTitle.setAlpha(1.0f);

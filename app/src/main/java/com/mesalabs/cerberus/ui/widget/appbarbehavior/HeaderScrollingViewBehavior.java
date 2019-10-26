@@ -8,11 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import java.util.List;
 
-import android.support.design.widget.CoordinatorLayout;
-import android.support.v4.math.MathUtils;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.view.ViewCompat;
-import android.support.v4.view.WindowInsetsCompat;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.math.MathUtils;
+import androidx.core.view.GravityCompat;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 import com.mesalabs.cerberus.utils.Utils;
 

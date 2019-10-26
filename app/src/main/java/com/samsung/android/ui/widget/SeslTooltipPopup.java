@@ -15,7 +15,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
 
-import android.support.v7.view.ContextThemeWrapper;
+import androidx.appcompat.view.ContextThemeWrapper;
 
 import com.mesalabs.cerberus.R;
 

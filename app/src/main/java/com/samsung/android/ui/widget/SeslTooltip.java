@@ -12,8 +12,8 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.accessibility.AccessibilityManager;
 
-import android.support.v4.view.InputDeviceCompat;
-import android.support.v4.view.ViewCompat;
+import androidx.core.view.InputDeviceCompat;
+import androidx.core.view.ViewCompat;
 
 import com.mesalabs.cerberus.utils.Utils;
 

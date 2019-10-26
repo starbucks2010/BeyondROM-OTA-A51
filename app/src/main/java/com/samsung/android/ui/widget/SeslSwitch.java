@@ -34,13 +34,13 @@ import android.view.animation.Animation;
 import android.view.animation.Transformation;
 import android.widget.CompoundButton;
 
-import android.support.v4.graphics.drawable.DrawableCompat;
-import android.support.v4.view.ViewCompat;
-import android.support.v7.content.res.AppCompatResources;
-import android.support.v7.text.AllCapsTransformationMethod;
-import android.support.v7.widget.DrawableUtils;
-import android.support.v7.widget.TintTypedArray;
-import android.support.v7.widget.ViewUtils;
+import androidx.appcompat.content.res.AppCompatResources;
+import androidx.appcompat.text.AllCapsTransformationMethod;
+import androidx.appcompat.widget.DrawableUtils;
+import androidx.appcompat.widget.TintTypedArray;
+import androidx.appcompat.widget.ViewUtils;
+import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.core.view.ViewCompat;
 
 import com.mesalabs.cerberus.R;
 import com.mesalabs.cerberus.utils.Utils;

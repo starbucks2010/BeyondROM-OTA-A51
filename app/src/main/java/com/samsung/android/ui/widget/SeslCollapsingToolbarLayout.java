@@ -1,7 +1,6 @@
 package com.samsung.android.ui.widget;
 
 import android.animation.ValueAnimator;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -25,24 +24,24 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import android.support.annotation.ColorInt;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.IntRange;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.StyleRes;
-import android.support.design.animation.AnimationUtils;
-import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CollapsingTextHelper;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.graphics.drawable.DrawableCompat;
-import android.support.v4.math.MathUtils;
-import android.support.v4.util.ObjectsCompat;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.view.ViewCompat;
-import android.support.v4.view.WindowInsetsCompat;
-import android.support.v4.widget.ViewGroupUtils;
-import android.support.v7.widget.Toolbar;
+import androidx.annotation.ColorInt;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.IntRange;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.StyleRes;
+import androidx.appcompat.widget.Toolbar;
+import androidx.coordinatorlayout.widget.ViewGroupUtils;
+import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.core.math.MathUtils;
+import androidx.core.util.ObjectsCompat;
+import androidx.core.view.GravityCompat;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+import com.google.android.material.animation.AnimationUtils;
+import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.internal.CollapsingTextHelper;
 
 import com.mesalabs.cerberus.R;
 import com.mesalabs.cerberus.ui.widget.appbarbehavior.ViewOffsetHelper;
@@ -218,7 +217,7 @@ public class SeslCollapsingToolbarLayout extends FrameLayout {
 
         setWillNotDraw(false);
 
-        ViewCompat.setOnApplyWindowInsetsListener(this, new android.support.v4.view.OnApplyWindowInsetsListener() {
+        ViewCompat.setOnApplyWindowInsetsListener(this, new androidx.core.view.OnApplyWindowInsetsListener() {
             @Override
             public WindowInsetsCompat onApplyWindowInsets(View v, WindowInsetsCompat insets) {
                 return onWindowInsetChanged(insets);
@@ -839,7 +838,6 @@ public class SeslCollapsingToolbarLayout extends FrameLayout {
         }
     }
 
-    @NonNull
     public Typeface getCollapsedTitleTypeface() {
         if (mCollapsingTitleEnabled) {
             return mCollapsingTextHelper.getCollapsedTypeface();
@@ -856,7 +854,6 @@ public class SeslCollapsingToolbarLayout extends FrameLayout {
         }
     }
 
-    @NonNull
     public Typeface getExpandedTitleTypeface() {
         if (mCollapsingToolbarLayoutTitleEnabled) {
             return mCollapsingToolbarExtendedTitle.getTypeface();

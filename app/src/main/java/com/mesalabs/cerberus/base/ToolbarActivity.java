@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.mesalabs.cerberus.R;
 import com.mesalabs.cerberus.ui.utils.ActionBarUtils;

@@ -42,22 +42,22 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import static android.support.v4.view.ViewPager.SCROLL_STATE_DRAGGING;
-import static android.support.v4.view.ViewPager.SCROLL_STATE_IDLE;
-import static android.support.v4.view.ViewPager.SCROLL_STATE_SETTLING;
+import static androidx.viewpager.widget.ViewPager.SCROLL_STATE_DRAGGING;
+import static androidx.viewpager.widget.ViewPager.SCROLL_STATE_IDLE;
+import static androidx.viewpager.widget.ViewPager.SCROLL_STATE_SETTLING;
 
-import android.support.design.animation.AnimationUtils;
-import android.support.design.widget.TabItem;
-import android.support.v4.util.Pools;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.PointerIconCompat;
-import android.support.v4.widget.TextViewCompat;
-import android.support.v4.view.ViewCompat;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBar;
-import android.support.v7.content.res.AppCompatResources;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.content.res.AppCompatResources;
+import androidx.core.util.Pools;
+import androidx.core.view.GravityCompat;
+import androidx.core.view.PointerIconCompat;
+import androidx.core.view.ViewCompat;
+import androidx.core.widget.TextViewCompat;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.material.animation.AnimationUtils;
+import com.google.android.material.tabs.TabItem;
 import com.mesalabs.cerberus.R;
 import com.samsung.android.ui.internal.SeslAbsIndicatorView;
 
@@ -170,11 +170,11 @@ public class SeslTabLayout extends HorizontalScrollView {
 
         mTabTextAppearance = a.getResourceId(R.styleable.SeslTabLayout_tabTextAppearance, R.style.mesa_SeslTabTextStyle_Light);
 
-        final TypedArray ta = context.obtainStyledAttributes(mTabTextAppearance, android.support.v7.appcompat.R.styleable.TextAppearance);
+        final TypedArray ta = context.obtainStyledAttributes(mTabTextAppearance, androidx.appcompat.R.styleable.TextAppearance);
         try {
-            mTabTextSize = ta.getDimensionPixelSize(android.support.v7.appcompat.R.styleable.TextAppearance_android_textSize, 0);
-            mIsScaledTextSizeType = ta.getText(android.support.v7.appcompat.R.styleable.TextAppearance_android_textSize).toString().contains("sp");
-            mTabTextColors = ta.getColorStateList(android.support.v7.appcompat.R.styleable.TextAppearance_android_textColor);
+            mTabTextSize = ta.getDimensionPixelSize(androidx.appcompat.R.styleable.TextAppearance_android_textSize, 0);
+            mIsScaledTextSizeType = ta.getText(androidx.appcompat.R.styleable.TextAppearance_android_textSize).toString().contains("sp");
+            mTabTextColors = ta.getColorStateList(androidx.appcompat.R.styleable.TextAppearance_android_textColor);
             ta.recycle();
 
             mBoldTypeface = Typeface.create("sec-roboto-light", Typeface.BOLD);

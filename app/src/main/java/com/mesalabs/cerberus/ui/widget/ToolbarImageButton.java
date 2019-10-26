@@ -11,9 +11,9 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 
-import android.support.annotation.DrawableRes;
-import android.support.v7.widget.AppCompatImageButton;
-import android.support.v7.widget.Toolbar;
+import androidx.annotation.DrawableRes;
+import androidx.appcompat.widget.AppCompatImageButton;
+import androidx.appcompat.widget.Toolbar;
 
 import com.mesalabs.cerberus.R;
 import com.samsung.android.ui.widget.SeslTooltip;

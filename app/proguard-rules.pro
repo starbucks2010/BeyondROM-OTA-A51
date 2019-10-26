@@ -21,5 +21,5 @@
 #-renamesourcefileattribute SourceFile
 
 # com.mesalabs.cerberus.ui.widget.appbarbehavior
--keep class android.support.design.widget.AppBarLayout { *; }
--keep class android.support.design.widget.CoordinatorLayout { *; }
+-keep class androidx.coordinatorlayout.widget.CoordinatorLayout { *; }
+-keep class com.google.android.material.appbar.AppBarLayout { *; }

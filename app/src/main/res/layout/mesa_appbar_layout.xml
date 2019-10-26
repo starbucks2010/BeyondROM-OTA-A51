@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.AppBarLayout
+<com.google.android.material.appbar.AppBarLayout
     android:id="@+id/mesa_appbar_appbarlayout"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
@@ -17,7 +17,7 @@
         app:toolbarId="@+id/mesa_toolbar_appbarlayout"
         style="?collapsedToolbarLayoutStyle">
 
-        <android.support.v7.widget.Toolbar
+        <androidx.appcompat.widget.Toolbar
             android:id="@+id/mesa_toolbar_appbarlayout"
             android:layout_width="fill_parent"
             android:layout_height="?actionBarSize"
@@ -75,8 +75,8 @@
 
             </LinearLayout>
 
-        </android.support.v7.widget.Toolbar>
+        </androidx.appcompat.widget.Toolbar>
 
     </com.samsung.android.ui.widget.SeslCollapsingToolbarLayout>
 
-</android.support.design.widget.AppBarLayout>
+</com.google.android.material.appbar.AppBarLayout>
