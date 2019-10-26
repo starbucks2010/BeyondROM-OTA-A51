@@ -60,6 +60,46 @@ public class Utils {
         }
     }
 
+    public static Object genericInvokeMethod(String className, String methodName, Object... params) {
+        int paramCount = params.length;
+        Method method;
+        Object requiredObj = null;
+        Class<?> cl;
+        Class<?>[] classArray = new Class<?>[paramCount];
+
+        try {
+            cl = Class.forName(className);
+        } catch (ClassNotFoundException e) {
+            LogUtils.e("Utils.genericInvokeMethod", e.toString());
+            return null;
+        }
+
+        for (int i = 0; i < paramCount; i++) {
+            // FIX
+            if (params[i].getClass() == Boolean.class)
+                classArray[i] = boolean.class;
+            else if (params[i].getClass() == Integer.class)
+                classArray[i] = int.class;
+            else
+                classArray[i] = params[i].getClass();
+        }
+        try {
+            method = cl.getDeclaredMethod(methodName, classArray);
+            method.setAccessible(true);
+            requiredObj = method.invoke(null, params);
+        } catch (NoSuchMethodException e) {
+            LogUtils.e("Utils.genericInvokeMethod", e.toString());
+        } catch (IllegalArgumentException e) {
+            LogUtils.e("Utils.genericInvokeMethod", e.toString());
+        } catch (IllegalAccessException e) {
+            LogUtils.e("Utils.genericInvokeMethod", e.toString());
+        } catch (InvocationTargetException e) {
+            LogUtils.e("Utils.genericInvokeMethod", e.toString());
+        }
+
+        return requiredObj;
+    }
+
     public static Object genericInvokeMethod(Object obj, String methodName, Object... params) {
         int paramCount = params.length;
         Method method;

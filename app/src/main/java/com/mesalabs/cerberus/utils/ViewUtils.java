@@ -139,6 +139,11 @@ public class ViewUtils {
         return context.getResources().getConfiguration().getLayoutDirection() == View.LAYOUT_DIRECTION_RTL;
     }
 
+    public static boolean isSupportSoftNavigationBar(Context context) {
+        int id = context.getResources().getIdentifier("config_showNavigationBar", "bool", "android");
+        return id > 0 && context.getResources().getBoolean(id);
+    }
+
     public static boolean isVisibleNaviBar(Context context) {
         return Settings.Global.getInt(context.getContentResolver(), "navigationbar_hide_bar_enabled", 0) == 0;
     }
@@ -231,6 +236,10 @@ public class ViewUtils {
             imageView.setImageDrawable(null);
             imageView.setBackground(null);
         }
+    }
+
+    public static void resolvePadding(ViewGroup viewGroup) {
+        Utils.genericInvokeMethod(viewGroup, "resolvePadding");
     }
 
     public static void semSetRoundedCorners(View view, int roundMode) {

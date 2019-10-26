@@ -32,6 +32,11 @@ public class LogUtils {
             Log.d("CerberusCore: " + tag, msg);
     }
 
+    public static void d(String tag, String msg, Exception e) {
+        if (CerberusApp.isDebugBuild())
+            Log.d("CerberusCore: " + tag, msg, e);
+    }
+
     // Info
     public static void i(String tag, String msg) {
         if (CerberusApp.isDebugBuild())
@@ -42,6 +47,11 @@ public class LogUtils {
     public static void w(String tag, String msg) {
         if (CerberusApp.isDebugBuild())
             Log.w("CerberusCore: " + tag, msg);
+    }
+
+    public static void w(String tag, String msg, Exception e) {
+        if (CerberusApp.isDebugBuild())
+            Log.w("CerberusCore: " + tag, msg, e);
     }
 
     // Error
