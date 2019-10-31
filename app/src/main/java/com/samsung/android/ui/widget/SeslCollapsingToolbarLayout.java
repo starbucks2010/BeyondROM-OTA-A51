@@ -568,6 +568,10 @@ public class SeslCollapsingToolbarLayout extends FrameLayout {
         }
     }
 
+    public boolean isTitleEnabled() {
+        return mCollapsingToolbarLayoutTitleEnabled;
+    }
+
     public void setSubtitle(int resId) {
         setSubtitle(getContext().getText(resId));
     }
