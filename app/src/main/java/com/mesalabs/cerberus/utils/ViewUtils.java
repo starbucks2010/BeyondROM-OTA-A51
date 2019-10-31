@@ -65,7 +65,6 @@ public class ViewUtils {
                 return 0;
             }
 
-
             return windowManager.getDefaultDisplay().getRotation();
         } catch (Exception unused) {
             LogUtils.e("ViewUtils", "cannot get portrait orientation");
@@ -240,6 +239,10 @@ public class ViewUtils {
 
     public static void resolvePadding(ViewGroup viewGroup) {
         Utils.genericInvokeMethod(viewGroup, "resolvePadding");
+    }
+
+    public static void semSetHoverPopupType(View view, int type) {
+        Utils.genericInvokeMethod(view, "semSetHoverPopupType", type);
     }
 
     public static void semSetRoundedCorners(View view, int roundMode) {
