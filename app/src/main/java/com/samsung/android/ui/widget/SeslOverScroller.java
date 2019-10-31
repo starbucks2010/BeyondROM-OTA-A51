@@ -25,6 +25,7 @@ import com.mesalabs.cerberus.utils.Utils;
  */
 
 class SeslOverScroller {
+    private static final String TAG = "SeslOverScroller";
     private static final int DEFAULT_DURATION = 250;
     private static final int FLING_MODE = 1;
     private static final int SCROLL_MODE = 0;
@@ -51,9 +52,18 @@ class SeslOverScroller {
         mScrollerX = new SplineOverScroller(context);
         mScrollerY = new SplineOverScroller(context);
 
-        if (! (boolean) Utils.genericInvokeMethod("com.samsung.android.os.SemPerfManager", "onSmoothScrollEvent", false)) {
+        // FIX
+        boolean isSmoothScrollEnabled = true;
+        try {
+            isSmoothScrollEnabled = (boolean) Utils.genericInvokeMethod("com.samsung.android.os.SemPerfManager", "onSmoothScrollEvent", false);
+        } catch (NullPointerException e) {
+            LogUtils.e(TAG, "isSmoothScrollEnabled: genericInvokeMethod returned null!!!");
+            isSmoothScrollEnabled = false;
+        }
+
+        if (!isSmoothScrollEnabled) {
             setSmoothScrollEnabled(false);
-            LogUtils.e("SeslOverScroller", "does NOT support Smoothscroll booster thus Smoothscroll's disabled");
+            LogUtils.e(TAG, "does NOT support Smoothscroll booster thus Smoothscroll's disabled");
         }
     }
 
@@ -558,7 +568,7 @@ class SeslOverScroller {
                     startSpringback(start, edge, velocity);
                 }
             } else {
-                LogUtils.e("OverScroller", "startAfterEdge called from a valid position");
+                LogUtils.e(TAG, "startAfterEdge called from a valid position");
                 mFinished = true;
             }
         }

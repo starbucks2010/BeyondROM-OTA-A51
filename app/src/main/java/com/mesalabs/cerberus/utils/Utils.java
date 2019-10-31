@@ -63,7 +63,9 @@ public class Utils {
     public static Object genericInvokeMethod(String className, String methodName, Object... params) {
         int paramCount = params.length;
         Method method;
-        Object requiredObj = null;
+        // FIX (SeslOverScroller)
+        Object requiredObj = className.contains("SemPerfManager") ? false : null;
+        // FIX (SeslOverScroller)
         Class<?> cl;
         Class<?>[] classArray = new Class<?>[paramCount];
 
@@ -71,7 +73,7 @@ public class Utils {
             cl = Class.forName(className);
         } catch (ClassNotFoundException e) {
             LogUtils.e("Utils.genericInvokeMethod", e.toString());
-            return null;
+            return requiredObj;
         }
 
         for (int i = 0; i < paramCount; i++) {
@@ -87,6 +89,9 @@ public class Utils {
             method = cl.getDeclaredMethod(methodName, classArray);
             method.setAccessible(true);
             requiredObj = method.invoke(null, params);
+            // FIX (SeslOverScroller)
+            return className.contains("SemPerfManager") ? true : requiredObj;
+            // FIX (SeslOverScroller)
         } catch (NoSuchMethodException e) {
             LogUtils.e("Utils.genericInvokeMethod", e.toString());
         } catch (IllegalArgumentException e) {
