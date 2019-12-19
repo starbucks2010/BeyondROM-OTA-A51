@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="tw_section_divider_text_color_mtrl">#ff858585</color>
+    <color name="tw_section_divider_text_color_mtrl_dark">#ff858585</color>
+
     <color name="sesl_black">#252525</color>
     <color name="sesl_white">#FAFAFA</color>
 
@@ -142,6 +145,8 @@
 
     <color name="sesl_list_divider_color_dark">#33D4D4D4</color>
     <color name="sesl_list_divider_color_light">#E6E6E6</color>
+
+    <color name="sesl_list_subheader_text_color">#ff858585</color>
 
     <color name="sesl_tablayout_badge_text_color">#FAFAFA</color>
     <color name="sesl_tablayout_show_button_text_color">#FAFAFA</color>

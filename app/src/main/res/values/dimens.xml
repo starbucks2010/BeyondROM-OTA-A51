@@ -1,4 +1,6 @@
 <resources>
+    <dimen name="tw_list_subheader_minheight">16.0dip</dimen>
+    <dimen name="tw_list_subheader_text_size">14.0sp</dimen>
 
     <dimen name="sesl_round_stroke_height">1.0px</dimen>
 
@@ -140,6 +142,17 @@
     <dimen name="sesl_fast_scroller_additional_bottom_padding">18.0dip</dimen>
     <dimen name="sesl_fast_scroller_touch_target_min_size">48.0dip</dimen>
     <dimen name="sesl_fast_scroller_track_padding">6.0dip</dimen>
+
+    <dimen name="sesl_preference_item_padding_vertical">14.0dip</dimen>
+    <dimen name="sesl_preference_item_icon_size">40.0dip</dimen>
+    <dimen name="sesl_switch_divider_height">1.0px</dimen>
+    <dimen name="sesl_list_divider_height">1.0px</dimen>
+
+
+    <dimen name="sesl_list_subheader_min_height">16.0dip</dimen>
+    <dimen name="sesl_list_subheader_padding_bottom">5.0dip</dimen>
+    <dimen name="sesl_list_subheader_padding_top">11.75dip</dimen>
+    <dimen name="sesl_list_subheader_text_size">14.0sp</dimen>
 
 
 

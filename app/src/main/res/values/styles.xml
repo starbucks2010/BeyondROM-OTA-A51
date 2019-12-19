@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="PrivateResource">
 
     <!-- App Day/Night Mode Themes -->
     <style name="mesa_AppStyle.DayNight" parent="@style/mesa_AppStyle.Light" />
@@ -139,13 +139,17 @@
 
         <item name="android:windowAnimationStyle">@style/mesa_ActivityAnimStyle</item>
 
+        <item name="preferenceTheme">@style/mesa_PreferenceThemeStyle</item>
+        <item name="android:listSeparatorTextViewStyle">@style/mesa_SeslListSeparatorStyle</item>
+        <item name="android:listDivider">@drawable/sesl_list_divider_dark</item>
+
         <item name="collapsedToolbarLayoutStyle">@style/mesa_SeslCollapsingToolbarStyle</item>
         <item name="round_and_bgColor">@color/sesl_round_and_bgcolor_dark</item>
         <item name="cardBgColor">@color/sesl_background_color_dark</item>
         <item name="goToTopStyle">@drawable/sesl_list_go_to_top_dark</item>
         <item name="roundedCornerColor">@color/sesl_round_and_bgcolor_dark</item>
         <item name="roundedCornerStrokeColor">@color/sesl_round_stroke_dark</item>
-        <item name="dividerColor">@color/sesl_list_divider_color_dark</item>
+        <item name="listDividerColor">@color/sesl_list_divider_color_dark</item>
         <item name="primaryTextColor">@color/sesl_primary_text_dark</item>
         <item name="secondaryTextColor">@color/sesl_secondary_text_dark</item>
     </style>
@@ -287,13 +291,17 @@
 
         <item name="android:windowAnimationStyle">@style/mesa_ActivityAnimStyle</item>
 
+        <item name="preferenceTheme">@style/mesa_PreferenceThemeStyle</item>
+        <item name="android:listSeparatorTextViewStyle">@style/mesa_SeslListSeparatorStyle</item>
+        <item name="android:listDivider">@drawable/sesl_list_divider_light</item>
+
         <item name="collapsedToolbarLayoutStyle">@style/mesa_SeslCollapsingToolbarStyle.Light</item>
         <item name="round_and_bgColor">@color/sesl_round_and_bgcolor_light</item>
         <item name="cardBgColor">@color/sesl_background_color_light</item>
         <item name="goToTopStyle">@drawable/sesl_list_go_to_top_light</item>
         <item name="roundedCornerColor">@color/sesl_round_and_bgcolor_light</item>
         <item name="roundedCornerStrokeColor">@color/sesl_round_stroke_light</item>
-        <item name="dividerColor">@color/sesl_list_divider_color_light</item>
+        <item name="listDividerColor">@color/sesl_list_divider_color_light</item>
         <item name="primaryTextColor">@color/sesl_primary_text_light</item>
         <item name="secondaryTextColor">@color/sesl_secondary_text_light</item>
     </style>
@@ -723,6 +731,99 @@
         <item name="android:textColor">@color/sesl_tablayout_text_color</item>
     </style>
 
+    <style name="mesa_PreferenceThemeStyle">
+        <item name="checkBoxPreferenceStyle">@style/mesa_SeslCheckBoxPreferenceStyle</item>
+        <item name="dialogPreferenceStyle">@style/mesa_SeslDialogPreferenceStyle</item>
+        <item name="dropdownPreferenceStyle">@style/mesa_SeslDropDownPreferenceStyle</item>
+        <item name="editTextPreferenceStyle">@style/mesa_SeslEditTextPreferenceStyle</item>
+        <item name="preferenceCategoryStyle">@style/mesa_SeslPreferenceCategoryStyle</item>
+        <item name="preferenceFragmentCompatStyle">@style/mesa_SeslPreferenceFragmentStyle</item>
+        <item name="preferenceFragmentListStyle">@style/mesa_SeslPreferenceFragmentListStyle</item>
+        <item name="preferenceFragmentStyle">@style/mesa_SeslPreferenceFragmentStyle</item>
+        <item name="preferenceInformationStyle">@style/mesa_SeslInfoPreferenceStyle</item>
+        <item name="preferenceScreenStyle">@style/mesa_SeslPreferenceScreenStyle</item>
+        <item name="preferenceStyle">@style/mesa_SeslPreferenceStyle</item>
+        <item name="ringtonePreferenceStyle">@style/mesa_SeslRingtonePreferenceStyle</item>
+        <item name="seekBarDialogPreferenceStyle">@style/mesa_SeslDialogSeekBarPreferenceStyle</item>
+        <item name="seekBarPreferenceStyle">@style/mesa_SeslSeekBarPreferenceStyle</item>
+        <item name="switchPreferenceCompatStyle">@style/mesa_SeslSwitchPreferenceStyle</item>
+        <item name="switchPreferenceStyle">@style/mesa_SeslSwitchPreferenceStyle</item>
+    </style>
+    <style name="mesa_SeslPreferenceStyle">
+        <item name="android:layout">@layout/sesl_preference</item>
+    </style>
+    <style name="mesa_SeslPreferenceCategoryStyle" parent="@style/mesa_SeslPreferenceStyle">
+        <item name="android:layout">@layout/sesl_preference_category</item>
+        <item name="android:selectable">false</item>
+        <item name="android:shouldDisableView">false</item>
+    </style>
+    <style name="mesa_SeslCheckBoxPreferenceStyle" parent="@style/mesa_SeslPreferenceStyle">
+        <item name="android:widgetLayout">@layout/sesl_preference_widget_checkbox</item>
+    </style>
+    <style name="mesa_SeslDialogPreferenceStyle" parent="@style/mesa_SeslPreferenceStyle">
+        <item name="android:positiveButtonText">@android:string/ok</item>
+        <item name="android:negativeButtonText">@android:string/cancel</item>
+    </style>
+    <style name="mesa_SeslEditTextPreferenceStyle" parent="@style/mesa_SeslDialogPreferenceStyle">
+        <item name="android:dialogLayout">@layout/sesl_preference_dialog_edittext</item>
+    </style>
+    <style name="mesa_SeslDialogSeekBarPreferenceStyle" parent="@style/mesa_SeslDialogPreferenceStyle">
+        <item name="android:dialogLayout">@layout/sesl_preference_dialog_seekbar</item>
+    </style>
+    <style name="mesa_SeslDropDownPreferenceStyle" parent="@style/mesa_SeslPreferenceStyle">
+        <item name="android:layout">@layout/sesl_preference_dropdown</item>
+    </style>
+    <style name="mesa_SeslInfoPreferenceStyle" parent="@style/mesa_SeslPreferenceStyle">
+        <item name="android:enabled">false</item>
+        <item name="android:layout">@layout/preference_information</item>
+        <item name="android:shouldDisableView">false</item>
+    </style>
+    <style name="mesa_SeslPreferenceScreenStyle" parent="@style/mesa_SeslPreferenceStyle" />
+    <style name="mesa_SeslRingtonePreferenceStyle" parent="@style/mesa_SeslPreferenceStyle">
+        <item name="android:ringtoneType">ringtone</item>
+        <item name="android:showDefault">true</item>
+        <item name="android:showSilent">true</item>
+    </style>
+    <style name="mesa_SeslSeekBarPreferenceStyle" parent="@style/mesa_SeslPreferenceStyle">
+        <item name="android:layout">@layout/sesl_preference_widget_seekbar</item>
+        <item name="adjustable">true</item>
+        <item name="showSeekBarValue">true</item>
+    </style>
+    <style name="mesa_SeslSeekBarPreferenceCompatStyle" parent="@style/mesa_SeslPreferenceStyle">
+        <item name="android:layout">@layout/sesl_preference_widget_seekbar</item>
+    </style>
+    <style name="mesa_SeslSwitchPreferenceStyle" parent="@style/mesa_SeslPreferenceStyle">
+        <item name="android:widgetLayout">@layout/sesl_preference_widget_switch</item>
+        <item name="android:switchTextOn">@string/sesl_preference_on</item>
+        <item name="android:switchTextOff">@string/sesl_preference_off</item>
+    </style>
+    <style name="mesa_SeslPreferenceFragmentStyle">
+        <item name="android:divider">?android:listDivider</item>
+        <item name="android:paddingStart">0.0dip</item>
+        <item name="android:paddingEnd">0.0dip</item>
+    </style>
+    <style name="mesa_SeslPreferenceFragmentListStyle">
+        <item name="android:paddingStart">16.0dip</item>
+        <item name="android:paddingEnd">16.0dip</item>
+    </style>
+
+    <style name="mesa_SeslListSeparatorStyle" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">@dimen/sesl_list_subheader_text_size</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/sesl_list_subheader_text_color</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:background">?roundedCornerColor</item>
+        <item name="android:paddingTop">@dimen/sesl_list_subheader_padding_top</item>
+        <item name="android:paddingBottom">@dimen/sesl_list_subheader_padding_bottom</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:textDirection">locale</item>
+        <item name="android:paddingStart">?android:listPreferredItemPaddingStart</item>
+        <item name="android:paddingEnd">?android:listPreferredItemPaddingEnd</item>
+        <item name="fontFamily">sans-serif</item>
+    </style>
 
     <style name="mesa_ActivityAnimStyle" parent="@android:style/Animation.Activity" />
 

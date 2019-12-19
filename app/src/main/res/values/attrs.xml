@@ -13,7 +13,7 @@
     <attr name="goToTopStyle" format="reference" />
     <attr name="roundedCornerColor" format="color" />
     <attr name="roundedCornerStrokeColor" format="color" />
-    <attr name="dividerColor" format="string|integer|color|reference" />
+    <attr name="listDividerColor" format="color" />
     <attr name="primaryTextColor" format="string|integer|color|reference" />
     <attr name="secondaryTextColor" format="string|integer|color|reference" />
     <attr name="switchBarActivatedColor" format="string|integer|color|reference" />
@@ -25,6 +25,10 @@
     <attr name="spinnerDropdownTextColor" format="reference|color" />
 
     <attr name="useDisabledAlpha" format="boolean" />
+
+    <attr name="ringtonePreferenceStyle" format="reference" />
+    <attr name="seekBarDialogPreferenceStyle" format="reference" />
+
 
 
     <attr name="cornersStroke" format="boolean" />
@@ -148,6 +152,104 @@
         <attr name="tabPaddingEnd" format="dimension"/>
         <attr name="tabPaddingBottom" format="dimension"/>
         <attr name="tabPadding" format="dimension"/>
+    </declare-styleable>
+
+
+    <declare-styleable name="View">
+        <attr name="android:background" />
+    </declare-styleable>
+    <declare-styleable name="SeslPreference">
+        <attr name="icon" />
+        <attr name="android:icon" />
+        <attr name="key" format="string" />
+        <attr name="android:key" />
+        <attr name="title" />
+        <attr name="android:title" />
+        <attr name="summary" format="string" />
+        <attr name="android:summary" />
+        <attr name="order" format="integer" />
+        <attr name="android:order" />
+        <attr name="fragment" format="string" />
+        <attr name="android:fragment" />
+        <attr name="layout" />
+        <attr name="android:layout" />
+        <attr name="widgetLayout" format="reference" />
+        <attr name="android:widgetLayout" />
+        <attr name="enabled" format="boolean" />
+        <attr name="android:enabled" />
+        <attr name="selectable" format="boolean" />
+        <attr name="android:selectable" />
+        <attr name="dependency" format="string" />
+        <attr name="android:dependency" />
+        <attr name="persistent" format="boolean" />
+        <attr name="android:persistent" />
+        <attr name="defaultValue" format="string|boolean|integer|reference|float" />
+        <attr name="android:defaultValue" />
+        <attr name="shouldDisableView" format="boolean" />
+        <attr name="android:shouldDisableView" />
+        <attr name="allowDividerAbove" format="boolean" />
+        <attr name="allowDividerBelow" format="boolean" />
+        <attr name="singleLineTitle" format="boolean" />
+        <attr name="android:singleLineTitle" />
+        <attr name="iconSpaceReserved" format="boolean" />
+        <attr name="android:iconSpaceReserved" />
+    </declare-styleable>
+    <declare-styleable name="SeslPreferenceFragmentCompat">
+        <attr name="android:layout" />
+        <attr name="android:divider" />
+        <attr name="android:dividerHeight" />
+        <attr name="allowDividerAfterLastItem" format="boolean" />
+    </declare-styleable>
+    <declare-styleable name="SeslPreferenceGroup">
+        <attr name="orderingFromXml" format="boolean" />
+        <attr name="android:orderingFromXml" />
+    </declare-styleable>
+    <declare-styleable name="SeslPreferenceImageView">
+        <attr name="maxWidth" format="dimension" />
+        <attr name="android:maxWidth" />
+        <attr name="maxHeight" format="dimension" />
+        <attr name="android:maxHeight" />
+    </declare-styleable>
+
+    <declare-styleable name="SeslDialogPreference">
+        <attr name="dialogTitle" format="string" />
+        <attr name="android:dialogTitle" />
+        <attr name="dialogMessage" format="string" />
+        <attr name="android:dialogMessage" />
+        <attr name="dialogIcon" format="reference" />
+        <attr name="android:dialogIcon" />
+        <attr name="positiveButtonText" format="string" />
+        <attr name="android:positiveButtonText" />
+        <attr name="negativeButtonText" format="string" />
+        <attr name="android:negativeButtonText" />
+        <attr name="dialogLayout" format="reference" />
+        <attr name="android:dialogLayout" />
+    </declare-styleable>
+    <declare-styleable name="SeslCheckBoxPreference">
+        <attr name="summaryOn" format="string" />
+        <attr name="android:summaryOn" />
+        <attr name="summaryOff" format="string" />
+        <attr name="android:summaryOff" />
+        <attr name="disableDependentsState" format="boolean" />
+        <attr name="android:disableDependentsState" />
+    </declare-styleable>
+    <declare-styleable name="SeslListPreference">
+        <attr name="entries" format="reference" />
+        <attr name="android:entries" />
+        <attr name="entryValues" format="reference" />
+        <attr name="android:entryValues" />
+    </declare-styleable>
+    <declare-styleable name="SeslSwitchPreference">
+        <attr name="summaryOn" />
+        <attr name="android:summaryOn" />
+        <attr name="summaryOff" />
+        <attr name="android:summaryOff" />
+        <attr name="switchTextOn" format="string" />
+        <attr name="android:switchTextOn" />
+        <attr name="switchTextOff" format="string" />
+        <attr name="android:switchTextOff" />
+        <attr name="disableDependentsState" />
+        <attr name="android:disableDependentsState" />
     </declare-styleable>
 
 </resources>

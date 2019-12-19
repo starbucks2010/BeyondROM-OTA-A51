@@ -10,7 +10,7 @@
         <View
             android:id="@+id/mesa_divider_button"
             android:gravity="center"
-            android:background="?dividerColor"
+            android:background="?listDividerColor"
             android:visibility="gone"
             android:layout_width="fill_parent"
             android:layout_height="@dimen/mesa_samsungiconbutton_divider_height"

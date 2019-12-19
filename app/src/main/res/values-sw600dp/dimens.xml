@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="tw_list_subheader_minheight">24.5dip</dimen>
+    <dimen name="tw_list_subheader_text_size">13.0sp</dimen>
+</resources>

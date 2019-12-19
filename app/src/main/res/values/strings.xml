@@ -16,6 +16,9 @@
     <string name="sesl_capital_on">ON</string>
     <string name="sesl_switch_off">Off</string>
     <string name="sesl_switch_on">On</string>
+    <string name="sesl_preference_off">OFF</string>
+    <string name="sesl_preference_on">ON</string>
+
 
     <string name="sesl_search_hint">Search…</string>
     <string name="sesl_searchview_description_clear">Clear search field</string>
@@ -23,6 +26,8 @@
     <string name="sesl_searchview_description_search">Search</string>
     <string name="sesl_searchview_description_submit">Submit query</string>
     <string name="sesl_searchview_description_voice">Voice search</string>
+
+    <string name="sesl_preferencecategory_added_title">Header</string>
 
     <string name="sesl_font_family_condensed">sec-roboto-condensed</string>
     <string name="sesl_font_family_regular">sec-roboto-light</string>

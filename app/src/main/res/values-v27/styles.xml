@@ -136,12 +136,17 @@
 
         <item name="android:windowAnimationStyle">@style/mesa_ActivityAnimStyle</item>
 
+        <item name="preferenceTheme">@style/mesa_PreferenceThemeStyle</item>
+        <item name="android:listSeparatorTextViewStyle">@style/mesa_SeslListSeparatorStyle</item>
+        <item name="android:listDivider">@drawable/sesl_list_divider_dark</item>
+
         <item name="collapsedToolbarLayoutStyle">@style/mesa_SeslCollapsingToolbarStyle</item>
         <item name="round_and_bgColor">@color/sesl_round_and_bgcolor_dark</item>
         <item name="cardBgColor">@color/sesl_background_color_dark</item>
+        <item name="goToTopStyle">@drawable/sesl_list_go_to_top_dark</item>
         <item name="roundedCornerColor">@color/sesl_round_and_bgcolor_dark</item>
         <item name="roundedCornerStrokeColor">@color/sesl_round_stroke_dark</item>
-        <item name="dividerColor">@color/sesl_list_divider_color_dark</item>
+        <item name="listDividerColor">@color/sesl_list_divider_color_dark</item>
         <item name="primaryTextColor">@color/sesl_primary_text_dark</item>
         <item name="secondaryTextColor">@color/sesl_secondary_text_dark</item>
     </style>
@@ -280,12 +285,17 @@
 
         <item name="android:windowAnimationStyle">@style/mesa_ActivityAnimStyle</item>
 
+        <item name="preferenceTheme">@style/mesa_PreferenceThemeStyle</item>
+        <item name="android:listSeparatorTextViewStyle">@style/mesa_SeslListSeparatorStyle</item>
+        <item name="android:listDivider">@drawable/sesl_list_divider_light</item>
+
         <item name="collapsedToolbarLayoutStyle">@style/mesa_SeslCollapsingToolbarStyle.Light</item>
         <item name="round_and_bgColor">@color/sesl_round_and_bgcolor_light</item>
         <item name="cardBgColor">@color/sesl_background_color_light</item>
+        <item name="goToTopStyle">@drawable/sesl_list_go_to_top_light</item>
         <item name="roundedCornerColor">@color/sesl_round_and_bgcolor_light</item>
         <item name="roundedCornerStrokeColor">@color/sesl_round_stroke_light</item>
-        <item name="dividerColor">@color/sesl_list_divider_color_light</item>
+        <item name="listDividerColor">@color/sesl_list_divider_color_light</item>
         <item name="primaryTextColor">@color/sesl_primary_text_light</item>
         <item name="secondaryTextColor">@color/sesl_secondary_text_light</item>
     </style>
