@@ -29,6 +29,14 @@
     <attr name="ringtonePreferenceStyle" format="reference" />
     <attr name="seekBarDialogPreferenceStyle" format="reference" />
 
+    <attr name="seslDialogDivderColor" format="reference|color" />
+    <attr name="colorPickerEmptySlotColor" format="reference|color" />
+    <attr name="colorPickerSelectedItemTextColor" format="reference|color" />
+    <attr name="colorPickerStrokeColor" format="reference|color" />
+
+    <attr name="progressLayout" format="reference" />
+    <attr name="horizontalProgressLayout" format="reference" />
+
 
 
     <attr name="cornersStroke" format="boolean" />
@@ -154,6 +162,35 @@
         <attr name="tabPadding" format="dimension"/>
     </declare-styleable>
 
+    <declare-styleable name="SeslProgressBar">
+        <attr name="min" format="integer" />
+        <attr name="android:max" />
+        <attr name="android:progress" />
+        <attr name="android:secondaryProgress" />
+        <attr name="android:indeterminate" />
+        <attr name="android:indeterminateOnly" />
+        <attr name="android:indeterminateDrawable" />
+        <attr name="android:progressDrawable" />
+        <attr name="android:indeterminateDuration" />
+        <attr name="android:indeterminateBehavior" />
+        <attr name="android:minWidth" />
+        <attr name="android:maxWidth" />
+        <attr name="android:minHeight" />
+        <attr name="android:maxHeight" />
+        <attr name="android:interpolator" />
+        <attr name="animationResolution" format="integer" />
+        <attr name="android:mirrorForRtl" />
+        <attr name="android:progressTint" />
+        <attr name="android:progressTintMode" />
+        <attr name="android:progressBackgroundTint" />
+        <attr name="android:progressBackgroundTintMode" />
+        <attr name="android:secondaryProgressTint" />
+        <attr name="android:secondaryProgressTintMode" />
+        <attr name="android:indeterminateTint" />
+        <attr name="android:indeterminateTintMode" />
+        <attr name="backgroundTint" />
+        <attr name="backgroundTintMode" />
+    </declare-styleable>
 
     <declare-styleable name="View">
         <attr name="android:background" />
@@ -250,6 +287,36 @@
         <attr name="android:switchTextOff" />
         <attr name="disableDependentsState" />
         <attr name="android:disableDependentsState" />
+    </declare-styleable>
+
+    <declare-styleable name="SeslAlertDialog">
+        <attr name="android:layout" />
+        <attr name="buttonIconDimen" format="dimension" />
+        <attr name="fullDark" format="reference|color" />
+        <attr name="topDark" format="reference|color" />
+        <attr name="centerDark" format="reference|color" />
+        <attr name="bottomDark" format="reference|color" />
+        <attr name="fullBright" format="reference|color" />
+        <attr name="topBright" format="reference|color" />
+        <attr name="centerBright" format="reference|color" />
+        <attr name="bottomBright" format="reference|color" />
+        <attr name="bottomMedium" format="reference|color" />
+        <attr name="centerMedium" format="reference|color" />
+        <attr name="layout" />
+        <attr name="buttonPanelSideLayout" format="reference" />
+        <attr name="listLayout" format="reference" />
+        <attr name="multiChoiceItemLayout" format="reference" />
+        <attr name="singleChoiceItemLayout" format="reference" />
+        <attr name="listItemLayout" format="reference" />
+        <attr name="progressLayout" />
+        <attr name="horizontalProgressLayout" />
+        <attr name="showTitle" format="boolean" />
+        <attr name="needsDefaultBackgrounds" format="boolean" />
+        <attr name="controllerType">
+            <enum name="normal" value="0" />
+            <enum name="micro" value="1" />
+        </attr>
+        <attr name="selectionScrollOffset" format="dimension" />
     </declare-styleable>
 
 </resources>

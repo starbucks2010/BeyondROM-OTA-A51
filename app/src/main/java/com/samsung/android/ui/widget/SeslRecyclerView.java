@@ -73,6 +73,7 @@ import androidx.customview.view.AbsSavedState;
 
 import com.mesalabs.cerberus.R;
 import com.mesalabs.cerberus.utils.LogUtils;
+
 import com.mesalabs.cerberus.utils.Utils;
 import com.samsung.android.ui.util.SeslSubheaderRoundedCorner;
 
@@ -2459,7 +2460,16 @@ public class SeslRecyclerView extends ViewGroup implements NestedScrollingChild2
     }
 
     private boolean showPointerIcon(MotionEvent ev, int iconId) {
-        Utils.genericInvokeMethod(InputDevice.class, Build.VERSION.SDK_INT >= 28 ? "semSetPointerDevice" : "setPointerDevice", ev.getDevice(), iconId);
+        final String methodName;
+
+        if (VERSION.SDK_INT >= 29)
+            methodName = "hidden_semSetPointerDevice";
+        else if (VERSION.SDK_INT >= 28)
+            methodName = "semSetPointerDevice";
+        else
+            methodName = "setPointerDevice";
+
+        Utils.genericInvokeMethod(InputDevice.class, methodName, ev.getDevice(), iconId);
         return true;
     }
 
@@ -3059,7 +3069,7 @@ public class SeslRecyclerView extends ViewGroup implements NestedScrollingChild2
                 this.mIsPenHovered = false;
             }
 
-            this.mNewTextViewHoverState = (boolean) Utils.genericInvokeMethod(TextView.class, "semIsTextViewHovered");
+            this.mNewTextViewHoverState = (boolean) Utils.genericInvokeMethod(TextView.class, VERSION.SDK_INT >= 29 ? "hidden_semIsTextViewHovered" : "semIsTextViewHovered");
             if (!this.mNewTextViewHoverState && this.mOldTextViewHoverState && this.mIsPenDragBlockEnabled && (var1.getButtonState() == 32 || var1.getButtonState() == 2)) {
                 this.mIsNeedPenSelectIconSet = true;
             } else {
@@ -3636,7 +3646,7 @@ public class SeslRecyclerView extends ViewGroup implements NestedScrollingChild2
                     this.multiSelectionEnd(var4, var5);
                     break;
                 case 211:
-                    if (!(boolean) Utils.genericInvokeMethod(TextView.class, "semIsTextSelectionProgressing") && this.mIsPenSelectionEnabled) {
+                    if (!(boolean) Utils.genericInvokeMethod(TextView.class, VERSION.SDK_INT >= 29 ? "hidden_semIsTextSelectionProgressing" : "semIsTextSelectionProgressing") && this.mIsPenSelectionEnabled) {
                         this.mIsNeedPenSelection = true;
                     } else {
                         this.mIsNeedPenSelection = false;

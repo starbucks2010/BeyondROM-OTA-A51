@@ -1,6 +1,7 @@
 package com.mesalabs.cerberus.ui.widget.appbarbehavior;
 
 import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -188,6 +189,7 @@ public class AppBarBehavior extends HeaderBehavior<AppBarLayout> {
         }
     }
 
+    @SuppressLint("WrongConstant")
     @Override
     public void onNestedScroll(CoordinatorLayout coordinatorLayout, AppBarLayout child, View target, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed, int type) {
         if (isScrollHoldMode(child)) {
@@ -216,6 +218,7 @@ public class AppBarBehavior extends HeaderBehavior<AppBarLayout> {
         mLastNestedScrollingChildRef = new WeakReference<>(target);
     }
 
+    @SuppressLint("WrongConstant")
     private void stopNestedScrollIfNeeded(int dy, AppBarLayout child, View target, int type) {
         if (type == 1) {
             int currOffset = getTopAndBottomOffset();

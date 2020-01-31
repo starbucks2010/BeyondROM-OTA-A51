@@ -8,6 +8,7 @@ import android.graphics.Path;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -148,7 +149,7 @@ public class SeslEdgeEffect extends EdgeEffect {
     public void onAbsorb(int velocity) {
         if (!isEdgeEffectRunning()) {
             if (mSeslHostView != null) {
-                mSeslHostView.performHapticFeedback((int) Utils.genericInvokeMethod(HapticFeedbackConstants.class, "semGetVibrationIndex", 28));
+                mSeslHostView.performHapticFeedback((int) Utils.genericInvokeMethod(HapticFeedbackConstants.class, Build.VERSION.SDK_INT >= 29 ? "hidden_semGetVibrationIndex" : "semGetVibrationIndex", 28));
 
 
             }
@@ -190,7 +191,7 @@ public class SeslEdgeEffect extends EdgeEffect {
             }
             if (mPullDistance == 0.0f || mOnReleaseCalled) {
                 if (mSeslHostView != null) {
-                    int indexOfHaptic = (int) Utils.genericInvokeMethod(HapticFeedbackConstants.class, "semGetVibrationIndex", 28);
+                    int indexOfHaptic = (int) Utils.genericInvokeMethod(HapticFeedbackConstants.class, Build.VERSION.SDK_INT >= 29 ? "hidden_semGetVibrationIndex" : "semGetVibrationIndex", 28);
                     if (indexOfHaptic != -1) {
                         mSeslHostView.performHapticFeedback(indexOfHaptic);
                     }

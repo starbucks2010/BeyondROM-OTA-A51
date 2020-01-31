@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.provider.Settings;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
@@ -242,7 +243,7 @@ public class ViewUtils {
     }
 
     public static void semSetHoverPopupType(View view, int type) {
-        Utils.genericInvokeMethod(view, "semSetHoverPopupType", type);
+        Utils.genericInvokeMethod(view, Build.VERSION.SDK_INT >= 29 ? "hidden_semSetHoverPopupType" : "semSetHoverPopupType", type);
     }
 
     public static void semSetRoundedCorners(View view, int roundMode) {

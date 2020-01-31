@@ -4,6 +4,7 @@ import static android.view.View.SYSTEM_UI_FLAG_LOW_PROFILE;
 
 import android.content.Context;
 import android.hardware.input.InputManager;
+import android.os.Build;
 import android.text.TextUtils;
 import android.util.Log;
 import android.provider.Settings.System;
@@ -228,10 +229,10 @@ public class SeslTooltip implements View.OnLongClickListener, View.OnHoverListen
     private void showPenPointEffect(MotionEvent event, boolean show) {
         if (event.getToolType(MotionEvent.TOOL_TYPE_UNKNOWN) == MotionEvent.TOOL_TYPE_STYLUS) {
             if (show) {
-                Utils.genericInvokeMethod(InputManager.class, "setPointerIconType", (int) 0x4e2a);
+                Utils.genericInvokeMethod(InputManager.class, Build.VERSION.SDK_INT >= 29 ? "hidden_setPointerIconType" : "setPointerIconType", (int) 0x4e2a);
                 mIsSPenPointChanged = true;
             } else if (mIsSPenPointChanged) {
-                Utils.genericInvokeMethod(InputManager.class, "setPointerIconType", (int) 0x4e21);
+                Utils.genericInvokeMethod(InputManager.class, Build.VERSION.SDK_INT >= 29 ? "hidden_setPointerIconType" : "setPointerIconType", (int) 0x4e21);
                 mIsSPenPointChanged = false;
             }
         }

@@ -45,6 +45,24 @@ public class Utils {
         return requiredObj;
     }
 
+    public static Object genericGetField(Class<?> cl, Object obj, String fieldName) {
+        Field field;
+        Object requiredObj = null;
+        try {
+            field = cl.getDeclaredField(fieldName);
+            field.setAccessible(true);
+            requiredObj = field.get(obj);
+        } catch (NoSuchFieldException e) {
+            LogUtils.e("Utils.genericGetField", e.toString());
+        } catch (IllegalArgumentException e) {
+            LogUtils.e("Utils.genericGetField", e.toString());
+        } catch (IllegalAccessException e) {
+            LogUtils.e("Utils.genericGetField", e.toString());
+        }
+
+        return requiredObj;
+    }
+
     public static void genericSetField(Object obj, String fieldName, Object fieldValue) {
         Field field;
         try {

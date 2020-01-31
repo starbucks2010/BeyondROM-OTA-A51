@@ -4,7 +4,7 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
 
-import androidx.appcompat.app.AlertDialog;
+import com.samsung.android.ui.app.SeslAlertDialog;
 
 import java.util.ArrayList;
 
@@ -88,7 +88,7 @@ public class ListPreferenceDialogFragmentCompat extends PreferenceDialogFragment
     }
 
     @Override
-    protected void onPrepareDialogBuilder(AlertDialog.Builder builder) {
+    protected void onPrepareDialogBuilder(SeslAlertDialog.Builder builder) {
         super.onPrepareDialogBuilder(builder);
 
         builder.setSingleChoiceItems(mEntries, mClickedDialogEntryIndex,

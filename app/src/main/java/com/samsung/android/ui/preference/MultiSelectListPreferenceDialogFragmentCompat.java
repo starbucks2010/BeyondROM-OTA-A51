@@ -4,8 +4,7 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnMultiChoiceClickListener;
 import android.os.Bundle;
 
-import androidx.appcompat.app.AlertDialog;
-
+import com.samsung.android.ui.app.SeslAlertDialog;
 import com.samsung.android.ui.preference.internal.AbstractMultiSelectListPreference;
 
 import java.util.ArrayList;
@@ -84,7 +83,7 @@ public class MultiSelectListPreferenceDialogFragmentCompat extends PreferenceDia
     }
 
     @Override
-    protected void onPrepareDialogBuilder(AlertDialog.Builder builder) {
+    protected void onPrepareDialogBuilder(SeslAlertDialog.Builder builder) {
         super.onPrepareDialogBuilder(builder);
 
         final int entryCount = mEntryValues.length;

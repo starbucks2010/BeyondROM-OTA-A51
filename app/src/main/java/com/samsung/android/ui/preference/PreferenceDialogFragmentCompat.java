@@ -15,9 +15,10 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+
+import com.samsung.android.ui.app.SeslAlertDialog;
 
 /*
  * Cerberus Core App
@@ -113,7 +114,7 @@ public abstract class PreferenceDialogFragmentCompat extends DialogFragment impl
         final Context context = getActivity();
         mWhichButtonClicked = DialogInterface.BUTTON_NEGATIVE;
 
-        final AlertDialog.Builder builder = new AlertDialog.Builder(context).setTitle(mDialogTitle).setIcon(mDialogIcon).setPositiveButton(mPositiveButtonText, this).setNegativeButton(mNegativeButtonText, this);
+        final SeslAlertDialog.Builder builder = new SeslAlertDialog.Builder(context).setTitle(mDialogTitle).setIcon(mDialogIcon).setPositiveButton(mPositiveButtonText, this).setNegativeButton(mNegativeButtonText, this);
 
         View contentView = onCreateDialogView(context);
         if (contentView != null) {
@@ -142,7 +143,7 @@ public abstract class PreferenceDialogFragmentCompat extends DialogFragment impl
         return mPreference;
     }
 
-    protected void onPrepareDialogBuilder(AlertDialog.Builder builder) {}
+    protected void onPrepareDialogBuilder(SeslAlertDialog.Builder builder) {}
 
     protected boolean needInputMethod() {
         return false;

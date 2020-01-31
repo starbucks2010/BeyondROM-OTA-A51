@@ -134,6 +134,13 @@
         <item name="android:scrollbarThumbHorizontal">@drawable/sesl_scrollbar_handle_dark</item>
         <item name="android:scrollbarThumbVertical">@drawable/sesl_scrollbar_handle_dark</item>
 
+        <item name="dialogPreferredPadding">@dimen/sesl_dialog_padding</item>
+        <item name="dialogTheme">@style/mesa_DialogStyle</item>
+        <item name="alertDialogCenterButtons">false</item>
+        <item name="alertDialogStyle">@style/mesa_AlertDialogStyle</item>
+        <item name="android:alertDialogTheme">@style/mesa_DialogStyle</item>
+        <item name="alertDialogTheme">@style/mesa_AlertDialogOverlayStyle</item>
+
         <item name="android:windowAnimationStyle">@style/mesa_ActivityAnimStyle</item>
 
         <item name="preferenceTheme">@style/mesa_PreferenceThemeStyle</item>
@@ -282,6 +289,13 @@
         <!-- Misc -->
         <item name="android:scrollbarThumbHorizontal">@drawable/sesl_scrollbar_handle_light</item>
         <item name="android:scrollbarThumbVertical">@drawable/sesl_scrollbar_handle_light</item>
+
+        <item name="dialogPreferredPadding">@dimen/sesl_dialog_padding</item>
+        <item name="dialogTheme">@style/mesa_DialogStyle.Light</item>
+        <item name="alertDialogCenterButtons">false</item>
+        <item name="alertDialogStyle">@style/mesa_AlertDialogStyle</item>
+        <item name="android:alertDialogTheme">@style/mesa_DialogStyle.Light</item>
+        <item name="alertDialogTheme">@style/mesa_AlertDialogOverlayStyle.Light</item>
 
         <item name="android:windowAnimationStyle">@style/mesa_ActivityAnimStyle</item>
 
