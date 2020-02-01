@@ -7,10 +7,8 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 
-// TODO merge Sammy AppCompatSpinner
-import androidx.appcompat.widget.AppCompatSpinner;
-
 import com.mesalabs.cerberus.R;
+import com.samsung.android.ui.widget.AppCompatSpinner;
 
 /*
  * Cerberus Core App
