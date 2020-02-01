@@ -2,4 +2,6 @@
 <resources>
     <dimen name="sesl_switch_divider_height">2.0px</dimen>
     <dimen name="sesl_list_divider_height">3.0px</dimen>
+
+    <dimen name="sesl_edit_textfield_cursor_width">5.0px</dimen>
 </resources>

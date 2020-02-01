@@ -1,6 +1,6 @@
 <resources>
 
-    <!-- App Themes -->
+    <!-- #App Themes# -->
     <style name="mesa_AppStyle" parent="Theme.AppCompat">
         <!-- Window colors -->
         <item name="android:statusBarColor">@color/sesl_round_and_bgcolor_dark</item>
@@ -19,7 +19,7 @@
         <item name="android:textColorPrimaryInverse">@color/sesl_primary_text_light</item>
         <item name="android:textColorSecondary">@color/sesl_secondary_text_dark</item>
         <item name="android:textColorSecondaryInverse">@color/sesl_secondary_text_light</item>
-        <item name="android:textColorHighlight">@color/sesl_highlighted_text_color_light</item>
+        <item name="android:textColorHighlight">@color/sesl_highlighted_text_color_dark</item>
         <item name="android:textColorAlertDialogListItem">@color/sesl_select_dialog_list_item_text</item>
 
         <item name="android:listChoiceIndicatorSingle">@drawable/sesl_list_choice_btn_radio</item>
@@ -32,7 +32,7 @@
         <item name="android:textSelectHandleLeft">@drawable/sesl_text_select_handle_left_light</item>
         <item name="android:textSelectHandleRight">@drawable/sesl_text_select_handle_right_light</item>
 
-        <item name="colorBackgroundFloating">@color/sesl_background_floating_light</item>
+        <item name="colorBackgroundFloating">@color/sesl_background_floating_dark</item>
 
         <item name="homeAsUpIndicator">@drawable/sesl_ic_ab_back_dark</item>
 
@@ -141,11 +141,21 @@
         <item name="android:alertDialogTheme">@style/mesa_DialogStyle</item>
         <item name="alertDialogTheme">@style/mesa_AlertDialogOverlayStyle</item>
 
+        <item name="buttonBarButtonStyle">@style/mesa_ButtonBarButtonStyle</item>
+        <item name="buttonBarNegativeButtonStyle">@style/mesa_DialogButtonStyle</item>
+        <item name="buttonBarNeutralButtonStyle">@style/mesa_DialogButtonStyle</item>
+        <item name="buttonBarPositiveButtonStyle">@style/mesa_DialogButtonStyle</item>
+        <item name="buttonBarStyle">@style/mesa_ButtonBarStyle</item>
+
         <item name="android:windowAnimationStyle">@style/mesa_ActivityAnimStyle</item>
 
         <item name="preferenceTheme">@style/mesa_PreferenceThemeStyle</item>
         <item name="android:listSeparatorTextViewStyle">@style/mesa_SeslListSeparatorStyle</item>
         <item name="android:listDivider">@drawable/sesl_list_divider_dark</item>
+
+        <item name="editTextBackground">@drawable/sesl_edit_text_background_dark</item>
+        <item name="editTextColor">?android:textColorPrimary</item>
+        <item name="editTextStyle">@style/mesa_EditTextWidgetStyle</item>
 
         <item name="collapsedToolbarLayoutStyle">@style/mesa_SeslCollapsingToolbarStyle</item>
         <item name="round_and_bgColor">@color/sesl_round_and_bgcolor_dark</item>
@@ -156,6 +166,7 @@
         <item name="listDividerColor">@color/sesl_list_divider_color_dark</item>
         <item name="primaryTextColor">@color/sesl_primary_text_dark</item>
         <item name="secondaryTextColor">@color/sesl_secondary_text_dark</item>
+        <item name="buttonCornerRadius">@dimen/sesl_button_corner_radius</item>
     </style>
     <style name="mesa_AppStyle.Light" parent="Theme.AppCompat.Light">
         <!-- Window colors -->
@@ -297,11 +308,21 @@
         <item name="android:alertDialogTheme">@style/mesa_DialogStyle.Light</item>
         <item name="alertDialogTheme">@style/mesa_AlertDialogOverlayStyle.Light</item>
 
+        <item name="buttonBarButtonStyle">@style/mesa_ButtonBarButtonStyle</item>
+        <item name="buttonBarNegativeButtonStyle">@style/mesa_DialogButtonStyle</item>
+        <item name="buttonBarNeutralButtonStyle">@style/mesa_DialogButtonStyle</item>
+        <item name="buttonBarPositiveButtonStyle">@style/mesa_DialogButtonStyle</item>
+        <item name="buttonBarStyle">@style/mesa_ButtonBarStyle</item>
+
         <item name="android:windowAnimationStyle">@style/mesa_ActivityAnimStyle</item>
 
         <item name="preferenceTheme">@style/mesa_PreferenceThemeStyle</item>
-        <item name="android:listSeparatorTextViewStyle">@style/mesa_SeslListSeparatorStyle</item>
+        <item name="android:listSeparatorTextViewStyle">@style/mesa_SeslListSeparatorStyle.Light</item>
         <item name="android:listDivider">@drawable/sesl_list_divider_light</item>
+
+        <item name="editTextBackground">@drawable/sesl_edit_text_background_light</item>
+        <item name="editTextColor">?android:textColorPrimary</item>
+        <item name="editTextStyle">@style/mesa_EditTextWidgetStyle.Light</item>
 
         <item name="collapsedToolbarLayoutStyle">@style/mesa_SeslCollapsingToolbarStyle.Light</item>
         <item name="round_and_bgColor">@color/sesl_round_and_bgcolor_light</item>
@@ -312,6 +333,7 @@
         <item name="listDividerColor">@color/sesl_list_divider_color_light</item>
         <item name="primaryTextColor">@color/sesl_primary_text_light</item>
         <item name="secondaryTextColor">@color/sesl_secondary_text_light</item>
+        <item name="buttonCornerRadius">@dimen/sesl_button_corner_radius</item>
     </style>
 
 </resources>

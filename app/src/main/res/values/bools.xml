@@ -1,4 +1,4 @@
 <resources>
-    <bool name="sesl_desktop_mode">false</bool>
+    <bool name="sesl_config_desktop_mode">false</bool>
     <bool name="sesl_config_closeDialogWhenTouchOutside">true</bool>
 </resources>

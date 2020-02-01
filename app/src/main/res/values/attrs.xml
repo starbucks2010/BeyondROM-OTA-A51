@@ -16,7 +16,7 @@
     <attr name="listDividerColor" format="color" />
     <attr name="primaryTextColor" format="string|integer|color|reference" />
     <attr name="secondaryTextColor" format="string|integer|color|reference" />
-    <attr name="switchBarActivatedColor" format="string|integer|color|reference" />
+    <attr name="buttonCornerRadius" format="dimension" />
 
     <attr name="searchViewIconColor" format="color" />
     <attr name="searchViewTextColor" format="color" />

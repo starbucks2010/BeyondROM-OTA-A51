@@ -169,7 +169,7 @@ public class SeslCollapsingToolbarLayout extends FrameLayout {
             mCollapsingToolbarExtendedTitle.setEllipsize(TextUtils.TruncateAt.END);
             mCollapsingToolbarExtendedTitle.setGravity(Gravity.CENTER);
             mCollapsingToolbarExtendedTitle.setTextAppearance(mExtendTitleAppearance);
-            int extendedTitlePadding = (int) getResources().getDimension(R.dimen.sesl_extended_appbar_title_padding);
+            int extendedTitlePadding = (int) getResources().getDimension(R.dimen.sesl_material_extended_appbar_title_padding);
             mCollapsingToolbarExtendedTitle.setPadding(extendedTitlePadding, 0, extendedTitlePadding, 0);
         }
         if (mCollapsingToolbarLayoutSubTitleEnabled) {
