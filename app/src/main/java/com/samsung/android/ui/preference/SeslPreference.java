@@ -21,15 +21,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.view.accessibility.AccessibilityManager;
-import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.content.res.TypedArrayUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import com.mesalabs.cerberus.R;
+import com.samsung.android.ui.internal.widget.SeslPreferenceImageView;
 
 /*
  * Cerberus Core App
@@ -258,7 +259,6 @@ public class SeslPreference implements Comparable<SeslPreference> {
         if (this.mOnClickListener != null) {
             this.mOnClickListener.onPreferenceClick(this);
         }
-
     }
 
     public final void clearWasDetached() {
@@ -452,6 +452,18 @@ public class SeslPreference implements Comparable<SeslPreference> {
         return this.mSummary;
     }
 
+    public void setSummary(CharSequence summary) {
+        if (!TextUtils.equals(mSummary, summary)) {
+            mSummary = summary;
+            notifyChanged();
+        }
+    }
+
+
+    public void setSummary(int summaryResId) {
+        setSummary(mContext.getString(summaryResId));
+    }
+
     public CharSequence getTitle() {
         return this.mTitle;
     }
@@ -635,15 +647,20 @@ public class SeslPreference implements Comparable<SeslPreference> {
             }
         }
 
-        ImageView var10 = (ImageView)var1.findViewById(16908294);
+        SeslPreferenceImageView imageView = (SeslPreferenceImageView) var1.findViewById(16908294);
         byte var6;
-        if (var10 != null) {
-            if ((this.mIconResId != 0 || this.mIcon != null) && this.mIcon != null) {
-                var10.setImageDrawable(this.mIcon);
+        if (imageView != null) {
+            if (!(this.mIconResId == 0 && this.mIcon == null)) {
+                if (this.mIcon == null) {
+                    this.mIcon = AppCompatResources.getDrawable(this.mContext, this.mIconResId);
+                }
+                Drawable drawable = this.mIcon;
+                if (drawable != null) {
+                    imageView.setImageDrawable(drawable);
+                }
             }
-
             if (this.mIcon != null) {
-                var10.setVisibility(0);
+                imageView.setVisibility(0);
             } else {
                 if (this.mIconSpaceReserved) {
                     var6 = 4;
@@ -651,7 +668,7 @@ public class SeslPreference implements Comparable<SeslPreference> {
                     var6 = 8;
                 }
 
-                var10.setVisibility(var6);
+                imageView.setVisibility(var6);
             }
         }
 
@@ -881,8 +898,20 @@ public class SeslPreference implements Comparable<SeslPreference> {
         this.mListener = var1;
     }
 
+    public void setOnPreferenceChangeListener(OnPreferenceChangeListener var1) {
+        this.mOnChangeListener = var1;
+    }
+
+    public OnPreferenceChangeListener getOnPreferenceChangeListener() {
+        return this.mOnChangeListener;
+    }
+
     public void setOnPreferenceClickListener(SeslPreference.OnPreferenceClickListener var1) {
         this.mOnClickListener = var1;
+    }
+
+    public OnPreferenceClickListener getOnPreferenceClickListener() {
+        return this.mOnClickListener;
     }
 
     public void setOrder(int var1) {

@@ -213,6 +213,12 @@
 
     <dimen name="sesl_alert_dialog_button_bar_height">48.0dip</dimen>
 
+    <dimen name="sesl_action_item_show_button_background_padding_horizontal">7.0dip</dimen>
+    <dimen name="sesl_action_item_show_button_background_inset_horizontal">5.0dip</dimen>
+    <dimen name="sesl_action_item_show_button_background_inset_vertical">8.0dip</dimen>
+
+    <dimen name="sesl_show_button_background_stroke_width">2.0px</dimen>
+
 
 
 

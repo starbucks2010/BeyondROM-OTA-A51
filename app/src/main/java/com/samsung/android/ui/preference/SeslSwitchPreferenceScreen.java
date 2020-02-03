@@ -26,7 +26,7 @@ import com.mesalabs.cerberus.utils.ViewUtils;
  * EXTERNALS IS PROHIBITED AND WILL BE PUNISHED WITH ANAL ABUSE.
  */
 
-public class SeslSwitchPreferenceScreen extends SeslSwitchPreference {
+public class SeslSwitchPreferenceScreen extends SeslSwitchPreferenceCompat {
     private View.OnKeyListener mSwitchKeyListener;
 
     public SeslSwitchPreferenceScreen(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {

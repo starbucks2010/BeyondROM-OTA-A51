@@ -29,32 +29,32 @@ import com.samsung.android.ui.widget.SeslSwitch;
  * EXTERNALS IS PROHIBITED AND WILL BE PUNISHED WITH ANAL ABUSE.
  */
 
-public class SeslSwitchPreference extends TwoStatePreference {
+public class SeslSwitchPreferenceCompat extends TwoStatePreference {
     private final DummyClickListener mClickListener = new DummyClickListener();
     private final Listener mListener = new Listener();
     private CharSequence mSwitchOff;
     private CharSequence mSwitchOn;
 
-    public SeslSwitchPreference(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public SeslSwitchPreferenceCompat(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
-        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.SeslSwitchPreference, defStyleAttr, defStyleRes);
-        setSummaryOn(TypedArrayUtils.getString(a, R.styleable.SeslSwitchPreference_summaryOn, R.styleable.SeslSwitchPreference_summaryOn));
-        setSummaryOff(TypedArrayUtils.getString(a, R.styleable.SeslSwitchPreference_summaryOff, R.styleable.SeslSwitchPreference_summaryOff));
-        setSwitchTextOn(TypedArrayUtils.getString(a, R.styleable.SeslSwitchPreference_switchTextOn, R.styleable.SeslSwitchPreference_switchTextOn));
-        setSwitchTextOff(TypedArrayUtils.getString(a, R.styleable.SeslSwitchPreference_switchTextOff, R.styleable.SeslSwitchPreference_switchTextOff));
-        setDisableDependentsState(TypedArrayUtils.getBoolean(a, R.styleable.SeslSwitchPreference_disableDependentsState, R.styleable.SeslSwitchPreference_disableDependentsState, false));
+        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.SeslSwitchPreferenceCompat, defStyleAttr, defStyleRes);
+        setSummaryOn(TypedArrayUtils.getString(a, R.styleable.SeslSwitchPreferenceCompat_summaryOn, R.styleable.SeslSwitchPreferenceCompat_summaryOn));
+        setSummaryOff(TypedArrayUtils.getString(a, R.styleable.SeslSwitchPreferenceCompat_summaryOff, R.styleable.SeslSwitchPreferenceCompat_summaryOff));
+        setSwitchTextOn(TypedArrayUtils.getString(a, R.styleable.SeslSwitchPreferenceCompat_switchTextOn, R.styleable.SeslSwitchPreferenceCompat_switchTextOn));
+        setSwitchTextOff(TypedArrayUtils.getString(a, R.styleable.SeslSwitchPreferenceCompat_switchTextOff, R.styleable.SeslSwitchPreferenceCompat_switchTextOff));
+        setDisableDependentsState(TypedArrayUtils.getBoolean(a, R.styleable.SeslSwitchPreferenceCompat_disableDependentsState, R.styleable.SeslSwitchPreferenceCompat_disableDependentsState, false));
         a.recycle();
     }
 
-    public SeslSwitchPreference(Context context, AttributeSet attrs, int defStyleAttr) {
+    public SeslSwitchPreferenceCompat(Context context, AttributeSet attrs, int defStyleAttr) {
         this(context, attrs, defStyleAttr, 0);
     }
 
-    public SeslSwitchPreference(Context context, AttributeSet attrs) {
-        this(context, attrs, R.attr.switchPreferenceStyle);
+    public SeslSwitchPreferenceCompat(Context context, AttributeSet attrs) {
+        this(context, attrs, R.attr.switchPreferenceCompatStyle);
     }
 
-    public SeslSwitchPreference(Context context) {
+    public SeslSwitchPreferenceCompat(Context context) {
         this(context, null);
     }
 
@@ -111,7 +111,7 @@ public class SeslSwitchPreference extends TwoStatePreference {
             if (switchView.isClickable()) {
                 switchView.setOnClickListener(mClickListener);
             }
-            if (isTalkBackIsRunning()) {
+            if (isTalkBackIsRunning() && !(this instanceof SeslSwitchPreferenceScreen)) {
                 switchView.setBackground(null);
                 switchView.setClickable(false);
             }
@@ -133,7 +133,7 @@ public class SeslSwitchPreference extends TwoStatePreference {
                 return;
             }
 
-            SeslSwitchPreference.this.setChecked(isChecked);
+            SeslSwitchPreferenceCompat.this.setChecked(isChecked);
         }
     }
 }

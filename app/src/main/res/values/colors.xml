@@ -229,4 +229,10 @@
     <color name="sesl_list_go_to_top_ripple_dark">@color/sesl_ripple_color_dark</color>
     <color name="sesl_list_go_to_top_ripple_light">@color/sesl_ripple_color_light</color>
 
+    <color name="sesl_show_button_background_color_default">#74FFFFFF</color>
+    <color name="sesl_show_button_background_color_disabled">#66FFFFFF</color>
+    <color name="sesl_show_button_background_stroke_color_default">#4D000000</color>
+    <color name="sesl_show_button_background_stroke_color_disabled">#66000000</color>
+
+
 </resources>

@@ -31,9 +31,9 @@
         <item name="android:listPreferredItemPaddingStart">@dimen/sesl_list_item_padding_horizontal</item>
         <item name="android:listPreferredItemPaddingEnd">@dimen/sesl_list_item_padding_horizontal</item>
 
-        <item name="android:textSelectHandle">@drawable/sesl_text_select_handle_middle_light</item>
-        <item name="android:textSelectHandleLeft">@drawable/sesl_text_select_handle_left_light</item>
-        <item name="android:textSelectHandleRight">@drawable/sesl_text_select_handle_right_light</item>
+        <item name="android:textSelectHandle">@drawable/sesl_text_select_handle_middle</item>
+        <item name="android:textSelectHandleLeft">@drawable/sesl_text_select_handle_left</item>
+        <item name="android:textSelectHandleRight">@drawable/sesl_text_select_handle_right</item>
 
         <item name="colorBackgroundFloating">@color/sesl_background_floating_dark</item>
 
@@ -201,9 +201,9 @@
         <item name="android:listPreferredItemPaddingStart">@dimen/sesl_list_item_padding_horizontal</item>
         <item name="android:listPreferredItemPaddingEnd">@dimen/sesl_list_item_padding_horizontal</item>
 
-        <item name="android:textSelectHandle">@drawable/sesl_text_select_handle_middle_light</item>
-        <item name="android:textSelectHandleLeft">@drawable/sesl_text_select_handle_left_light</item>
-        <item name="android:textSelectHandleRight">@drawable/sesl_text_select_handle_right_light</item>
+        <item name="android:textSelectHandle">@drawable/sesl_text_select_handle_middle</item>
+        <item name="android:textSelectHandleLeft">@drawable/sesl_text_select_handle_left</item>
+        <item name="android:textSelectHandleRight">@drawable/sesl_text_select_handle_right</item>
 
         <item name="colorBackgroundFloating">@color/sesl_background_floating_light</item>
 

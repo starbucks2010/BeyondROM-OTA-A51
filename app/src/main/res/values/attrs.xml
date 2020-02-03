@@ -49,17 +49,6 @@
     <attr name="summaryHighlight" format="boolean" />
     <attr name="layout_isTitleCustom" format="boolean" />
 
-    <declare-styleable name="SamsungButton">
-        <attr name="addDivider" />
-        <attr name="icon" />
-        <attr name="titleText" />
-        <attr name="summaryText" />
-        <attr name="summaryHighlight" />
-    </declare-styleable>
-    <declare-styleable name="SwitchBar">
-        <attr name="activatedColor" format="color" />
-    </declare-styleable>
-
     <declare-styleable name="RoundFrameLayout">
         <attr name="cornersStroke" />
         <attr name="roundedCorners" />
@@ -284,6 +273,18 @@
         <attr name="switchTextOn" format="string" />
         <attr name="android:switchTextOn" />
         <attr name="switchTextOff" format="string" />
+        <attr name="android:switchTextOff" />
+        <attr name="disableDependentsState" />
+        <attr name="android:disableDependentsState" />
+    </declare-styleable>
+    <declare-styleable name="SeslSwitchPreferenceCompat">
+        <attr name="summaryOn" />
+        <attr name="android:summaryOn" />
+        <attr name="summaryOff" />
+        <attr name="android:summaryOff" />
+        <attr name="switchTextOn" />
+        <attr name="android:switchTextOn" />
+        <attr name="switchTextOff" />
         <attr name="android:switchTextOff" />
         <attr name="disableDependentsState" />
         <attr name="android:disableDependentsState" />
