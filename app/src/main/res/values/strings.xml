@@ -14,6 +14,7 @@
 
     <string name="sesl_capital_off">OFF</string>
     <string name="sesl_capital_on">ON</string>
+    <string name="sesl_switch">Switch</string>
     <string name="sesl_switch_off">Off</string>
     <string name="sesl_switch_on">On</string>
     <string name="sesl_preference_off">OFF</string>

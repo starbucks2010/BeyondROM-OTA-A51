@@ -242,6 +242,14 @@ public class ViewUtils {
         Utils.genericInvokeMethod(viewGroup, "resolvePadding");
     }
 
+    public static Object semGetHoverPopup(View view, boolean z) {
+        return Utils.genericInvokeMethod(view, Build.VERSION.SDK_INT >= 29 ? "hidden_semGetHoverPopup" : "semGetHoverPopup", z);
+    }
+
+    public static int semGetHoverPopupType(View view) {
+        return (int) Utils.genericInvokeMethod(view, "semGetHoverPopupType");
+    }
+
     public static void semSetHoverPopupType(View view, int type) {
         Utils.genericInvokeMethod(view, Build.VERSION.SDK_INT >= 29 ? "hidden_semSetHoverPopupType" : "semSetHoverPopupType", type);
     }

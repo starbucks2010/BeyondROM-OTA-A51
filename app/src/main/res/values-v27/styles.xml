@@ -118,7 +118,7 @@
         <item name="radioButtonStyle">@style/mesa_RadioButtonStyle</item>
         <item name="switchStyle">@style/mesa_SwitchButtonStyle</item>
 
-        <item name="seekBarStyle">@style/mesa_SeekBarStyle</item>
+        <item name="seekBarStyle">@style/mesa_SeslSeekBarStyle</item>
 
         <item name="buttonStyle">@style/mesa_ButtonStyle</item>
         <item name="buttonStyleSmall">@style/mesa_ButtonStyle</item>
@@ -157,6 +157,18 @@
         <item name="editTextColor">?android:textColorPrimary</item>
         <item name="editTextStyle">@style/mesa_EditTextWidgetStyle</item>
 
+        <item name="android:progressBarStyle">@style/mesa_SeslProgressBarStyle</item>
+        <item name="android:progressBarStyleHorizontal">@style/mesa_SeslProgressBarHorizontalStyle</item>
+        <item name="android:progressBarStyleSmall">@style/mesa_SeslProgressBarSmallStyle</item>
+        <item name="android:progressBarStyleLarge">@style/mesa_SeslProgressBarLargeStyle</item>
+        <item name="android:progressBarStyleSmallTitle">@style/mesa_SeslProgressBarTitleStyle</item>
+        <item name="android:progressBarStyleInverse">@style/mesa_SeslProgressBarStyle</item>
+        <item name="android:progressBarStyleSmallInverse">@style/mesa_SeslProgressBarSmallStyle</item>
+        <item name="android:progressBarStyleLargeInverse">@style/mesa_SeslProgressBarLargeStyle</item>
+
+        <item name="progressActivatedColor">@color/sesl_progress_control_color_activated_dark</item>
+        <item name="progressNormalColor">@color/sesl_progress_control_color_normal_dark</item>
+
         <item name="collapsedToolbarLayoutStyle">@style/mesa_SeslCollapsingToolbarStyle</item>
         <item name="round_and_bgColor">@color/sesl_round_and_bgcolor_dark</item>
         <item name="cardBgColor">@color/sesl_background_color_dark</item>
@@ -167,6 +179,7 @@
         <item name="primaryTextColor">@color/sesl_primary_text_dark</item>
         <item name="secondaryTextColor">@color/sesl_secondary_text_dark</item>
         <item name="buttonCornerRadius">@dimen/sesl_button_corner_radius</item>
+        <item name="seslSwitchBarStyle">@style/mesa_SeslSwitchBar</item>
     </style>
     <style name="mesa_AppStyle.Light" parent="Theme.AppCompat.Light">
         <!-- Window colors -->
@@ -285,7 +298,7 @@
         <item name="radioButtonStyle">@style/mesa_RadioButtonStyle.Light</item>
         <item name="switchStyle">@style/mesa_SwitchButtonStyle.Light</item>
 
-        <item name="seekBarStyle">@style/mesa_SeekBarStyle.Light</item>
+        <item name="seekBarStyle">@style/mesa_SeslSeekBarStyle.Light</item>
 
         <item name="buttonStyle">@style/mesa_ButtonStyle.Light</item>
         <item name="buttonStyleSmall">@style/mesa_ButtonStyle.Light</item>
@@ -324,6 +337,18 @@
         <item name="editTextColor">?android:textColorPrimary</item>
         <item name="editTextStyle">@style/mesa_EditTextWidgetStyle.Light</item>
 
+        <item name="android:progressBarStyle">@style/mesa_SeslProgressBarStyle</item>
+        <item name="android:progressBarStyleHorizontal">@style/mesa_SeslProgressBarHorizontalStyle</item>
+        <item name="android:progressBarStyleSmall">@style/mesa_SeslProgressBarSmallStyle</item>
+        <item name="android:progressBarStyleLarge">@style/mesa_SeslProgressBarLargeStyle</item>
+        <item name="android:progressBarStyleSmallTitle">@style/mesa_SeslProgressBarTitleStyle</item>
+        <item name="android:progressBarStyleInverse">@style/mesa_SeslProgressBarStyle</item>
+        <item name="android:progressBarStyleSmallInverse">@style/mesa_SeslProgressBarSmallStyle</item>
+        <item name="android:progressBarStyleLargeInverse">@style/mesa_SeslProgressBarLargeStyle</item>
+
+        <item name="progressActivatedColor">@color/sesl_progress_control_color_activated_light</item>
+        <item name="progressNormalColor">@color/sesl_progress_control_color_normal_light</item>
+
         <item name="collapsedToolbarLayoutStyle">@style/mesa_SeslCollapsingToolbarStyle.Light</item>
         <item name="round_and_bgColor">@color/sesl_round_and_bgcolor_light</item>
         <item name="cardBgColor">@color/sesl_background_color_light</item>
@@ -334,6 +359,7 @@
         <item name="primaryTextColor">@color/sesl_primary_text_light</item>
         <item name="secondaryTextColor">@color/sesl_secondary_text_light</item>
         <item name="buttonCornerRadius">@dimen/sesl_button_corner_radius</item>
+        <item name="seslSwitchBarStyle">@style/mesa_SeslSwitchBar.Light</item>
     </style>
 
 </resources>

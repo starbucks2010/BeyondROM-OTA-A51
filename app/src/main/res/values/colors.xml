@@ -234,5 +234,16 @@
     <color name="sesl_show_button_background_stroke_color_default">#4D000000</color>
     <color name="sesl_show_button_background_stroke_color_disabled">#66000000</color>
 
+    <color name="sesl_progress_dialog_background_color_light">@color/sesl_white</color>
+
+    <color name="sesl_loading_progress_color1">#06B485</color>
+    <color name="sesl_loading_progress_color2">#0381FE</color>
+    <color name="sesl_progress_control_color_activated_dark">#0381FE</color>
+    <color name="sesl_progress_control_color_activated_light">#0381FE</color>
+    <color name="sesl_progress_control_color_normal_dark">#4D0381FE</color>
+    <color name="sesl_progress_control_color_normal_light">#4D0381FE</color>
+
+
+
 
 </resources>

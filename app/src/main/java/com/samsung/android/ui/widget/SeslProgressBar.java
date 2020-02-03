@@ -44,7 +44,6 @@ import androidx.appcompat.widget.DrawableUtils;
 import androidx.appcompat.widget.ViewUtils;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
-import androidx.core.math.MathUtils;
 import androidx.core.util.Pools;
 import androidx.core.view.ViewCompat;
 
@@ -1069,11 +1068,11 @@ public class SeslProgressBar extends View {
     }
 
     public int getPaddingLeft() {
-        return (int) Utils.genericGetField(MeasureSpec.class, this, "mPaddingLeft");
+        return (int) Utils.genericGetField(View.class, this, "mPaddingLeft");
     }
 
     public int getPaddingRight() {
-        return (int) Utils.genericGetField(MeasureSpec.class, this, "mPaddingRight");
+        return (int) Utils.genericGetField(View.class, this, "mPaddingRight");
     }
 
     @ExportedProperty(

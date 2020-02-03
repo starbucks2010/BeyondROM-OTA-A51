@@ -219,6 +219,20 @@
 
     <dimen name="sesl_show_button_background_stroke_width">2.0px</dimen>
 
+    <dimen name="sesl_progress_circle_size">60.0dip</dimen>
+    <dimen name="sesl_progress_circle_thickness">2.5dip</dimen>
+    <dimen name="sesl_progress_bar_height">3.0dip</dimen>
+    <dimen name="sesl_progress_bar_size_large">60.0dip</dimen>
+    <dimen name="sesl_progress_bar_size_small">24.0dip</dimen>
+    <dimen name="sesl_progress_bar_size_small_title">16.0dip</dimen>
+
+    <dimen name="sesl_switchbar_height">64.0dip</dimen>
+    <dimen name="sesl_switchbar_progress_margin_right">12.0dip</dimen>
+    <dimen name="sesl_switchbar_margin_end">24.0dip</dimen>
+    <dimen name="sesl_switchbar_margin_start">24.0dip</dimen>
+
+
+
 
 
 

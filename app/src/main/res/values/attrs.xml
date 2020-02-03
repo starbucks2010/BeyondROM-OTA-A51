@@ -18,6 +18,8 @@
     <attr name="secondaryTextColor" format="string|integer|color|reference" />
     <attr name="buttonCornerRadius" format="dimension" />
 
+    <attr name="seslSwitchBarStyle" format="reference" />
+
     <attr name="searchViewIconColor" format="color" />
     <attr name="searchViewTextColor" format="color" />
     <attr name="searchViewHintTextColor" format="color" />
@@ -37,8 +39,6 @@
     <attr name="progressLayout" format="reference" />
     <attr name="horizontalProgressLayout" format="reference" />
 
-
-
     <attr name="cornersStroke" format="boolean" />
     <attr name="roundedCorners" format="string" />
     <attr name="addDivider" format="boolean" />
@@ -48,6 +48,9 @@
     <attr name="summaryText" format="string" />
     <attr name="summaryHighlight" format="boolean" />
     <attr name="layout_isTitleCustom" format="boolean" />
+
+    <attr name="progressActivatedColor" format="reference|color" />
+    <attr name="progressNormalColor" format="reference|color" />
 
     <declare-styleable name="RoundFrameLayout">
         <attr name="cornersStroke" />
@@ -132,6 +135,12 @@
         <attr name="splitTrack" format="boolean" />
         <attr name="showText" format="boolean" />
     </declare-styleable>
+    <declare-styleable name="SeslSwitchBar">
+        <attr name="seslSwitchBarBackgroundColor" format="color" />
+        <attr name="seslSwitchBarBackgroundActivatedColor" format="color" />
+        <attr name="seslSwitchBarTextActivatedColor" format="color" />
+        <attr name="seslSwitchBarTextColor" format="color" />
+    </declare-styleable>
     <declare-styleable name="SeslTabLayout">
         <attr name="tabIndicatorColor" format="color"/>
         <attr name="tabIndicatorHeight" format="dimension"/>
@@ -179,6 +188,20 @@
         <attr name="android:indeterminateTintMode" />
         <attr name="backgroundTint" />
         <attr name="backgroundTintMode" />
+    </declare-styleable>
+    <declare-styleable name="SeslAbsSeekBar">
+        <attr name="android:thumb" />
+        <attr name="android:thumbTint" />
+        <attr name="android:thumbTintMode" />
+        <attr name="android:thumbOffset" />
+        <attr name="android:splitTrack" />
+        <attr name="tickMark" format="reference" />
+        <attr name="tickMarkTint" format="color" />
+        <attr name="tickMarkTintMode" />
+        <attr name="useDisabledAlpha" />
+    </declare-styleable>
+    <declare-styleable name="AppCompatTheme">
+        <attr name="android:disabledAlpha" />
     </declare-styleable>
 
     <declare-styleable name="View">
