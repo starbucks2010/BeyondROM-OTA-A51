@@ -21,12 +21,12 @@ import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.view.accessibility.AccessibilityManager;
 import android.widget.TextView;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.content.res.TypedArrayUtils;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import com.mesalabs.cerberus.R;
 import com.mesalabs.cerberus.utils.LogUtils;
@@ -181,6 +181,25 @@ public class SeslPreference implements Comparable<SeslPreference> {
             this.onSetInitialValue(false, this.mDefaultValue);
         }
 
+    }
+
+    public boolean persistStringSet(Set<String> var1) {
+        if (!this.shouldPersist()) {
+            return false;
+        } else if (var1.equals(this.getPersistedStringSet((Set<String>)null))) {
+            return true;
+        } else {
+            PreferenceDataStore var2 = this.getPreferenceDataStore();
+            if (var2 != null) {
+                var2.putStringSet(this.mKey, var1);
+            } else {
+                Editor var3 = this.mPreferenceManager.getEditor();
+                var3.putStringSet(this.mKey, var1);
+                this.tryCommit(var3);
+            }
+
+            return true;
+        }
     }
 
     private void registerDependency() {
@@ -418,6 +437,15 @@ public class SeslPreference implements Comparable<SeslPreference> {
         }
 
         return var1;
+    }
+
+    public Set<String> getPersistedStringSet(Set<String> var1) {
+        if (!this.shouldPersist()) {
+            return var1;
+        } else {
+            PreferenceDataStore var2 = this.getPreferenceDataStore();
+            return var2 != null ? var2.getStringSet(this.mKey, var1) : this.mPreferenceManager.getSharedPreferences().getStringSet(this.mKey, var1);
+        }
     }
 
     public PreferenceDataStore getPreferenceDataStore() {

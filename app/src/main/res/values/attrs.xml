@@ -288,6 +288,22 @@
         <attr name="entryValues" format="reference" />
         <attr name="android:entryValues" />
     </declare-styleable>
+    <declare-styleable name="SeslMultiSelectListPreference">
+        <attr name="entries" />
+        <attr name="android:entries" />
+        <attr name="entryValues" />
+        <attr name="android:entryValues" />
+    </declare-styleable>
+
+    <declare-styleable name="SeslSeekBarPreference">
+        <attr name="min" />
+        <attr name="android:max"/>
+        <attr name="android:layout" />
+        <attr name="seekBarIncrement" format="integer" />
+        <attr name="adjustable" format="boolean" />
+        <attr name="showSeekBarValue" format="boolean" />
+        <attr name="updatesContinuously" format="boolean" />
+    </declare-styleable>
     <declare-styleable name="SeslSwitchPreference">
         <attr name="summaryOn" />
         <attr name="android:summaryOn" />

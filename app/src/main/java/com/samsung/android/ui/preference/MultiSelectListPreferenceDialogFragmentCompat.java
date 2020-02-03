@@ -1,7 +1,6 @@
 package com.samsung.android.ui.preference;
 
 import android.content.DialogInterface;
-import android.content.DialogInterface.OnMultiChoiceClickListener;
 import android.os.Bundle;
 
 import com.samsung.android.ui.app.SeslAlertDialog;
@@ -52,7 +51,7 @@ public class MultiSelectListPreferenceDialogFragmentCompat extends PreferenceDia
             final AbstractMultiSelectListPreference preference = getListPreference();
 
             if (preference.getEntries() == null || preference.getEntryValues() == null) {
-                throw new IllegalStateException("MultiSelectListPreference requires an entries array and " + "an entryValues array.");
+                throw new IllegalStateException("SeslMultiSelectListPreference requires an entries array and " + "an entryValues array.");
             }
 
             mNewValues.clear();

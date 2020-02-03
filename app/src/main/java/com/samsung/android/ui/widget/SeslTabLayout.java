@@ -54,7 +54,7 @@ import androidx.core.view.PointerIconCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.widget.TextViewCompat;
 import androidx.viewpager.widget.PagerAdapter;
-import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager.widget.ViewPager2;
 
 import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.tabs.TabItem;
@@ -76,7 +76,7 @@ import com.samsung.android.ui.internal.SeslAbsIndicatorView;
  * EXTERNALS IS PROHIBITED AND WILL BE PUNISHED WITH ANAL ABUSE.
  */
 
-@ViewPager.DecorView
+@ViewPager2.DecorView
 public class SeslTabLayout extends HorizontalScrollView {
     private static final int DEFAULT_HEIGHT_WITH_TEXT_ICON = 72;
     static final int DEFAULT_GAP_TEXT_ICON = 8;
@@ -133,7 +133,7 @@ public class SeslTabLayout extends HorizontalScrollView {
     float mTabTextSize;
     private final Pools.Pool<SeslTabView> mTabViewPool = new Pools.SimplePool(12);
     private final ArrayList<SeslTab> mTabs = new ArrayList<>();
-    ViewPager mViewPager;
+    ViewPager2 mViewPager;
 
     public SeslTabLayout(Context context) {
         this(context, null);
@@ -402,15 +402,15 @@ public class SeslTabLayout extends HorizontalScrollView {
         return mTabTextColors;
     }
 
-    public void setupWithViewPager(ViewPager viewPager) {
+    public void setupWithViewPager(ViewPager2 viewPager) {
         setupWithViewPager(viewPager, true);
     }
 
-    public void setupWithViewPager(final ViewPager viewPager, boolean autoRefresh) {
+    public void setupWithViewPager(final ViewPager2 viewPager, boolean autoRefresh) {
         setupWithViewPager(viewPager, autoRefresh, false);
     }
 
-    private void setupWithViewPager(final ViewPager viewPager, boolean autoRefresh, boolean implicitSetup) {
+    private void setupWithViewPager(final ViewPager2 viewPager, boolean autoRefresh, boolean implicitSetup) {
         if (mViewPager != null) {
             if (mPageChangeListener != null) {
                 mViewPager.removeOnPageChangeListener(mPageChangeListener);
@@ -488,8 +488,8 @@ public class SeslTabLayout extends HorizontalScrollView {
 
         if (mViewPager == null) {
             final ViewParent vp = getParent();
-            if (vp instanceof ViewPager) {
-                setupWithViewPager((ViewPager) vp, true, true);
+            if (vp instanceof ViewPager2) {
+                setupWithViewPager((ViewPager2) vp, true, true);
             }
         }
     }
@@ -986,13 +986,13 @@ public class SeslTabLayout extends HorizontalScrollView {
     }
 
 
-    private class AdapterChangeListener implements ViewPager.OnAdapterChangeListener {
+    private class AdapterChangeListener implements ViewPager2.OnAdapterChangeListener {
         private boolean mAutoRefresh;
 
         AdapterChangeListener() { }
 
         @Override
-        public void onAdapterChanged(ViewPager viewPager, PagerAdapter oldAdapter, PagerAdapter newAdapter) {
+        public void onAdapterChanged(ViewPager2 viewPager, PagerAdapter oldAdapter, PagerAdapter newAdapter) {
             if (mViewPager == viewPager) {
                 setPagerAdapter(newAdapter, mAutoRefresh);
             }
@@ -1398,7 +1398,7 @@ public class SeslTabLayout extends HorizontalScrollView {
         }
     }
 
-    public static class TabLayoutOnPageChangeListener implements ViewPager.OnPageChangeListener {
+    public static class TabLayoutOnPageChangeListener implements ViewPager2.OnPageChangeListener {
         private final WeakReference<SeslTabLayout> mTabLayoutRef;
         private int mPreviousScrollState;
         private int mScrollState;
@@ -1882,9 +1882,9 @@ public class SeslTabLayout extends HorizontalScrollView {
     }
 
     public static class ViewPagerOnTabSelectedListener implements SeslTabLayout.OnTabSelectedListener {
-        private final ViewPager mViewPager;
+        private final ViewPager2 mViewPager;
 
-        public ViewPagerOnTabSelectedListener(ViewPager viewPager) {
+        public ViewPagerOnTabSelectedListener(ViewPager2 viewPager) {
             mViewPager = viewPager;
         }
 
