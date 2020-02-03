@@ -15,7 +15,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -34,6 +33,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 
 import com.mesalabs.cerberus.R;
+import com.mesalabs.cerberus.utils.LogUtils;
 import com.mesalabs.cerberus.utils.Utils;
 
 /*
@@ -943,7 +943,7 @@ public abstract class SeslAbsSeekBar extends SeslProgressBar {
     }
 
     public CharSequence getAccessibilityClassName() {
-        Log.d("SeslAbsSeekBar", "Stack:", new Throwable("stack dump"));
+        LogUtils.d("SeslAbsSeekBar", "Stack:", new Throwable("stack dump"));
         return AbsSeekBar.class.getName();
     }
 

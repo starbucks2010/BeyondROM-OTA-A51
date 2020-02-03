@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
@@ -22,6 +21,7 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import com.mesalabs.cerberus.R;
+import com.mesalabs.cerberus.utils.LogUtils;
 import com.samsung.android.ui.preference.internal.AbstractMultiSelectListPreference;
 import com.samsung.android.ui.util.SeslRoundedCorner;
 import com.samsung.android.ui.util.SeslSubheaderRoundedCorner;
@@ -213,7 +213,7 @@ public abstract class SeslPreferenceFragmentCompat extends Fragment implements S
             this.mSubheaderColor = ((ColorDrawable)var9).getColor();
         }
 
-        Log.d("SeslPreferenceFragmentC", " sub header color = " + this.mSubheaderColor);
+        LogUtils.d("SeslPreferenceFragmentC", " sub header color = " + this.mSubheaderColor);
         var8.recycle();
         TypedValue var16 = new TypedValue();
         this.getActivity().getTheme().resolveAttribute(R.attr.preferenceTheme, var16, true);

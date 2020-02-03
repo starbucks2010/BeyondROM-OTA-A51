@@ -6,7 +6,6 @@ import android.content.Context;
 import android.hardware.input.InputManager;
 import android.os.Build;
 import android.text.TextUtils;
-import android.util.Log;
 import android.provider.Settings.System;
 import android.view.MotionEvent;
 import android.view.View;
@@ -16,6 +15,7 @@ import android.view.accessibility.AccessibilityManager;
 import androidx.core.view.InputDeviceCompat;
 import androidx.core.view.ViewCompat;
 
+import com.mesalabs.cerberus.utils.LogUtils;
 import com.mesalabs.cerberus.utils.Utils;
 
 /*
@@ -123,7 +123,7 @@ public class SeslTooltip implements View.OnLongClickListener, View.OnHoverListen
                 }
                 break;
             case MotionEvent.ACTION_HOVER_EXIT:
-                Log.d(TAG, "MotionEvent.ACTION_HOVER_EXIT : hide SeslTooltipPopup");
+                LogUtils.d(TAG, "MotionEvent.ACTION_HOVER_EXIT : hide SeslTooltipPopup");
                 showPenPointEffect(event, false);
                 hide();
                 break;
@@ -183,7 +183,7 @@ public class SeslTooltip implements View.OnLongClickListener, View.OnHoverListen
                 mPopup = null;
                 mAnchor.removeOnAttachStateChangeListener(this);
             } else {
-                Log.e(TAG, "sActiveHandler.mPopup == null");
+                LogUtils.e(TAG, "sActiveHandler.mPopup == null");
             }
         }
         mIsShowRunnablePostDelayed = false;

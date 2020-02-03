@@ -14,7 +14,6 @@ import android.os.Parcelable;
 import android.provider.Settings.Secure;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.AbsSavedState;
 import android.view.View;
@@ -30,6 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.mesalabs.cerberus.R;
+import com.mesalabs.cerberus.utils.LogUtils;
 import com.samsung.android.ui.internal.widget.SeslPreferenceImageView;
 
 /*
@@ -633,10 +633,10 @@ public class SeslPreference implements Comparable<SeslPreference> {
                 var9.setText(var7);
                 if (this.mChangedSummaryColor) {
                     var9.setTextColor(this.mSummaryColor);
-                    Log.d("SeslPreference", "set Summary Color : " + this.mSummaryColor);
+                    LogUtils.d("SeslPreference", "set Summary Color : " + this.mSummaryColor);
                 } else if (this.mChangedSummaryColorStateList) {
                     var9.setTextColor(this.mSummaryColorStateList);
-                    Log.d("SeslPreference", "set Summary ColorStateList : " + this.mSummaryColorStateList);
+                    LogUtils.d("SeslPreference", "set Summary ColorStateList : " + this.mSummaryColorStateList);
                 } else if (this.mTextColorSecondary != null) {
                     var9.setTextColor(this.mTextColorSecondary);
                 }

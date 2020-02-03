@@ -7,7 +7,6 @@ import android.content.res.Resources;
 import android.graphics.PixelFormat;
 import android.graphics.Rect;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -18,6 +17,7 @@ import android.widget.TextView;
 import androidx.appcompat.view.ContextThemeWrapper;
 
 import com.mesalabs.cerberus.R;
+import com.mesalabs.cerberus.utils.LogUtils;
 
 /*
  * Cerberus Core App
@@ -147,7 +147,7 @@ class SeslTooltipPopup {
 
         View appView = getAppRootView(anchorView);
         if (appView == null) {
-            Log.e(TAG, "Cannot find app view");
+            LogUtils.e(TAG, "Cannot find app view");
             return;
         }
 

@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.FocusFinder;
 import android.view.KeyEvent;
@@ -36,7 +35,8 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.core.view.accessibility.AccessibilityRecordCompat;
 import androidx.core.widget.EdgeEffectCompat;
-import androidx.core.widget.NestedScrollView;
+
+import com.mesalabs.cerberus.utils.LogUtils;
 
 import java.util.ArrayList;
 
@@ -954,7 +954,7 @@ public class SeslNestedScrollView extends FrameLayout implements NestedScrolling
                                 var4.append("Invalid pointerId=");
                                 var4.append(var2);
                                 var4.append(" in onInterceptTouchEvent");
-                                Log.e("NestedScrollView", var4.toString());
+                                LogUtils.e("NestedScrollView", var4.toString());
                             } else {
                                 var2 = (int)var1.getY(var3);
                                 if (Math.abs(var2 - this.mLastMotionY) > this.mTouchSlop && (2 & this.getNestedScrollAxes()) == 0) {
@@ -1279,7 +1279,7 @@ public class SeslNestedScrollView extends FrameLayout implements NestedScrolling
                         var12.append("Invalid pointerId=");
                         var12.append(this.mActivePointerId);
                         var12.append(" in onTouchEvent");
-                        Log.e("NestedScrollView", var12.toString());
+                        LogUtils.e("NestedScrollView", var12.toString());
                     } else {
                         int var5 = (int)var1.getY(var4);
                         var3 = this.mLastMotionY - var5;

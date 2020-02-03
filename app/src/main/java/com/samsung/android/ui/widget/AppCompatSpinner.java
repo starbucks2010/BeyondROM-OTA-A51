@@ -14,7 +14,6 @@ import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,6 +43,7 @@ import androidx.core.view.TintableBackgroundView;
 import androidx.core.view.ViewCompat;
 
 import com.mesalabs.cerberus.R;
+import com.mesalabs.cerberus.utils.LogUtils;
 import com.samsung.android.ui.app.SeslAlertDialog;
 
 /*
@@ -125,7 +125,7 @@ public class AppCompatSpinner extends Spinner implements TintableBackgroundView 
                     mode = aa.getInt(0, MODE_DIALOG);
                 }
             } catch (Exception e) {
-                Log.i(TAG, "Could not read android:spinnerMode", e);
+                LogUtils.i(TAG, "Could not read android:spinnerMode", e);
             } finally {
                 if (aa != null) {
                     aa.recycle();
@@ -703,17 +703,17 @@ public class AppCompatSpinner extends Spinner implements TintableBackgroundView 
 
         @Override
         public void setBackgroundDrawable(Drawable bg) {
-            Log.e(TAG, "Cannot set popup background for MODE_DIALOG, ignoring");
+            LogUtils.e(TAG, "Cannot set popup background for MODE_DIALOG, ignoring");
         }
 
         @Override
         public void setVerticalOffset(int px) {
-            Log.e(TAG, "Cannot set vertical offset for MODE_DIALOG, ignoring");
+            LogUtils.e(TAG, "Cannot set vertical offset for MODE_DIALOG, ignoring");
         }
 
         @Override
         public void setHorizontalOffset(int px) {
-            Log.e(TAG, "Cannot set horizontal offset for MODE_DIALOG, ignoring");
+            LogUtils.e(TAG, "Cannot set horizontal offset for MODE_DIALOG, ignoring");
         }
 
         @Override
@@ -733,7 +733,7 @@ public class AppCompatSpinner extends Spinner implements TintableBackgroundView 
 
         @Override
         public void setHorizontalOriginalOffset(int px) {
-            Log.e(TAG, "Cannot set horizontal (original) offset for MODE_DIALOG, ignoring");
+            LogUtils.e(TAG, "Cannot set horizontal (original) offset for MODE_DIALOG, ignoring");
         }
 
         @Override
