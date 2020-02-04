@@ -1097,8 +1097,6 @@
         <item name="android:thumb">@drawable/sesl_scrubber_control_anim</item>
     </style>
 
-
-
     <!-- SeslSwitchBar -->
     <style name="mesa_SeslSwitchBar" parent="@android:style/Widget">
         <item name="seslSwitchBarBackgroundActivatedColor">@color/sesl_switchbar_on_background_color</item>

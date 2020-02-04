@@ -262,4 +262,36 @@ public class ViewUtils {
         Utils.genericInvokeMethod(view, "semSetRoundedCornerColor", roundMode, color);
     }
 
+    public static void updateListBothSideMargin(final Activity activity, final ViewGroup viewGroup) {
+        if (viewGroup != null && activity != null && !activity.isDestroyed() && !activity.isFinishing()) {
+            activity.findViewById(android.R.id.content).post(new Runnable() {
+                public void run() {
+                    int width = activity.findViewById(android.R.id.content).getWidth();
+                    Configuration configuration = activity.getResources().getConfiguration();
+                    if (configuration.screenHeightDp <= 411 || configuration.screenWidthDp < 512) {
+                        viewGroup.setPadding(0, 0, 0, 0);
+                        return;
+                    }
+                    viewGroup.getLayoutParams().width = ViewGroup.LayoutParams.MATCH_PARENT;
+                    int screenWidthDp = configuration.screenWidthDp;
+                    if (screenWidthDp < 685 || screenWidthDp > 959) {
+                        if (screenWidthDp >= 960 && screenWidthDp <= 1919) {
+                            int i = (int) (((float) width) * 0.125f);
+                            viewGroup.setPadding(i, 0, i, 0);
+                        } else if (configuration.screenWidthDp >= 1920) {
+                            int i = (int) (((float) width) * 0.25f);
+                            viewGroup.setPadding(i, 0, i, 0);
+                        } else {
+                            viewGroup.setPadding(0, 0, 0, 0);
+                        }
+                    } else {
+                        int i = (int) (((float) width) * 0.05f);
+                        viewGroup.setPadding(i, 0, i, 0);
+                    }
+                }
+            });
+        }
+    }
+
+
 }

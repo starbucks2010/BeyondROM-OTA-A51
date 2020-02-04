@@ -1,6 +1,7 @@
 package com.mesalabs.cerberus.base;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +30,7 @@ import com.mesalabs.cerberus.utils.ViewUtils;
 public class ToolbarActivity extends AppCompatActivity {
     protected Context mContext;
     protected ActionBarUtils toolBar;
+    protected ViewGroup root;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +40,15 @@ public class ToolbarActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        if (root != null)
+            ViewUtils.updateListBothSideMargin(this, root);
+    }
+
+
+    @Override
     public void setContentView(View view) {
         super.setContentView(R.layout.mesa_baselayout_toolbaractivity);
 
@@ -45,7 +56,7 @@ public class ToolbarActivity extends AppCompatActivity {
         toolBar.initToolBar();
 
         if (view != null) {
-            ViewGroup root = findViewById(R.id.mesa_container_baseactivity);
+            root = findViewById(R.id.mesa_container_baseactivity);
             if (root != null) {
                 root.addView(view);
             }
@@ -60,7 +71,7 @@ public class ToolbarActivity extends AppCompatActivity {
         toolBar.initToolBar();
 
         View layout = getLayoutInflater().inflate(layoutResID, null);
-        ViewGroup root = findViewById(R.id.mesa_container_baseactivity);
+        root = findViewById(R.id.mesa_container_baseactivity);
         if (root != null) {
             root.addView(layout);
         }

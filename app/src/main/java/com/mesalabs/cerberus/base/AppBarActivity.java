@@ -30,6 +30,7 @@ import com.mesalabs.cerberus.utils.ViewUtils;
 public class AppBarActivity extends AppCompatActivity {
     protected Context mContext;
     protected ActionBarUtils appBar;
+    protected ViewGroup root;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +45,9 @@ public class AppBarActivity extends AppCompatActivity {
 
         if (appBar != null)
             appBar.resetAppBarHeight();
+
+        if (root != null)
+            ViewUtils.updateListBothSideMargin(this, root);
     }
 
     @Override
@@ -54,7 +58,7 @@ public class AppBarActivity extends AppCompatActivity {
         appBar.initAppBar(getIsAppBarExpanded());
 
         if (view != null) {
-            ViewGroup root = findViewById(R.id.mesa_container_baseactivity);
+            root = findViewById(R.id.mesa_container_baseactivity);
             if (root != null) {
                 root.addView(view);
             }
@@ -69,7 +73,7 @@ public class AppBarActivity extends AppCompatActivity {
         appBar.initAppBar(getIsAppBarExpanded());
 
         View layout = getLayoutInflater().inflate(layoutResID, null);
-        ViewGroup root = findViewById(R.id.mesa_container_baseactivity);
+        root = findViewById(R.id.mesa_container_baseactivity);
         if (root != null) {
             root.addView(layout);
         }

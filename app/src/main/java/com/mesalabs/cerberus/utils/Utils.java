@@ -320,13 +320,4 @@ public class Utils {
         return ViewUtils.getSmallestDeviceWidthDp(context) >= 685;
     }
 
-    public static void updateListBothSideMargin(Context context, ViewGroup layout) {
-        if (layout != null) {
-            if (!ViewUtils.isMultiWindowMinSize(context, 801, true))
-                layout.getLayoutParams().width = (int) (((double) context.getResources().getDisplayMetrics().widthPixels) * 0.75d);
-            else
-                layout.getLayoutParams().width = ViewGroup.LayoutParams.MATCH_PARENT;
-        }
-    }
-
 }
