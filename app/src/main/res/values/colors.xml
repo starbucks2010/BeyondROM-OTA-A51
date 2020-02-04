@@ -108,13 +108,16 @@
     <color name="sesl_dialog_title_text_color_light">#252525</color>
     <color name="sesl_dialog_text_body_color_light">#505050</color>
 
-    <color name="sesl_color_picker_cursor_stroke_color">#FFFFFF</color>
+    <color name="sesl_color_picker_seekbar_cursor_background_color">#FAFAFA</color>
+    <color name="sesl_color_picker_seekbar_cursor_stroke_color">#33000000</color>
     <color name="sesl_color_picker_selected_color_item_text_color_dark">#B0B0B0</color>
     <color name="sesl_color_picker_selected_color_item_text_color_light">#5D5D5D</color>
     <color name="sesl_color_picker_stroke_color_dark">#000000</color>
     <color name="sesl_color_picker_stroke_color_light">#D4D4D4</color>
     <color name="sesl_color_picker_used_color_item_empty_slot_color_dark">#3B3B3B</color>
     <color name="sesl_color_picker_used_color_item_empty_slot_color_light">#E6E6E6</color>
+    <color name="sesl_color_picker_used_color_text_color_dark">#42FAFAFA</color>
+    <color name="sesl_color_picker_used_color_text_color_light">#979797</color>
 
     <color name="sesl_progress_dialog_horizontal_text_color_light">#545454</color>
 
