@@ -278,15 +278,17 @@
 
 
 
-
-
-    <dimen name="mesa_samsungiconbutton_divider_height">2.0px</dimen>
-    <dimen name="mesa_samsungbutton_divider_height">3.0px</dimen>
-
     <dimen name="mesa_toolbar_imagebutton_width">48.0dip</dimen>
 
     <dimen name="mesa_tab_height">60.0dip</dimen>
     <dimen name="mesa_tab_layout_padding">24.0dip</dimen>
     <dimen name="mesa_tab_padding">8.0dip</dimen>
     <dimen name="mesa_tab_text_size">15.0sp</dimen>
+
+    <dimen name="mesa_tipscardviewpref_padding_bottom">20.0dip</dimen>
+    <dimen name="mesa_tipscardviewpref_padding_top">24.0dip</dimen>
+    <dimen name="mesa_tipscardviewpref_text_gap">8.0dip</dimen>
+    <dimen name="mesa_tipscardviewpref_cancel_button_margin_top">14.0dip</dimen>
+    <dimen name="mesa_tipscardviewpref_cancel_button_size">32.0dip</dimen>
+    <dimen name="mesa_tipscardviewpref_uplayout_padding_end">15.0dip</dimen>
 </resources>
