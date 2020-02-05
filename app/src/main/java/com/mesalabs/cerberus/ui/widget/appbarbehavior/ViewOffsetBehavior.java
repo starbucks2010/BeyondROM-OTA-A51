@@ -9,7 +9,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 /*
  * Cerberus Core App
  *
- * Coded by BlackMesa @2019
+ * Coded by BlackMesa @2020
  * Originally coded by Samsung. All rights reserved to their respective owners.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");

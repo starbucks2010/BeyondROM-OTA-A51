@@ -1,6 +1,5 @@
 package com.samsung.android.ui.widget;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
@@ -23,7 +22,6 @@ import com.mesalabs.cerberus.R;
  * EXTERNALS IS PROHIBITED AND WILL BE PUNISHED WITH ANAL ABUSE.
  */
 
-@SuppressLint("AppCompatCustomView")
 class SeslOpacitySeekBar extends SeslSeekBar {
     private static final int SEEKBAR_MAX_VALUE = 255;
     private static final String TAG = "SeslOpacitySeekBar";
