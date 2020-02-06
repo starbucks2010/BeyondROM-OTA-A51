@@ -60,6 +60,11 @@
         <attr name="cornersStroke" />
         <attr name="roundedCorners" />
     </declare-styleable>
+
+    <declare-styleable name="ColorPickerPreference">
+        <attr name="showAlphaSlider" format="boolean" />
+    </declare-styleable>
+
     <declare-styleable name="SeslCollapsingToolbarLayout">
         <attr name="expandedTitleMargin" format="dimension"/>
         <attr name="expandedTitleMarginStart" format="dimension"/>
