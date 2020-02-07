@@ -409,7 +409,7 @@ public class AppBarBehavior extends HeaderBehavior<AppBarLayout> {
 
         updateAppBarLayoutDrawableState(parent, abl, getTopAndBottomOffset(), 0, true);
 
-        Utils.genericInvokeMethod(abl, "dispatchOffsetUpdates", getTopAndBottomOffset());
+        Utils.genericInvokeMethod(abl, "onOffsetChanged", getTopAndBottomOffset());
 
         return handled;
     }
@@ -475,7 +475,7 @@ public class AppBarBehavior extends HeaderBehavior<AppBarLayout> {
                     coordinatorLayout.dispatchDependentViewsChanged(appBarLayout);
                 }
 
-                Utils.genericInvokeMethod(appBarLayout, "dispatchOffsetUpdates", getTopAndBottomOffset());
+                Utils.genericInvokeMethod(appBarLayout, "onOffsetChanged", getTopAndBottomOffset());
 
                 updateAppBarLayoutDrawableState(coordinatorLayout, appBarLayout, newOffset, newOffset < curOffset ? -1 : 1, false);
             }
