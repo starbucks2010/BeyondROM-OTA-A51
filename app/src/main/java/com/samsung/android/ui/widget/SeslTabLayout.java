@@ -42,10 +42,6 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import static androidx.viewpager.widget.ViewPager.SCROLL_STATE_DRAGGING;
-import static androidx.viewpager.widget.ViewPager.SCROLL_STATE_IDLE;
-import static androidx.viewpager.widget.ViewPager.SCROLL_STATE_SETTLING;
-
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.util.Pools;
@@ -54,7 +50,7 @@ import androidx.core.view.PointerIconCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.widget.TextViewCompat;
 import androidx.viewpager.widget.PagerAdapter;
-import androidx.viewpager.widget.ViewPager2;
+import androidx.viewpager.widget.SeslViewPager;
 
 import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.tabs.TabItem;
@@ -76,7 +72,7 @@ import com.samsung.android.ui.internal.SeslAbsIndicatorView;
  * EXTERNALS IS PROHIBITED AND WILL BE PUNISHED WITH ANAL ABUSE.
  */
 
-@ViewPager2.DecorView
+@SeslViewPager.DecorView
 public class SeslTabLayout extends HorizontalScrollView {
     private static final int DEFAULT_HEIGHT_WITH_TEXT_ICON = 72;
     static final int DEFAULT_GAP_TEXT_ICON = 8;
@@ -133,7 +129,7 @@ public class SeslTabLayout extends HorizontalScrollView {
     float mTabTextSize;
     private final Pools.Pool<SeslTabView> mTabViewPool = new Pools.SimplePool(12);
     private final ArrayList<SeslTab> mTabs = new ArrayList<>();
-    ViewPager2 mViewPager;
+    SeslViewPager mViewPager;
 
     public SeslTabLayout(Context context) {
         this(context, null);
@@ -402,15 +398,15 @@ public class SeslTabLayout extends HorizontalScrollView {
         return mTabTextColors;
     }
 
-    public void setupWithViewPager(ViewPager2 viewPager) {
+    public void setupWithViewPager(SeslViewPager viewPager) {
         setupWithViewPager(viewPager, true);
     }
 
-    public void setupWithViewPager(final ViewPager2 viewPager, boolean autoRefresh) {
+    public void setupWithViewPager(final SeslViewPager viewPager, boolean autoRefresh) {
         setupWithViewPager(viewPager, autoRefresh, false);
     }
 
-    private void setupWithViewPager(final ViewPager2 viewPager, boolean autoRefresh, boolean implicitSetup) {
+    private void setupWithViewPager(final SeslViewPager viewPager, boolean autoRefresh, boolean implicitSetup) {
         if (mViewPager != null) {
             if (mPageChangeListener != null) {
                 mViewPager.removeOnPageChangeListener(mPageChangeListener);
@@ -488,8 +484,8 @@ public class SeslTabLayout extends HorizontalScrollView {
 
         if (mViewPager == null) {
             final ViewParent vp = getParent();
-            if (vp instanceof ViewPager2) {
-                setupWithViewPager((ViewPager2) vp, true, true);
+            if (vp instanceof SeslViewPager) {
+                setupWithViewPager((SeslViewPager) vp, true, true);
             }
         }
     }
@@ -986,13 +982,13 @@ public class SeslTabLayout extends HorizontalScrollView {
     }
 
 
-    private class AdapterChangeListener implements ViewPager2.OnAdapterChangeListener {
+    private class AdapterChangeListener implements SeslViewPager.OnAdapterChangeListener {
         private boolean mAutoRefresh;
 
         AdapterChangeListener() { }
 
         @Override
-        public void onAdapterChanged(ViewPager2 viewPager, PagerAdapter oldAdapter, PagerAdapter newAdapter) {
+        public void onAdapterChanged(SeslViewPager viewPager, PagerAdapter oldAdapter, PagerAdapter newAdapter) {
             if (mViewPager == viewPager) {
                 setPagerAdapter(newAdapter, mAutoRefresh);
             }
@@ -1398,7 +1394,7 @@ public class SeslTabLayout extends HorizontalScrollView {
         }
     }
 
-    public static class TabLayoutOnPageChangeListener implements ViewPager2.OnPageChangeListener {
+    public static class TabLayoutOnPageChangeListener implements SeslViewPager.OnPageChangeListener {
         private final WeakReference<SeslTabLayout> mTabLayoutRef;
         private int mPreviousScrollState;
         private int mScrollState;
@@ -1417,8 +1413,8 @@ public class SeslTabLayout extends HorizontalScrollView {
         public void onPageScrolled(final int position, final float positionOffset, final int positionOffsetPixels) {
             final SeslTabLayout tabLayout = mTabLayoutRef.get();
             if (tabLayout != null) {
-                final boolean updateText = mScrollState != SCROLL_STATE_SETTLING || mPreviousScrollState == SCROLL_STATE_DRAGGING;
-                final boolean updateIndicator = !(mScrollState == SCROLL_STATE_SETTLING && mPreviousScrollState == SCROLL_STATE_IDLE);
+                final boolean updateText = mScrollState != 2 || mPreviousScrollState == 1;
+                final boolean updateIndicator = !(mScrollState == 2 && mPreviousScrollState == 0);
                 tabLayout.setScrollPosition(position, positionOffset, updateText, updateIndicator);
             }
         }
@@ -1427,13 +1423,13 @@ public class SeslTabLayout extends HorizontalScrollView {
         public void onPageSelected(final int position) {
             final SeslTabLayout tabLayout = mTabLayoutRef.get();
             if (tabLayout != null && tabLayout.getSelectedTabPosition() != position && position < tabLayout.getTabCount()) {
-                final boolean updateIndicator = mScrollState == SCROLL_STATE_IDLE || (mScrollState == SCROLL_STATE_SETTLING && mPreviousScrollState == SCROLL_STATE_IDLE);
+                final boolean updateIndicator = mScrollState == 0 || (mScrollState == 2 && mPreviousScrollState == 0);
                 tabLayout.selectTab(tabLayout.getTabAt(position), updateIndicator);
             }
         }
 
         void reset() {
-            mPreviousScrollState = mScrollState = SCROLL_STATE_IDLE;
+            mPreviousScrollState = mScrollState = 0;
         }
     }
 
@@ -1882,9 +1878,9 @@ public class SeslTabLayout extends HorizontalScrollView {
     }
 
     public static class ViewPagerOnTabSelectedListener implements SeslTabLayout.OnTabSelectedListener {
-        private final ViewPager2 mViewPager;
+        private final SeslViewPager mViewPager;
 
-        public ViewPagerOnTabSelectedListener(ViewPager2 viewPager) {
+        public ViewPagerOnTabSelectedListener(SeslViewPager viewPager) {
             mViewPager = viewPager;
         }
 

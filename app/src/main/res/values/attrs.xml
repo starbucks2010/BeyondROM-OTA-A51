@@ -17,6 +17,7 @@
     <attr name="primaryTextColor" format="string|integer|color|reference" />
     <attr name="secondaryTextColor" format="string|integer|color|reference" />
     <attr name="buttonCornerRadius" format="dimension" />
+    <attr name="tabLayoutStyle" format="reference" />
 
     <attr name="seslSwitchBarStyle" format="reference" />
 

@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 /*
  * Cerberus Core App
@@ -31,6 +32,7 @@ import android.widget.ImageView;
  */
 
 public class ViewUtils {
+    public static final String TAG = "ViewUtils";
 
     public static int dp2px(Context context, float f) {
         try {
@@ -68,7 +70,7 @@ public class ViewUtils {
 
             return windowManager.getDefaultDisplay().getRotation();
         } catch (Exception unused) {
-            LogUtils.e("ViewUtils", "cannot get portrait orientation");
+            LogUtils.e(TAG, "cannot get portrait orientation");
             return 0;
         }
     }
@@ -76,7 +78,7 @@ public class ViewUtils {
     public static int getSmallestDeviceWidthDp(Context context) {
         DisplayMetrics displayMetrics = new DisplayMetrics();
         ((WindowManager) context.getApplicationContext().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getRealMetrics(displayMetrics);
-        LogUtils.d("ViewUtils", "metrics = " + displayMetrics);
+        LogUtils.d(TAG, "metrics = " + displayMetrics);
         return Math.round(Math.min(((float) displayMetrics.heightPixels) / displayMetrics.density, ((float) displayMetrics.widthPixels) / displayMetrics.density));
     }
 
@@ -100,7 +102,7 @@ public class ViewUtils {
             windowManager.getDefaultDisplay().getSize(point);
             return point.x;
         } catch (Exception unused) {
-            LogUtils.e("ViewUtils", "cannot get window width");
+            LogUtils.e(TAG, "cannot get window width");
             return 0;
         }
     }
@@ -117,7 +119,7 @@ public class ViewUtils {
             windowManager.getDefaultDisplay().getSize(point);
             return point.y;
         } catch (Exception unused) {
-            LogUtils.e("ViewUtils", "cannot get window width");
+            LogUtils.e(TAG, "cannot get window width");
             return 0;
         }
     }
@@ -160,7 +162,7 @@ public class ViewUtils {
                     nullViewDrawablesRecursive(viewGroup.getChildAt(index));
                 }
             } catch (Exception e) {
-                LogUtils.e("ViewUtils", "nullViewDrawablesRecursive InflateException");
+                LogUtils.e(TAG, "nullViewDrawablesRecursive InflateException");
             }
         } else {
             nullViewDrawable(view);
@@ -171,52 +173,52 @@ public class ViewUtils {
         try {
             view.setOnClickListener(null);
         } catch (Exception e) {
-            LogUtils.e("ViewUtils", "nullViewDrawable setOnClickListener Exception");
+            LogUtils.e(TAG, "nullViewDrawable setOnClickListener Exception");
         }
         try {
             view.setOnCreateContextMenuListener(null);
         } catch (Exception e) {
-            LogUtils.e("ViewUtils", "nullViewDrawable setOnCreateContextMenuListener Exception");
+            LogUtils.e(TAG, "nullViewDrawable setOnCreateContextMenuListener Exception");
         }
         try {
             view.setOnFocusChangeListener(null);
         } catch (Exception e) {
-            LogUtils.e("ViewUtils", "nullViewDrawable setOnFocusChangeListener Exception");
+            LogUtils.e(TAG, "nullViewDrawable setOnFocusChangeListener Exception");
         }
         try {
             view.setOnKeyListener(null);
         } catch (Exception e) {
-            LogUtils.e("ViewUtils", "nullViewDrawable setOnKeyListener Exception");
+            LogUtils.e(TAG, "nullViewDrawable setOnKeyListener Exception");
         }
         try {
             view.setOnLongClickListener(null);
         } catch (Exception e) {
-            LogUtils.e("ViewUtils", "nullViewDrawable setOnLongClickListener Exception");
+            LogUtils.e(TAG, "nullViewDrawable setOnLongClickListener Exception");
         }
         try {
             view.setTouchDelegate(null);
         } catch (Exception e) {
-            LogUtils.e("ViewUtils", "nullViewDrawable setTouchDelegate Exception");
+            LogUtils.e(TAG, "nullViewDrawable setTouchDelegate Exception");
         }
         try {
             view.setBackground(null);
         } catch (Exception e) {
-            LogUtils.e("ViewUtils", "nullViewDrawable setBackground Exception");
+            LogUtils.e(TAG, "nullViewDrawable setBackground Exception");
         }
         try {
             view.setAnimation(null);
         } catch (Exception e) {
-            LogUtils.e("ViewUtils", "nullViewDrawable setAnimation Exception");
+            LogUtils.e(TAG, "nullViewDrawable setAnimation Exception");
         }
         try {
             view.setContentDescription(null);
         } catch (Exception e) {
-            LogUtils.e("ViewUtils", "nullViewDrawable setContentDescription Exception");
+            LogUtils.e(TAG, "nullViewDrawable setContentDescription Exception");
         }
         try {
             view.setTag(null);
         } catch (Exception e) {
-            LogUtils.e("ViewUtils", "nullViewDrawable setTag Exception");
+            LogUtils.e(TAG, "nullViewDrawable setTag Exception");
         }
 
         Drawable d = view.getBackground();
@@ -224,7 +226,7 @@ public class ViewUtils {
             try {
                 d.setCallback(null);
             } catch (Exception e11) {
-                LogUtils.e("ViewUtils", "nullViewDrawable setCallback Exception");
+                LogUtils.e(TAG, "nullViewDrawable setCallback Exception");
             }
         }
         if (view instanceof ImageView) {
@@ -260,6 +262,46 @@ public class ViewUtils {
 
     public static void semSetRoundedCornerColor(View view, int roundMode, int color) {
         Utils.genericInvokeMethod(view, "semSetRoundedCornerColor", roundMode, color);
+    }
+
+    public static void setLargeTextSize(Context context, TextView textView, float size) {
+        setTextSize(context, textView, size, 1.3F);
+    }
+
+    public static void setLargeTextSize(Context context, TextView[] textViewArr, float size) {
+        if (context.getResources().getConfiguration().fontScale > size) {
+            for (TextView textView : textViewArr) {
+                if (textView != null) {
+                    textView.setTextSize(1, size * (textView.getTextSize() / context.getResources().getDisplayMetrics().scaledDensity));
+                }
+            }
+        }
+
+    }
+
+    public static void setTextSize(Context context, TextView textView, float size, float maxScale) {
+        if (textView != null) {
+            float fontScale = context.getResources().getConfiguration().fontScale;
+            float fixSize = size / fontScale;
+            LogUtils.d(TAG, "setLargeTextSize fontScale : " + fontScale + ", " + size + ", " + fixSize);
+            if (fontScale > maxScale) {
+                fontScale = maxScale;
+            }
+
+            setTextSize(textView, fixSize * fontScale);
+        }
+
+    }
+
+    public static void setTextSize(TextView textView, float size) {
+        if (textView != null) {
+            try {
+                textView.setTextSize(0, (float) Math.ceil(size));
+            } catch (Exception e) {
+                LogUtils.e(TAG, e.toString());
+            }
+        }
+
     }
 
     public static void updateListBothSideMargin(final Activity activity, final ViewGroup viewGroup) {
