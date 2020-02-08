@@ -5,11 +5,13 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.mesalabs.cerberus.R;
 import com.mesalabs.cerberus.ui.utils.ActionBarUtils;
+import com.mesalabs.cerberus.utils.Utils;
 import com.mesalabs.cerberus.utils.ViewUtils;
 
 /*
@@ -35,13 +37,14 @@ public class AppBarActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         mContext = this;
     }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
+
+        hideStatusBarForLandscape(newConfig.orientation);
 
         if (appBar != null)
             appBar.resetAppBarHeight();
@@ -89,6 +92,28 @@ public class AppBarActivity extends AppCompatActivity {
 
     protected boolean getIsAppBarExpanded() {
         return true;
+    }
+
+    protected final void hideStatusBarForLandscape(int orientation) {
+        if (!Utils.isTabletDevice(mContext) && !Utils.isInSamsungDeXMode(mContext)) {
+            WindowManager.LayoutParams params = getWindow().getAttributes();
+            if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                if (!Utils.isInMultiWindowMode(this)) {
+                    params.flags |= 1024;
+                } else {
+                    params.flags &= -1025;
+                }
+
+                Utils.genericInvokeMethod(params, "semAddExtensionFlags", 1);
+            } else {
+                params.flags &= -1025;
+
+                Utils.genericInvokeMethod(params, "semClearExtensionFlags", 1);
+            }
+
+            getWindow().setAttributes(params);
+        }
+
     }
 
     protected void removeViewRoundedCorners() {

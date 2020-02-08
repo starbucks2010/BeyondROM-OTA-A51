@@ -236,27 +236,38 @@ public class ActionBarUtils {
         if (appBarLayout != null) {
             ViewGroup.LayoutParams params = appBarLayout.getLayoutParams();
             int windowHeight = ViewUtils.getWindowHeight(activity);
+            int abBottomPadding;
 
-            if (ViewUtils.isLandscape(activity) || Utils.isInMultiWindowMode(activity)) {
+            if (ViewUtils.isLandscape(activity)) {
+                appBarLayout.setExpanded(false, false);
+                appBarLayout.setActivated(false);
+
+                mAppBarHeightDp = activity.getResources().getDimension(R.dimen.sesl_action_bar_default_height);
+                abBottomPadding = 0;
+
+                params.height = (int) mAppBarHeightDp;
+            } else if (Utils.isInMultiWindowMode(activity)) {
                 appBarLayout.setExpanded(false, false);
                 appBarLayout.setActivated(false);
 
                 mAppBarHeightDp = activity.getResources().getDimension(R.dimen.sesl_action_bar_default_height_padding);
+                abBottomPadding = activity.getResources().getDimensionPixelSize(R.dimen.sesl_material_extended_appbar_bottom_padding);
 
                 params.height = (int) mAppBarHeightDp;
             } else {
                 appBarLayout.setExpanded(defaultExpandStatus, false);
                 appBarLayout.setActivated(true);
 
+                abBottomPadding = activity.getResources().getDimensionPixelSize(R.dimen.sesl_material_extended_appbar_bottom_padding);
+
                 TypedValue outValue = new TypedValue();
                 activity.getResources().getValue(R.dimen.sesl_abl_height_proportion, outValue, true);
-
-                mAppBarHeightDp = activity.getResources().getDimension(R.dimen.sesl_action_bar_default_height);
 
                 params.height = (int) ((float) windowHeight * outValue.getFloat());
             }
 
             appBarLayout.setLayoutParams(params);
+            appBarLayout.setPadding(0, 0, 0, abBottomPadding);
         } else
             LogUtils.w(activity.getLocalClassName() + ".resetAppBarHeight", "appBarLayout is null.");
     }

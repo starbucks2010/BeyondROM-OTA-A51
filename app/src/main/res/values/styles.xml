@@ -753,6 +753,7 @@
         <item name="android:layout">@layout/sesl_preference_widget_seekbar</item>
     </style>
     <style name="mesa_SeslSwitchPreferenceStyle" parent="@style/mesa_SeslPreferenceStyle">
+        <item name="android:layout">@layout/sesl_preference_switch</item>
         <item name="android:widgetLayout">@layout/sesl_preference_widget_switch</item>
         <item name="android:switchTextOn">@string/sesl_preference_on</item>
         <item name="android:switchTextOff">@string/sesl_preference_off</item>
