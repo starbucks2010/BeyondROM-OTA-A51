@@ -11,7 +11,11 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.animation.Interpolator;
 import android.view.animation.PathInterpolator;
+import android.widget.ListView;
+import android.widget.ScrollView;
+
 import java.lang.ref.WeakReference;
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -43,7 +47,7 @@ import com.mesalabs.cerberus.utils.Utils;
  * EXTERNALS IS PROHIBITED AND WILL BE PUNISHED WITH ANAL ABUSE.
  */
 
-public class AppBarBehavior extends HeaderBehavior<AppBarLayout> {
+public class AppBarBehavior<T extends AppBarLayout> extends HeaderBehavior<T> {
     static final Interpolator SINE_OUT_80_INTERPOLATOR = new PathInterpolator(0.17f, 0.17f, 0.2f, 1.0f);
 
     private static final int MAX_OFFSET_ANIMATION_DURATION = 700; // ms
@@ -81,7 +85,7 @@ public class AppBarBehavior extends HeaderBehavior<AppBarLayout> {
         super(context, attrs);
     }
 
-    public boolean onTouchEvent(CoordinatorLayout parent, AppBarLayout child, MotionEvent ev) {
+    public boolean onTouchEvent(CoordinatorLayout parent, T child, MotionEvent ev) {
         if (mTouchSlop < 0) {
             mTouchSlop = ViewConfiguration.get(parent.getContext()).getScaledTouchSlop();
         }
@@ -125,10 +129,10 @@ public class AppBarBehavior extends HeaderBehavior<AppBarLayout> {
     }
 
     @Override
-    public boolean onStartNestedScroll(CoordinatorLayout parent, AppBarLayout child, View directTargetChild, View target, int nestedScrollAxes, int type) {
-        final boolean started = (nestedScrollAxes & ViewCompat.SCROLL_AXIS_VERTICAL) != 0 && (boolean) Utils.genericInvokeMethod(child, "hasScrollableChildren") && parent.getHeight() - directTargetChild.getHeight() <= child.getHeight();
+    public boolean onStartNestedScroll(CoordinatorLayout parent, T child, View directTargetChild, View target, int nestedScrollAxes, int type) {
+        final boolean started = (nestedScrollAxes & ViewCompat.SCROLL_AXIS_VERTICAL) != 0 && (child.isLiftOnScroll() || canScrollChildren(parent, child, directTargetChild));
 
-        if (started && mOffsetAnimator != null && directTargetChild.getTop() == child.getBottom()) {
+        if (started && mOffsetAnimator != null) {
             mOffsetAnimator.cancel();
         }
 
@@ -145,8 +149,12 @@ public class AppBarBehavior extends HeaderBehavior<AppBarLayout> {
         return started;
     }
 
+    private boolean canScrollChildren(CoordinatorLayout parent, T child, View directTargetChild) {
+        return (boolean) Utils.genericInvokeMethod(child, "hasScrollableChildren") && parent.getHeight() - directTargetChild.getHeight() <= child.getHeight();
+    }
+
     @Override
-    public void onNestedPreScroll(CoordinatorLayout coordinatorLayout, AppBarLayout child, View target, int dx, int dy, int[] consumed, int type) {
+    public void onNestedPreScroll(CoordinatorLayout coordinatorLayout, T child, View target, int dx, int dy, int[] consumed, int type) {
         if (dy != 0) {
             int min, max;
             if (dy < 0) {
@@ -187,11 +195,17 @@ public class AppBarBehavior extends HeaderBehavior<AppBarLayout> {
                 consumed[1] = scroll(coordinatorLayout, child, dy, min, max);
             }
         }
+
+        if (child.isLiftOnScroll()) {
+            Utils.genericInvokeMethod(child, "setLiftedState", (boolean) Utils.genericInvokeMethod(child, "shouldLift", target));
+        }
+
+        stopNestedScrollIfNeeded(dy, child, target, type);
     }
 
     @SuppressLint("WrongConstant")
     @Override
-    public void onNestedScroll(CoordinatorLayout coordinatorLayout, AppBarLayout child, View target, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed, int type) {
+    public void onNestedScroll(CoordinatorLayout coordinatorLayout, T child, View target, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed, int type) {
         if (isScrollHoldMode(child)) {
             if (dyUnconsumed >= 0 || mIsScrollHold) {
                 ViewCompat.stopNestedScroll(target, 1);
@@ -206,7 +220,7 @@ public class AppBarBehavior extends HeaderBehavior<AppBarLayout> {
     }
 
     @Override
-    public void onStopNestedScroll(CoordinatorLayout coordinatorLayout, AppBarLayout abl, View target, int type) {
+    public void onStopNestedScroll(CoordinatorLayout coordinatorLayout, T abl, View target, int type) {
         if (getLastInterceptTouchEventEvent() == 3 || getLastInterceptTouchEventEvent() == 1 || getLastTouchEventEvent() == 3 || getLastTouchEventEvent() == 1) {
             snapToChildIfNeeded(coordinatorLayout, abl);
         }
@@ -228,18 +242,25 @@ public class AppBarBehavior extends HeaderBehavior<AppBarLayout> {
         }
     }
 
-    private boolean isScrollHoldMode(AppBarLayout abl) {
-        if (mToolisMouse) {
+    public final boolean isScrollHoldMode(T var1) {
+        if (this.mToolisMouse) {
             return false;
+        } else {
+            boolean var2 = true;
+            int var3 = this.getChildIndexOnOffset(var1, this.getTopBottomOffsetForScrollingSibling());
+            boolean var4 = var2;
+            if (var3 >= 0) {
+                var4 = var2;
+                if ((((AppBarLayout.LayoutParams)var1.getChildAt(var3).getLayoutParams()).getScrollFlags() & 65536) == 65536) {
+                    var4 = false;
+                }
+            }
+
+            return var4;
         }
-        int offsetChildIndex = getChildIndexOnOffset(abl, getTopBottomOffsetForScrollingSibling());
-        if (offsetChildIndex < 0 || (((AppBarLayout.LayoutParams) abl.getChildAt(offsetChildIndex).getLayoutParams()).getScrollFlags() & 0x91) != 0x91) {
-            return true;
-        }
-        return false;
     }
 
-    private void animateOffsetTo(final CoordinatorLayout coordinatorLayout, final AppBarLayout child, final int offset, float velocity) {
+    private void animateOffsetTo(final CoordinatorLayout coordinatorLayout, final T child, final int offset, float velocity) {
         /* final */ int duration;
 
         if (Math.abs(mVelocity) <= 0.0f || Math.abs(mVelocity) > 3000.0f) {
@@ -251,8 +272,8 @@ public class AppBarBehavior extends HeaderBehavior<AppBarLayout> {
             duration = 250;
         }
         if (mIsSetStaticDuration) {
-            duration = 250;
             mIsSetStaticDuration = false;
+            duration = 250;
         }
         if (mVelocity < 2000.0f) {
             animateOffsetWithDuration(coordinatorLayout, child, offset, duration);
@@ -261,7 +282,7 @@ public class AppBarBehavior extends HeaderBehavior<AppBarLayout> {
         mVelocity = 0.0f;
     }
 
-    private void animateOffsetWithDuration(final CoordinatorLayout coordinatorLayout, final AppBarLayout child, final int offset, final int duration) {
+    private void animateOffsetWithDuration(final CoordinatorLayout coordinatorLayout, final T child, final int offset, final int duration) {
         final int currentOffset = getTopBottomOffsetForScrollingSibling();
         if (currentOffset == offset) {
             if (mOffsetAnimator != null && mOffsetAnimator.isRunning()) {
@@ -288,17 +309,26 @@ public class AppBarBehavior extends HeaderBehavior<AppBarLayout> {
         mOffsetAnimator.start();
     }
 
-    private int getChildIndexOnOffset(AppBarLayout abl, final int offset) {
+    private int getChildIndexOnOffset(@NonNull T abl, final int offset) {
         for (int i = 0, count = abl.getChildCount(); i < count; i++) {
             View child = abl.getChildAt(i);
-            if (child.getTop() <= -offset && child.getBottom() >= -offset) {
+            int top = child.getTop();
+            int bottom = child.getBottom();
+
+            final AppBarLayout.LayoutParams lp = (AppBarLayout.LayoutParams) child.getLayoutParams();
+            if (checkFlag(lp.getScrollFlags(), AppBarLayout.LayoutParams.SCROLL_FLAG_SNAP_MARGINS)) {
+                top -= lp.topMargin;
+                bottom += lp.bottomMargin;
+            }
+
+            if (top <= -offset && bottom >= -offset) {
                 return i;
             }
         }
         return -1;
     }
 
-    private void snapToChildIfNeeded(CoordinatorLayout coordinatorLayout, AppBarLayout abl) {
+    private void snapToChildIfNeeded(CoordinatorLayout coordinatorLayout, T abl) {
         final int offset = getTopBottomOffsetForScrollingSibling();
         final int offsetChildIndex = getChildIndexOnOffset(abl, offset);
         View childView = coordinatorLayout.getChildAt(1);
@@ -360,7 +390,7 @@ public class AppBarBehavior extends HeaderBehavior<AppBarLayout> {
     }
 
     @Override
-    public boolean onMeasureChild(CoordinatorLayout parent, AppBarLayout child, int parentWidthMeasureSpec, int widthUsed, int parentHeightMeasureSpec, int heightUsed) {
+    public boolean onMeasureChild(CoordinatorLayout parent, T child, int parentWidthMeasureSpec, int widthUsed, int parentHeightMeasureSpec, int heightUsed) {
         final CoordinatorLayout.LayoutParams lp = (CoordinatorLayout.LayoutParams) child.getLayoutParams();
         if (lp.height == CoordinatorLayout.LayoutParams.WRAP_CONTENT) {
             parent.onMeasureChild(child, parentWidthMeasureSpec, widthUsed, AppBarLayout.MeasureSpec.makeMeasureSpec(0, AppBarLayout.MeasureSpec.UNSPECIFIED), heightUsed);
@@ -371,7 +401,7 @@ public class AppBarBehavior extends HeaderBehavior<AppBarLayout> {
     }
 
     @Override
-    public boolean onLayoutChild(CoordinatorLayout parent, AppBarLayout abl, int layoutDirection) {
+    public boolean onLayoutChild(CoordinatorLayout parent, T abl, int layoutDirection) {
         boolean handled = super.onLayoutChild(parent, abl, layoutDirection);
 
         final int pendingAction = (int) Utils.genericInvokeMethod(abl, "getPendingAction");
@@ -415,7 +445,7 @@ public class AppBarBehavior extends HeaderBehavior<AppBarLayout> {
     }
 
     @Override
-    boolean canDragView(AppBarLayout view) {
+    public boolean canDragView(T view) {
         if (mOnDragCallback != null) {
             return mOnDragCallback.canDrag(view);
         }
@@ -429,12 +459,12 @@ public class AppBarBehavior extends HeaderBehavior<AppBarLayout> {
     }
 
     @Override
-    public boolean onNestedFling(CoordinatorLayout coordinatorLayout, AppBarLayout abl, View target, float velocityX, float velocityY, boolean consumed) {
+    public boolean onNestedFling(CoordinatorLayout coordinatorLayout, T abl, View target, float velocityX, float velocityY, boolean consumed) {
         return super.onNestedFling(coordinatorLayout, abl, target, velocityX, velocityY, consumed);
     }
 
     @Override
-    public boolean onNestedPreFling(CoordinatorLayout coordinatorLayout, AppBarLayout abl, View target, float velocityX, float velocityY) {
+    public boolean onNestedPreFling(CoordinatorLayout coordinatorLayout, T abl, View target, float velocityX, float velocityY) {
         mVelocity = velocityY;
         if (velocityY < -300.0f) {
             mIsFlingScrollDown = true;
@@ -452,12 +482,12 @@ public class AppBarBehavior extends HeaderBehavior<AppBarLayout> {
     }
 
     @Override
-    int getMaxDragOffset(AppBarLayout view) {
+    int getMaxDragOffset(T view) {
         return -(int) Utils.genericInvokeMethod(view, "getDownNestedScrollRange");
     }
 
     @Override
-    int setHeaderTopBottomOffset(CoordinatorLayout coordinatorLayout, AppBarLayout appBarLayout, int newOffset, int minOffset, int maxOffset) {
+    int setHeaderTopBottomOffset(CoordinatorLayout coordinatorLayout, T appBarLayout, int newOffset, int minOffset, int maxOffset) {
         final int curOffset = getTopBottomOffsetForScrollingSibling();
         int consumed = 0;
 
@@ -486,7 +516,7 @@ public class AppBarBehavior extends HeaderBehavior<AppBarLayout> {
         return consumed;
     }
 
-    private int interpolateOffset(AppBarLayout layout, final int offset) {
+    private int interpolateOffset(T layout, final int offset) {
         final int absOffset = Math.abs(offset);
 
         for (int i = 0, z = layout.getChildCount(); i < z; i++) {
@@ -524,7 +554,7 @@ public class AppBarBehavior extends HeaderBehavior<AppBarLayout> {
         return offset;
     }
 
-    private void updateAppBarLayoutDrawableState(final CoordinatorLayout parent, final AppBarLayout layout, final int offset, final int direction, final boolean forceJump) {
+    private void updateAppBarLayoutDrawableState(final CoordinatorLayout parent, final T layout, final int offset, final int direction, final boolean forceJump) {
         final View child = getAppBarChildOnOffset(layout, offset);
         if (child != null) {
             final AppBarLayout.LayoutParams childLp = (AppBarLayout.LayoutParams) child.getLayoutParams();
@@ -557,7 +587,18 @@ public class AppBarBehavior extends HeaderBehavior<AppBarLayout> {
         }
     }
 
-    private boolean shouldJumpElevationState(CoordinatorLayout parent, AppBarLayout layout) {
+    private boolean shouldJumpElevationState(CoordinatorLayout parent, T layout) {
+        final List<View> dependencies = parent.getDependents(layout);
+        for (int i = 0, size = dependencies.size(); i < size; i++) {
+            final View dependency = dependencies.get(i);
+            final CoordinatorLayout.LayoutParams lp =
+                    (CoordinatorLayout.LayoutParams) dependency.getLayoutParams();
+            final CoordinatorLayout.Behavior behavior = lp.getBehavior();
+
+            if (behavior instanceof ScrollingViewBehavior) {
+                return ((ScrollingViewBehavior) behavior).getOverlayTop() != 0;
+            }
+        }
         return false;
     }
 
@@ -583,7 +624,7 @@ public class AppBarBehavior extends HeaderBehavior<AppBarLayout> {
 
         for(int z = parent.getChildCount(); i < z; ++i) {
             View child = parent.getChildAt(i);
-            if (child instanceof NestedScrollingChild) {
+            if (child instanceof NestedScrollingChild || child instanceof ListView || child instanceof ScrollView) {
                 return child;
             }
         }
@@ -592,7 +633,7 @@ public class AppBarBehavior extends HeaderBehavior<AppBarLayout> {
     }
 
     @Override
-    public Parcelable onSaveInstanceState(CoordinatorLayout parent, AppBarLayout abl) {
+    public Parcelable onSaveInstanceState(CoordinatorLayout parent, T abl) {
         final Parcelable superState = super.onSaveInstanceState(parent, abl);
         final int offset = getTopAndBottomOffset();
 
@@ -614,7 +655,7 @@ public class AppBarBehavior extends HeaderBehavior<AppBarLayout> {
     }
 
     @Override
-    public void onRestoreInstanceState(CoordinatorLayout parent, AppBarLayout appBarLayout, Parcelable state) {
+    public void onRestoreInstanceState(CoordinatorLayout parent, T appBarLayout, Parcelable state) {
         if (state instanceof SavedState) {
             final SavedState ss = (SavedState) state;
             super.onRestoreInstanceState(parent, appBarLayout, ss.getSuperState());

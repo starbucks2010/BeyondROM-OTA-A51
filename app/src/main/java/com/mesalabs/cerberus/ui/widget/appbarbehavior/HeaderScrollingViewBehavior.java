@@ -68,7 +68,19 @@ abstract class HeaderScrollingViewBehavior extends ViewOffsetBehavior<View> {
                     availableHeight = parent.getHeight();
                 }
 
-                final int height = availableHeight - header.getMeasuredHeight() + getScrollRange(header);
+                int height = availableHeight + getScrollRange(header);
+                int headerHeight = header.getMeasuredHeight();
+                if (shouldHeaderOverlapScrollingChild()) {
+                    child.setTranslationY(-headerHeight);
+                } else {
+                    height -= headerHeight;
+                }
+
+
+                if (height < 0) {
+                    height = 0;
+                }
+
                 final int heightMeasureSpec = View.MeasureSpec.makeMeasureSpec(height, childLpHeight == ViewGroup.LayoutParams.MATCH_PARENT ? View.MeasureSpec.EXACTLY : View.MeasureSpec.AT_MOST);
 
                 parent.onMeasureChild(child, parentWidthMeasureSpec, widthUsed, heightMeasureSpec, heightUsed);
@@ -132,5 +144,13 @@ abstract class HeaderScrollingViewBehavior extends ViewOffsetBehavior<View> {
 
     public final void setOverlayTop(int overlayTop) {
         mOverlayTop = overlayTop;
+    }
+
+    public boolean shouldHeaderOverlapScrollingChild() {
+        return false;
+    }
+
+    public final int getOverlayTop() {
+        return mOverlayTop;
     }
 }

@@ -46,6 +46,7 @@ public class ScrollingViewBehavior extends HeaderScrollingViewBehavior {
     @Override
     public boolean onDependentViewChanged(CoordinatorLayout parent, View child, View dependency) {
         offsetChildAsNeeded(parent, child, dependency);
+        updateLiftedStateIfNeeded(child, dependency);
         return false;
     }
 
@@ -119,6 +120,15 @@ public class ScrollingViewBehavior extends HeaderScrollingViewBehavior {
             return ((AppBarLayout) v).getTotalScrollRange();
         } else {
             return super.getScrollRange(v);
+        }
+    }
+
+    private void updateLiftedStateIfNeeded(View child, View dependency) {
+        if (dependency instanceof AppBarLayout) {
+            AppBarLayout appBarLayout = (AppBarLayout) dependency;
+            if (appBarLayout.isLiftOnScroll()) {
+                Utils.genericInvokeMethod(appBarLayout, "setLiftedState", Utils.genericInvokeMethod(appBarLayout, "shouldLift", child));
+            }
         }
     }
 }

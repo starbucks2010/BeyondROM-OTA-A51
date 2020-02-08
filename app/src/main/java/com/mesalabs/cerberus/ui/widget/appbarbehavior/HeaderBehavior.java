@@ -178,21 +178,7 @@ abstract class HeaderBehavior<V extends View> extends ViewOffsetBehavior<V> {
         return setHeaderTopBottomOffset(parent, header, newOffset, Integer.MIN_VALUE, Integer.MAX_VALUE);
     }
 
-    int setHeaderTopBottomOffset(CoordinatorLayout parent, V header, int newOffset, int minOffset, int maxOffset) {
-        final int curOffset = getTopAndBottomOffset();
-        int consumed = 0;
-
-        if (minOffset != 0 && curOffset >= minOffset && curOffset <= maxOffset) {
-            newOffset = MathUtils.clamp(newOffset, minOffset, maxOffset);
-
-            if (curOffset != newOffset) {
-                setTopAndBottomOffset(newOffset);
-                consumed = curOffset - newOffset;
-            }
-        }
-
-        return consumed;
-    }
+    abstract int setHeaderTopBottomOffset(CoordinatorLayout parent, V header, int newOffset, int minOffset, int maxOffset);
 
     public int getLastInterceptTouchEventEvent() {
         return mLastInterceptTouchEvent;
@@ -202,21 +188,15 @@ abstract class HeaderBehavior<V extends View> extends ViewOffsetBehavior<V> {
         return mLastTouchEvent;
     }
 
-    int getTopBottomOffsetForScrollingSibling() {
-        return getTopAndBottomOffset();
-    }
+    abstract int getTopBottomOffsetForScrollingSibling();
 
     final int scroll(CoordinatorLayout coordinatorLayout, V header, int dy, int minOffset, int maxOffset) {
         return setHeaderTopBottomOffset(coordinatorLayout, header, getTopBottomOffsetForScrollingSibling() - dy, minOffset, maxOffset);
     }
 
-    boolean canDragView(V view) {
-        return false;
-    }
+    abstract boolean canDragView(V view);
 
-    int getMaxDragOffset(V view) {
-        return -view.getHeight();
-    }
+    abstract int getMaxDragOffset(V view);
 
     private void ensureVelocityTracker() {
         if (mVelocityTracker == null) {
