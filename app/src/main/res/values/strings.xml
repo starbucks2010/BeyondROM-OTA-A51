@@ -5,6 +5,8 @@
 
     <string name="mesa_tab_tts">Tab %1$d of %2$d</string>
 
+    <string name="mesa_open_source_licence">Open source licenses</string>
+
 
     <string name="sesl_action_bar_up_description">Navigate up</string>
     <string name="sesl_action_menu_overflow_description">More options</string>

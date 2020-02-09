@@ -6,15 +6,25 @@
     <application
         android:name="com.mesalabs.cerberus.CerberusApp"
         android:allowBackup="false"
+        android:hardwareAccelerated="true"
         android:persistent="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/mesa_cerberuscore"
         android:supportsRtl="true"
-        android:theme="@style/mesa_AppStyle.DayNight.NoActionBar">
+        android:theme="@style/mesa_AppStyle.DayNight.NoActionBar"
+        tools:ignore="GoogleAppIndexingWarning">
 
         <meta-data android:name="SamsungBasicInteraction" android:value="SEP10"/>
         <meta-data android:name="com.samsung.android.icon_container.has_icon_container" android:value="true"/>
         <meta-data android:name="android.max_aspect" android:value="2.4"/>
+
+        <activity android:name="com.mesalabs.cerberus.activity.OpenSourceLicenseActivity"
+            android:icon="@mipmap/ic_launcher"
+            android:label="@string/mesa_cerberustestux"
+            android:theme="@style/mesa_AppStyle.DayNight.NoActionBar"
+            android:hardwareAccelerated="true"
+            android:configChanges="orientation|screenSize"
+            android:launchMode="singleTop" />
 
     </application>
 
