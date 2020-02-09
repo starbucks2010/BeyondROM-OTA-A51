@@ -27,7 +27,7 @@ import com.mesalabs.cerberus.utils.ViewUtils;
  * EXTERNALS IS PROHIBITED AND WILL BE PUNISHED WITH ANAL ABUSE.
  */
 
-public class ToolbarActivity extends AppCompatActivity {
+public class BaseToolbarActivity extends AppCompatActivity {
     protected Context mContext;
     protected ActionBarUtils toolBar;
     protected ViewGroup root;
@@ -43,6 +43,8 @@ public class ToolbarActivity extends AppCompatActivity {
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
 
+        ViewUtils.hideStatusBarForLandscape(this, newConfig.orientation);
+
         if (root != null)
             ViewUtils.updateListBothSideMargin(this, root);
     }
@@ -50,7 +52,7 @@ public class ToolbarActivity extends AppCompatActivity {
 
     @Override
     public void setContentView(View view) {
-        super.setContentView(R.layout.mesa_baselayout_toolbaractivity);
+        super.setContentView(R.layout.mesa_baselayout_basetoolbaractivity);
 
         toolBar = new ActionBarUtils(this);
         toolBar.initToolBar();
@@ -65,7 +67,7 @@ public class ToolbarActivity extends AppCompatActivity {
 
     @Override
     public void setContentView(int layoutResID) {
-        super.setContentView(R.layout.mesa_baselayout_toolbaractivity);
+        super.setContentView(R.layout.mesa_baselayout_basetoolbaractivity);
 
         toolBar = new ActionBarUtils(this);
         toolBar.initToolBar();

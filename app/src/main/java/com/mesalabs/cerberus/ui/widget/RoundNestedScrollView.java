@@ -1,4 +1,4 @@
-package com.samsung.android.ui.widget;
+package com.mesalabs.cerberus.ui.widget;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -9,6 +9,7 @@ import com.mesalabs.cerberus.R;
 import com.mesalabs.cerberus.utils.LogUtils;
 import com.mesalabs.cerberus.utils.Utils;
 import com.samsung.android.ui.util.SeslRoundedCorner;
+import com.samsung.android.ui.widget.SeslNestedScrollView;
 
 /*
  * Cerberus Core App

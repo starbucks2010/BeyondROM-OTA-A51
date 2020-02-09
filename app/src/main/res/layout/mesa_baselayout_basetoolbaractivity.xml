@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:id="@+id/mesa_linearlayout_baseactivity"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="?round_and_bgColor"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <include layout="@layout/mesa_toolbar_layout"/>
+
+    <com.mesalabs.cerberus.ui.widget.RoundFrameLayout
+        android:id="@+id/mesa_container_baseactivity"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginTop="@dimen/sesl_material_extended_appbar_bottom_padding"
+        app:cornersStroke="false"/>
+
+</LinearLayout>

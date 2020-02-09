@@ -124,6 +124,28 @@ public class ViewUtils {
         }
     }
 
+    public static void hideStatusBarForLandscape(Activity activity, int orientation) {
+        if (!Utils.isTabletDevice(activity.getApplicationContext()) && !Utils.isInSamsungDeXMode(activity.getApplicationContext())) {
+            WindowManager.LayoutParams params = activity.getWindow().getAttributes();
+            if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                if (!Utils.isInMultiWindowMode(activity)) {
+                    params.flags |= 1024;
+                } else {
+                    params.flags &= -1025;
+                }
+
+                Utils.genericInvokeMethod(params, "semAddExtensionFlags", 1);
+            } else {
+                params.flags &= -1025;
+
+                Utils.genericInvokeMethod(params, "semClearExtensionFlags", 1);
+            }
+
+            activity.getWindow().setAttributes(params);
+        }
+
+    }
+
     public static boolean isLandscape(Context context) {
         return context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
     }

@@ -1,4 +1,4 @@
-package com.samsung.android.ui.widget;
+package com.mesalabs.cerberus.ui.widget;
 
 import android.content.Context;
 import android.content.res.TypedArray;
