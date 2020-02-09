@@ -555,8 +555,20 @@ public class SeslPreference implements Comparable<SeslPreference> {
         return this.mPersistent;
     }
 
+    public void setSelectable(boolean selectable) {
+        if (mSelectable != selectable) {
+            mSelectable = selectable;
+            notifyChanged();
+        }
+    }
+
     public boolean isSelectable() {
         return this.mSelectable;
+    }
+
+    public void setShouldDisableView(boolean shouldDisableView) {
+        this.mShouldDisableView = shouldDisableView;
+        notifyChanged();
     }
 
     protected boolean isTalkBackIsRunning() {

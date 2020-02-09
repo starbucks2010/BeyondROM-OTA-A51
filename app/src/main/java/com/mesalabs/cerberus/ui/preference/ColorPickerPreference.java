@@ -52,8 +52,8 @@ public class ColorPickerPreference extends SeslPreference implements SeslPrefere
         init(context, attrs);
     }
 
-    public ColorPickerPreference(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
+    public ColorPickerPreference(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
         init(context, attrs);
     }
 

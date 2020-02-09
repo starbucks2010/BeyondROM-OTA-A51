@@ -53,6 +53,9 @@
     <attr name="progressActivatedColor" format="reference|color" />
     <attr name="progressNormalColor" format="reference|color" />
 
+    <declare-styleable name="CustomButton">
+        <attr name="text" format="string" />
+    </declare-styleable>
     <declare-styleable name="RoundFrameLayout">
         <attr name="cornersStroke" />
         <attr name="roundedCorners" />
@@ -61,9 +64,18 @@
         <attr name="cornersStroke" />
         <attr name="roundedCorners" />
     </declare-styleable>
+    <declare-styleable name="SwitchBar">
+        <attr name="seslSwitchBarBackgroundColor" format="color" />
+        <attr name="seslSwitchBarBackgroundActivatedColor" format="color" />
+        <attr name="seslSwitchBarTextActivatedColor" format="color" />
+        <attr name="seslSwitchBarTextColor" format="color" />
+    </declare-styleable>
 
     <declare-styleable name="ColorPickerPreference">
         <attr name="showAlphaSlider" format="boolean" />
+    </declare-styleable>
+    <declare-styleable name="InsetPreferenceCategory">
+        <attr name="height" format="dimension" />
     </declare-styleable>
 
     <declare-styleable name="SeslCollapsingToolbarLayout">
@@ -140,12 +152,6 @@
         <attr name="switchPadding" format="dimension" />
         <attr name="splitTrack" format="boolean" />
         <attr name="showText" format="boolean" />
-    </declare-styleable>
-    <declare-styleable name="SeslSwitchBar">
-        <attr name="seslSwitchBarBackgroundColor" format="color" />
-        <attr name="seslSwitchBarBackgroundActivatedColor" format="color" />
-        <attr name="seslSwitchBarTextActivatedColor" format="color" />
-        <attr name="seslSwitchBarTextColor" format="color" />
     </declare-styleable>
     <declare-styleable name="SeslTabLayout">
         <attr name="tabIndicatorColor" format="color"/>
@@ -248,6 +254,16 @@
         <attr name="android:singleLineTitle" />
         <attr name="iconSpaceReserved" format="boolean" />
         <attr name="android:iconSpaceReserved" />
+    </declare-styleable>
+    <declare-styleable name="SeslPreferenceCategory">
+        <attr name="roundStroke">
+            <flag name="all" value="0x0000000f" />
+            <flag name="bottom_left" value="0x00000004" />
+            <flag name="bottom_right" value="0x00000008" />
+            <flag name="none" value="0x00000000" />
+            <flag name="top_left" value="0x00000001" />
+            <flag name="top_right" value="0x00000002" />
+        </attr>
     </declare-styleable>
     <declare-styleable name="SeslPreferenceFragmentCompat">
         <attr name="android:layout" />

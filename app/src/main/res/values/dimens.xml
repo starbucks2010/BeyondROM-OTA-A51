@@ -291,4 +291,8 @@
     <dimen name="mesa_tipscardviewpref_cancel_button_margin_top">14.0dip</dimen>
     <dimen name="mesa_tipscardviewpref_cancel_button_size">32.0dip</dimen>
     <dimen name="mesa_tipscardviewpref_uplayout_padding_end">15.0dip</dimen>
+
+    <dimen name="mesa_preference_fragment_padding_bottom">0.0dip</dimen>
+
+    <dimen name="mesa_widget_inset_category_height">16.0dip</dimen>
 </resources>
