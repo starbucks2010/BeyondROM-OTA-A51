@@ -24,7 +24,7 @@ import com.mesalabs.cerberus.utils.Utils;
  * EXTERNALS IS PROHIBITED AND WILL BE PUNISHED WITH ANAL ABUSE.
  */
 
-class SeslOverScroller {
+public class SeslOverScroller {
     private static final String TAG = "SeslOverScroller";
     private static final int DEFAULT_DURATION = 250;
     private static final int FLING_MODE = 1;

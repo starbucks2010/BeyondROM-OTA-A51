@@ -45,7 +45,7 @@ public class BaseAppBarActivity extends AppCompatActivity {
         ViewUtils.hideStatusBarForLandscape(this, newConfig.orientation);
 
         if (appBar != null)
-            appBar.resetAppBarHeight();
+            appBar.resetAppBarStatus();
 
         if (root != null)
             ViewUtils.updateListBothSideMargin(this, root);

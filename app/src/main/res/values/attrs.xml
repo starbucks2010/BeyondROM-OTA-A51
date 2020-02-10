@@ -78,6 +78,22 @@
         <attr name="height" format="dimension" />
     </declare-styleable>
 
+    <declare-styleable name="SeslAppBarLayout">
+        <attr name="elevation"/>
+        <attr name="android:background"/>
+        <attr name="expanded" format="boolean"/>
+        <attr name="android:keyboardNavigationCluster"/>
+        <attr name="android:touchscreenBlocksFocus"/>
+        <attr name="liftOnScroll" format="boolean"/>
+        <attr name="liftOnScrollTargetViewId" format="reference"/>
+        <attr name="statusBarForeground" format="color"/>
+        <attr name="sesl_layout_heightPercent" format="float" />
+        <attr name="android:paddingBottom"/>
+    </declare-styleable>
+    <declare-styleable name="SeslAppBarLayout_Layout">
+        <attr name="layout_scrollFlags" />
+        <attr name="layout_scrollInterpolator" format="reference"/>
+    </declare-styleable>
     <declare-styleable name="SeslCollapsingToolbarLayout">
         <attr name="expandedTitleMargin" format="dimension"/>
         <attr name="expandedTitleMarginStart" format="dimension"/>
@@ -105,6 +121,19 @@
         <attr name="layout_collapseMode" />
         <attr name="layout_collapseParallaxMultiplier" format="float"/>
         <attr name="layout_isTitleCustom" />
+    </declare-styleable>
+    <declare-styleable name="SeslCoordinatorLayout">
+        <attr name="keylines" format="reference"/>
+        <attr name="statusBarBackground" format="color|reference"/>
+    </declare-styleable>
+    <declare-styleable name="SeslCoordinatorLayout_Layout">
+        <attr name="android:layout_gravity"/>
+        <attr name="layout_behavior" format="string"/>
+        <attr name="layout_anchor" format="reference"/>
+        <attr name="layout_keyline" format="integer"/>
+        <attr name="layout_anchorGravity"/>
+        <attr name="layout_insetEdge" />
+        <attr name="layout_dodgeInsetEdges" />
     </declare-styleable>
     <declare-styleable name="SeslRecyclerView">
         <attr name="layoutManager" format="string" />

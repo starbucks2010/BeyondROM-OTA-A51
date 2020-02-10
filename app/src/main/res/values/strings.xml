@@ -86,6 +86,6 @@
 
     <string name="sesl_font_family_condensed">sec-roboto-condensed</string>
     <string name="sesl_font_family_regular">sec-roboto-light</string>
-    <string name="sesl_appbar_scrolling_view_behavior">com.mesalabs.cerberus.ui.widget.appbarbehavior.ScrollingViewBehavior</string>
+    <string name="sesl_appbar_scrolling_view_behavior">com.samsung.android.ui.appbar.SeslAppBarLayout$ScrollingViewBehavior</string>
 
 </resources>

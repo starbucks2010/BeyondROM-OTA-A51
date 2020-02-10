@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.appbar.AppBarLayout
+<com.samsung.android.ui.appbar.SeslAppBarLayout
     android:id="@+id/mesa_appbar_appbarlayout"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
@@ -8,7 +8,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <com.samsung.android.ui.widget.SeslCollapsingToolbarLayout
+    <com.samsung.android.ui.appbar.SeslCollapsingToolbarLayout
         android:id="@+id/mesa_colltoolbar_appbarlayout"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
@@ -77,6 +77,6 @@
 
         </androidx.appcompat.widget.Toolbar>
 
-    </com.samsung.android.ui.widget.SeslCollapsingToolbarLayout>
+    </com.samsung.android.ui.appbar.SeslCollapsingToolbarLayout>
 
-</com.google.android.material.appbar.AppBarLayout>
+</com.samsung.android.ui.appbar.SeslAppBarLayout>

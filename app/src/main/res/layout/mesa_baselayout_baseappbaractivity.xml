@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
+<com.samsung.android.ui.coordinatorlayout.widget.SeslCoordinatorLayout
     android:id="@+id/mesa_coordinatorlayout_baseactivity"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
@@ -15,4 +15,4 @@
         android:layout_height="fill_parent"
         app:layout_behavior="@string/sesl_appbar_scrolling_view_behavior" />
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</com.samsung.android.ui.coordinatorlayout.widget.SeslCoordinatorLayout>

@@ -171,6 +171,7 @@ public class SwitchBar extends LinearLayout implements View.OnClickListener, Che
         mChecked = isChecked;
         mSwitchBarSwitch.setChecked(mChecked);
         setTextViewLabelAndBackground();
+        mSwitchBarPressListener.setChecked(mChecked);
     }
 
     @Override

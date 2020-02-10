@@ -15,6 +15,8 @@
     <dimen name="sesl_action_button_src_size">24.0dip</dimen>
 
     <item type="dimen" format="float" name="sesl_abl_height_proportion">0.0</item>
+    <dimen name="sesl_material_action_bar_default_height">56.0dip</dimen>
+    <dimen name="sesl_material_action_bar_default_height_padding">68.0dip</dimen>
 
     <dimen name="sesl_action_bar_overflow_padding_end">20.0dip</dimen>
     <dimen name="sesl_action_bar_overflow_padding_start">3.0dip</dimen>

@@ -44,7 +44,7 @@ import androidx.core.view.ViewCompat;
 
 import com.mesalabs.cerberus.R;
 import com.mesalabs.cerberus.utils.Utils;
-import com.samsung.android.ui.animation.SeslElasticInterpolator;
+import com.samsung.android.ui.view.animation.SeslElasticInterpolator;
 
 /*
  * Cerberus Core App

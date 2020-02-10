@@ -30,7 +30,7 @@ import androidx.core.content.res.TypedArrayUtils;
 
 import com.mesalabs.cerberus.R;
 import com.mesalabs.cerberus.utils.LogUtils;
-import com.samsung.android.ui.internal.widget.SeslPreferenceImageView;
+import com.samsung.android.ui.preference.internal.SeslPreferenceImageView;
 
 /*
  * Cerberus Core App

@@ -7,8 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.mesalabs.cerberus.R;
-import com.samsung.android.ui.util.DiffUtil;
-import com.samsung.android.ui.widget.SeslRecyclerView;
+import com.samsung.android.ui.recyclerview.widget.DiffUtil;
+import com.samsung.android.ui.recyclerview.widget.SeslRecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;

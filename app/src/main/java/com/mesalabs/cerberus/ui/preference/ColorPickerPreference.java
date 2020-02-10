@@ -13,8 +13,8 @@ import java.util.Collections;
 
 import com.mesalabs.cerberus.R;
 import com.mesalabs.cerberus.utils.Utils;
-import com.samsung.android.ui.app.SeslColorPickerDialog;
-import com.samsung.android.ui.internal.widget.SeslPreferenceImageView;
+import com.samsung.android.ui.picker.app.SeslColorPickerDialog;
+import com.samsung.android.ui.preference.internal.SeslPreferenceImageView;
 import com.samsung.android.ui.preference.PreferenceViewHolder;
 import com.samsung.android.ui.preference.SeslPreference;
 

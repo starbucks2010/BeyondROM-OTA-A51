@@ -25,8 +25,8 @@ import com.mesalabs.cerberus.utils.LogUtils;
 import com.samsung.android.ui.preference.internal.AbstractMultiSelectListPreference;
 import com.samsung.android.ui.util.SeslRoundedCorner;
 import com.samsung.android.ui.util.SeslSubheaderRoundedCorner;
-import com.samsung.android.ui.widget.SeslLinearLayoutManager;
-import com.samsung.android.ui.widget.SeslRecyclerView;
+import com.samsung.android.ui.recyclerview.widget.SeslLinearLayoutManager;
+import com.samsung.android.ui.recyclerview.widget.SeslRecyclerView;
 
 /*
  * Cerberus Core App

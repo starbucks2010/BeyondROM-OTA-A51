@@ -2,7 +2,6 @@ package com.mesalabs.cerberus.ui.utils;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -19,7 +18,6 @@ import java.util.LinkedHashMap;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import com.google.android.material.appbar.AppBarLayout;
 
 import com.mesalabs.cerberus.R;
 import com.mesalabs.cerberus.ui.widget.ToolbarImageButton;
@@ -27,7 +25,8 @@ import com.mesalabs.cerberus.utils.CerberusException;
 import com.mesalabs.cerberus.utils.LogUtils;
 import com.mesalabs.cerberus.utils.Utils;
 import com.mesalabs.cerberus.utils.ViewUtils;
-import com.samsung.android.ui.widget.SeslCollapsingToolbarLayout;
+import com.samsung.android.ui.appbar.SeslAppBarLayout;
+import com.samsung.android.ui.appbar.SeslCollapsingToolbarLayout;
 
 /*
  * Cerberus Core App
@@ -47,7 +46,7 @@ import com.samsung.android.ui.widget.SeslCollapsingToolbarLayout;
 public class ActionBarUtils {
     private AppCompatActivity activity;
 
-    private AppBarLayout appBarLayout;
+    private SeslAppBarLayout appBarLayout;
     private SeslCollapsingToolbarLayout collapsingToolbarLayout;
     private Toolbar toolbar;
     private LinearLayout overflowContainer;
@@ -154,7 +153,7 @@ public class ActionBarUtils {
 
             defaultExpandStatus = isExpanded;
 
-            resetAppBarHeight();
+            resetAppBarStatus();
 
             appBarLayout.addOnOffsetChangedListener(new AppBarOffsetListener());
         } else
@@ -232,45 +231,24 @@ public class ActionBarUtils {
         });
     }
 
-    public void resetAppBarHeight() {
+    public void resetAppBarStatus() {
         if (appBarLayout != null) {
-            ViewGroup.LayoutParams params = appBarLayout.getLayoutParams();
-            int windowHeight = ViewUtils.getWindowHeight(activity);
-            int abBottomPadding;
-
             if (ViewUtils.isLandscape(activity)) {
                 appBarLayout.setExpanded(false, false);
                 appBarLayout.setActivated(false);
-
-                abBottomPadding = 0;
                 mAppBarHeightDp = activity.getResources().getDimension(R.dimen.sesl_action_bar_default_height);
-
-                params.height = (int) mAppBarHeightDp;
             } else if (Utils.isInMultiWindowMode(activity)) {
                 appBarLayout.setExpanded(false, false);
                 appBarLayout.setActivated(false);
-
-                abBottomPadding = activity.getResources().getDimensionPixelSize(R.dimen.sesl_material_extended_appbar_bottom_padding);
+                int abBottomPadding = activity.getResources().getDimensionPixelSize(R.dimen.sesl_material_extended_appbar_bottom_padding);
                 mAppBarHeightDp = activity.getResources().getDimension(abBottomPadding == 0 ? R.dimen.sesl_action_bar_default_height : R.dimen.sesl_action_bar_default_height_padding);
-
-                params.height = (int) mAppBarHeightDp;
             } else {
                 appBarLayout.setExpanded(defaultExpandStatus, false);
                 appBarLayout.setActivated(true);
-
-                abBottomPadding = activity.getResources().getDimensionPixelSize(R.dimen.sesl_material_extended_appbar_bottom_padding);
                 mAppBarHeightDp = activity.getResources().getDimension(R.dimen.sesl_action_bar_default_height_padding);
-
-                TypedValue outValue = new TypedValue();
-                activity.getResources().getValue(R.dimen.sesl_abl_height_proportion, outValue, true);
-
-                params.height = (int) ((float) windowHeight * outValue.getFloat());
             }
-
-            appBarLayout.setLayoutParams(params);
-            appBarLayout.setPadding(0, 0, 0, abBottomPadding);
         } else
-            LogUtils.w(activity.getLocalClassName() + ".resetAppBarHeight", "appBarLayout is null.");
+            LogUtils.w(activity.getLocalClassName() + ".resetAppBarStatus", "appBarLayout is null.");
     }
 
     public void setHomeAsUpButton(View.OnClickListener ocl) {
@@ -361,10 +339,10 @@ public class ActionBarUtils {
 
 
 
-    private class AppBarOffsetListener implements AppBarLayout.OnOffsetChangedListener {
+    private class AppBarOffsetListener implements SeslAppBarLayout.OnOffsetChangedListener {
         @SuppressLint("Range")
         @Override
-        public void onOffsetChanged(AppBarLayout layout, int verticalOffset) {
+        public void onOffsetChanged(SeslAppBarLayout layout, int verticalOffset) {
             int layoutPosition = Math.abs(appBarLayout.getTop());
             float alphaRange = ((float) collapsingToolbarLayout.getHeight()) * 0.17999999f;
             float toolbarTitleAlphaStart = ((float) collapsingToolbarLayout.getHeight()) * 0.35f;

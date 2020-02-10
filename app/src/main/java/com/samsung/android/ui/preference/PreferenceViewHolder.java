@@ -6,7 +6,7 @@ import android.view.View;
 import androidx.preference.AndroidResources;
 
 import com.mesalabs.cerberus.R;
-import com.samsung.android.ui.widget.SeslRecyclerView;
+import com.samsung.android.ui.recyclerview.widget.SeslRecyclerView;
 
 /*
  * Cerberus Core App

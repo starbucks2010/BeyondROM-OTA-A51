@@ -8,7 +8,7 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 
 import com.mesalabs.cerberus.R;
-import com.samsung.android.ui.widget.AppCompatSpinner;
+import androidx.appcompat.widget.SeslAppCompatSpinner;
 
 /*
  * Cerberus Core App
@@ -28,7 +28,7 @@ import com.samsung.android.ui.widget.AppCompatSpinner;
 public class DropDownPreference extends SeslListPreference {
     private final ArrayAdapter mAdapter;
     private final Context mContext;
-    private AppCompatSpinner mSpinner;
+    private SeslAppCompatSpinner mSpinner;
 
     public DropDownPreference(Context context) {
         this(context, null);
@@ -76,7 +76,7 @@ public class DropDownPreference extends SeslListPreference {
                 }
             }
         }
-        return AppCompatSpinner.INVALID_POSITION;
+        return SeslAppCompatSpinner.INVALID_POSITION;
     }
 
     @Override
@@ -86,7 +86,7 @@ public class DropDownPreference extends SeslListPreference {
     }
 
     public void onBindViewHolder(PreferenceViewHolder view) {
-        mSpinner = (AppCompatSpinner) view.itemView.findViewById(R.id.spinner);
+        mSpinner = (SeslAppCompatSpinner) view.itemView.findViewById(R.id.spinner);
         mSpinner.setSoundEffectsEnabled(false);
         if (!mAdapter.equals(mSpinner.getAdapter())) {
             mSpinner.setAdapter(mAdapter);

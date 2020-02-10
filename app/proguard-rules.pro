@@ -20,6 +20,5 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
-# com.mesalabs.cerberus.ui.widget.appbarbehavior
--keep class androidx.coordinatorlayout.widget.CoordinatorLayout { *; }
--keep class com.google.android.material.appbar.AppBarLayout { *; }
+# SeslAppBarLayout
+-keep class com.samsung.android.ui.appbar.** { *; }

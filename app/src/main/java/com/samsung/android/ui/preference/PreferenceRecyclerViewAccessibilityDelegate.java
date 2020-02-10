@@ -6,8 +6,8 @@ import android.view.View;
 import androidx.core.view.AccessibilityDelegateCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 
-import com.samsung.android.ui.widget.SeslRecyclerView;
-import com.samsung.android.ui.widget.SeslRecyclerViewAccessibilityDelegate;
+import com.samsung.android.ui.recyclerview.widget.SeslRecyclerView;
+import com.samsung.android.ui.recyclerview.widget.SeslRecyclerViewAccessibilityDelegate;
 
 /*
  * Cerberus Core App
