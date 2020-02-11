@@ -2,6 +2,7 @@ package com.mesalabs.cerberus.ui.utils;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -153,7 +154,7 @@ public class ActionBarUtils {
 
             defaultExpandStatus = isExpanded;
 
-            resetAppBarStatus();
+            resetAppBarHeight();
 
             appBarLayout.addOnOffsetChangedListener(new AppBarOffsetListener());
         } else
@@ -231,25 +232,47 @@ public class ActionBarUtils {
         });
     }
 
-    public void resetAppBarStatus() {
+    public void resetAppBarHeight() {
         if (appBarLayout != null) {
+            ViewGroup.LayoutParams params = appBarLayout.getLayoutParams();
+            int windowHeight = ViewUtils.getWindowHeight(activity);
+            int abBottomPadding;
+
             if (ViewUtils.isLandscape(activity)) {
                 appBarLayout.setExpanded(false, false);
                 appBarLayout.setActivated(false);
+
+                abBottomPadding = 0;
                 mAppBarHeightDp = activity.getResources().getDimension(R.dimen.sesl_action_bar_default_height);
+
+                params.height = (int) mAppBarHeightDp;
             } else if (Utils.isInMultiWindowMode(activity)) {
                 appBarLayout.setExpanded(false, false);
                 appBarLayout.setActivated(false);
-                int abBottomPadding = activity.getResources().getDimensionPixelSize(R.dimen.sesl_material_extended_appbar_bottom_padding);
+
+                abBottomPadding = activity.getResources().getDimensionPixelSize(R.dimen.sesl_material_extended_appbar_bottom_padding);
                 mAppBarHeightDp = activity.getResources().getDimension(abBottomPadding == 0 ? R.dimen.sesl_action_bar_default_height : R.dimen.sesl_action_bar_default_height_padding);
+
+                params.height = (int) mAppBarHeightDp;
             } else {
                 appBarLayout.setExpanded(defaultExpandStatus, false);
                 appBarLayout.setActivated(true);
+
+                abBottomPadding = activity.getResources().getDimensionPixelSize(R.dimen.sesl_material_extended_appbar_bottom_padding);
                 mAppBarHeightDp = activity.getResources().getDimension(R.dimen.sesl_action_bar_default_height_padding);
+
+                TypedValue outValue = new TypedValue();
+                activity.getResources().getValue(R.dimen.sesl_abl_height_proportion, outValue, true);
+
+                params.height = (int) ((float) windowHeight * outValue.getFloat());
             }
+
+            appBarLayout.setLayoutParams(params);
+            appBarLayout.setPadding(0, 0, 0, abBottomPadding);
         } else
-            LogUtils.w(activity.getLocalClassName() + ".resetAppBarStatus", "appBarLayout is null.");
+            LogUtils.w(activity.getLocalClassName() + ".resetAppBarHeight", "appBarLayout is null.");
     }
+
 
     public void setHomeAsUpButton(View.OnClickListener ocl) {
         setHomeAsUpButton(0, 0, ocl);

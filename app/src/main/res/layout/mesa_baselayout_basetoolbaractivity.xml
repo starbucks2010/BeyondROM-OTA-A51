@@ -7,13 +7,16 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <include layout="@layout/mesa_toolbar_layout"/>
+    <include layout="@layout/mesa_toolbar_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="?actionBarSize"
+        android:layout_marginBottom="@dimen/sesl_material_extended_appbar_bottom_padding"/>
 
     <com.mesalabs.cerberus.ui.widget.RoundFrameLayout
         android:id="@+id/mesa_container_baseactivity"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_marginTop="@dimen/sesl_material_extended_appbar_bottom_padding"
-        app:cornersStroke="false"/>
+        app:cornersStroke="false"
+        app:roundedCorners="top_left|top_right"/>
 
 </LinearLayout>
