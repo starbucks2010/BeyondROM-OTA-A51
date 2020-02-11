@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 
 import com.mesalabs.cerberus.R;
 import com.mesalabs.cerberus.utils.Utils;
@@ -26,25 +27,25 @@ import com.samsung.android.ui.util.SeslRoundedCorner;
  * EXTERNALS IS PROHIBITED AND WILL BE PUNISHED WITH ANAL ABUSE.
  */
 
-public class RoundFrameLayout extends FrameLayout {
+public class RoundLinearLayout extends LinearLayout {
     private Context mContext;
     private boolean mIsNightMode;
     SeslRoundedCorner mSeslRoundedCorner;
 
-    public RoundFrameLayout(Context context) {
+    public RoundLinearLayout(Context context) {
         super(context);
     }
 
-    public RoundFrameLayout(Context context, AttributeSet attrs) {
+    public RoundLinearLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
 
         mContext = context;
         mIsNightMode = Utils.isNightMode(mContext);
 
-        TypedArray obtainStyledAttributes = mContext.obtainStyledAttributes(attrs, R.styleable.RoundFrameLayout);
+        TypedArray obtainStyledAttributes = mContext.obtainStyledAttributes(attrs, R.styleable.RoundLinearLayout);
 
-        boolean cornersStroke = obtainStyledAttributes.getBoolean(R.styleable.RoundFrameLayout_cornersStroke, true);
-        int roundedCorners = obtainStyledAttributes.getInt(R.styleable.RoundFrameLayout_roundedCorners, 15);
+        boolean cornersStroke = obtainStyledAttributes.getBoolean(R.styleable.RoundLinearLayout_cornersStroke, true);
+        int roundedCorners = obtainStyledAttributes.getInt(R.styleable.RoundLinearLayout_roundedCorners, 15);
 
         mSeslRoundedCorner = new SeslRoundedCorner(mContext, cornersStroke);
         mSeslRoundedCorner.setRoundedCorners(roundedCorners);
@@ -57,7 +58,7 @@ public class RoundFrameLayout extends FrameLayout {
         obtainStyledAttributes.recycle();
     }
 
-    public RoundFrameLayout(Context context, AttributeSet attrs, int defStyleAttr) {
+    public RoundLinearLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
@@ -66,5 +67,4 @@ public class RoundFrameLayout extends FrameLayout {
         super.dispatchDraw(canvas);
         mSeslRoundedCorner.drawRoundedCorner(canvas);
     }
-
 }

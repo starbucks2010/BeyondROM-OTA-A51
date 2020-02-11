@@ -42,14 +42,14 @@ public class RoundNestedScrollView extends SeslNestedScrollView {
         TypedArray obtainStyledAttributes = mContext.obtainStyledAttributes(attrs, R.styleable.RoundNestedScrollView);
 
         boolean cornersStroke = obtainStyledAttributes.getBoolean(R.styleable.RoundNestedScrollView_cornersStroke, false);
-        String roundedCorners = obtainStyledAttributes.getString(R.styleable.RoundNestedScrollView_roundedCorners);
+        int roundedCorners = obtainStyledAttributes.getInt(R.styleable.RoundNestedScrollView_roundedCorners, 15);
 
         if (cornersStroke)
             LogUtils.w("RoundNestedScrollView", "cornersStroke is not supported in this View!");
 
         mSeslRoundedCorner = new SeslRoundedCorner(mContext, false);
-        mSeslRoundedCorner.setRoundedCorners(getCornersInt(roundedCorners));
-        mSeslRoundedCorner.setRoundedCornerColor(getCornersInt(roundedCorners), getResources().getColor(Utils.isNightMode(mContext) ? R.color.sesl_round_and_bgcolor_dark : R.color.sesl_round_and_bgcolor_light, mContext.getTheme()));
+        mSeslRoundedCorner.setRoundedCorners(roundedCorners);
+        mSeslRoundedCorner.setRoundedCornerColor(roundedCorners, getResources().getColor(Utils.isNightMode(mContext) ? R.color.sesl_round_and_bgcolor_dark : R.color.sesl_round_and_bgcolor_light, mContext.getTheme()));
 
         obtainStyledAttributes.recycle();
     }
@@ -62,26 +62,5 @@ public class RoundNestedScrollView extends SeslNestedScrollView {
     protected void dispatchDraw(Canvas canvas) {
         super.dispatchDraw(canvas);
         mSeslRoundedCorner.drawRoundedCorner(canvas);
-    }
-
-    private int getCornersInt(String cornersS) {
-        int corners = 15;
-
-        if (cornersS != null && !cornersS.isEmpty()) {
-            if (cornersS.equals("none"))
-                corners = 0;
-            else {
-                if (!cornersS.contains("topleft"))
-                    corners -= 1;
-                if (!cornersS.contains("topright"))
-                    corners -= 2;
-                if (!cornersS.contains("bottomleft"))
-                    corners -= 4;
-                if (!cornersS.contains("bottomright"))
-                    corners -= 8;
-            }
-        }
-
-        return corners;
     }
 }
