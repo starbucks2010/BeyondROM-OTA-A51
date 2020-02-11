@@ -35,8 +35,8 @@ public class BaseToolbarActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         mContext = this;
+        ViewUtils.hideStatusBarForLandscape(this, getResources().getConfiguration().orientation);
     }
 
     @Override
