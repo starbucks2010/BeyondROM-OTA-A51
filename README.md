@@ -15,6 +15,7 @@ Please notice the app needs external edits to the following files in order to en
 * Android Jetpack (androidx.*) & Google Material libs
 * Samsung Manifest flags (SamsungBasicInteraction, Icon Container etc)
 * Base Activity classes ready to use
+* App OTA Updater ready to use
 * Android 10 Sesl xml elements (anim, drawables, styles, colors, dimens)
 * Android 10 Sesl AppBar/Toolbar (managed with ActionBarUtils class)
 * Android 10 Sesl Color Picker (+ custom Preference)
