@@ -3,7 +3,7 @@
     android:id="@+id/mesa_appbar_appbarlayout"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    app:background="?round_and_bgColor"
+    android:background="?round_and_bgColor"
     style="@style/mesa_AppBarLayoutStyle"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
