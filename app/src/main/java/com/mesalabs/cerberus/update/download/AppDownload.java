@@ -138,6 +138,9 @@ public class AppDownload extends AsyncTask<Void, Integer, String> {
 
     @Override
     protected void onPostExecute(String result) {
+        if (result == null || result.isEmpty())
+            return;
+
         Intent intent = new Intent();
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
