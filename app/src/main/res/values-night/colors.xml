@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="mesa_widget_body_text_color">@color/sesl_dialog_body_text_color_dark</color>
+
+    <color name="mesa_layoutpref_help_image_bg_color">#252525</color>
+
+    <color name="mesa_app_version_text_baseaboutactivity">#747474</color>
+    <color name="mesa_bottombtn_bg_baseaboutactivity">#1F1F1F</color>
 </resources>

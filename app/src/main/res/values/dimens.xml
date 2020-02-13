@@ -294,7 +294,16 @@
     <dimen name="mesa_tipscardviewpref_cancel_button_size">32.0dip</dimen>
     <dimen name="mesa_tipscardviewpref_uplayout_padding_end">15.0dip</dimen>
 
+    <dimen name="mesa_layoutpref_help_image_margin">20.0dip</dimen>
+
     <dimen name="mesa_preference_fragment_padding_bottom">0.0dip</dimen>
 
     <dimen name="mesa_widget_inset_category_height">16.0dip</dimen>
+
+    <dimen name="mesa_switchbar_padding_bottom">20.0dip</dimen>
+
+    <dimen name="mesa_appname_text_baseaboutactivity">40.0sp</dimen>
+    <dimen name="mesa_version_text_baseaboutactivity">16.0sp</dimen>
+    <dimen name="mesa_updatebtn_text_baseaboutactivity">18.0sp</dimen>
+    <dimen name="mesa_bottombtn_text_baseaboutactivity">15.0sp</dimen>
 </resources>

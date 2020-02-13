@@ -250,4 +250,11 @@
 
 
     <color name="mesa_widget_body_text_color">@color/sesl_dialog_body_text_color_light</color>
+
+    <color name="mesa_layoutpref_help_image_bg_color">#CCFCFCFC</color>
+
+    <color name="mesa_bg_color_baseaboutactivity">#FCFCFC</color>
+    <color name="mesa_navigation_bar_color_baseaboutactivity">#FCFCFC</color>
+    <color name="mesa_app_version_text_baseaboutactivity">#909090</color>
+    <color name="mesa_bottombtn_bg_baseaboutactivity">#EBEBEB</color>
 </resources>

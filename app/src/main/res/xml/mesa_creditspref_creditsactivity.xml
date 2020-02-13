@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.samsung.android.ui.preference.PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <com.mesalabs.cerberus.ui.preference.CreditsPreference
+        android:icon="@drawable/mesa_credits_androidx_icon_light"
+        android:title="Android Jetpack Library"
+        android:summary="@Google - Licensed with Apache 2.0" />
+
+    <com.mesalabs.cerberus.ui.preference.CreditsPreference
+        android:icon="@drawable/mesa_credits_gmaterial_icon_light"
+        android:title="Material Components Library"
+        android:summary="@Google - Licensed with Apache 2.0" />
+
+    <com.mesalabs.cerberus.ui.preference.CreditsPreference
+        android:icon="@drawable/mesa_credits_oneui_icon_light"
+        android:title="Samsung Experience Software Library"
+        android:summary="@Samsung - Licensed with Apache 2.0" />
+
+</com.samsung.android.ui.preference.PreferenceScreen>

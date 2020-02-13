@@ -18,6 +18,14 @@
         <meta-data android:name="com.samsung.android.icon_container.has_icon_container" android:value="true"/>
         <meta-data android:name="android.max_aspect" android:value="2.4"/>
 
+        <activity android:name="com.mesalabs.cerberus.activity.CreditsActivity"
+            android:icon="@mipmap/ic_launcher"
+            android:label="@string/mesa_cerberustestux"
+            android:theme="@style/mesa_AppStyle.DayNight.NoActionBar"
+            android:hardwareAccelerated="true"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize"
+            android:launchMode="singleTop"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity android:name="com.mesalabs.cerberus.activity.OpenSourceLicenseActivity"
             android:icon="@mipmap/ic_launcher"
             android:label="@string/mesa_cerberustestux"
@@ -25,6 +33,17 @@
             android:hardwareAccelerated="true"
             android:configChanges="orientation|screenSize"
             android:launchMode="singleTop" />
+
+
+        <provider
+            android:name="com.mesalabs.cerberus.update.content.GenericFileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/mesa_provider_paths"/>
+        </provider>
 
     </application>
 
