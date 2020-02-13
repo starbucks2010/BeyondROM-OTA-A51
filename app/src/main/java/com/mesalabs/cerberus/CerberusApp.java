@@ -38,8 +38,12 @@ public class CerberusApp extends Application {
         return BuildConfig.APPLICATION_ID;
     }
 
-    public static String getAppVersion() {
+    public static String getAppVersionString() {
         return BuildConfig.VERSION_NAME;
+    }
+
+    public static int getAppVersionCode() {
+        return BuildConfig.VERSION_CODE;
     }
 
     public static boolean isDebugBuild()  {
