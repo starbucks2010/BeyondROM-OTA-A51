@@ -53,7 +53,7 @@ public class TabLayout extends SeslTabLayout implements View.OnSystemUiVisibilit
                 TextView textView = tab.seslGetTextView();
                 mTextViews.add(textView);
                 if (textView != null) {
-                    tabView.setContentDescription(textView.getText() + " " + getResources().getString(R.string.mesa_tab_tts, new Object[]{tabPosition + 1, 4}));
+                    tabView.setContentDescription(textView.getText() + " " + getResources().getString(R.string.mesa_tab_tts, new Object[]{tabPosition + 1, getTabCount()}));
                 }
                 tabView.setPointerIcon(PointerIcon.getSystemIcon(getContext(), 1000));
             }
