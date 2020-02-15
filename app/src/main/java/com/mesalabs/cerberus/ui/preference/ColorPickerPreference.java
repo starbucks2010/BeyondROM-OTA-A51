@@ -112,6 +112,8 @@ public class ColorPickerPreference extends SeslPreference implements SeslPrefere
         }
         mValue = color;
 
+        callChangeListener(color);
+
         if (!mFirstColor)
             addRecentColor(color);
         else
