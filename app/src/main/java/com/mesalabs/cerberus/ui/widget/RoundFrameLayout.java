@@ -4,11 +4,11 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
-import android.util.TypedValue;
 import android.widget.FrameLayout;
 
 import com.mesalabs.cerberus.R;
 import com.mesalabs.cerberus.utils.Utils;
+import com.mesalabs.cerberus.utils.ViewUtils;
 import com.samsung.android.ui.util.SeslRoundedCorner;
 
 /*
@@ -49,9 +49,7 @@ public class RoundFrameLayout extends FrameLayout {
         mSeslRoundedCorner = new SeslRoundedCorner(mContext, cornersStroke);
         mSeslRoundedCorner.setRoundedCorners(roundedCorners);
         if (!cornersStroke) {
-            TypedValue value = new TypedValue();
-            mContext.getTheme().resolveAttribute(R.attr.round_and_bgColor, value, true);
-            mSeslRoundedCorner.setRoundedCornerColor(roundedCorners, value.data);
+            mSeslRoundedCorner.setRoundedCornerColor(roundedCorners, ViewUtils.getRoundAndBgColor(mContext));
         }
 
         obtainStyledAttributes.recycle();

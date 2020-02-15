@@ -16,6 +16,8 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.mesalabs.cerberus.R;
+
 /*
  * Cerberus Core App
  *
@@ -73,6 +75,12 @@ public class ViewUtils {
             LogUtils.e(TAG, "cannot get portrait orientation");
             return 0;
         }
+    }
+
+    public static int getRoundAndBgColor(Context context) {
+        TypedValue outValue = new TypedValue();
+        context.getTheme().resolveAttribute(R.attr.round_and_bgColor, outValue, true);
+        return outValue.data;
     }
 
     public static int getSmallestDeviceWidthDp(Context context) {

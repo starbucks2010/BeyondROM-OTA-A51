@@ -7,7 +7,7 @@ import android.util.AttributeSet;
 
 import com.mesalabs.cerberus.R;
 import com.mesalabs.cerberus.utils.LogUtils;
-import com.mesalabs.cerberus.utils.Utils;
+import com.mesalabs.cerberus.utils.ViewUtils;
 import com.samsung.android.ui.util.SeslRoundedCorner;
 import com.samsung.android.ui.widget.SeslNestedScrollView;
 
@@ -49,7 +49,7 @@ public class RoundNestedScrollView extends SeslNestedScrollView {
 
         mSeslRoundedCorner = new SeslRoundedCorner(mContext, false);
         mSeslRoundedCorner.setRoundedCorners(roundedCorners);
-        mSeslRoundedCorner.setRoundedCornerColor(roundedCorners, getResources().getColor(Utils.isNightMode(mContext) ? R.color.sesl_round_and_bgcolor_dark : R.color.sesl_round_and_bgcolor_light, mContext.getTheme()));
+        mSeslRoundedCorner.setRoundedCornerColor(roundedCorners, ViewUtils.getRoundAndBgColor(mContext));
 
         obtainStyledAttributes.recycle();
     }

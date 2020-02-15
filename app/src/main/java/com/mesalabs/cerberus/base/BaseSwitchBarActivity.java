@@ -1,9 +1,6 @@
 package com.mesalabs.cerberus.base;
 
 import android.os.Bundle;
-import android.view.KeyEvent;
-import android.view.View;
-import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -11,9 +8,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.mesalabs.cerberus.R;
 import com.mesalabs.cerberus.ui.widget.SwitchBar;
-import com.mesalabs.cerberus.utils.LogUtils;
 import com.samsung.android.ui.preference.SeslPreference;
-import com.samsung.android.ui.preference.SeslPreferenceFragmentCompat;
 import com.samsung.android.ui.preference.SeslPreferenceGroup;
 
 /*
@@ -33,8 +28,8 @@ import com.samsung.android.ui.preference.SeslPreferenceGroup;
 
 public class BaseSwitchBarActivity extends BaseAppBarActivity {
     protected FragmentManager mFragmentManager;
-    protected SwitchBar switchBar;
-    protected Fragment preferenceFragment;
+    protected SwitchBar mSwitchBar;
+    protected Fragment mFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,14 +41,13 @@ public class BaseSwitchBarActivity extends BaseAppBarActivity {
         FragmentTransaction transaction = mFragmentManager.beginTransaction();
         transaction.add(R.id.mesa_fragmentcontainer_baseswitchbaractivity, getFragment(), "root");
         transaction.commit();
-
         mFragmentManager.executePendingTransactions();
 
-        preferenceFragment = mFragmentManager.findFragmentByTag("root");
+        mFragment = mFragmentManager.findFragmentByTag("root");
 
-        switchBar = findViewById(R.id.mesa_switchbar_baseswitchbaractivity);
-        switchBar.setSwitchBarPressListener(getSwitchBarListener());
-        switchBar.setChecked(getSwitchBarDefaultStatus());
+        mSwitchBar = findViewById(R.id.mesa_switchbar_baseswitchbaractivity);
+        mSwitchBar.setSwitchBarPressListener(getSwitchBarListener());
+        mSwitchBar.setChecked(getSwitchBarDefaultStatus());
     }
 
     @Override
@@ -75,7 +69,7 @@ public class BaseSwitchBarActivity extends BaseAppBarActivity {
     }
 
     protected SeslPreferenceGroup getParent(SeslPreferenceGroup groupToSearchIn, SeslPreference preference) {
-        for (int i = 0; i < groupToSearchIn.getPreferenceCount(); ++i) {
+        for (int i = 0; i < groupToSearchIn.getPreferenceCount(); i++) {
             SeslPreference child = groupToSearchIn.getPreference(i);
 
             if (child == preference)
