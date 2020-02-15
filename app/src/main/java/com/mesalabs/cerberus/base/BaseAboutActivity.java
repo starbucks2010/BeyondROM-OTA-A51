@@ -208,7 +208,7 @@ public class BaseAboutActivity extends BaseAppBarActivity {
         mUpdateButton.setOnClickListener(new OnSingleClickListener() {
             public void onSingleClick(View view) {
                 if (mCheckingStatus != AppUpdateUtils.STATE_ERROR) {
-                    mAppUpdate.installUpdate(true);
+                    mAppUpdate.installUpdate();
                 } else if (StateUtils.isNetworkConnected(mContext)) {
                     checkForUpdatesNotCompleted();
                 } else {

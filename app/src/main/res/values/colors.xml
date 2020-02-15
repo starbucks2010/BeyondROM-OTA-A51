@@ -62,6 +62,9 @@
     <color name="sesl_menu_popup_background_stroke_color">#CCCCCC</color>
     <color name="sesl_menu_popup_background_stroke_color_dark">#525252</color>
 
+    <color name="sesl_menu_badge_background_color">#F56A0D</color>
+    <color name="sesl_menu_badge_text_color">@color/sesl_white</color>
+
     <color name="sesl_dropdown_scrollbar_handle_color">#DEDEDE</color>
     <color name="sesl_dropdown_scrollbar_handle_color_dark">#595959</color>
 

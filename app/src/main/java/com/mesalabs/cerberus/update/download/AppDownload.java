@@ -14,7 +14,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import com.mesalabs.cerberus.BuildConfig;
-import com.mesalabs.cerberus.CerberusApp;
 import com.mesalabs.cerberus.R;
 import com.mesalabs.cerberus.ui.app.ProgressDialog;
 import com.mesalabs.cerberus.update.content.GenericFileProvider;
@@ -37,47 +36,43 @@ import com.mesalabs.cerberus.utils.LogUtils;
  */
 
 public class AppDownload extends AsyncTask<Void, Integer, String> {
-    public final String TAG = "AppDownload";
+    private final String TAG = "AppDownload";
 
     private Context mContext;
     private DownloadManager mDownloadManager;
     private long mDownloadID;
-    private boolean shouldUpdateForegroundApp;
     private ProgressDialog mLoadingDialog;
     private boolean mIsRunning = true;
 
-    public AppDownload(Context context, DownloadManager downloadManager, long downloadID, boolean input) {
+    public AppDownload(Context context, DownloadManager downloadManager, long downloadID) {
         mContext = context;
         mDownloadManager = downloadManager;
         mDownloadID = downloadID;
-        shouldUpdateForegroundApp = input;
     }
 
     @Override
     protected void onPreExecute() {
-        if (shouldUpdateForegroundApp) {
-            mLoadingDialog = new ProgressDialog(mContext);
-            mLoadingDialog.setIndeterminate(false);
-            mLoadingDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-            mLoadingDialog.setCancelable(true);
-            mLoadingDialog.setCanceledOnTouchOutside(false);
-            mLoadingDialog.setTitle(mContext.getString(R.string.mesa_pleasewait));
-            mLoadingDialog.setButton(ProgressDialog.BUTTON_NEGATIVE, mContext.getString(R.string.mesa_cancel), new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    DownloadManager downloadManager = (DownloadManager) mContext.getSystemService(Context.DOWNLOAD_SERVICE);
-                    downloadManager.remove(mDownloadID);
-                }
-            });
-            mLoadingDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-                @Override
-                public void onCancel(DialogInterface dialog) {
-                    DownloadManager downloadManager = (DownloadManager) mContext.getSystemService(Context.DOWNLOAD_SERVICE);
-                    downloadManager.remove(mDownloadID);
-                }
-            });
-            mLoadingDialog.show();
-        }
+        mLoadingDialog = new ProgressDialog(mContext);
+        mLoadingDialog.setIndeterminate(false);
+        mLoadingDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        mLoadingDialog.setCancelable(true);
+        mLoadingDialog.setCanceledOnTouchOutside(false);
+        mLoadingDialog.setTitle(mContext.getString(R.string.mesa_pleasewait));
+        mLoadingDialog.setButton(ProgressDialog.BUTTON_NEGATIVE, mContext.getString(R.string.mesa_cancel), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                DownloadManager downloadManager = (DownloadManager) mContext.getSystemService(Context.DOWNLOAD_SERVICE);
+                downloadManager.remove(mDownloadID);
+            }
+        });
+        mLoadingDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                DownloadManager downloadManager = (DownloadManager) mContext.getSystemService(Context.DOWNLOAD_SERVICE);
+                downloadManager.remove(mDownloadID);
+            }
+        });
+        mLoadingDialog.show();
     }
 
     @Override
@@ -89,6 +84,7 @@ public class AppDownload extends AsyncTask<Void, Integer, String> {
     protected String doInBackground(Void... params) {
         String downloadFileUrl = "";
         int previousValue = 0;
+
         while(mIsRunning) {
             DownloadManager.Query q = new DownloadManager.Query();
             q.setFilterById(mDownloadID);
@@ -120,20 +116,15 @@ public class AppDownload extends AsyncTask<Void, Integer, String> {
             }
             cursor.close();
         }
-        if (shouldUpdateForegroundApp) {
-            mLoadingDialog.dismiss();
-        }
 
+        mLoadingDialog.dismiss();
         return downloadFileUrl;
     }
 
     @Override
     protected void onProgressUpdate(Integer... progress) {
-        if (CerberusApp.isDebugBuild())
-            LogUtils.d(TAG, "Updating Progress - " + progress[0] + "%");
-        if(mIsRunning && shouldUpdateForegroundApp) {
-            mLoadingDialog.setProgress(progress[0]);
-        }
+        LogUtils.d(TAG, "Updating Progress - " + progress[0] + "%");
+        mLoadingDialog.setProgress(progress[0]);
     }
 
     @Override

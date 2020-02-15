@@ -14,6 +14,7 @@ import java.net.URLConnection;
 import java.util.ArrayList;
 
 import com.mesalabs.cerberus.CerberusApp;
+import com.mesalabs.cerberus.R;
 import com.mesalabs.cerberus.update.data.AppData;
 import com.mesalabs.cerberus.update.download.AppDownload;
 import com.mesalabs.cerberus.update.tasks.AppXMLParser;
@@ -38,7 +39,7 @@ import com.mesalabs.cerberus.utils.LogUtils;
 public class AppUpdateUtils {
     private static final String TAG = "AppUpdateUtils";
     private static final String DOWNLOAD_DIR = "updates";
-    private static final String UPDATE_XML = "https://gitlab.com/BlackMesa123/otatest/-/raw/master/testmanifest.xml";
+    private static final String UPDATE_XML = "https://gitlab.com/BlackMesa123/otatest/-/raw/eb5d8466245068531f889f472eb64aece46bd519/testmanifest.xml";
 
     public static final int STATE_NO_UPDATES = 1;
     public static final int STATE_NEW_VERSION_AVAILABLE = 2;
@@ -61,23 +62,21 @@ public class AppUpdateUtils {
         new LoadAppManifest(mActivity).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, UPDATE_XML);
     }
 
-    public void installUpdate(boolean input) {
+    public void installUpdate() {
         if (mNewUpdateAvailable) {
             String fileName = mAppPackageName + "-" + mAppData.getVersionNumber();
 
             DownloadManager.Request request = new DownloadManager.Request(Uri.parse(mAppData.getDownloadLink()));
-            request.setTitle(fileName);
+            request.setTitle(mActivity.getString(R.string.mesa_downloading));
             request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE);
             fileName = fileName + ".apk";
             request.setDestinationInExternalFilesDir(mActivity, DOWNLOAD_DIR, fileName);
 
             DownloadManager downloadManager = (DownloadManager) mActivity.getSystemService(Context.DOWNLOAD_SERVICE);
             long mDownloadID = downloadManager.enqueue(request);
-            new AppDownload(mActivity, downloadManager, mDownloadID, input).execute();
+            new AppDownload(mActivity, downloadManager, mDownloadID).execute();
 
-            if (CerberusApp.isDebugBuild()) {
-                LogUtils.d(TAG, "Starting download with manager ID " + mDownloadID);
-            }
+            LogUtils.d(TAG, "Starting download with manager ID " + mDownloadID);
         } else {
             LogUtils.e(TAG, "installUpdate: mNewUpdateAvailable is false!!!");
         }
@@ -115,7 +114,6 @@ public class AppUpdateUtils {
         private static final String MANIFEST = "app_manifest.xml";
 
         private Context mContext;
-        private boolean shouldUpdateForegroundApp;
 
         public LoadAppManifest(Context context) {
             mContext = context;

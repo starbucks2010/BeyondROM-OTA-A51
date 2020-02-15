@@ -23,4 +23,21 @@
         android:fontFamily="@string/sesl_font_family_regular"
         android:textDirection="locale" />
 
+    <TextView
+        android:textSize="@dimen/sesl_menu_item_badge_text_size"
+        android:textColor="@color/sesl_menu_badge_text_color"
+        android:gravity="center"
+        android:layout_gravity="center_vertical"
+        android:id="@+id/mesa_badgetext_moremenupopup"
+        android:background="@drawable/sesl_noti_badge"
+        android:focusable="false"
+        android:visibility="gone"
+        android:clickable="false"
+        android:duplicateParentState="true"
+        android:layout_width="@dimen/sesl_menu_item_badge_size"
+        android:layout_height="@dimen/sesl_menu_item_badge_size"
+        android:importantForAccessibility="no"
+        android:layout_marginStart="7.0dip"
+        android:layout_marginEnd="7.0dip" />
+
 </LinearLayout>

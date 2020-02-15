@@ -63,6 +63,13 @@
     <dimen name="sesl_menu_popup_top_padding">6.0dip</dimen>
     <item type="dimen" name="sesl_menu_popup_scale_anim_pivot_x">100.0%</item>
 
+    <dimen name="sesl_menu_item_badge_size">17.0dip</dimen>
+    <dimen name="sesl_menu_item_badge_text_size">11.0dip</dimen>
+    <dimen name="sesl_menu_item_badge_top_margin">10.0dip</dimen>
+    <dimen name="sesl_menu_item_badge_end_margin">16.0dip</dimen>
+    <dimen name="sesl_badge_default_width">13.0dip</dimen>
+    <dimen name="sesl_badge_additional_width">4.0dip</dimen>
+
     <dimen name="sesl_dropdown_list_item_min_width">168.0dip</dimen>
 
     <dimen name="sesl_popup_menu_item_bottom_padding">13.0dip</dimen>
@@ -281,6 +288,7 @@
 
 
     <dimen name="mesa_toolbar_imagebutton_width">48.0dip</dimen>
+    <dimen name="mesa_moremenubutton_badge_end_margin">7.0dip</dimen>
 
     <dimen name="mesa_tab_height">60.0dip</dimen>
     <dimen name="mesa_tab_layout_padding">24.0dip</dimen>

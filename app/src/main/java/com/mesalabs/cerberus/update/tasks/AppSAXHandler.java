@@ -5,7 +5,6 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import com.mesalabs.cerberus.CerberusApp;
 import com.mesalabs.cerberus.update.data.AppData;
 import com.mesalabs.cerberus.utils.LogUtils;
 
@@ -27,7 +26,6 @@ import com.mesalabs.cerberus.utils.LogUtils;
 
 public class AppSAXHandler extends DefaultHandler {
     private final String TAG = "AppSAXHandler";
-    private final boolean DEBUGGING = CerberusApp.isDebugBuild();
 
     private ArrayList<AppData> apps;
     private String tempVal;
@@ -61,24 +59,19 @@ public class AppSAXHandler extends DefaultHandler {
             apps.add(tempAddon);
         } else if (qName.equalsIgnoreCase("name")) {
             tempAddon.setTitle(tempVal);
-            if (DEBUGGING)
-                LogUtils.d(TAG, "Title = " + tempVal);
+            LogUtils.d(TAG, "Title = " + tempVal);
         } else if (qName.equalsIgnoreCase("package-name")) {
             tempAddon.setPackageName(tempVal);
-            if (DEBUGGING)
-                LogUtils.d(TAG, "Package Name = " + tempVal);
+            LogUtils.d(TAG, "Package Name = " + tempVal);
         } else if (qName.equalsIgnoreCase("version")) {
             tempAddon.setVersionNumber(Integer.parseInt(tempVal));
-            if (DEBUGGING)
-                LogUtils.d(TAG, "Version = " + tempVal);
+            LogUtils.d(TAG, "Version = " + tempVal);
         } else if (qName.equalsIgnoreCase("download-link")) {
             tempAddon.setDownloadLink(tempVal);
-            if (DEBUGGING)
-                LogUtils.d(TAG, "Download Link = " + tempVal);
+            LogUtils.d(TAG, "Download Link = " + tempVal);
         } else if (qName.equalsIgnoreCase("size")) {
             tempAddon.setFilesize(Integer.parseInt(tempVal));
-            if (DEBUGGING)
-                LogUtils.d(TAG, "Size = " + tempVal);
+            LogUtils.d(TAG, "Size = " + tempVal);
         }
     }
 
