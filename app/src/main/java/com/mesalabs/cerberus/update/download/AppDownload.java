@@ -13,7 +13,6 @@ import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import com.mesalabs.cerberus.BuildConfig;
 import com.mesalabs.cerberus.R;
 import com.mesalabs.cerberus.ui.app.ProgressDialog;
 import com.mesalabs.cerberus.update.content.GenericFileProvider;
@@ -144,7 +143,7 @@ public class AppDownload extends AsyncTask<Void, Integer, String> {
             LogUtils.e(TAG, e.toString());
             return;
         }
-        Uri data = GenericFileProvider.getUriForFile(mContext, BuildConfig.APPLICATION_ID +".provider", file);
+        Uri data = GenericFileProvider.getUriForFile(mContext, OnSettingsApp.getAppPackageName() +".provider", file);
 
         intent.setDataAndType(data, "application/vnd.android.package-archive");
         mContext.startActivity(intent);
