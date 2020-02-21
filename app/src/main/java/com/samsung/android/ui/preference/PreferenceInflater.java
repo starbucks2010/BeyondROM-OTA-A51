@@ -45,7 +45,7 @@ class PreferenceInflater {
 
     private void init(PreferenceManager preferenceManager) {
         mPreferenceManager = preferenceManager;
-        setDefaultPackages(new String[]{"com.samsung.android.ui.preference.", "android.support.v14.preference.", "android.support.v7.preference."});
+        setDefaultPackages(new String[]{"com.samsung.android.ui.preference.", "com.mesalabs.cerberus.ui.preference."});
     }
 
     public void setDefaultPackages(String[] defaultPackage) {
