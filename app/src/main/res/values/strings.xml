@@ -20,7 +20,7 @@
     <string name="mesa_version">Version</string>
     <string name="mesa_app_info">App info</string>
 
-    <string name="mesa_downloading">Downloading update…</string>
+    <string name="mesa_downloading">Downloading update...</string>
     <string name="mesa_download_failed">Download failed.</string>
 
 

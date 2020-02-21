@@ -40,7 +40,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatDialog;
 import androidx.core.view.ViewCompat;
 
-import com.mesalabs.cerberus.R;
+import com.mesalabs.on.update.R;
 import com.mesalabs.cerberus.utils.Utils;
 import com.samsung.android.ui.widget.SeslEdgeEffect;
 import com.samsung.android.ui.widget.SeslNestedScrollView;

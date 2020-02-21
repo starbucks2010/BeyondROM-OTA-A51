@@ -1,4 +1,4 @@
-package com.mesalabs.cerberus.activity;
+package com.mesalabs.on.update.activity.aboutpage;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -9,12 +9,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
-import com.mesalabs.cerberus.R;
+import com.mesalabs.on.update.R;
 import com.mesalabs.cerberus.base.BaseToolbarActivity;
 import com.mesalabs.cerberus.utils.LogUtils;
 
 /*
- * Cerberus Core App
+ * On Update
  *
  * Coded by BlackMesa @2020
  *
@@ -23,9 +23,6 @@ import com.mesalabs.cerberus.utils.LogUtils;
  * You may obtain a copy of the License at
  *
  *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * ULTRA-MEGA-PRIVATE SOURCE CODE. SHARING TO DEVKINGS TEAM
- * EXTERNALS IS PROHIBITED AND WILL BE PUNISHED WITH ANAL ABUSE.
  */
 
 public class OpenSourceLicenseActivity extends BaseToolbarActivity {

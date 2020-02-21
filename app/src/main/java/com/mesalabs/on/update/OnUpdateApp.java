@@ -1,10 +1,10 @@
-package com.mesalabs.cerberus;
+package com.mesalabs.on.update;
 
 import android.app.Application;
 import android.content.Context;
 
 /*
- * Cerberus Core App
+ * On Update
  *
  * Coded by BlackMesa @2020
  *
@@ -13,20 +13,17 @@ import android.content.Context;
  * You may obtain a copy of the License at
  *
  *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * ULTRA-MEGA-PRIVATE SOURCE CODE. SHARING TO DEVKINGS TEAM
- * EXTERNALS IS PROHIBITED AND WILL BE PUNISHED WITH ANAL ABUSE.
  */
 
-public class CerberusApp extends Application {
-    private static CerberusApp mAppInstance;
+public class OnUpdateApp extends Application {
+    private static OnUpdateApp mAppInstance;
     private static Context mAppContext;
 
     public static Context getAppContext() {
         return mAppContext;
     }
 
-    public static CerberusApp getAppInstance() {
+    public static OnUpdateApp getAppInstance() {
         return mAppInstance;
     }
 

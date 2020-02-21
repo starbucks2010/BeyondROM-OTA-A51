@@ -15,7 +15,7 @@ import androidx.annotation.DrawableRes;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.Toolbar;
 
-import com.mesalabs.cerberus.R;
+import com.mesalabs.on.update.R;
 import com.samsung.android.ui.widget.SeslTooltip;
 
 /*

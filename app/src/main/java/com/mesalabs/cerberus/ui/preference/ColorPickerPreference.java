@@ -11,7 +11,7 @@ import android.util.AttributeSet;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import com.mesalabs.cerberus.R;
+import com.mesalabs.on.update.R;
 import com.mesalabs.cerberus.utils.Utils;
 import com.samsung.android.ui.picker.app.SeslColorPickerDialog;
 import com.samsung.android.ui.preference.internal.SeslPreferenceImageView;

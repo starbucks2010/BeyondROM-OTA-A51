@@ -4,8 +4,6 @@
     <style name="mesa_AppStyle.DayNight" parent="@style/mesa_AppStyle.Light" />
     <style name="mesa_AppStyle.DayNight.NoActionBar" parent="@style/mesa_AppStyle.Light.NoActionBar" />
 
-    <style name="mesa_AboutActivity_AppStyle.DayNight" parent="@style/mesa_AboutActivity_AppStyle.Light" />
-
     <!-- #App Themes# -->
     <style name="mesa_AppStyle" parent="Theme.AppCompat">
         <!-- Window colors -->
@@ -417,16 +415,6 @@
         <item name="buttonBarNeutralButtonStyle">@style/mesa_DialogButtonStyle</item>
         <item name="buttonBarPositiveButtonStyle">@style/mesa_DialogButtonStyle</item>
         <item name="buttonBarStyle">@android:style/Widget.Material.Light.ButtonBar.AlertDialog</item>
-    </style>
-
-    <!-- #Activity Themes# -->
-    <!-- AboutActivity -->
-    <style name="mesa_AboutActivity_AppStyle.Light" parent="@style/mesa_AppStyle.Light.NoActionBar">
-        <item name="android:statusBarColor">@color/mesa_bg_color_baseaboutactivity</item>
-        <item name="android:navigationBarColor">@color/mesa_navigation_bar_color_baseaboutactivity</item>
-        <item name="android:windowBackground">@color/mesa_bg_color_baseaboutactivity</item>
-        <item name="round_and_bgColor">@color/mesa_bg_color_baseaboutactivity</item>
-        <item name="roundedCornerColor">@color/mesa_bg_color_baseaboutactivity</item>
     </style>
 
     <!-- #App Styles# -->

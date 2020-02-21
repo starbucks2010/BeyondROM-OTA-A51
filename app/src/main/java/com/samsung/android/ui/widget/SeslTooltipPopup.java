@@ -16,7 +16,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.view.ContextThemeWrapper;
 
-import com.mesalabs.cerberus.R;
+import com.mesalabs.on.update.R;
 import com.mesalabs.cerberus.utils.LogUtils;
 
 /*

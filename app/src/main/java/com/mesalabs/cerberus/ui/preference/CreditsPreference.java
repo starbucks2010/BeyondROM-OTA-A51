@@ -3,7 +3,7 @@ package com.mesalabs.cerberus.ui.preference;
 import android.content.Context;
 import android.util.AttributeSet;
 
-import com.mesalabs.cerberus.R;
+import com.mesalabs.on.update.R;
 import com.samsung.android.ui.preference.SeslPreference;
 
 /*

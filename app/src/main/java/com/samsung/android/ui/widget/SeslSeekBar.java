@@ -6,7 +6,7 @@ import android.util.AttributeSet;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.SeekBar;
 
-import com.mesalabs.cerberus.R;
+import com.mesalabs.on.update.R;
 
 /*
  * Cerberus Core App

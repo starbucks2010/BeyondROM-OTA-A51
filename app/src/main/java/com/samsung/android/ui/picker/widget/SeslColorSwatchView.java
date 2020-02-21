@@ -22,7 +22,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.customview.widget.ExploreByTouchHelper;
 
-import com.mesalabs.cerberus.R;
+import com.mesalabs.on.update.R;
 
 /*
  * Cerberus Core App

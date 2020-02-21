@@ -6,7 +6,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.mesalabs.cerberus.R;
+import com.mesalabs.on.update.R;
 import com.mesalabs.cerberus.ui.widget.SwitchBar;
 import com.samsung.android.ui.preference.SeslPreference;
 import com.samsung.android.ui.preference.SeslPreferenceGroup;

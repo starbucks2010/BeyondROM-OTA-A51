@@ -16,7 +16,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.mesalabs.cerberus.R;
+import com.mesalabs.on.update.R;
 
 /*
  * Cerberus Core App

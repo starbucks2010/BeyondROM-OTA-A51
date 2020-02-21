@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- #App Day/Night Mode Themes# -->
+    <style name="mesa_OTA_AppStyle.DayNight" parent="@style/mesa_OTA_AppStyle" />
+    <style name="mesa_AboutActivity_AppStyle.DayNight" parent="@style/mesa_OTA_AppStyle" />
+</resources>

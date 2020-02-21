@@ -24,7 +24,7 @@ import java.util.Locale;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import com.mesalabs.cerberus.R;
+import com.mesalabs.on.update.R;
 import com.mesalabs.cerberus.ui.widget.ToolbarImageButton;
 import com.mesalabs.cerberus.utils.CerberusException;
 import com.mesalabs.cerberus.utils.LogUtils;
@@ -143,6 +143,15 @@ public class ActionBarUtils {
             viewGroup = linearLayout;
         }
         return measuredWidth + 25;
+    }
+
+    public ToolbarImageButton getOverflowIcon(int index) {
+        if (overflowContainer != null && overflowContainer.getChildCount() != 0) {
+            return (ToolbarImageButton) overflowContainer.getChildAt(index);
+        } else {
+            LogUtils.w(activity.getLocalClassName() + ".getOverflowIcon", "overflowContainer is null or contains no icons.");
+            return null;
+        }
     }
 
     public void initAppBar(boolean isExpanded) {

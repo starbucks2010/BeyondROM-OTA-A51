@@ -27,7 +27,7 @@ import android.widget.ImageView;
 import android.widget.SectionIndexer;
 import android.widget.TextView;
 
-import com.mesalabs.cerberus.R;
+import com.mesalabs.on.update.R;
 import com.mesalabs.cerberus.utils.LogUtils;
 import com.mesalabs.cerberus.utils.ViewUtils;
 

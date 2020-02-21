@@ -17,4 +17,9 @@
         android:title="Samsung Experience Software Library"
         android:summary="@Samsung - Licensed with Apache 2.0" />
 
+    <com.mesalabs.cerberus.ui.preference.CreditsPreference
+        android:icon="@drawable/mesa_credits_spinkit_icon_light"
+        android:title="Android-SpinKit"
+        android:summary="@ybq - Licensed with MIT" />
+
 </com.samsung.android.ui.preference.PreferenceScreen>

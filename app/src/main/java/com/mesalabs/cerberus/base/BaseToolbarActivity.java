@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.mesalabs.cerberus.R;
+import com.mesalabs.on.update.R;
 import com.mesalabs.cerberus.ui.utils.ActionBarUtils;
 import com.mesalabs.cerberus.utils.ViewUtils;
 

@@ -5,7 +5,7 @@ import android.view.View;
 
 import androidx.preference.AndroidResources;
 
-import com.mesalabs.cerberus.R;
+import com.mesalabs.on.update.R;
 import com.samsung.android.ui.recyclerview.widget.SeslRecyclerView;
 
 /*

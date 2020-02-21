@@ -20,7 +20,7 @@ import android.view.ViewGroup;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
-import com.mesalabs.cerberus.R;
+import com.mesalabs.on.update.R;
 import com.mesalabs.cerberus.utils.LogUtils;
 import com.samsung.android.ui.preference.internal.AbstractMultiSelectListPreference;
 import com.samsung.android.ui.util.SeslRoundedCorner;

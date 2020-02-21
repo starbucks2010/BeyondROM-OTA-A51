@@ -54,7 +54,7 @@ import androidx.viewpager.widget.SeslViewPager;
 
 import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.tabs.TabItem;
-import com.mesalabs.cerberus.R;
+import com.mesalabs.on.update.R;
 import com.samsung.android.ui.widget.SeslTooltip;
 
 /*

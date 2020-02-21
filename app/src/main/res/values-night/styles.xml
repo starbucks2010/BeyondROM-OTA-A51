@@ -4,6 +4,4 @@
     <style name="mesa_AppStyle.DayNight" parent="@style/mesa_AppStyle" />
     <style name="mesa_AppStyle.DayNight.NoActionBar" parent="@style/mesa_AppStyle.NoActionBar" />
 
-    <style name="mesa_AboutActivity_AppStyle.DayNight" parent="@style/mesa_AppStyle.NoActionBar" />
-
 </resources>

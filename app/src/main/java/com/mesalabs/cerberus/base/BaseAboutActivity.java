@@ -12,10 +12,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.mesalabs.cerberus.CerberusApp;
-import com.mesalabs.cerberus.R;
-import com.mesalabs.cerberus.activity.CreditsActivity;
-import com.mesalabs.cerberus.activity.OpenSourceLicenseActivity;
+import com.mesalabs.on.update.OnUpdateApp;
+import com.mesalabs.on.update.R;
+import com.mesalabs.on.update.activity.aboutpage.CreditsActivity;
+import com.mesalabs.on.update.activity.aboutpage.OpenSourceLicenseActivity;
 import com.mesalabs.cerberus.ui.callback.OnSingleClickListener;
 import com.mesalabs.cerberus.ui.widget.CustomButton;
 import com.mesalabs.cerberus.update.utils.AppUpdateUtils;
@@ -85,13 +85,13 @@ public class BaseAboutActivity extends BaseAppBarActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent = new Intent("android.settings.APPLICATION_DETAILS_SETTINGS", Uri.fromParts("package", CerberusApp.getAppPackageName(), null));
+                        Intent intent = new Intent("android.settings.APPLICATION_DETAILS_SETTINGS", Uri.fromParts("package", OnUpdateApp.getAppPackageName(), null));
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
                     }
                 });
 
-        mAppUpdate = new AppUpdateUtils(this, CerberusApp.getAppPackageName(), mStubListener);
+        mAppUpdate = new AppUpdateUtils(this, OnUpdateApp.getAppPackageName(), mStubListener);
 
         mBaseLayout = findViewById(R.id.mesa_aboutlayout_baseaboutactivity);
         mAppInfoView = findViewById(R.id.mesa_appinfolayout_baseaboutactivity);
@@ -121,7 +121,7 @@ public class BaseAboutActivity extends BaseAppBarActivity {
         mAppNameText.setText(getAppName());
 
         mVersionText = findViewById(R.id.mesa_versiontextview_appinfolayout_baseaboutactivity);
-        mVersionText.setText(getString(R.string.mesa_version) + " " + CerberusApp.getAppVersionString());
+        mVersionText.setText(getString(R.string.mesa_version) + " " + OnUpdateApp.getAppVersionString());
 
         if (getIsAppUpdateable()) {
             if (savedInstanceState != null) {

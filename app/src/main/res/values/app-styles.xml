@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- #App Day/Night Mode Themes# -->
+    <style name="mesa_OTA_AppStyle.DayNight" parent="@style/mesa_OTA_AppStyle.Light" />
+    <style name="mesa_AboutActivity_AppStyle.DayNight" parent="@style/mesa_AboutActivity_AppStyle.Light" />
+
+    <!-- #Activity Themes# -->
+    <style name="mesa_OTA_AppStyle" parent="@style/mesa_AppStyle.NoActionBar">
+        <item name="colorPrimaryDark">@color/mesa_ota_primary_dark_color_dark</item>
+        <item name="colorPrimary">@color/mesa_ota_primary_color_dark</item>
+        <item name="colorControlActivated">@color/mesa_ota_control_activated_color</item>
+        <item name="progressActivatedColor">@color/mesa_ota_progress_control_color_activated_dark</item>
+        <item name="progressNormalColor">@color/mesa_ota_progress_control_color_normal_dark</item>
+        <item name="dialogTheme">@style/mesa_OTA_DialogStyle</item>
+        <item name="android:alertDialogTheme">@style/mesa_OTA_DialogStyle</item>
+        <item name="alertDialogTheme">@style/mesa_OTA_AlertDialogOverlayStyle</item>
+    </style>
+    <style name="mesa_OTA_AppStyle.Light" parent="@style/mesa_AppStyle.Light.NoActionBar">
+        <item name="colorPrimaryDark">@color/mesa_ota_primary_dark_color_light</item>
+        <item name="colorPrimary">@color/mesa_ota_primary_color_light</item>
+        <item name="colorControlActivated">@color/mesa_ota_control_activated_color</item>
+        <item name="progressActivatedColor">@color/mesa_ota_progress_control_color_activated_light</item>
+        <item name="progressNormalColor">@color/mesa_ota_progress_control_color_normal_light</item>
+        <item name="dialogTheme">@style/mesa_OTA_DialogStyle.Light</item>
+        <item name="android:alertDialogTheme">@style/mesa_OTA_DialogStyle.Light</item>
+        <item name="alertDialogTheme">@style/mesa_OTA_AlertDialogOverlayStyle.Light</item>
+    </style>
+
+    <style name="mesa_OTA_AppOverlayStyle" parent="@style/mesa_AppOverlayStyle">
+        <item name="colorPrimary">@color/mesa_ota_primary_color_dark</item>
+        <item name="colorPrimaryDark">@color/mesa_ota_primary_dark_color_dark</item>
+        <item name="colorControlActivated">@color/mesa_ota_control_activated_color</item>
+
+    </style>
+    <style name="mesa_OTA_AppOverlayStyle.Light" parent="@style/mesa_AppOverlayStyle.Light">
+        <item name="colorPrimary">@color/mesa_ota_primary_color_light</item>
+        <item name="colorPrimaryDark">@color/mesa_ota_primary_dark_color_light</item>
+        <item name="colorControlActivated">@color/mesa_ota_control_activated_color</item>
+    </style>
+
+    <!-- AboutActivity -->
+    <style name="mesa_AboutActivity_AppStyle.Light" parent="@style/mesa_OTA_AppStyle.Light">
+        <item name="android:statusBarColor">@color/mesa_bg_color_baseaboutactivity</item>
+        <item name="android:navigationBarColor">@color/mesa_navigation_bar_color_baseaboutactivity</item>
+        <item name="android:windowBackground">@color/mesa_bg_color_baseaboutactivity</item>
+        <item name="round_and_bgColor">@color/mesa_bg_color_baseaboutactivity</item>
+        <item name="roundedCornerColor">@color/mesa_bg_color_baseaboutactivity</item>
+    </style>
+
+    <!-- #App Styles# -->
+    <!-- Sesl Dialog -->
+    <style name="mesa_OTA_DialogStyle" parent="@style/mesa_DialogStyle">
+        <item name="colorPrimary">@color/mesa_ota_primary_color_dark</item>
+        <item name="colorPrimaryDark">@color/mesa_ota_primary_dark_color_dark</item>
+    </style>
+    <style name="mesa_OTA_DialogStyle.Light" parent="@style/mesa_DialogStyle.Light">
+        <item name="colorPrimary">@color/mesa_ota_primary_color_light</item>
+        <item name="colorPrimaryDark">@color/mesa_ota_primary_dark_color_light</item>
+    </style>
+
+    <style name="mesa_OTA_AlertDialogOverlayStyle" parent="@style/mesa_OTA_DialogStyle">
+        <item name="android:windowMinWidthMajor">@dimen/sesl_dialog_min_width_major</item>
+        <item name="android:windowMinWidthMinor">@dimen/sesl_dialog_min_width_minor</item>
+        <item name="windowMinWidthMajor">@dimen/sesl_dialog_min_width_major</item>
+        <item name="windowMinWidthMinor">@dimen/sesl_dialog_min_width_minor</item>
+    </style>
+    <style name="mesa_OTA_AlertDialogOverlayStyle.Light" parent="@style/mesa_OTA_DialogStyle.Light">
+        <item name="android:windowMinWidthMajor">@dimen/sesl_dialog_min_width_major</item>
+        <item name="android:windowMinWidthMinor">@dimen/sesl_dialog_min_width_minor</item>
+        <item name="windowMinWidthMajor">@dimen/sesl_dialog_min_width_major</item>
+        <item name="windowMinWidthMinor">@dimen/sesl_dialog_min_width_minor</item>
+    </style>
+</resources>

@@ -2,7 +2,7 @@ package com.mesalabs.cerberus.utils;
 
 import android.util.Log;
 
-import com.mesalabs.cerberus.CerberusApp;
+import com.mesalabs.on.update.OnUpdateApp;
 
 /*
  * Cerberus Core App
@@ -50,7 +50,7 @@ public class PropUtils {
         try {
             return Class.forName("android.os.SystemProperties");
         } catch (ClassNotFoundException e) {
-            Log.e(CerberusApp.getAppName(), "WTF? No SystemProperties class found? Oof.");
+            Log.e(OnUpdateApp.getAppName(), "WTF? No SystemProperties class found? Oof.");
             return null;
         }
     }

@@ -7,7 +7,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 
-import com.mesalabs.cerberus.R;
+import com.mesalabs.on.update.R;
 import androidx.appcompat.widget.SeslAppCompatSpinner;
 
 /*

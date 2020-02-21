@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="mesa_menuview_icon_size">36.0dip</dimen>
+    <dimen name="mesa_menuview_icon_margin_start">12.0dip</dimen>
+    <dimen name="mesa_menuview_icon_margin_end">16.0dip</dimen>
+    <dimen name="mesa_menuview_divider_height">1.0px</dimen>
+    <dimen name="mesa_menuview_divider_margin_start">20.0dip</dimen>
+    <dimen name="mesa_menuview_divider_margin_end">20.0dip</dimen>
+    <dimen name="mesa_menuview_icon_divider_height">2.0px</dimen>
+    <dimen name="mesa_menuview_icon_divider_margin_start">58.0dip</dimen>
+    <dimen name="mesa_menuview_icon_divider_margin_end">18.0dip</dimen>
+    <dimen name="mesa_menuview_badge_text_size">11.0dip</dimen>
+    <dimen name="mesa_menuview_padding_inner">24.0dip</dimen>
+
+    <dimen name="mesa_widget_badge_size">17.0dip</dimen>
+
+</resources>
