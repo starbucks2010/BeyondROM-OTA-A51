@@ -37,13 +37,7 @@ public class BaseSwitchBarActivity extends BaseAppBarActivity {
 
         setContentView(R.layout.mesa_baselayout_baseswitchbaractivity);
 
-        mFragmentManager = getSupportFragmentManager();
-        FragmentTransaction transaction = mFragmentManager.beginTransaction();
-        transaction.add(R.id.mesa_fragmentcontainer_baseswitchbaractivity, getFragment(), "root");
-        transaction.commit();
-        mFragmentManager.executePendingTransactions();
-
-        mFragment = mFragmentManager.findFragmentByTag("root");
+        inflateFragment();
 
         mSwitchBar = findViewById(R.id.mesa_switchbar_baseswitchbaractivity);
         mSwitchBar.setSwitchBarPressListener(getSwitchBarListener());
@@ -55,6 +49,24 @@ public class BaseSwitchBarActivity extends BaseAppBarActivity {
         return false;
     }
 
+
+    private void inflateFragment() {
+        mFragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = mFragmentManager.beginTransaction();
+        Fragment fragment = mFragmentManager.findFragmentByTag("root");
+        if (mFragment != null) {
+            transaction.hide(mFragment);
+        }
+        if (fragment != null) {
+            mFragment = fragment;
+            transaction.show(fragment);
+        } else {
+            mFragment = getFragment();
+            transaction.add(R.id.mesa_fragmentcontainer_baseswitchbaractivity, mFragment, "root");
+        }
+        transaction.commit();
+        mFragmentManager.executePendingTransactions();
+    }
 
     protected Fragment getFragment() {
         return null;
