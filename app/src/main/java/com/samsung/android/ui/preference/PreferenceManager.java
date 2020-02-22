@@ -44,6 +44,21 @@ public class PreferenceManager {
         setSharedPreferencesName(getDefaultSharedPreferencesName(context));
     }
 
+    public static void setDefaultValues(Context context, int resId, boolean readAgain) {
+        setDefaultValues(context, getDefaultSharedPreferencesName(context), getDefaultSharedPreferencesMode(), resId, readAgain);
+    }
+
+    public static void setDefaultValues(Context context, String sharedPreferencesName, int sharedPreferencesMode, int resId, boolean readAgain) {
+        final SharedPreferences defaultValueSp = context.getSharedPreferences(KEY_HAS_SET_DEFAULT_VALUES, Context.MODE_PRIVATE);
+        if (readAgain || !defaultValueSp.getBoolean(KEY_HAS_SET_DEFAULT_VALUES, false)) {
+            final PreferenceManager pm = new PreferenceManager(context);
+            pm.setSharedPreferencesName(sharedPreferencesName);
+            pm.setSharedPreferencesMode(sharedPreferencesMode);
+            pm.inflateFromResource(context, resId, null);
+            defaultValueSp.edit().putBoolean(KEY_HAS_SET_DEFAULT_VALUES, true).apply();
+        }
+    }
+
     public PreferenceScreen inflateFromResource(Context context, int resId, PreferenceScreen rootPreferences) {
         setNoCommit(true);
 
@@ -64,6 +79,11 @@ public class PreferenceManager {
 
     public void setSharedPreferencesName(String sharedPreferencesName) {
         mSharedPreferencesName = sharedPreferencesName;
+        mSharedPreferences = null;
+    }
+
+    public void setSharedPreferencesMode(int sharedPreferencesMode) {
+        mSharedPreferencesMode = sharedPreferencesMode;
         mSharedPreferences = null;
     }
 
@@ -95,6 +115,10 @@ public class PreferenceManager {
 
     private static String getDefaultSharedPreferencesName(Context context) {
         return context.getPackageName() + "_preferences";
+    }
+
+    private static int getDefaultSharedPreferencesMode() {
+        return Context.MODE_PRIVATE;
     }
 
     public PreferenceScreen getPreferenceScreen() {
