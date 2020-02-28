@@ -46,6 +46,7 @@
     <dimen name="sesl_spinner_item_end_padding">6.0dip</dimen>
     <dimen name="sesl_spinner_item_start_padding">13.0dip</dimen>
     <dimen name="sesl_spinner_item_top_padding">4.0dip</dimen>
+    <dimen name="sesl_checked_text_padding">18.0dip</dimen>
 
     <dimen name="sesl_context_menu_title_text_size">17.0sp</dimen>
 

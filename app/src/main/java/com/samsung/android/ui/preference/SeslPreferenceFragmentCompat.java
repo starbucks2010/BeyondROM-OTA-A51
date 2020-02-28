@@ -301,7 +301,7 @@ public abstract class SeslPreferenceFragmentCompat extends Fragment implements S
             } else if (var1 instanceof SeslListPreference) {
                 var4 = ListPreferenceDialogFragmentCompat.newInstance(var1.getKey());
             } else {
-                if (!(var1 instanceof AbstractMultiSelectListPreference)) {
+                if (!(var1 instanceof SeslMultiSelectListPreference)) {
                     throw new IllegalArgumentException("Tried to display dialog for unknown preference type. Did you forget to override onDisplayPreferenceDialog()?");
                 }
 

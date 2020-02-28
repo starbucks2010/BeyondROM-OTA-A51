@@ -105,6 +105,13 @@
         <attr name="layout_scrollFlags" />
         <attr name="layout_scrollInterpolator" format="reference"/>
     </declare-styleable>
+    <declare-styleable name="SeslCheckedTextView">
+        <attr name="android:checked" />
+        <attr name="android:checkMark" />
+        <attr name="android:checkMarkTint" />
+        <attr name="android:checkMarkTintMode" />
+        <attr name="checkMarkGravity" />
+    </declare-styleable>
     <declare-styleable name="SeslCollapsingToolbarLayout">
         <attr name="expandedTitleMargin" format="dimension"/>
         <attr name="expandedTitleMarginStart" format="dimension"/>

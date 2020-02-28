@@ -55,7 +55,7 @@ public class DropDownPreference extends SeslListPreference {
     }
 
     protected ArrayAdapter createAdapter() {
-        return new ArrayAdapter(mContext, R.layout.support_simple_spinner_dropdown_item);
+        return new ArrayAdapter(mContext, R.layout.sesl_simple_spinner_dropdown_item);
     }
 
     private void updateEntries() {

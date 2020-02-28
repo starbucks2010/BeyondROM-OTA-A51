@@ -67,6 +67,17 @@ public class Utils {
         }
     }
 
+    public static void genericSetField(Class<?> cl, Object obj, String fieldName, Object fieldValue) {
+        Field field;
+        try {
+            field = cl.getDeclaredField(fieldName);
+            field.setAccessible(true);
+            field.set(obj, fieldValue);
+        } catch (NoSuchFieldException | IllegalArgumentException | IllegalAccessException e) {
+            LogUtils.e("Utils.genericSetField", e.toString());
+        }
+    }
+
     public static Object genericInvokeMethod(String className, String methodName, Object... params) {
         int paramCount = params.length;
         Method method;

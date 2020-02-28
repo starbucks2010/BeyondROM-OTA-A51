@@ -48,7 +48,7 @@ public class MultiSelectListPreferenceDialogFragmentCompat extends PreferenceDia
         super.onCreate(savedInstanceState);
 
         if (savedInstanceState == null) {
-            final AbstractMultiSelectListPreference preference = getListPreference();
+            final SeslMultiSelectListPreference preference = getListPreference();
 
             if (preference.getEntries() == null || preference.getEntryValues() == null) {
                 throw new IllegalStateException("SeslMultiSelectListPreference requires an entries array and " + "an entryValues array.");
@@ -77,8 +77,8 @@ public class MultiSelectListPreferenceDialogFragmentCompat extends PreferenceDia
         outState.putCharSequenceArray(SAVE_STATE_ENTRY_VALUES, mEntryValues);
     }
 
-    private AbstractMultiSelectListPreference getListPreference() {
-        return (AbstractMultiSelectListPreference) getPreference();
+    private SeslMultiSelectListPreference getListPreference() {
+        return (SeslMultiSelectListPreference) getPreference();
     }
 
     @Override
@@ -105,7 +105,7 @@ public class MultiSelectListPreferenceDialogFragmentCompat extends PreferenceDia
 
     @Override
     public void onDialogClosed(boolean positiveResult) {
-        final AbstractMultiSelectListPreference preference = getListPreference();
+        final SeslMultiSelectListPreference preference = getListPreference();
         if (positiveResult && mPreferenceChanged) {
             final Set<String> values = mNewValues;
             if (preference.callChangeListener(values)) {
