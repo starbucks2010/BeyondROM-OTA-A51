@@ -23,8 +23,8 @@ import android.widget.TextView;
 import androidx.appcompat.widget.DrawableUtils;
 import androidx.appcompat.widget.ViewUtils;
 
-import com.mesalabs.cerberus.R;
 import com.mesalabs.cerberus.utils.Utils;
+import com.mesalabs.on.update.R;
 
 /*
  * Cerberus Core App
