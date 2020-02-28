@@ -12,7 +12,7 @@ import android.view.accessibility.AccessibilityEvent;
 import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.ItemTouchHelper;
 
-import com.mesalabs.cerberus.utils.LogUtils;
+import com.mesalabs.on.update.utils.LogUtils;
 import com.samsung.android.ui.recyclerview.widget.SeslRecyclerView.LayoutParams;
 
 import java.util.List;

@@ -2,15 +2,14 @@ package com.mesalabs.on.update.activity.aboutpage;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.mesalabs.on.update.R;
 import com.mesalabs.cerberus.base.BaseAppBarActivity;
-import com.samsung.android.ui.preference.SeslPreference;
-import com.samsung.android.ui.preference.SeslPreferenceFragmentCompat;
+import com.mesalabs.on.update.fragment.aboutpage.CreditsFragment;
 
 /*
  * On Update
@@ -48,20 +47,14 @@ public class CreditsActivity extends BaseAppBarActivity {
 
         mFragmentManager.executePendingTransactions();
 
+        TextView desc = findViewById(R.id.mesa_textview_creditsactivity);
+        desc.setPadding(desc.getPaddingLeft(), desc.getPaddingTop() - appBar.getAppBarLayout().getPaddingBottom(), desc.getPaddingRight(), desc.getPaddingBottom());
+
     }
 
     @Override
     protected boolean getIsAppBarExpanded() {
         return false;
-    }
-
-
-    public static class CreditsFragment extends SeslPreferenceFragmentCompat {
-        @Override
-        public void onCreatePreferences(Bundle bundle, String str) {
-            addPreferencesFromResource(R.xml.mesa_creditspref_creditsactivity);
-            seslSetRoundedCornerType(SESL_ROUNDED_CORNER_TYPE_STROKE);
-        }
     }
 
 }

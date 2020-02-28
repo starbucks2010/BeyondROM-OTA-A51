@@ -9,7 +9,7 @@ import android.view.KeyEvent;
 import android.view.View;
 
 import com.mesalabs.on.update.R;
-import com.mesalabs.cerberus.utils.LogUtils;
+import com.mesalabs.on.update.utils.LogUtils;
 import com.samsung.android.ui.widget.SeslSeekBar;
 
 /*

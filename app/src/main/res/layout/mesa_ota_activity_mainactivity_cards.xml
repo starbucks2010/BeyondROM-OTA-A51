@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.mesalabs.cerberus.ui.widget.RoundLinearLayout
+    android:id="@+id/mesa_mcontainer_ota_mainactivity"
+    android:orientation="vertical"
+    android:background="@drawable/mesa_content_area_bg"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.mesalabs.on.update.ui.widget.CardView
+        android:id="@+id/mesa_m1_ota_mainactivity" android:layout_width="fill_parent" android:layout_height="wrap_content" app:IconDrawable="@drawable/mesa_ota_ic_update" app:TitleText="Update now" app:DescText="Initialize the update installer" app:isDividerViewVisible="true" />
+    <com.mesalabs.on.update.ui.widget.CardView
+        android:id="@+id/mesa_m2_ota_mainactivity" android:layout_width="fill_parent" android:layout_height="wrap_content" app:IconDrawable="@drawable/mesa_ota_card_ic_fw_info" app:TitleText="@string/mesa_firmware_info" app:DescText="@string/mesa_ota_card_fw_info_summary" app:isDividerViewVisible="false" />
+
+</com.mesalabs.cerberus.ui.widget.RoundLinearLayout>

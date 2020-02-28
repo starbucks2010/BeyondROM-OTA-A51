@@ -20,7 +20,6 @@ public class AppData {
     private String mTitle;
     private String mPackageName;
     private int mVersion;
-    private int mFilesize;
     private String mDownloadLink;
 
     public void setTitle(String input) {
@@ -33,10 +32,6 @@ public class AppData {
 
     public void setVersionNumber(int input) {
         mVersion = input;
-    }
-
-    public void setFilesize(int input) {
-        mFilesize = input;
     }
 
     public void setDownloadLink(String input) {
@@ -57,9 +52,5 @@ public class AppData {
 
     public String getDownloadLink() {
         return mDownloadLink;
-    }
-
-    public int getFilesize() {
-        return mFilesize;
     }
 }

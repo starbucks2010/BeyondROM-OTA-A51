@@ -140,7 +140,7 @@ public class SeslProgressBar extends View {
         this(var1, var2, var3, 0);
     }
 
-    @SuppressLint("WrongConstant")
+    @SuppressLint({"WrongConstant", "RestrictedApi"})
     public SeslProgressBar(Context var1, AttributeSet var2, int var3, int var4) throws Throwable {
         super(var1, var2, var3, var4);
         boolean var5 = false;
@@ -936,6 +936,7 @@ public class SeslProgressBar extends View {
 
     }
 
+    @SuppressLint("RestrictedApi")
     public void drawTrack(Canvas var1) {
         Drawable var2 = this.mCurrentDrawable;
         if (var2 != null) {
@@ -2171,6 +2172,7 @@ public class SeslProgressBar extends View {
         this.postInvalidate();
     }
 
+    @SuppressLint("RestrictedApi")
     public void updateDrawableBounds(int var1, int var2) {
         int var3 = var1 - (this.getPaddingRight() + this.getPaddingLeft());
         int var4 = var2 - (this.getPaddingTop() + this.getPaddingBottom());

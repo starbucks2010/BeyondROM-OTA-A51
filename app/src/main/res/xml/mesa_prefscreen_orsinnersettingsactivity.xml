@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.samsung.android.ui.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.mesalabs.cerberus.ui.preference.InsetPreferenceCategory
+        app:height="1.0px"
+        app:roundStroke="none"/>
+    <com.mesalabs.cerberus.ui.preference.LayoutPreference
+        android:key="mesa_ors_innerscreen_layout"
+        android:layout="@layout/mesa_ota_innerscreen_ors_pref"
+        android:selectable="false" />
+
+    <com.mesalabs.cerberus.ui.preference.InsetPreferenceCategory
+        app:height="0.0dp"
+        app:roundStroke="top_left|top_right"
+        android:key="mesa_ors_innerscreencateg">
+
+        <com.samsung.android.ui.preference.SeslCheckBoxPreference
+            android:key="mesa_ors_wipedata_pref"
+            android:title="@string/mesa_ors_wipedata_pref_title"
+            android:defaultValue="false" />
+
+        <com.samsung.android.ui.preference.SeslCheckBoxPreference
+            android:key="mesa_ors_wipecache_pref"
+            android:title="@string/mesa_ors_wipecache_pref_title"
+            android:defaultValue="true" />
+
+        <com.samsung.android.ui.preference.SeslCheckBoxPreference
+            android:key="mesa_ors_wipedalvik_pref"
+            android:title="@string/mesa_ors_wipedalvik_pref_title"
+            android:defaultValue="true" />
+
+        <com.samsung.android.ui.preference.SeslCheckBoxPreference
+            android:key="mesa_ors_deleteafter_pref"
+            android:title="@string/mesa_ors_deleteafter_pref_title"
+            android:defaultValue="true" />
+
+    </com.mesalabs.cerberus.ui.preference.InsetPreferenceCategory>
+
+</com.samsung.android.ui.preference.PreferenceScreen>

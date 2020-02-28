@@ -36,7 +36,7 @@ import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.core.view.accessibility.AccessibilityRecordCompat;
 import androidx.core.widget.EdgeEffectCompat;
 
-import com.mesalabs.cerberus.utils.LogUtils;
+import com.mesalabs.on.update.utils.LogUtils;
 
 import java.util.ArrayList;
 

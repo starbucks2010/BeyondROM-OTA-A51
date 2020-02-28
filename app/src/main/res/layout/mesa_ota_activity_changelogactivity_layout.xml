@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.samsung.android.ui.coordinatorlayout.widget.SeslCoordinatorLayout
+    android:id="@+id/mesa_coordinatorlayout_mainactivity"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:fitsSystemWindows="true"
+    android:background="?round_and_bgColor"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.samsung.android.ui.appbar.SeslAppBarLayout android:id="@+id/mesa_appbar_appbarlayout" android:layout_width="fill_parent" android:layout_height="fill_parent" android:background="?round_and_bgColor" android:fitsSystemWindows="true" style="@style/mesa_AppBarLayoutStyle">
+        <com.samsung.android.ui.appbar.SeslCollapsingToolbarLayout android:id="@+id/mesa_colltoolbar_appbarlayout" android:layout_width="fill_parent" android:layout_height="fill_parent" android:background="?round_and_bgColor" android:fitsSystemWindows="true" app:statusBarScrim="@android:color/transparent" app:layout_scrollFlags="scroll|exitUntilCollapsed" app:toolbarId="@+id/mesa_toolbar_appbarlayout" style="?collapsedToolbarLayoutStyle">
+            <ImageView android:id="@+id/mesa_appbarbg_changelogactivity" android:layout_width="fill_parent" android:layout_height="fill_parent" android:fitsSystemWindows="true" android:scaleType="centerCrop" app:layout_collapseMode="parallax" app:layout_collapseParallaxMultiplier="0.5" />
+            <androidx.appcompat.widget.Toolbar android:id="@+id/mesa_toolbar_appbarlayout" android:layout_width="fill_parent" android:layout_height="?actionBarSize" android:paddingStart="@dimen/sesl_action_bar_content_inset" android:layout_gravity="bottom" android:background="@drawable/mesa_changelogactivity_toolbar_bg" app:layout_collapseMode="pin" app:popupTheme="@style/mesa_AppStyle.DayNight">
+                <LinearLayout android:layout_width="fill_parent" android:layout_height="?actionBarSize" android:gravity="center_vertical">
+                    <com.mesalabs.cerberus.ui.widget.ToolbarImageButton android:id="@+id/mesa_toolbarhome_appbarlayout" android:layout_width="@dimen/mesa_toolbar_imagebutton_width" android:layout_height="?actionBarSize" android:layout_marginStart="8dp" android:minWidth="@dimen/mesa_toolbar_imagebutton_width" android:scaleType="center" android:visibility="gone" />
+                    <TextView android:id="@+id/mesa_toolbartitle_appbarlayout" android:layout_width="wrap_content" android:layout_height="wrap_content" android:background="@android:color/transparent" android:alpha="0.0" android:singleLine="true" android:textColor="?actionMenuTextColor" android:textDirection="locale" style="@style/mesa_CollapsedActionBarTitleTextStyle" />
+                    <RelativeLayout android:layout_width="fill_parent" android:layout_height="?actionBarSize" android:gravity="end|center_vertical">
+                        <LinearLayout android:id="@+id/mesa_overflowcontainer_appbarlayout" android:layout_width="wrap_content" android:layout_height="?actionBarSize" android:orientation="horizontal" android:paddingEnd="8.0dip"/>
+                        <View android:layout_gravity="center|top" android:id="@+id/mesa_popupanchor_appbarlayout" android:layout_width="1.0px" android:layout_height="1.0px" android:layout_marginTop="12.0dip" android:layout_toEndOf="@+id/mesa_overflowcontainer_appbarlayout"/>
+                    </RelativeLayout>
+                </LinearLayout>
+            </androidx.appcompat.widget.Toolbar>
+        </com.samsung.android.ui.appbar.SeslCollapsingToolbarLayout>
+    </com.samsung.android.ui.appbar.SeslAppBarLayout>
+
+    <com.mesalabs.cerberus.ui.widget.RoundNestedScrollView
+        android:id="@+id/mesa_webviewcontainer_changelogactivity"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="?cardBgColor"
+        android:scrollbars="vertical"
+        app:cornersStroke="false"
+        app:roundedCorners="top_left|top_right"
+        app:layout_behavior="@string/sesl_appbar_scrolling_view_behavior">
+
+        <WebView
+            android:id="@+id/mesa_webview_changelogactivity"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:isScrollContainer="false"/>
+
+    </com.mesalabs.cerberus.ui.widget.RoundNestedScrollView>
+
+</com.samsung.android.ui.coordinatorlayout.widget.SeslCoordinatorLayout>

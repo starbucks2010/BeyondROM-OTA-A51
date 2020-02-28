@@ -18,7 +18,7 @@ import com.mesalabs.on.update.R;
 import com.mesalabs.cerberus.update.data.AppData;
 import com.mesalabs.cerberus.update.download.AppDownload;
 import com.mesalabs.cerberus.update.tasks.AppXMLParser;
-import com.mesalabs.cerberus.utils.LogUtils;
+import com.mesalabs.on.update.utils.LogUtils;
 
 /*
  * Cerberus Core App
@@ -39,7 +39,7 @@ import com.mesalabs.cerberus.utils.LogUtils;
 public class AppUpdateUtils {
     private static final String TAG = "AppUpdateUtils";
     private static final String DOWNLOAD_DIR = "updates";
-    private static final String UPDATE_XML = "https://gitlab.com/BlackMesa123/otatest/-/raw/2e4e8ffb16084b1c7b6b4ed889f817cdfb317379/testmanifest.xml";
+    private static final String UPDATE_XML = "https://gitlab.com/BlackMesa123/otatest/-/raw/master/testmanifest.xml";
 
     public static final int STATE_NO_UPDATES = 1;
     public static final int STATE_NEW_VERSION_AVAILABLE = 2;
@@ -67,8 +67,7 @@ public class AppUpdateUtils {
             String fileName = mAppPackageName + "-" + mAppData.getVersionNumber();
 
             DownloadManager.Request request = new DownloadManager.Request(Uri.parse(mAppData.getDownloadLink()));
-            request.setTitle(mActivity.getString(R.string.mesa_downloading));
-            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE);
+            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);
             fileName = fileName + ".apk";
             request.setDestinationInExternalFilesDir(mActivity, DOWNLOAD_DIR, fileName);
 

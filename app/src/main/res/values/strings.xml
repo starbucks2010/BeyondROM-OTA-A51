@@ -3,7 +3,7 @@
 
     <string name="mesa_cerberustestux">Cerberus UI Test</string>
 
-    <string name="mesa_pleasewait">Please wait...</string>
+    <string name="mesa_pleasewait">Please wait…</string>
     <string name="mesa_cancel">Cancel</string>
 
     <string name="mesa_tab_tts">Tab %1$d of %2$d</string>
@@ -14,13 +14,14 @@
     <string name="mesa_updates_error_tablet">"Can't check for updates. Your tablet's network connection isn't stable."</string>
     <string name="mesa_no_network_connection">No network connection</string>
     <string name="mesa_credits">Credits</string>
+    <string name="mesa_credits_desc">The following page contains all the libraries/code snippets used in this app.</string>
     <string name="mesa_open_source_licence">Open source licenses</string>
     <string name="mesa_update">Update</string>
     <string name="mesa_retry">Retry</string>
     <string name="mesa_version">Version</string>
     <string name="mesa_app_info">App info</string>
 
-    <string name="mesa_downloading">Downloading update...</string>
+    <string name="mesa_downloading">Downloading update…</string>
     <string name="mesa_download_failed">Download failed.</string>
 
 

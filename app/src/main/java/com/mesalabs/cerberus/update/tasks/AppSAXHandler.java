@@ -6,7 +6,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 import com.mesalabs.cerberus.update.data.AppData;
-import com.mesalabs.cerberus.utils.LogUtils;
+import com.mesalabs.on.update.utils.LogUtils;
 
 /*
  * Cerberus Core App
@@ -69,9 +69,6 @@ public class AppSAXHandler extends DefaultHandler {
         } else if (qName.equalsIgnoreCase("download-link")) {
             tempAddon.setDownloadLink(tempVal);
             LogUtils.d(TAG, "Download Link = " + tempVal);
-        } else if (qName.equalsIgnoreCase("size")) {
-            tempAddon.setFilesize(Integer.parseInt(tempVal));
-            LogUtils.d(TAG, "Size = " + tempVal);
         }
     }
 

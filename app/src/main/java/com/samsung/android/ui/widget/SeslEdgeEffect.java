@@ -22,6 +22,7 @@ import android.view.animation.Interpolator;
 import android.widget.EdgeEffect;
 
 import com.mesalabs.cerberus.utils.Utils;
+import com.mesalabs.on.update.OnUpdateApp;
 
 /*
  * Cerberus Core App
@@ -148,7 +149,7 @@ public class SeslEdgeEffect extends EdgeEffect {
     @Override
     public void onAbsorb(int velocity) {
         if (!isEdgeEffectRunning()) {
-            if (mSeslHostView != null) {
+            if (!OnUpdateApp.isDebugBuild() && mSeslHostView != null) {
                 mSeslHostView.performHapticFeedback((int) Utils.genericInvokeMethod(HapticFeedbackConstants.class, Build.VERSION.SDK_INT >= 29 ? "hidden_semGetVibrationIndex" : "semGetVibrationIndex", 28));
 
 
@@ -190,7 +191,7 @@ public class SeslEdgeEffect extends EdgeEffect {
                 return;
             }
             if (mPullDistance == 0.0f || mOnReleaseCalled) {
-                if (mSeslHostView != null) {
+                if (!OnUpdateApp.isDebugBuild() && mSeslHostView != null) {
                     int indexOfHaptic = (int) Utils.genericInvokeMethod(HapticFeedbackConstants.class, Build.VERSION.SDK_INT >= 29 ? "hidden_semGetVibrationIndex" : "semGetVibrationIndex", 28);
                     if (indexOfHaptic != -1) {
                         mSeslHostView.performHapticFeedback(indexOfHaptic);

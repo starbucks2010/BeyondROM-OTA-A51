@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/mesa_container_maincards_ota_mainactivity"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <com.mesalabs.on.update.ui.widget.UpdateStatusView
+        android:id="@+id/mesa_usv_maincards_ota_mainactivity"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="20.0dip"
+        android:background="?round_and_bgColor"/>
+
+    <com.mesalabs.on.update.ui.widget.ChangelogView
+        android:id="@+id/mesa_cv_maincards_ota_mainactivity"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20.0dip"
+        android:visibility="gone"/>
+
+    <include layout="@layout/mesa_ota_activity_mainactivity_cards"/>
+
+</LinearLayout>

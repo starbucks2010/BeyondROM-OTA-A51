@@ -14,4 +14,7 @@
 
     <dimen name="mesa_widget_badge_size">17.0dip</dimen>
 
+    <dimen name="mesa_ota_bottombtn_min_width">220.0dip</dimen>
+    <dimen name="mesa_ota_bottombtn_min_height">44.0dip</dimen>
+
 </resources>

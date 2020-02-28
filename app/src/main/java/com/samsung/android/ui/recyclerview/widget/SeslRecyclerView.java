@@ -71,7 +71,7 @@ import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.customview.view.AbsSavedState;
 
 import com.mesalabs.on.update.R;
-import com.mesalabs.cerberus.utils.LogUtils;
+import com.mesalabs.on.update.utils.LogUtils;
 
 import com.mesalabs.cerberus.utils.Utils;
 import com.samsung.android.ui.util.SeslSubheaderRoundedCorner;

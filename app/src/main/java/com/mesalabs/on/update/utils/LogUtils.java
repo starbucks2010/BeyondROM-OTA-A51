@@ -1,11 +1,11 @@
-package com.mesalabs.cerberus.utils;
+package com.mesalabs.on.update.utils;
 
 import android.util.Log;
 
 import com.mesalabs.on.update.OnUpdateApp;
 
 /*
- * Cerberus Core App
+ * On Update
  *
  * Coded by BlackMesa @2020
  *
@@ -14,59 +14,56 @@ import com.mesalabs.on.update.OnUpdateApp;
  * You may obtain a copy of the License at
  *
  *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * ULTRA-MEGA-PRIVATE SOURCE CODE. SHARING TO DEVKINGS TEAM
- * EXTERNALS IS PROHIBITED AND WILL BE PUNISHED WITH ANAL ABUSE.
  */
 
 public class LogUtils {
     // Verbose
     public static void v(String tag, String msg) {
         if (OnUpdateApp.isDebugBuild())
-            Log.v("CerberusCore: " + tag, msg);
+            Log.v("OnUpdate: " + tag, msg);
     }
 
     // Debug
     public static void d(String tag, String msg) {
         if (OnUpdateApp.isDebugBuild())
-            Log.d("CerberusCore: " + tag, msg);
+            Log.d("OnUpdate: " + tag, msg);
     }
 
     public static void d(String tag, String msg, Exception e) {
         if (OnUpdateApp.isDebugBuild())
-            Log.d("CerberusCore: " + tag, msg, e);
+            Log.d("OnUpdate: " + tag, msg, e);
     }
 
     public static void d(String tag, String msg, Throwable t) {
         if (OnUpdateApp.isDebugBuild())
-            Log.d("CerberusCore: " + tag, msg, t);
+            Log.d("OnUpdate: " + tag, msg, t);
     }
 
     // Info
     public static void i(String tag, String msg) {
         if (OnUpdateApp.isDebugBuild())
-            Log.i("CerberusCore: " + tag, msg);
+            Log.i("OnUpdate: " + tag, msg);
     }
 
     public static void i(String tag, String msg, Exception e) {
         if (OnUpdateApp.isDebugBuild())
-            Log.i("CerberusCore: " + tag, msg, e);
+            Log.i("OnUpdate: " + tag, msg, e);
     }
 
     // Warn
     public static void w(String tag, String msg) {
         if (OnUpdateApp.isDebugBuild())
-            Log.w("CerberusCore: " + tag, msg);
+            Log.w("OnUpdate: " + tag, msg);
     }
 
     public static void w(String tag, String msg, Exception e) {
         if (OnUpdateApp.isDebugBuild())
-            Log.w("CerberusCore: " + tag, msg, e);
+            Log.w("OnUpdate: " + tag, msg, e);
     }
 
     // Error
     public static void e(String tag, String msg) {
         if (OnUpdateApp.isDebugBuild())
-            Log.e("CerberusCore: " + tag, msg);
+            Log.e("OnUpdate: " + tag, msg);
     }
 }

@@ -3,4 +3,5 @@
     <!-- #App Day/Night Mode Themes# -->
     <style name="mesa_OTA_AppStyle.DayNight" parent="@style/mesa_OTA_AppStyle" />
     <style name="mesa_AboutActivity_AppStyle.DayNight" parent="@style/mesa_OTA_AppStyle" />
+    <style name="mesa_OTA_ChangelogActivity_AppStyle.DayNight" parent="@style/mesa_OTA_ChangelogActivity_AppStyle" />
 </resources>

@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mesalabs.on.update.R;
+import com.mesalabs.on.update.utils.LogUtils;
 
 /*
  * Cerberus Core App
@@ -62,7 +63,7 @@ public class ViewUtils {
         return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, (float) i, activity.getResources().getDisplayMetrics());
     }
 
-    public static int getPortraitOrientation(Context context) {
+    public static int getOrientation(Context context) {
         try {
             WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
 
@@ -72,7 +73,7 @@ public class ViewUtils {
 
             return windowManager.getDefaultDisplay().getRotation();
         } catch (Exception unused) {
-            LogUtils.e(TAG, "cannot get portrait orientation");
+            LogUtils.e(TAG, "cannot get orientation");
             return 0;
         }
     }
@@ -137,21 +138,20 @@ public class ViewUtils {
             WindowManager.LayoutParams params = activity.getWindow().getAttributes();
             if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
                 if (!Utils.isInMultiWindowMode(activity)) {
-                    params.flags |= 1024;
+                    params.flags |= WindowManager.LayoutParams.FLAG_FULLSCREEN;
                 } else {
-                    params.flags &= -1025;
+                    params.flags &= -WindowManager.LayoutParams.FLAG_FULLSCREEN | WindowManager.LayoutParams.LAYOUT_CHANGED;
                 }
 
-                Utils.genericInvokeMethod(params, "semAddExtensionFlags", 1);
+                Utils.genericInvokeMethod(params, "semAddExtensionFlags", 1 /* WindowManager.LayoutParams.SEM_EXTENSION_FLAG_RESIZE_FULLSCREEN_WINDOW_ON_SOFT_INPUT */);
             } else {
                 params.flags &= -1025;
 
-                Utils.genericInvokeMethod(params, "semClearExtensionFlags", 1);
+                Utils.genericInvokeMethod(params, "semClearExtensionFlags", 1 /* WindowManager.LayoutParams.SEM_EXTENSION_FLAG_RESIZE_FULLSCREEN_WINDOW_ON_SOFT_INPUT */);
             }
 
             activity.getWindow().setAttributes(params);
         }
-
     }
 
     public static boolean isLandscape(Context context) {

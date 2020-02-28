@@ -2,9 +2,8 @@ package com.samsung.android.ui.recyclerview.widget;
 
 import android.view.View;
 
-import com.samsung.android.ui.recyclerview.widget.SeslRecyclerView;
 import com.samsung.android.ui.recyclerview.widget.SeslRecyclerView.ViewHolder;
-import com.mesalabs.cerberus.utils.LogUtils;
+import com.mesalabs.on.update.utils.LogUtils;
 
 /*
  * Cerberus Core App

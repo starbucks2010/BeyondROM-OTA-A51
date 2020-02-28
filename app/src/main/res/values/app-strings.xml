@@ -2,11 +2,75 @@
 <resources>
     <string name="mesa_onupdate">On Update</string>
 
-    <string name="mesa_about_app">About On Update</string>
+    <string name="mesa_onupdate_notichannel_main_name">General</string>
+    <string name="mesa_onupdate_notichannel_bg_name">Background</string>
+    <string name="mesa_new_update_noti">A new update is available</string>
+    <string name="mesa_new_update_noti_desc">Click here for more info.</string>
+    <string name="mesa_download">Download</string>
+
+    <string name="mesa_settings">Settings</string>
+    <string name="mesa_app_settings">On Update Settings</string>
+    <string name="mesa_list_summary" translatable="false">%s</string>
+    <string name="mesa_ors_pref_title">Automatic updates installer</string>
+    <string name="mesa_ors_innerscreen_desc">Allows this app to flash updates via recovery without any interaction needed from the user.</string>
+    <string name="mesa_ors_innerscreencateg_title">Miscs</string>
+    <string name="mesa_ors_wipedata_pref_title">Wipe data</string>
+    <string name="mesa_ors_wipecache_pref_title">Wipe cache</string>
+    <string name="mesa_ors_wipedalvik_pref_title">Wipe ART cache</string>
+    <string name="mesa_ors_deleteafter_pref_title">Delete zip after install</string>
+    <string name="mesa_notifs_prefcateg_title">Notifications</string>
+    <string name="mesa_bgservice_pref_title">Notifications</string>
+    <string name="mesa_bgservice_pref_sum">Automatically check for updates and show a notification when one is available.</string>
+    <string name="mesa_bgservice_freq_pref_title">Update check frequency</string>
+    <string name="mesa_bgservice_freq_30min_pref_sum">30 minutes</string>
+    <string name="mesa_bgservice_freq_60min_pref_sum">60 minutes</string>
+    <string name="mesa_bgservice_freq_2h_pref_sum">2 hours</string>
+    <string name="mesa_bgservice_freq_3h_pref_sum">3 hours</string>
+    <string name="mesa_bgservice_freq_6h_pref_sum">6 hours</string>
+    <string name="mesa_bgservice_freq_12h_pref_sum">12 hours</string>
+    <string name="mesa_bgservice_freq_24h_pref_sum">Daily</string>
+    <string name="mesa_bgservice_freq_2d_pref_sum">2 days</string>
+    <string name="mesa_bgservice_freq_3d_pref_sum">3 days</string>
+    <string name="mesa_bgservice_freq_7d_pref_sum">Weekly</string>
+    <string name="mesa_bgservice_noti_sound_pref_title">Sound</string>
+    <string name="mesa_bgservice_noti_sound_silent_sum">Silent</string>
+    <string name="mesa_bgservice_noti_vibrate_pref_title">Vibrate</string>
+    <string name="mesa_network_prefcateg_title">Network</string>
+    <string name="mesa_networktype_pref_title">Update over network</string>
+    <string name="mesa_wifinetworkonly_pref_sum">Wi-Fi only</string>
+    <string name="mesa_mobileorwifi_pref_sum">Mobile or Wi-Fi</string>
+    <string name="mesa_aboutactivity_pref_title">About On Update</string>
+
+
+
+
+
+
+
+    <string name="mesa_firmware_info">Firmware info</string>
+    <string name="mesa_ota_card_fw_info_summary">View the currently installed version of all the ROM software components</string>
+    <string name="mesa_fwinfo_default_summary">Unknown</string>
+    <string name="mesa_fwinfo_on_rom_version_title">ROM version</string>
+    <string name="mesa_fwinfo_on_enso_version_title">ensō version</string>
+    <string name="mesa_fwinfo_oneui_version_title">One UI version</string>
+    <string name="mesa_fwinfo_android_version_title">Android version</string>
+    <string name="mesa_fwinfo_kernel_version_title">Kernel version</string>
+    <string name="mesa_fwinfo_build_number_title">Build number</string>
+    <string name="mesa_fwinfo_sp_title">Android security patch level</string>
 
     <string name="mesa_check_for_updates">Check for updates</string>
-    <string name="mesa_checking_updates">Checking for updates...</string>
+    <string name="mesa_update_downloading">Download in progress…</string>
+    <string name="mesa_checking_updates">Checking for updates…</string>
     <string name="mesa_no_updates_available">ROM is up to date.</string>
     <string name="mesa_new_update_available">A new update is available.</string>
     <string name="mesa_updates_check_error">There was an error during update checking.</string>
+
+    <string name="mesa_whats_new">What\'s new</string>
+    <string name="mesa_whats_new_subtext">Find out the new additions in this update.</string>
+    <string name="mesa_whats_new_error">There was an error during changelog parsing.</string>
+
+    <string name="mesa_time_left_desc">Time left: %s</string>
+
+    <string name="mesa_no_root_access_dialog_title">No root access</string>
+    <string name="mesa_no_root_access_dialog_message">Root access hasn\'t been granted to this app. This happens when access is denied manually or either root isn\'t present in the device. Please do notice root is needed in order for this app to work properly.</string>
 </resources>

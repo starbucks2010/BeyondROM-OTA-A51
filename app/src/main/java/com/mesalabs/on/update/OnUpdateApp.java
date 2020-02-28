@@ -1,7 +1,16 @@
 package com.mesalabs.on.update;
 
 import android.app.Application;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
+import android.graphics.Color;
+import android.media.AudioAttributes;
+import android.net.Uri;
+import android.os.Build;
+
+import com.mesalabs.on.update.ota.utils.PreferencesUtils;
+import com.mesalabs.on.update.utils.LogUtils;
 
 /*
  * On Update
@@ -52,6 +61,36 @@ public class OnUpdateApp extends Application {
         super.onCreate();
         mAppInstance = this;
         mAppContext = this.getApplicationContext();
+        if (PreferencesUtils.getMainNotiChannelName().equals("")) {
+            createNotificationChannel();
+        }
+    }
+
+    public static void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationManager notificationManager = mAppContext.getSystemService(NotificationManager.class);
+
+            int randomId = (int) (Math.random() * 100 + 1);
+            while (PreferencesUtils.getMainNotiChannelName().contains(Integer.toString(randomId))) {
+                randomId = (int) (Math.random() * 100 + 1);
+            }
+
+            notificationManager.deleteNotificationChannel(PreferencesUtils.getMainNotiChannelName());
+
+            PreferencesUtils.setMainNotiChannelName("mesa_onupdate_notichannel_main" + "_" + randomId);
+            NotificationChannel notiMainChannel = new NotificationChannel(PreferencesUtils.getMainNotiChannelName(), mAppContext.getString(R.string.mesa_onupdate_notichannel_main_name), NotificationManager.IMPORTANCE_HIGH);
+            notiMainChannel.setLightColor(Color.GREEN);
+            notiMainChannel.enableLights(true);
+            notiMainChannel.setSound(Uri.parse(PreferencesUtils.getBgServiceNotificationSound()), new AudioAttributes.Builder()
+                    .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                    .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+                    .build());
+
+            NotificationChannel notiBgChannel = new NotificationChannel("mesa_onupdate_notichannel_bg", mAppContext.getString(R.string.mesa_onupdate_notichannel_bg_name), NotificationManager.IMPORTANCE_LOW);
+
+            notificationManager.createNotificationChannel(notiMainChannel);
+            notificationManager.createNotificationChannel(notiBgChannel);
+        }
     }
 
 }

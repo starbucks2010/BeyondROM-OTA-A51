@@ -3,6 +3,7 @@
     <!-- #App Day/Night Mode Themes# -->
     <style name="mesa_OTA_AppStyle.DayNight" parent="@style/mesa_OTA_AppStyle.Light" />
     <style name="mesa_AboutActivity_AppStyle.DayNight" parent="@style/mesa_AboutActivity_AppStyle.Light" />
+    <style name="mesa_OTA_ChangelogActivity_AppStyle.DayNight" parent="@style/mesa_OTA_ChangelogActivity_AppStyle.Light" />
 
     <!-- #Activity Themes# -->
     <style name="mesa_OTA_AppStyle" parent="@style/mesa_AppStyle.NoActionBar">
@@ -47,15 +48,34 @@
         <item name="roundedCornerColor">@color/mesa_bg_color_baseaboutactivity</item>
     </style>
 
+    <!-- ChangelogActivity -->
+    <style name="mesa_OTA_ChangelogActivity_AppStyle" parent="@style/mesa_OTA_AppStyle">
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">?round_and_bgColor</item>
+    </style>
+    <style name="mesa_OTA_ChangelogActivity_AppStyle.Light" parent="@style/mesa_OTA_AppStyle.Light">
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">?round_and_bgColor</item>
+    </style>
+
     <!-- #App Styles# -->
     <!-- Sesl Dialog -->
     <style name="mesa_OTA_DialogStyle" parent="@style/mesa_DialogStyle">
         <item name="colorPrimary">@color/mesa_ota_primary_color_dark</item>
         <item name="colorPrimaryDark">@color/mesa_ota_primary_dark_color_dark</item>
+        <item name="colorControlActivated">@color/mesa_ota_control_activated_color</item>
     </style>
     <style name="mesa_OTA_DialogStyle.Light" parent="@style/mesa_DialogStyle.Light">
         <item name="colorPrimary">@color/mesa_ota_primary_color_light</item>
         <item name="colorPrimaryDark">@color/mesa_ota_primary_dark_color_light</item>
+        <item name="colorControlActivated">@color/mesa_ota_control_activated_color</item>
+    </style>
+
+    <style name="mesa_ProgressCircleDialogStyle" parent="@style/mesa_OTA_DialogStyle">
+        <item name="android:windowBackground">@drawable/mesa_progressonly_dialog_bg</item>
+    </style>
+    <style name="mesa_ProgressCircleDialogStyle.Light" parent="@style/mesa_OTA_DialogStyle.Light">
+        <item name="android:windowBackground">@drawable/mesa_progressonly_dialog_bg</item>
     </style>
 
     <style name="mesa_OTA_AlertDialogOverlayStyle" parent="@style/mesa_OTA_DialogStyle">

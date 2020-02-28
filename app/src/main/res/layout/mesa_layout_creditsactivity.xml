@@ -11,17 +11,18 @@
         android:layout_height="fill_parent">
 
         <TextView
+            android:id="@+id/mesa_textview_creditsactivity"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/sesl_list_item_padding_horizontal"
-            android:layout_marginEnd="@dimen/sesl_list_item_padding_horizontal"
-            android:layout_marginTop="@dimen/sesl_list_divider_inset"
-            android:layout_marginBottom="@dimen/sesl_list_divider_inset"
+            android:paddingStart="@dimen/sesl_list_item_padding_horizontal"
+            android:paddingEnd="@dimen/sesl_list_item_padding_horizontal"
+            android:paddingTop="@dimen/sesl_list_divider_inset"
+            android:paddingBottom="@dimen/sesl_list_divider_inset"
             android:textAppearance="?android:textAppearanceListItem"
             android:textSize="15.0sp"
             android:textColor="@color/mesa_widget_body_text_color"
             android:lineSpacingExtra="4.0sp"
-            android:text="The following page contains all the libraries/code snippets used in this app."/>
+            android:text="@string/mesa_credits_desc"/>
 
         <FrameLayout
             android:id="@+id/mesa_fragmentcontainer_creditsactivity"

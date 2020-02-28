@@ -15,7 +15,7 @@ import android.view.accessibility.AccessibilityManager;
 import androidx.core.view.InputDeviceCompat;
 import androidx.core.view.ViewCompat;
 
-import com.mesalabs.cerberus.utils.LogUtils;
+import com.mesalabs.on.update.utils.LogUtils;
 import com.mesalabs.cerberus.utils.Utils;
 
 /*

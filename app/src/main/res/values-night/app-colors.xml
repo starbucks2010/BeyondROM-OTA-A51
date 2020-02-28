@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="mesa_changelogview_subtext_color">#909090</color>
+    <color name="mesa_ota_downloadactivity_desc_color">#999999</color>
+</resources>

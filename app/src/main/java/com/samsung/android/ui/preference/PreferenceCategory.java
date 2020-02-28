@@ -5,10 +5,9 @@ import android.util.AttributeSet;
 import android.widget.TextView;
 
 import androidx.core.content.res.TypedArrayUtils;
-import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 
 import com.mesalabs.on.update.R;
-import com.mesalabs.cerberus.utils.LogUtils;
+import com.mesalabs.on.update.utils.LogUtils;
 
 /*
  * Cerberus Core App

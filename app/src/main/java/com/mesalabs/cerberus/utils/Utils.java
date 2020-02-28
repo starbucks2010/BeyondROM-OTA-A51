@@ -3,7 +3,6 @@ package com.mesalabs.cerberus.utils;
 import android.app.Activity;
 import android.content.Context;
 import android.util.TypedValue;
-import android.view.ViewGroup;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -11,6 +10,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import com.mesalabs.on.update.R;
+import com.mesalabs.on.update.utils.LogUtils;
 
 /*
  * Cerberus Core App
@@ -35,11 +35,7 @@ public class Utils {
             field = obj.getClass().getDeclaredField(fieldName);
             field.setAccessible(true);
             requiredObj = field.get(obj);
-        } catch (NoSuchFieldException e) {
-            LogUtils.e("Utils.genericGetField", e.toString());
-        } catch (IllegalArgumentException e) {
-            LogUtils.e("Utils.genericGetField", e.toString());
-        } catch (IllegalAccessException e) {
+        } catch (NoSuchFieldException | IllegalArgumentException | IllegalAccessException e) {
             LogUtils.e("Utils.genericGetField", e.toString());
         }
 
@@ -53,11 +49,7 @@ public class Utils {
             field = cl.getDeclaredField(fieldName);
             field.setAccessible(true);
             requiredObj = field.get(obj);
-        } catch (NoSuchFieldException e) {
-            LogUtils.e("Utils.genericGetField", e.toString());
-        } catch (IllegalArgumentException e) {
-            LogUtils.e("Utils.genericGetField", e.toString());
-        } catch (IllegalAccessException e) {
+        } catch (NoSuchFieldException | IllegalArgumentException | IllegalAccessException e) {
             LogUtils.e("Utils.genericGetField", e.toString());
         }
 
@@ -70,11 +62,7 @@ public class Utils {
             field = obj.getClass().getDeclaredField(fieldName);
             field.setAccessible(true);
             field.set(obj, fieldValue);
-        } catch (NoSuchFieldException e) {
-            LogUtils.e("Utils.genericSetField", e.toString());
-        } catch (IllegalArgumentException e) {
-            LogUtils.e("Utils.genericSetField", e.toString());
-        } catch (IllegalAccessException e) {
+        } catch (NoSuchFieldException | IllegalArgumentException | IllegalAccessException e) {
             LogUtils.e("Utils.genericSetField", e.toString());
         }
     }
@@ -111,13 +99,7 @@ public class Utils {
             // FIX (SeslOverScroller)
             return className.contains("SemPerfManager") ? true : requiredObj;
             // FIX (SeslOverScroller)
-        } catch (NoSuchMethodException e) {
-            LogUtils.e("Utils.genericInvokeMethod", e.toString());
-        } catch (IllegalArgumentException e) {
-            LogUtils.e("Utils.genericInvokeMethod", e.toString());
-        } catch (IllegalAccessException e) {
-            LogUtils.e("Utils.genericInvokeMethod", e.toString());
-        } catch (InvocationTargetException e) {
+        } catch (NoSuchMethodException | IllegalArgumentException | IllegalAccessException | InvocationTargetException e) {
             LogUtils.e("Utils.genericInvokeMethod", e.toString());
         }
 
@@ -142,13 +124,7 @@ public class Utils {
             method = obj.getClass().getDeclaredMethod(methodName, classArray);
             method.setAccessible(true);
             requiredObj = method.invoke(obj, params);
-        } catch (NoSuchMethodException e) {
-            LogUtils.e("Utils.genericInvokeMethod", e.toString());
-        } catch (IllegalArgumentException e) {
-            LogUtils.e("Utils.genericInvokeMethod", e.toString());
-        } catch (IllegalAccessException e) {
-            LogUtils.e("Utils.genericInvokeMethod", e.toString());
-        } catch (InvocationTargetException e) {
+        } catch (NoSuchMethodException | IllegalArgumentException | IllegalAccessException | InvocationTargetException e) {
             LogUtils.e("Utils.genericInvokeMethod", e.toString());
         }
 
@@ -173,13 +149,7 @@ public class Utils {
             method = cl.getDeclaredMethod(methodName, classArray);
             method.setAccessible(true);
             requiredObj = method.invoke(null, params);
-        } catch (NoSuchMethodException e) {
-            LogUtils.e("Utils.genericInvokeMethod", e.toString());
-        } catch (IllegalArgumentException e) {
-            LogUtils.e("Utils.genericInvokeMethod", e.toString());
-        } catch (IllegalAccessException e) {
-            LogUtils.e("Utils.genericInvokeMethod", e.toString());
-        } catch (InvocationTargetException e) {
+        } catch (NoSuchMethodException | IllegalArgumentException | IllegalAccessException | InvocationTargetException e) {
             LogUtils.e("Utils.genericInvokeMethod", e.toString());
         }
 
@@ -213,13 +183,7 @@ public class Utils {
             method = cl.getDeclaredMethod(methodName, classArray);
             method.setAccessible(true);
             requiredObj = method.invoke(obj, params);
-        } catch (NoSuchMethodException e) {
-            LogUtils.e("Utils.genericInvokeMethod", e.toString());
-        } catch (IllegalArgumentException e) {
-            LogUtils.e("Utils.genericInvokeMethod", e.toString());
-        } catch (IllegalAccessException e) {
-            LogUtils.e("Utils.genericInvokeMethod", e.toString());
-        } catch (InvocationTargetException e) {
+        } catch (NoSuchMethodException | IllegalArgumentException | IllegalAccessException | InvocationTargetException e) {
             LogUtils.e("Utils.genericInvokeMethod", e.toString());
         }
 
@@ -244,13 +208,7 @@ public class Utils {
             method = cl.getDeclaredMethod(methodName, classArray);
             method.setAccessible(true);
             requiredObj = method.invoke(obj, params);
-        } catch (NoSuchMethodException e) {
-            LogUtils.e("Utils.genericInvokeMethod", e.toString());
-        } catch (IllegalArgumentException e) {
-            LogUtils.e("Utils.genericInvokeMethod", e.toString());
-        } catch (IllegalAccessException e) {
-            LogUtils.e("Utils.genericInvokeMethod", e.toString());
-        } catch (InvocationTargetException e) {
+        } catch (NoSuchMethodException | IllegalArgumentException | IllegalAccessException | InvocationTargetException e) {
             LogUtils.e("Utils.genericInvokeMethod", e.toString());
         }
 
@@ -276,11 +234,7 @@ public class Utils {
 
         try {
             requiredObj = ctor.newInstance(cl.newInstance(), obj);
-        } catch (IllegalAccessException e) {
-            LogUtils.e("Utils.genericNewInstance", e.toString());
-        } catch (InstantiationException e) {
-            LogUtils.e("Utils.genericNewInstance", e.toString());
-        } catch (InvocationTargetException e) {
+        } catch (IllegalAccessException | InstantiationException | InvocationTargetException e) {
             LogUtils.e("Utils.genericNewInstance", e.toString());
         }
 

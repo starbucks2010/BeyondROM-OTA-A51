@@ -6,7 +6,7 @@ import java.util.List;
 
 import androidx.core.util.Pools;
 
-import com.mesalabs.cerberus.utils.LogUtils;
+import com.mesalabs.on.update.utils.LogUtils;
 
 /*
  * Cerberus Core App

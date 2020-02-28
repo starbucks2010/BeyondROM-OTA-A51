@@ -11,7 +11,7 @@ import java.nio.charset.StandardCharsets;
 
 import com.mesalabs.on.update.R;
 import com.mesalabs.cerberus.base.BaseToolbarActivity;
-import com.mesalabs.cerberus.utils.LogUtils;
+import com.mesalabs.on.update.utils.LogUtils;
 
 /*
  * On Update
