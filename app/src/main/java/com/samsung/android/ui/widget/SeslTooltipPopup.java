@@ -1,13 +1,15 @@
 package com.samsung.android.ui.widget;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.res.Resources;
-import android.graphics.PixelFormat;
+import android.graphics.Point;
 import android.graphics.Rect;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -38,181 +40,354 @@ class SeslTooltipPopup {
     private static final String TAG = "SeslTooltipPopup";
     private final View mContentView;
     private final Context mContext;
+    private boolean mIsForceActionBarX = false;
+    private boolean mIsForceBelow = false;
     private final WindowManager.LayoutParams mLayoutParams = new WindowManager.LayoutParams();
     private final TextView mMessageView;
-    private final Rect mTmpDisplayFrame = new Rect();
+    private int mNavigationBarHeight = 0;
     private final int[] mTmpAnchorPos = new int[2];
     private final int[] mTmpAppPos = new int[2];
+    private final Rect mTmpDisplayFrame = new Rect();
 
-    SeslTooltipPopup(Context context) {
-        TypedValue outValue = new TypedValue();
-        context.getTheme().resolveAttribute(android.R.attr.popupTheme, outValue, false);
-        if (outValue.data != 0) {
-            this.mContext = new ContextThemeWrapper(context, outValue.data);
+    public SeslTooltipPopup(Context var1) {
+        TypedValue var2 = new TypedValue();
+        var1.getTheme().resolveAttribute(16843945, var2, false);
+        int var3 = var2.data;
+        if (var3 != 0) {
+            this.mContext = new ContextThemeWrapper(var1, var3);
         } else {
-            this.mContext = context;
+            this.mContext = var1;
         }
 
-        mContentView = LayoutInflater.from(mContext).inflate(R.layout.sesl_tooltip, null);
-        mMessageView = (TextView) mContentView.findViewById(R.id.message);
-
-        mContentView.setOnTouchListener(new View.OnTouchListener() {
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                if (motionEvent.getAction() == MotionEvent.ACTION_OUTSIDE) {
-                    hide();
-                    return false;
-                } else if (motionEvent.getAction() != MotionEvent.ACTION_DOWN) {
-                    return false;
+        this.mContentView = LayoutInflater.from(this.mContext).inflate(R.layout.sesl_tooltip, null);
+        this.mMessageView = (TextView)this.mContentView.findViewById(R.id.message);
+        this.mContentView.setOnTouchListener(new View.OnTouchListener() {
+            public boolean onTouch(View var1, MotionEvent var2) {
+                int var3 = var2.getAction();
+                if (var3 != 0) {
+                    if (var3 != 4) {
+                        return false;
+                    } else {
+                        hide();
+                        return false;
+                    }
                 } else {
                     hide();
                     return true;
                 }
             }
         });
-
-        mLayoutParams.setTitle(getClass().getSimpleName());
-        mLayoutParams.packageName = mContext.getPackageName();
-
-        mLayoutParams.type = 1002;
-        mLayoutParams.width = WindowManager.LayoutParams.WRAP_CONTENT;
-        mLayoutParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
-        mLayoutParams.format = PixelFormat.TRANSLUCENT;
-        mLayoutParams.windowAnimations = R.style.mesa_TooltipAnimStyle;
-        mLayoutParams.flags = 262152;
+        this.mLayoutParams.setTitle(SeslTooltipPopup.class.getSimpleName());
+        this.mLayoutParams.packageName = this.mContext.getPackageName();
+        WindowManager.LayoutParams var4 = this.mLayoutParams;
+        var4.type = 1002;
+        var4.width = -2;
+        var4.height = -2;
+        var4.format = -3;
+        var4.windowAnimations = R.style.mesa_TooltipAnimStyle;
+        var4.flags = 262152;
     }
 
-    void show(View anchorView, int anchorX, int anchorY, boolean fromTouch, CharSequence tooltipText) {
-        if (isShowing()) {
-            hide();
-        }
+    private int AdjustTooltipPosition(View var1, int var2, int var3, int var4) {
+        int var5 = ((WindowManager)this.mContext.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getRotation();
+        int var6;
+        if (this.checkNaviBarForLandscape()) {
+            if (var5 == 1) {
+                var3 = (this.mTmpDisplayFrame.width() - var3 - this.getNavigationBarHeight()) / 2 - var4;
+                var6 = var2;
+                if (var2 <= var3) {
+                    return var6;
+                }
 
-        mMessageView.setText(tooltipText);
+                var2 = var3;
+            } else {
+                var6 = var2;
+                if (var5 != 3) {
+                    return var6;
+                }
 
-        computePosition(anchorView, anchorX, anchorY, fromTouch, mLayoutParams);
+                if (var2 <= 0) {
+                    var3 = (var3 - this.mTmpDisplayFrame.width()) / 2 + var4;
+                    var6 = var2;
+                    if (var2 <= var3) {
+                        var6 = var3 + var4;
+                    }
 
-        WindowManager wm = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
-        wm.addView(mContentView, mLayoutParams);
-    }
+                    return var6;
+                }
 
-    public void showActionItemTooltip(int x, int y, int layoutDirection, CharSequence tooltipText) {
-        if (isShowing()) {
-            hide();
-        }
+                var3 = (this.mTmpDisplayFrame.width() - var3) / 2 + var4;
+                var6 = var2;
+                if (var2 <= var3) {
+                    return var6;
+                }
 
-        mMessageView.setText(tooltipText);
-        mLayoutParams.x = x;
-        mLayoutParams.y = y;
-
-        if (layoutDirection == 0) {
-            mLayoutParams.gravity = 8388661;
+                var2 = var3;
+            }
         } else {
-            mLayoutParams.gravity = 8388659;
+            if (var5 != 1) {
+                var6 = var2;
+                if (var5 != 3) {
+                    return var6;
+                }
+            }
+
+            if (var2 <= 0) {
+                var3 = (var3 - this.mTmpDisplayFrame.width()) / 2 + var4;
+                var6 = var2;
+                if (var2 < var3) {
+                    var6 = var3 + var4;
+                }
+
+                return var6;
+            }
+
+            var3 = (this.mTmpDisplayFrame.width() - var3) / 2 + var4;
+            var6 = var2;
+            if (var2 <= var3) {
+                return var6;
+            }
+
+            var2 = var3;
         }
 
-        WindowManager wm = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
-        wm.addView(mContentView, mLayoutParams);
+        var6 = var2 - var4;
+        return var6;
     }
 
-    void hide() {
-        if (!isShowing()) {
-            return;
+    private boolean checkNaviBarForLandscape() {
+        Context var1 = this.mContext;
+        Resources var2 = var1.getResources();
+        Rect var3 = this.mTmpDisplayFrame;
+        Point var4 = new Point();
+        Display var9 = ((WindowManager)var1.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+        var9.getRealSize(var4);
+        int var5 = var9.getRotation();
+        int var6 = (int)var2.getDimension(R.dimen.sesl_navigation_bar_height);
+        if (var5 == 1) {
+            int var7 = var3.right;
+            int var8 = var4.x;
+            if (var7 + var6 >= var8) {
+                this.setNavigationBarHeight(var8 - var7);
+                return true;
+            }
         }
 
-        WindowManager wm = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
-        wm.removeView(mContentView);
-    }
-
-    boolean isShowing() {
-        return mContentView.getParent() != null;
-    }
-
-    void updateContent(CharSequence tooltipText) {
-        mMessageView.setText(tooltipText);
-    }
-
-    private void computePosition(View anchorView, int anchorX, int anchorY, boolean fromTouch, WindowManager.LayoutParams outParams) {
-        int statusBarHeight;
-        int offsetX = anchorView.getWidth() / 2;
-        if (anchorView.getHeight() >= mContext.getResources().getDimensionPixelOffset(R.dimen.sesl_tooltip_precise_anchor_threshold)) {
-            int offsetExtra = mContext.getResources().getDimensionPixelOffset(R.dimen.sesl_tooltip_precise_anchor_extra_offset);
-            int i = anchorY + offsetExtra;
-            int i2 = anchorY - offsetExtra;
-        } else {
-            int offsetBelow = anchorView.getHeight();
+        if (var5 == 3) {
+            var5 = var3.left;
+            if (var5 <= var6) {
+                this.setNavigationBarHeight(var5);
+                return true;
+            }
         }
 
-        outParams.gravity = 49;
+        return false;
+    }
 
-        int dimensionPixelOffset = mContext.getResources().getDimensionPixelOffset(fromTouch ? R.dimen.sesl_tooltip_y_offset_touch : R.dimen.sesl_tooltip_y_offset_non_touch);
-
-        View appView = getAppRootView(anchorView);
-        if (appView == null) {
+    @SuppressLint("WrongConstant")
+    private void computePosition(View var1, int var2, int var3, boolean var4, WindowManager.LayoutParams var5, boolean var6, boolean var7) {
+        var5.token = var1.getApplicationWindowToken();
+        var3 = var1.getWidth() / 2;
+        var5.gravity = 49;
+        View var8 = getAppRootView(var1);
+        if (var8 == null) {
             LogUtils.e(TAG, "Cannot find app view");
-            return;
-        }
-
-        appView.getWindowVisibleDisplayFrame(mTmpDisplayFrame);
-        if (mTmpDisplayFrame.left < 0 && mTmpDisplayFrame.top < 0) {
-            Resources res = mContext.getResources();
-            int resourceId = res.getIdentifier("status_bar_height", "dimen", "android");
-            if (resourceId != 0) {
-                statusBarHeight = res.getDimensionPixelSize(resourceId);
-            } else {
-                statusBarHeight = 0;
-            }
-            DisplayMetrics metrics = res.getDisplayMetrics();
-            mTmpDisplayFrame.set(0, statusBarHeight, metrics.widthPixels, metrics.heightPixels);
-        }
-        appView.getLocationOnScreen(mTmpAppPos);
-        anchorView.getLocationOnScreen(mTmpAnchorPos);
-
-        int[] iArr = mTmpAnchorPos;
-        iArr[0] = iArr[0] - mTmpAppPos[0];
-        int[] iArr2 = mTmpAnchorPos;
-        iArr2[1] = iArr2[1] - mTmpAppPos[1];
-        outParams.x = (mTmpAnchorPos[0] + offsetX) - (mTmpDisplayFrame.width() / 2);
-
-        int spec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
-        mContentView.measure(spec, spec);
-
-        int tooltipHeight = mContentView.getMeasuredHeight();
-        int tooltipWidth = mContentView.getMeasuredWidth();
-        int yAbove = mTmpAnchorPos[1] - tooltipHeight;
-        int yBelow = mTmpAnchorPos[1] + anchorView.getHeight();
-
-        if (fromTouch) {
-            if (anchorView.getLayoutDirection() == View.LAYOUT_DIRECTION_LTR) {
-                outParams.x = ((mTmpAnchorPos[0] + offsetX) - ((mTmpDisplayFrame.width() + tooltipWidth) / 2)) + mContext.getResources().getDimensionPixelOffset(R.dimen.sesl_hover_tooltip_popup_right_margin);
-            } else {
-                outParams.x = ((mTmpAnchorPos[0] + offsetX) - ((mTmpDisplayFrame.width() - tooltipWidth) / 2)) - mContext.getResources().getDimensionPixelOffset(R.dimen.sesl_hover_tooltip_popup_left_margin);
-            }
-            if (yBelow + tooltipHeight > mTmpDisplayFrame.height()) {
-                outParams.y = yAbove;
-            } else {
-                outParams.y = yBelow;
-            }
         } else {
-            outParams.x = (mTmpAnchorPos[0] + offsetX) - (mTmpDisplayFrame.width() / 2);
-            if (yAbove >= 0) {
-                outParams.y = yAbove;
-            } else {
-                outParams.y = yBelow;
+            var8.getWindowVisibleDisplayFrame(this.mTmpDisplayFrame);
+            Rect var9 = this.mTmpDisplayFrame;
+            if (var9.left < 0 && var9.top < 0) {
+                Resources var21 = this.mContext.getResources();
+                var2 = var21.getIdentifier("status_bar_height", "dimen", "android");
+                if (var2 != 0) {
+                    var2 = var21.getDimensionPixelSize(var2);
+                } else {
+                    var2 = 0;
+                }
+
+                DisplayMetrics var22 = var21.getDisplayMetrics();
+                this.mTmpDisplayFrame.set(0, var2, var22.widthPixels, var22.heightPixels);
             }
+
+            int[] var23 = new int[2];
+            var8.getLocationOnScreen(var23);
+            Rect var10 = new Rect(var23[0], var23[1], var23[0] + var8.getWidth(), var23[1] + var8.getHeight());
+            var9 = this.mTmpDisplayFrame;
+            var9.left = var10.left;
+            var9.right = var10.right;
+            var8.getLocationOnScreen(this.mTmpAppPos);
+            var1.getLocationOnScreen(this.mTmpAnchorPos);
+            int[] var20 = this.mTmpAnchorPos;
+            var2 = var20[0];
+            var23 = this.mTmpAppPos;
+            var20[0] = var2 - var23[0];
+            var20[1] -= var23[1];
+            var5.x = var20[0] + var3 - this.mTmpDisplayFrame.width() / 2;
+            var2 = View.MeasureSpec.makeMeasureSpec(0, 0);
+            this.mContentView.measure(var2, var2);
+            int var11 = this.mContentView.getMeasuredHeight();
+            int var12 = this.mContentView.getMeasuredWidth();
+            var2 = this.mContext.getResources().getDimensionPixelOffset(R.dimen.sesl_hover_tooltip_popup_right_margin);
+            int var13 = this.mContext.getResources().getDimensionPixelOffset(R.dimen.sesl_hover_tooltip_popup_area_margin);
+            var20 = this.mTmpAnchorPos;
+            int var14 = var20[1] - var11;
+            int var15 = var20[1] + var1.getHeight();
+            int var16;
+            int var17;
+            int var18;
+            if (var4) {
+                if (var1.getLayoutDirection() == 0) {
+                    var16 = this.mTmpAnchorPos[0];
+                    var17 = var1.getWidth();
+                    var18 = this.mTmpDisplayFrame.width() / 2;
+                    int var19 = var12 / 2;
+                    var5.x = var16 + var17 - var18 - var19 - var2;
+                    if (var5.x < -this.mTmpDisplayFrame.width() / 2 + var19) {
+                        var5.x = -this.mTmpDisplayFrame.width() / 2 + var19 + var2;
+                    }
+
+                    var5.x = this.AdjustTooltipPosition(var1, var5.x, var12, var2);
+                } else {
+                    var5.x = this.mTmpAnchorPos[0] + var3 - this.mTmpDisplayFrame.width() / 2 + var12 / 2 + var2;
+                    var5.x = this.AdjustTooltipPosition(var1, var5.x, var12, var2);
+                }
+
+                if (var15 + var11 > this.mTmpDisplayFrame.height()) {
+                    var5.y = var14;
+                } else {
+                    var5.y = var15;
+                }
+            } else {
+                var5.x = this.mTmpAnchorPos[0] + var3 - this.mTmpDisplayFrame.width() / 2;
+                var16 = var5.x;
+                var18 = -this.mTmpDisplayFrame.width() / 2;
+                var17 = var12 / 2;
+                if (var16 < var18 + var17) {
+                    var5.x = -this.mTmpDisplayFrame.width() / 2 + var17 + var13;
+                }
+
+                var5.x = this.AdjustTooltipPosition(var1, var5.x, var12, var2);
+                if (var14 >= 0) {
+                    var5.y = var14;
+                } else {
+                    var5.y = var15;
+                }
+            }
+
+            if (var6) {
+                var5.y = this.mTmpAnchorPos[1] + var1.getHeight();
+            }
+
+            if (var7) {
+                if (var1.getLayoutDirection() == 0) {
+                    var17 = this.mTmpAnchorPos[0];
+                    var3 = var1.getWidth();
+                    var18 = this.mTmpDisplayFrame.width() / 2;
+                    var16 = var12 / 2;
+                    var5.x = var17 + var3 - var18 - var16 - var2;
+                    if (var5.x < -this.mTmpDisplayFrame.width() / 2 + var16) {
+                        var5.x = -this.mTmpDisplayFrame.width() / 2 + var16 + var13;
+                    }
+
+                    var5.x = this.AdjustTooltipPosition(var1, var5.x, var12, var2);
+                } else {
+                    var5.x = this.mTmpAnchorPos[0] + var3 - this.mTmpDisplayFrame.width() / 2 + var12 / 2 - var2;
+                    var5.x = this.AdjustTooltipPosition(var1, var5.x, var12, var2);
+                }
+
+                if (var11 + var15 > this.mTmpDisplayFrame.height()) {
+                    var5.y = var14;
+                } else {
+                    var5.y = var15;
+                }
+            }
+
         }
     }
 
-    private static View getAppRootView(View anchorView) {
-        View rootView = anchorView.getRootView();
-        Context context = anchorView.getContext();
-
-        while (context instanceof ContextWrapper) {
-            if (context instanceof Activity) {
-                return ((Activity) context).getWindow().getDecorView();
-            } else {
-                context = ((ContextWrapper) context).getBaseContext();
+    public static View getAppRootView(View var0) {
+        View var1 = var0.getRootView();
+        android.view.ViewGroup.LayoutParams var2 = var1.getLayoutParams();
+        if (var2 instanceof WindowManager.LayoutParams && ((WindowManager.LayoutParams)var2).type == 2) {
+            return var1;
+        } else {
+            for(Context var3 = var0.getContext(); var3 instanceof ContextWrapper; var3 = ((ContextWrapper)var3).getBaseContext()) {
+                if (var3 instanceof Activity) {
+                    return ((Activity)var3).getWindow().getDecorView();
+                }
             }
+
+            return var1;
+        }
+    }
+
+    private int getNavigationBarHeight() {
+        return this.mNavigationBarHeight;
+    }
+
+    private void setNavigationBarHeight(int var1) {
+        this.mNavigationBarHeight = var1;
+    }
+
+    public void hide() {
+        this.mIsForceBelow = false;
+        this.mIsForceActionBarX = false;
+        if (this.isShowing()) {
+            ((WindowManager)this.mContext.getSystemService(Context.WINDOW_SERVICE)).removeView(this.mContentView);
+        }
+    }
+
+    public boolean isShowing() {
+        boolean var1;
+        if (this.mContentView.getParent() != null) {
+            var1 = true;
+        } else {
+            var1 = false;
         }
 
-        return rootView;
+        return var1;
+    }
+
+    public void show(View var1, int var2, int var3, boolean var4, CharSequence var5) {
+        if (this.isShowing()) {
+            this.hide();
+        }
+
+        this.mMessageView.setText(var5);
+        this.computePosition(var1, var2, var3, var4, this.mLayoutParams, false, false);
+        ((WindowManager)this.mContext.getSystemService(Context.WINDOW_SERVICE)).addView(this.mContentView, this.mLayoutParams);
+    }
+
+    public void show(View var1, int var2, int var3, boolean var4, CharSequence var5, boolean var6, boolean var7) {
+        this.mIsForceBelow = var6;
+        this.mIsForceActionBarX = var7;
+        if (this.isShowing()) {
+            this.hide();
+        }
+
+        this.mMessageView.setText(var5);
+        this.computePosition(var1, var2, var3, var4, this.mLayoutParams, this.mIsForceBelow, this.mIsForceActionBarX);
+        ((WindowManager)this.mContext.getSystemService(Context.WINDOW_SERVICE)).addView(this.mContentView, this.mLayoutParams);
+    }
+
+    public void showActionItemTooltip(int var1, int var2, int var3, CharSequence var4) {
+        if (this.isShowing()) {
+            this.hide();
+        }
+
+        this.mMessageView.setText(var4);
+        WindowManager.LayoutParams var5 = this.mLayoutParams;
+        var5.x = var1;
+        var5.y = var2;
+        if (var3 == 0) {
+            var5.gravity = 8388661;
+        } else {
+            var5.gravity = 8388659;
+        }
+
+        ((WindowManager)this.mContext.getSystemService(Context.WINDOW_SERVICE)).addView(this.mContentView, this.mLayoutParams);
+    }
+
+    public void updateContent(CharSequence var1) {
+        this.mMessageView.setText(var1);
     }
 }

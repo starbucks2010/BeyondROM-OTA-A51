@@ -34,7 +34,6 @@ import com.samsung.android.ui.widget.SeslTooltip;
  */
 
 public class ToolbarImageButton extends AppCompatImageButton {
-    private int mNavigationBarHeight;
     private boolean mIcon;
     private String mToolTipText;
 
@@ -52,35 +51,37 @@ public class ToolbarImageButton extends AppCompatImageButton {
 
     @Override
     public boolean dispatchGenericMotionEvent(MotionEvent event) {
-        SeslTooltip.setTooltipNull(false);
+        SeslTooltip.seslSetTooltipNull(false);
         if (mIcon) {
             switch (event.getAction()) {
+                case MotionEvent.ACTION_HOVER_MOVE:
                 case MotionEvent.ACTION_HOVER_ENTER:
                     SeslTooltip.setTooltipText(this, mToolTipText);
+                    SeslTooltip.seslSetTooltipForceBelow(true);
+                    SeslTooltip.seslSetTooltipForceActionBarPosX(true);
                     break;
                 case MotionEvent.ACTION_HOVER_EXIT:
-                    SeslTooltip.setTooltipNull(true);
+                    SeslTooltip.seslSetTooltipNull(true);
+                    SeslTooltip.seslSetTooltipForceBelow(false);
+                    SeslTooltip.seslSetTooltipForceActionBarPosX(false);
                     break;
             }
-            setTooltipOffset();
         }
         return super.dispatchGenericMotionEvent(event);
     }
 
     @Override
     public void onHoverChanged(boolean hovered) {
-        SeslTooltip.setTooltipNull(!hovered);
-        setTooltipOffset();
+        SeslTooltip.seslSetTooltipNull(!hovered);
         super.onHoverChanged(hovered);
     }
 
     @Override
     public boolean performLongClick() {
         if (mIcon) {
-            setTooltipOffset();
             return super.performLongClick();
         } else {
-            SeslTooltip.setTooltipNull(true);
+            SeslTooltip.seslSetTooltipNull(true);
             return true;
         }
     }
@@ -91,86 +92,9 @@ public class ToolbarImageButton extends AppCompatImageButton {
         mIcon = true;
     }
 
-    private boolean checkNaviBarForLandscape() {
-        Context context = getContext();
-        Resources res = context.getResources();
-
-        Rect displayFrame = new Rect();
-        getWindowVisibleDisplayFrame(displayFrame);
-
-        Point displaySize = new Point();
-        Display display = ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
-        display.getRealSize(displaySize);
-
-        int rotate = display.getRotation();
-        int navigationBarHeight = (int) res.getDimension(R.dimen.sesl_navigation_bar_height);
-        if (rotate == 1 && displayFrame.right + navigationBarHeight >= displaySize.x) {
-            setNavigationBarHeight(displaySize.x - displayFrame.right);
-            return true;
-        } else if (rotate != 3 || displayFrame.left > navigationBarHeight) {
-            return false;
-        } else {
-            setNavigationBarHeight(displayFrame.left);
-            return true;
-        }
-    }
-
-    private int getNavigationBarHeight() {
-        return mNavigationBarHeight;
-    }
-
-    private void setNavigationBarHeight(int height) {
-        mNavigationBarHeight = height;
-    }
-
     public void setTooltipText(String text) {
         SeslTooltip.setTooltipText(this, text);
         mToolTipText = text;
-    }
-
-    protected void setTooltipOffset() {
-        if (mToolTipText != null) {
-            Context context = getContext();
-            Resources res = context.getResources();
-
-            int[] screenPos = new int[2];
-            getLocationOnScreen(screenPos);
-
-            int width = getWidth();
-            int height = getHeight();
-            int paddingStart = getPaddingStart();
-            int paddingEnd = getPaddingEnd();
-
-            int[] windowPos = new int[2];
-            getLocationInWindow(windowPos);
-
-            Rect displayFrame = new Rect();
-            getWindowVisibleDisplayFrame(displayFrame);
-
-            Display display = ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
-            DisplayMetrics realDisplayMetrics = new DisplayMetrics();
-            display.getRealMetrics(realDisplayMetrics);
-
-            int diff = 0;
-            View toolbar = (View) getParent();
-            if ((toolbar instanceof Toolbar) && toolbar.getWidth() < displayFrame.right - displayFrame.left) {
-                diff = (screenPos[0] - windowPos[0]) - displayFrame.left;
-            }
-
-            int xOffset;
-            int yOffset = windowPos[1] + height;
-            int layoutDirection = getLayoutDirection();
-            if (layoutDirection == 0) {
-                xOffset = (((displayFrame.right - displayFrame.left) - (windowPos[0] + width)) + (((width - paddingStart) - paddingEnd) / 2)) - diff;
-                if (checkNaviBarForLandscape()) {
-                    xOffset += (int) ((((float) getNavigationBarHeight()) / res.getDisplayMetrics().density) * realDisplayMetrics.density);
-                }
-            } else {
-                xOffset = windowPos[0] + paddingStart + ((paddingEnd - paddingStart) / 2);
-            }
-            SeslTooltip.setTooltipPosition(xOffset, yOffset, layoutDirection);
-        } else
-            SeslTooltip.setTooltipNull(true);
     }
 
 }
