@@ -11,6 +11,8 @@ import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
+import android.text.Layout;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.TypedValue;
@@ -163,6 +165,9 @@ public class SeslCollapsingToolbarLayout extends FrameLayout {
         if (mCollapsingToolbarLayoutTitleEnabled) {
             mCollapsingToolbarExtendedTitle = new TextView(context);
             //mCollapsingToolbarExtendedTitle.setId(R.id.collpasing_app_bar_extended_title);
+            if (Build.VERSION.SDK_INT >= 29) {
+                mCollapsingToolbarExtendedTitle.setHyphenationFrequency(Layout.HYPHENATION_FREQUENCY_NORMAL);
+            }
             mCollapsingTitleLayout.addView(mCollapsingToolbarExtendedTitle);
             mCollapsingToolbarExtendedTitle.setEllipsize(TextUtils.TruncateAt.END);
             mCollapsingToolbarExtendedTitle.setGravity(Gravity.CENTER);
