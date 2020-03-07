@@ -61,6 +61,7 @@ public class BaseToolbarActivity extends AppCompatActivity {
             root = findViewById(R.id.mesa_container_baseactivity);
             if (root != null) {
                 root.addView(view);
+                ViewUtils.updateListBothSideMargin(this, root);
             }
         }
     }
@@ -76,6 +77,7 @@ public class BaseToolbarActivity extends AppCompatActivity {
         root = findViewById(R.id.mesa_container_baseactivity);
         if (root != null) {
             root.addView(layout);
+            ViewUtils.updateListBothSideMargin(this, root);
         }
     }
 
