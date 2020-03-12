@@ -3,19 +3,47 @@ package com.mesalabs.on.update.ota;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.text.TextUtils;
+import android.widget.Toast;
 import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.math.BigInteger;
 import java.net.URL;
 import java.net.URLConnection;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
-import com.mesalabs.cerberus.utils.PropUtils;
+import com.mesalabs.cerberus.utils.CerberusException;
+import com.mesalabs.on.update.OnUpdateApp;
+import com.mesalabs.on.update.R;
+import com.mesalabs.on.update.activity.home.MainActivity;
+import com.mesalabs.on.update.ota.noti.FetchOTANotificationManager;
 import com.mesalabs.on.update.ota.tasks.ROMXMLParser;
 import com.mesalabs.on.update.ota.utils.Constants;
 import com.mesalabs.on.update.ota.utils.GeneralUtils;
 import com.mesalabs.on.update.ota.utils.PreferencesUtils;
+import com.mesalabs.on.update.ui.widget.DownloadProgressView;
 import com.mesalabs.on.update.utils.LogUtils;
+import com.tonyodev.fetch2.Error;
+import com.tonyodev.fetch2.Fetch;
+import com.tonyodev.fetch2.FetchConfiguration;
+import com.tonyodev.fetch2.FetchListener;
+import com.tonyodev.fetch2.HttpUrlConnectionDownloader;
+import com.tonyodev.fetch2.NetworkType;
+import com.tonyodev.fetch2.Priority;
+import com.tonyodev.fetch2.Request;
+import com.tonyodev.fetch2core.DownloadBlock;
+import com.tonyodev.fetch2core.Downloader;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /*
  * On Update
@@ -35,7 +63,7 @@ public class ROMUpdate {
     public static final int STATE_NEW_VERSION_AVAILABLE = 2;
     public static final int STATE_ERROR = 3;
     public static final int STATE_CHECKING = 4;
-    public static final int STATE_DOWNLOADING = 5;
+    public static final int STATE_DOWNLOADED = 5;
 
     private Context mContext;
     private ROMUpdate.StubListener mStubListener;
@@ -48,20 +76,18 @@ public class ROMUpdate {
     }
 
     public void checkUpdates(boolean inApp) {
-        PreferencesUtils.Download.clean();
-        PreferencesUtils.ROM.clean();
-        mIsRunningInApp = inApp;
-        new LoadUpdateManifest(mContext).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        if (!PreferencesUtils.Download.getDownloadFinished()) {
+            PreferencesUtils.ROM.clean();
+            mIsRunningInApp = inApp;
+            new LoadUpdateManifest(mContext).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        }
     }
 
     private void postCheckUpdates() {
         int newStatus = STATE_ERROR;
 
         if (!PreferencesUtils.ROM.getRomName().equals("null")) {
-            int currentVer = PropUtils.getInt("ro.on.version", 201900223);
-            int onlineVer = PreferencesUtils.ROM.getVersionNumber();
-
-            mNewUpdateAvailable = currentVer < onlineVer;
+            mNewUpdateAvailable = PreferencesUtils.Download.getUpdateAvailability();
             newStatus = mNewUpdateAvailable ? STATE_NEW_VERSION_AVAILABLE : STATE_NO_UPDATES;
 
             GeneralUtils.dismissNotifications(mContext);
@@ -83,6 +109,7 @@ public class ROMUpdate {
         void onUpdateCheckCompleted(int status);
     }
 
+
     class LoadUpdateManifest extends AsyncTask<Void, Void, Void> {
         private final String TAG = "LoadUpdateManifest";
         private static final String MANIFEST = "update_manifest.xml";
@@ -98,7 +125,6 @@ public class ROMUpdate {
         protected void onPreExecute() {
             if (!mIsRunningInApp) {
                 GeneralUtils.dismissNotifications(mContext);
-                GeneralUtils.setupCheckingUpdatesNotification(mContext);
             }
 
             File manifest = new File(mContext.getFilesDir().getPath(), MANIFEST);
@@ -110,17 +136,15 @@ public class ROMUpdate {
         @Override
         protected Void doInBackground(Void... v) {
             try {
-                Thread.sleep(1500);
+                Thread.sleep(1000);
 
                 InputStream input = null;
 
-                //URL url = new URL(PropUtils.get(Constants.OTA_MANIFEST, "").trim());
-                URL url = new URL("https://gitlab.com/BlackMesa123/otatest/raw/master/testrommanifest.xml");
+                URL url = new URL(Constants.OTA_MANIFEST_URL);
                 URLConnection connection = url.openConnection();
                 connection.connect();
-                // download the file
-                input = new BufferedInputStream(url.openStream());
 
+                input = new BufferedInputStream(url.openStream());
                 OutputStream output = mContext.openFileOutput(MANIFEST, Context.MODE_PRIVATE);
 
                 byte[] data = new byte[1024];
@@ -133,9 +157,8 @@ public class ROMUpdate {
                 output.close();
                 input.close();
 
-                // file finished downloading, parse it!
                 ROMXMLParser parser = new ROMXMLParser();
-                parser.parse(new File(mContext.getFilesDir(), MANIFEST), mContext);
+                parser.parse(new File(mContext.getFilesDir(), MANIFEST));
             } catch (Exception e) {
                 LogUtils.d(TAG, "Exception: " + e.getMessage());
             }
@@ -146,9 +169,9 @@ public class ROMUpdate {
         protected void onPostExecute(Void result) {
             Intent intent;
             if (!mIsRunningInApp) {
-                intent = new Intent(Constants.MANIFEST_CHECK_BACKGROUND);
+                intent = new Intent(Constants.INTENT_MANIFEST_CHECK_BACKGROUND);
             } else {
-                intent = new Intent(Constants.MANIFEST_LOADED);
+                intent = new Intent(Constants.INTENT_MANIFEST_LOADED);
 
             }
 
@@ -159,4 +182,258 @@ public class ROMUpdate {
         }
     }
 
+
+
+    public static class Download {
+        private final static String TAG = "ROMUpdate.Download";
+
+        private MainActivity mActivity;
+        private Fetch mFetch;
+
+        public Download(MainActivity activity) {
+            mActivity = activity;
+        }
+
+        public void startDownload() {
+            String url = PreferencesUtils.ROM.getDownloadUrl();
+            String file = PreferencesUtils.ROM.getFullFilePathName(mActivity);
+
+            PreferencesUtils.Download.setIsDownloadOnGoing(true);
+
+            FetchConfiguration fetchConfiguration = new FetchConfiguration.Builder(mActivity)
+                    .enableLogging(OnUpdateApp.isDebugBuild())
+                    .setDownloadConcurrentLimit(1)
+                    .setHttpDownloader(new HttpUrlConnectionDownloader(Downloader.FileDownloaderType.SEQUENTIAL))
+                    .setNotificationManager(new FetchOTANotificationManager(mActivity) {
+                        @NotNull
+                        @Override
+                        public Fetch getFetchInstanceForNamespace(@NotNull String s) {
+                            return mFetch;
+                        }
+                    })
+                    .build();
+            mFetch = Fetch.Impl.getInstance(fetchConfiguration);
+
+            final Request request = new Request(url, file);
+            request.setDownloadOnEnqueue(true);
+            request.setPriority(Priority.HIGH);
+            request.setNetworkType(PreferencesUtils.getNetworkType() == 0 ? NetworkType.ALL : NetworkType.WIFI_ONLY);
+
+            mFetch.enqueue(request, updatedRequest -> {
+                FetchListener fetchListener = new FetchListener() {
+                    @Override
+                    public void onWaitingNetwork(@NotNull com.tonyodev.fetch2.Download download) {
+                        DownloadProgressView dpv = mActivity.getDownloadFragment().getDownloadProgressView();
+                        dpv.setWaitingForNetworkStatus(true);
+                        mActivity.animateBottomDownloadButton(false, false);
+                    }
+
+                    @Override
+                    public void onStarted(@NotNull com.tonyodev.fetch2.Download download, @NotNull List<? extends DownloadBlock> downloadBlocks, int totalBlocks) {
+                        DownloadProgressView dpv = mActivity.getDownloadFragment().getDownloadProgressView();
+                        dpv.setWaitingForNetworkStatus(false);
+                        mActivity.animateBottomDownloadButton(true, false);
+                    }
+
+                    @Override
+                    public void onResumed(@NotNull com.tonyodev.fetch2.Download download) {
+                        DownloadProgressView dpv = mActivity.getDownloadFragment().getDownloadProgressView();
+                        dpv.setPausedStatus(false);
+                        mActivity.animateBottomDownloadButton(true, false);
+                    }
+
+                    @Override
+                    public void onRemoved(@NotNull com.tonyodev.fetch2.Download download) { }
+
+                    @Override
+                    public void onQueued(@NotNull com.tonyodev.fetch2.Download download, boolean waitingOnNetwork) { }
+
+                    @Override
+                    public void onProgress(@NotNull com.tonyodev.fetch2.Download download, long etaInMilliSeconds, long downloadedBytesPerSecond) {
+                        if (PreferencesUtils.Download.getDownloadID() == download.getId()) {
+                            DownloadProgressView dpv = mActivity.getDownloadFragment().getDownloadProgressView();
+
+                            int progress = download.getProgress();
+                            if (progress < 0) progress = 0;
+                            if (progress < dpv.getProgress()) {
+                                Toast.makeText(mActivity, mActivity.getString(R.string.mesa_download_failed), Toast.LENGTH_LONG).show();
+                            }
+                            dpv.setProgress(progress);
+
+                            String hms = String.format(mActivity.getResources().getConfiguration().getLocales().get(0), "%02d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(etaInMilliSeconds),
+                                    TimeUnit.MILLISECONDS.toMinutes(etaInMilliSeconds) % TimeUnit.HOURS.toMinutes(1),
+                                    TimeUnit.MILLISECONDS.toSeconds(etaInMilliSeconds) % TimeUnit.MINUTES.toSeconds(1));
+                            dpv.setTimeLeftText(hms);
+                        }
+                    }
+
+                    @Override
+                    public void onPaused(@NotNull com.tonyodev.fetch2.Download download) {
+                        DownloadProgressView dpv = mActivity.getDownloadFragment().getDownloadProgressView();
+                        dpv.setPausedStatus(true);
+                        mActivity.animateBottomDownloadButton(true, true);
+                    }
+
+                    @Override
+                    public void onError(@NotNull com.tonyodev.fetch2.Download download, @NotNull Error error, @Nullable Throwable throwable) {
+                        mActivity.onErrorROMUpdateDownload();
+                    }
+
+                    @Override
+                    public void onDownloadBlockUpdated(@NotNull com.tonyodev.fetch2.Download download, @NotNull DownloadBlock downloadBlock, int totalBlocks) { }
+
+                    @Override
+                    public void onDeleted(@NotNull com.tonyodev.fetch2.Download download) { }
+
+                    @Override
+                    public void onCompleted(@NotNull com.tonyodev.fetch2.Download download) {
+                        new MD5Check(mActivity).execute();
+                    }
+
+                    @Override
+                    public void onCancelled(@NotNull com.tonyodev.fetch2.Download download) {
+                        PreferencesUtils.Download.clean();
+                    }
+
+                    @Override
+                    public void onAdded(@NotNull com.tonyodev.fetch2.Download download) { }
+                };
+                mFetch.addListener(fetchListener);
+            }, error -> {
+                throw new CerberusException(error.toString());
+            });
+
+            PreferencesUtils.Download.setDownloadID(request.getId());
+
+            mActivity.onPostROMUpdateDownload();
+            mActivity.animateBottomDownloadButton(false, false);
+        }
+
+        public void cancelDownload() {
+            String file = PreferencesUtils.ROM.getFullFilePathName(mActivity);
+            int mDownloadID = PreferencesUtils.Download.getDownloadID();
+            GeneralUtils.deleteFile(new File(file));
+            mFetch.remove(mDownloadID);
+            mFetch.close();
+            PreferencesUtils.Download.clean();
+        }
+
+        public void pauseDownload() {
+            int mDownloadID = PreferencesUtils.Download.getDownloadID();
+            mFetch.pause(mDownloadID);
+        }
+
+        public void resumeDownload() {
+            int mDownloadID = PreferencesUtils.Download.getDownloadID();
+            mFetch.resume(mDownloadID);
+        }
+    }
+
+    static class MD5Check extends AsyncTask<Object, Boolean, Boolean>{
+        private final String TAG = "MD5Check";
+        private MainActivity mActivity;
+        private DownloadProgressView mDPV;
+        private File mUpdatePkg;
+
+        private MD5Check(MainActivity activity) {
+            mActivity = activity;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            mDPV = mActivity.getDownloadFragment().getDownloadProgressView();
+            mDPV.setCheckingMD5Status();
+            mActivity.animateBottomDownloadButton(false, false);
+        }
+
+        @Override
+        protected Boolean doInBackground(Object... params) {
+            mUpdatePkg = new File(PreferencesUtils.ROM.getFullFilePathName(mActivity.getApplicationContext()));
+            String md5Remote = PreferencesUtils.ROM.getMd5().trim();
+            return checkMD5(md5Remote, mUpdatePkg);
+        }
+
+        @Override
+        protected void onPostExecute(Boolean result) {
+            PreferencesUtils.Download.setIsDownloadOnGoing(false);
+            GeneralUtils.setHasFileDownloaded(mActivity);
+
+            if (result) {
+                if (OnUpdateApp.isAppInBackground()) {
+                    GeneralUtils.setupDownloadCompletedNotification(mActivity, true);
+                    mActivity.switchToFragment(MainActivity.MAIN_PAGE_FRAGMENT);
+                } else {
+                    mDPV.setDownloadCompleteStatus();
+                    mActivity.animateBottomInstallButton(true);
+                }
+            } else {
+                if (OnUpdateApp.isAppInBackground()) {
+                    GeneralUtils.setupDownloadCompletedNotification(mActivity, false);
+                } else {
+                    Toast.makeText(mActivity, mActivity.getString(R.string.mesa_download_failed_md5), Toast.LENGTH_LONG).show();
+                }
+                GeneralUtils.deleteFile(mUpdatePkg);
+                mActivity.switchToFragment(MainActivity.MAIN_PAGE_FRAGMENT);
+            }
+
+            super.onPostExecute(result);
+        }
+
+        private boolean checkMD5(String md5, File file) {
+            if (TextUtils.isEmpty(md5) || file == null) {
+                LogUtils.e(TAG, "MD5 string empty or updateFile null");
+                return false;
+            }
+
+            String calculatedDigest = calculateMD5(file);
+            if (calculatedDigest == null) {
+                LogUtils.e(TAG, "calculatedDigest null");
+                return false;
+            }
+
+            LogUtils.v(TAG, "Calculated digest: " + calculatedDigest + ", Manifest digest: " + md5);
+
+            return calculatedDigest.equalsIgnoreCase(md5);
+        }
+
+        String calculateMD5(File updateFile) {
+            MessageDigest digest;
+            try {
+                digest = MessageDigest.getInstance("MD5");
+            } catch (NoSuchAlgorithmException e) {
+                LogUtils.e(TAG, e.toString());
+                return null;
+            }
+
+            InputStream is;
+            try {
+                is = new FileInputStream(updateFile);
+            } catch (FileNotFoundException e) {
+                LogUtils.e(TAG, e.toString());
+                return null;
+            }
+
+            byte[] buffer = new byte[8192];
+            int read;
+            try {
+                while ((read = is.read(buffer)) > 0) {
+                    digest.update(buffer, 0, read);
+                }
+                byte[] md5sum = digest.digest();
+                BigInteger bigInt = new BigInteger(1, md5sum);
+                String output = bigInt.toString(16);
+                // Fill to 32 chars
+                output = String.format("%32s", output).replace(' ', '0');
+                return output;
+            } catch (IOException e) {
+                throw new CerberusException(e.toString());
+            } finally {
+                try {
+                    is.close();
+                } catch (IOException e) {
+                    LogUtils.e(TAG, e.toString());
+                }
+            }
+        }
+    }
 }

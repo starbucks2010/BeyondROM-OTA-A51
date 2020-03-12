@@ -18,11 +18,9 @@ import android.widget.TextView;
 
 import com.mesalabs.on.update.R;
 import com.mesalabs.on.update.ota.ROMUpdate;
-import com.mesalabs.on.update.ota.utils.PreferencesUtils;
 
 import com.github.ybq.android.spinkit.SpinKitView;
 import com.github.ybq.android.spinkit.sprite.Sprite;
-import com.github.ybq.android.spinkit.style.ThreeBounce;
 import com.github.ybq.android.spinkit.style.MultiplePulse;
 
 /*
@@ -50,6 +48,7 @@ public class UpdateStatusView extends LinearLayout {
     private int mDrawableColor;
 
     private AlphaAnimation mFadeInAnim;
+    private AlphaAnimation mFadeOutAnim;
     private AlphaAnimation mFadeOutAnim_IV;
     private AlphaAnimation mFadeOutAnim_LV;
     private AlphaAnimation mFadeOutAnim_TV;
@@ -60,10 +59,6 @@ public class UpdateStatusView extends LinearLayout {
         mContext = context;
 
         init();
-
-        setText(mText);
-        ((Sprite) mDrawable).setColor(mDrawableColor);
-        mLoadingView.setIndeterminateDrawable(mDrawable);
     }
 
     private void init() {
@@ -77,21 +72,13 @@ public class UpdateStatusView extends LinearLayout {
         mImageView = findViewById(R.id.mesa_imageview_updatestatusview);
 
         initAnimationFields();
-
-        if (PreferencesUtils.Download.getIsDownloadOnGoing()) {
-            mText = getResources().getString(R.string.mesa_update_downloading);
-            mDrawable = new ThreeBounce();
-            mDrawableColor = getResources().getColor(R.color.mesa_ota_primary_dark_color_light, null);
-        } else {
-            mText = getResources().getString(R.string.mesa_checking_updates);
-            mDrawable = new MultiplePulse();
-            mDrawableColor = getResources().getColor(R.color.mesa_ota_primary_dark_color_light, null);
-        }
     }
 
     private void initAnimationFields() {
         mFadeInAnim = new AlphaAnimation(0.0f, 1.0f);
         mFadeInAnim.setDuration(1000);
+        mFadeOutAnim = new AlphaAnimation(1.0f, 0.0f);
+        mFadeOutAnim.setDuration(500);
 
         mFadeOutAnim_IV = new AlphaAnimation(1.0f, 0.0f);
         mFadeOutAnim_IV.setDuration(500);
@@ -107,6 +94,7 @@ public class UpdateStatusView extends LinearLayout {
                 mImageView.setVisibility(View.GONE);
                 mLoadingView.setVisibility(View.VISIBLE);
 
+                mImageView.setImageDrawable(null);
                 ((Sprite) mDrawable).setColor(mDrawableColor);
                 mLoadingView.setIndeterminate(true);
                 mLoadingView.setIndeterminateDrawable(mDrawable);
@@ -146,6 +134,7 @@ public class UpdateStatusView extends LinearLayout {
                         scaleDown.start();
                         mImageView.startAnimation(mFadeInAnim);
                         break;
+                    case ROMUpdate.STATE_DOWNLOADED:
                     case ROMUpdate.STATE_ERROR:
                     default:
                         mImageView.startAnimation(mFadeInAnim);
@@ -173,13 +162,17 @@ public class UpdateStatusView extends LinearLayout {
         mMoveToZeroY_TV.setDuration(1000);
     }
 
+    public int getCheckingStatus() {
+        return mCheckingStatus;
+    }
+
     public void setUpdateStatus(int status) {
         mCheckingStatus = status;
 
         switch(status) {
-            case ROMUpdate.STATE_DOWNLOADING:
-                mText = getResources().getString(R.string.mesa_update_downloading);
-                mDrawable = new ThreeBounce();
+            case ROMUpdate.STATE_DOWNLOADED:
+                mText = getResources().getString(R.string.mesa_update_download_complete);
+                mDrawable = getResources().getDrawable(R.drawable.mesa_ota_updatestatusview_dw_complete,null);
                 mDrawableColor = getResources().getColor(R.color.mesa_ota_primary_dark_color_light, null);
                 break;
             case ROMUpdate.STATE_CHECKING:
@@ -221,11 +214,41 @@ public class UpdateStatusView extends LinearLayout {
             setTextInternal();
     }
 
+    public void start(int status) {
+        mCheckingStatus = status;
+
+        switch(status) {
+            case ROMUpdate.STATE_DOWNLOADED:
+                mText = getResources().getString(R.string.mesa_update_download_complete);
+                mDrawable = getResources().getDrawable(R.drawable.mesa_ota_updatestatusview_dw_complete,null);
+                mDrawableColor = getResources().getColor(R.color.mesa_ota_primary_dark_color_light, null);
+
+                mLoadingView.setVisibility(View.GONE);
+                mImageView.setVisibility(View.VISIBLE);
+                mImageView.setImageDrawable(mDrawable);
+                mImageView.setColorFilter(mDrawableColor, PorterDuff.Mode.SRC_IN);
+                break;
+            case ROMUpdate.STATE_CHECKING:
+            default:
+                mText = getResources().getString(R.string.mesa_checking_updates);
+                mDrawable = new MultiplePulse();
+                mDrawableColor = getResources().getColor(R.color.mesa_ota_primary_dark_color_light, null);
+
+                ((Sprite) mDrawable).setColor(mDrawableColor);
+                mLoadingView.setIndeterminateDrawable(mDrawable);
+                break;
+        }
+
+        setText(mText);
+    }
+
     private void disableImageView() {
         mImageView.startAnimation(mFadeOutAnim_IV);
+        mLoadingView.startAnimation(mFadeOutAnim);
     }
 
     private void disableLoadingView() {
+        mImageView.startAnimation(mFadeOutAnim);
         mLoadingView.startAnimation(mFadeOutAnim_LV);
     }
 

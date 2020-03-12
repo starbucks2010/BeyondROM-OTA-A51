@@ -132,7 +132,7 @@ public class LayoutPreference extends SeslPreference {
     }
 
     private void setView(View view) {
-        setLayoutResource(R.layout.mesa_layoutpref_frame_layout);
+        setLayoutResource(R.layout.mesa_preference_layoutpref_frame_layout);
 
         ViewGroup allDetails = view.findViewById(R.id.mesa_alldetails_layoutpref);
         if (allDetails != null) {

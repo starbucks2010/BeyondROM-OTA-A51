@@ -1,6 +1,5 @@
 package com.mesalabs.on.update.ota.tasks;
 
-import android.content.Context;
 import java.io.File;
 import java.io.IOException;
 import javax.xml.parsers.ParserConfigurationException;
@@ -31,29 +30,26 @@ public class ROMXMLParser extends DefaultHandler {
     private final String TAG = "ROMXMLParser";
 
     private StringBuffer value = new StringBuffer();
-    private Context mContext;
 
     boolean tagRomName = false;
     boolean tagVersionName = false;
-    boolean tagVersionNumber = false;
+    boolean tagBuildNumber = false;
     boolean tagDownloadUrl = false;
     boolean tagMD5 = false;
     boolean tagLogHeader = false;
     boolean tagLogUrl = false;
     boolean tagAndroid = false;
     boolean tagOneUI = false;
-    boolean tagDeveloper = false;
     boolean tagWebsite = false;
     boolean tagFileSize = false;
 
-    public void parse(File xmlFile, Context context) throws IOException {
-        mContext = context;
+    public void parse(File xmlFile) throws IOException {
         try {
             SAXParserFactory factory = SAXParserFactory.newInstance();
             SAXParser saxParser = factory.newSAXParser();
             saxParser.parse(xmlFile, this);
 
-            GeneralUtils.setUpdateAvailability(context);
+            GeneralUtils.setUpdateAvailability();
         } catch (ParserConfigurationException ex) {
             LogUtils.e(TAG, ex.toString());
         } catch (SAXException ex) {
@@ -81,8 +77,8 @@ public class ROMXMLParser extends DefaultHandler {
             tagVersionName = true;
         }
 
-        if (qName.equalsIgnoreCase("versionnumber")) {
-            tagVersionNumber = true;
+        if (qName.equalsIgnoreCase("buildnumber")) {
+            tagBuildNumber = true;
         }
 
         if (qName.equalsIgnoreCase("downloadurl")) {
@@ -103,10 +99,6 @@ public class ROMXMLParser extends DefaultHandler {
 
         if (qName.equalsIgnoreCase("filesize")) {
             tagFileSize = true;
-        }
-
-        if (qName.equalsIgnoreCase("developer")) {
-            tagDeveloper = true;
         }
 
         if (qName.equalsIgnoreCase("websiteurl")) {
@@ -134,7 +126,6 @@ public class ROMXMLParser extends DefaultHandler {
         if (tagRomName) {
             PreferencesUtils.ROM.setRomName(input);
             tagRomName = false;
-            LogUtils.d(TAG, "Name = " + input);
         }
 
         if (tagVersionName) {
@@ -143,16 +134,16 @@ public class ROMXMLParser extends DefaultHandler {
             LogUtils.d(TAG, "Version = " + input);
         }
 
-        if (tagVersionNumber) {
-            PreferencesUtils.ROM.setVersionNumber(Integer.parseInt(input));
-            tagVersionNumber = false;
-            LogUtils.d(TAG, "OTA Version = " + input);
+        if (tagBuildNumber) {
+            PreferencesUtils.ROM.setBuildNumber(Integer.parseInt(input));
+            tagBuildNumber = false;
+            LogUtils.d(TAG, "Build Number = " + input);
         }
 
         if (tagDownloadUrl) {
             PreferencesUtils.ROM.setDownloadUrl(input);
             tagDownloadUrl = false;
-            LogUtils.d(TAG, "URL = " + input);
+            LogUtils.d(TAG, "Download URL = " + input);
         }
 
         if (tagAndroid) {
@@ -164,7 +155,7 @@ public class ROMXMLParser extends DefaultHandler {
         if (tagOneUI) {
             PreferencesUtils.ROM.setOneUIVersion(input);
             tagOneUI = false;
-            LogUtils.d(TAG, "OneUI Version = " + input);
+            LogUtils.d(TAG, "One UI Version = " + input);
         }
 
         if (tagMD5) {
@@ -177,12 +168,6 @@ public class ROMXMLParser extends DefaultHandler {
             PreferencesUtils.ROM.setFileSize(Integer.parseInt(input));
             tagFileSize = false;
             LogUtils.d(TAG, "Filesize = " + input);
-        }
-
-        if (tagDeveloper) {
-            PreferencesUtils.ROM.setDeveloper(input);
-            tagDeveloper = false;
-            LogUtils.d(TAG, "Developer = " + input);
         }
 
         if (tagWebsite) {

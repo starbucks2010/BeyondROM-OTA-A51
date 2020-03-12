@@ -115,6 +115,9 @@ public class CardView extends LinearLayout {
     }
 
     public void setDescText(String text) {
+        if (text == null)
+            text = "";
+
         mDescText = text;
         mDescTextView.setText(mDescText);
         if (mDescText.isEmpty())

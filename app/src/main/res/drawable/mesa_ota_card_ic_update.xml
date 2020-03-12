@@ -1,0 +1,3 @@
+<?xml version="1.0" encoding="utf-8"?>
+<bitmap android:src="@drawable/mesa_ota_card_ic_update_alpha" android:tint="@color/mesa_ota_card_ic_update_color"
+    xmlns:android="http://schemas.android.com/apk/res/android" />

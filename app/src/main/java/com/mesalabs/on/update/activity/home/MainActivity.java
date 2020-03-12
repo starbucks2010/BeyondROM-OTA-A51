@@ -1,15 +1,20 @@
 package com.mesalabs.on.update.activity.home;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.StatFs;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.Toast;
-
 import java.util.LinkedHashMap;
 
 import androidx.appcompat.widget.AppCompatButton;
@@ -23,6 +28,7 @@ import com.mesalabs.cerberus.ui.widget.ToolbarImageButton;
 import com.mesalabs.cerberus.update.utils.AppUpdateUtils;
 import com.mesalabs.cerberus.utils.CerberusException;
 import com.mesalabs.cerberus.utils.StateUtils;
+import com.mesalabs.cerberus.utils.Utils;
 import com.mesalabs.cerberus.utils.ViewUtils;
 import com.mesalabs.on.update.OnUpdateApp;
 import com.mesalabs.on.update.R;
@@ -30,9 +36,10 @@ import com.mesalabs.on.update.activity.settings.SettingsActivity;
 import com.mesalabs.on.update.fragment.home.DownloadProgressFragment;
 import com.mesalabs.on.update.fragment.home.MainCardsFragment;
 import com.mesalabs.on.update.ota.ROMUpdate;
+import com.mesalabs.on.update.ota.tasks.GenerateRecoveryScript;
 import com.mesalabs.on.update.ota.utils.GeneralUtils;
-import com.mesalabs.on.update.ota.utils.SystemUtils;
 import com.mesalabs.on.update.ota.utils.PreferencesUtils;
+import com.mesalabs.on.update.utils.LogUtils;
 import com.samsung.android.ui.app.SeslAlertDialog;
 
 /*
@@ -48,9 +55,12 @@ import com.samsung.android.ui.app.SeslAlertDialog;
  */
 
 public class MainActivity extends BaseAppBarActivity {
+    public static int MAIN_PAGE_FRAGMENT = 0;
+    public static int DOWNLOAD_PROGRESS_FRAGMENT = 1;
+
     private boolean mAppUpdateAvailable = false;
+    private boolean mIsDownloadCompleted = false;
     private boolean mIsFromLauncher = true;
-    private boolean mIsRootAvailable = false;
     private final Class[] mFragmentClasses = {MainCardsFragment.class, DownloadProgressFragment.class};
     private final String[] mFragmentTags = {"MainCards", "DownloadProgress"};
     private int newFragmentIndex;
@@ -61,11 +71,15 @@ public class MainActivity extends BaseAppBarActivity {
         PreferencesUtils.setIsAppUpdateAvailable(mAppUpdateAvailable);
         initMoreMenuButton();
     };
+    private ROMUpdate.Download mROMUpdateDownload;
 
     private AlphaAnimation mFadeInAnim;
     private AlphaAnimation mFadeOutAnim;
+    private AlphaAnimation mFadeInAnim_Dwn;
+    private AlphaAnimation mFadeOutAnim_Dwn;
     private AlphaAnimation mFadeOutAnim_F;
 
+    private Dialog mProgressCircle;
     private FragmentManager mFragmentManager;
     private Fragment mFragment;
     private FrameLayout mFragmentContainer;
@@ -89,15 +103,18 @@ public class MainActivity extends BaseAppBarActivity {
             mIsFromLauncher = getIntent().getExtras().getBoolean("mesa_ota_isfromlauncher", true);
         }
 
-        mIsRootAvailable = SystemUtils.isDeviceRooted();
-        PreferencesUtils.setIsRootAvailable(mIsRootAvailable);
-        if (!mIsRootAvailable) {
-            showNoRootDialog();
+        mIsDownloadCompleted = PreferencesUtils.Download.getDownloadFinished();
+
+        if (!mIsDownloadCompleted) {
+            PreferencesUtils.ROM.clean();
+            PreferencesUtils.Download.clean();
         }
 
-        //  init AppUpdateUtils
+        //  init pt.2
         mAppUpdate = new AppUpdateUtils(this, OnUpdateApp.getAppPackageName(), mAppStubListener);
         mAppUpdate.checkUpdates();
+
+        mROMUpdateDownload = new ROMUpdate.Download(this);
 
         // init UX
         setBaseContentView(R.layout.mesa_ota_activity_mainactivity_layout);
@@ -106,15 +123,13 @@ public class MainActivity extends BaseAppBarActivity {
         appBar.initAppBar(false);
         appBar.setTitleText(getString(R.string.mesa_onupdate));
         appBar.setHomeAsUpButton(v -> onBackPressed());
-        if (!mIsFromLauncher)
+        if (mIsFromLauncher)
             appBar.setHomeAsUpButtonVisible(false);
         appBar.addOverflowButton(false, R.drawable.mesa_ota_ic_ab_refresh, R.string.mesa_check_for_updates, v -> {
             if (!StateUtils.isNetworkConnected(mContext)) {
                 Toast.makeText(mContext, R.string.mesa_no_network_connection, Toast.LENGTH_LONG).show();
             }
             animateRefreshButton(false);
-            ((MainCardsFragment) mFragment).getChangelogView().setVisibility(View.GONE);
-            ((MainCardsFragment) mFragment).getUpdateStatusView().setUpdateStatus(ROMUpdate.STATE_CHECKING);
             ((MainCardsFragment) mFragment).checkForROMUpdates();
         });
         mRefreshBtn = appBar.getOverflowIcon(0);
@@ -125,8 +140,19 @@ public class MainActivity extends BaseAppBarActivity {
 
     @Override
     public void onBackPressed() {
-        if (newFragmentIndex != 0) {
-            switchToFragment(0);
+        if (PreferencesUtils.Download.getIsDownloadOnGoing()) {
+            new SeslAlertDialog.Builder(mContext)
+                    .setCancelable(true)
+                    .setTitle(getString(R.string.mesa_onbackpressed_dwn_dialog_title))
+                    .setMessage(getString(R.string.mesa_onbackpressed_dwn_dialog_msg))
+                    .setPositiveButton(getString(R.string.mesa_ok), (dialog, which) -> {
+                        mROMUpdateDownload.cancelDownload();
+                        switchToFragment(MAIN_PAGE_FRAGMENT);
+                    })
+                    .setNegativeButton(getString(R.string.mesa_cancel), null)
+                    .show();
+        } else if (newFragmentIndex == DOWNLOAD_PROGRESS_FRAGMENT) {
+            switchToFragment(MAIN_PAGE_FRAGMENT);
         } else {
             super.onBackPressed();
         }
@@ -138,25 +164,24 @@ public class MainActivity extends BaseAppBarActivity {
         ViewUtils.updateListBothSideMargin(this, mFragmentContainer);
     }
 
-    private void showNoRootDialog() {
-        SeslAlertDialog.Builder dialog = new SeslAlertDialog.Builder(mContext);
-        dialog.setCancelable(true);
-        dialog.setTitle(getString(R.string.mesa_no_root_access_dialog_title));
-        dialog.setMessage(R.string.mesa_no_root_access_dialog_message);
-        dialog.setPositiveButton(getString(android.R.string.ok), null);
-        dialog.show();
-    }
-
     private void initUX() {
         initAnimationFields();
 
+        mProgressCircle = new Dialog(mContext, Utils.isNightMode(mContext) ? R.style.mesa_ProgressCircleDialogStyle : R.style.mesa_ProgressCircleDialogStyle_Light);
+        mProgressCircle.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        mProgressCircle.getWindow().setGravity(Gravity.CENTER);
+        mProgressCircle.setCancelable(false);
+        mProgressCircle.setCanceledOnTouchOutside(false);
+        mProgressCircle.setContentView(LayoutInflater.from(mContext).inflate(R.layout.mesa_view_progress_circle_dialog_layout, null));
+
         mFragmentManager = getSupportFragmentManager();
         mFragmentContainer = findViewById(R.id.mesa_fragmentcontainer_ota_mainactivity);
+        ViewUtils.updateListBothSideMargin(this, mFragmentContainer);
 
         mBottomLayout = findViewById(R.id.mesa_bottomlayout_ota_mainactivity);
         mBottomButton = findViewById(R.id.mesa_bottombtn_ota_mainactivity);
 
-        switchToFragment(0);
+        switchToFragment(MAIN_PAGE_FRAGMENT);
         animateRefreshButton(false);
     }
 
@@ -165,6 +190,41 @@ public class MainActivity extends BaseAppBarActivity {
         mFadeInAnim.setDuration(250);
         mFadeOutAnim = new AlphaAnimation(1.0f, 0.0f);
         mFadeOutAnim.setDuration(250);
+
+        mFadeInAnim_Dwn = new AlphaAnimation(0.0f, 1.0f);
+        mFadeInAnim_Dwn.setDuration(250);
+        mFadeInAnim_Dwn.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+                mFragmentContainer.setAlpha(1.0f);
+                mBottomLayout.setAlpha(1.0f);
+                mBottomButton.startAnimation(mFadeInAnim);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) { }
+
+            @Override
+            public void onAnimationEnd(Animation animation) { }
+        });
+        mFadeOutAnim_Dwn = new AlphaAnimation(1.0f, 0.0f);
+        mFadeOutAnim_Dwn.setDuration(250);
+        mFadeOutAnim_Dwn.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) { }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) { }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                mFragmentContainer.setAlpha(0.0f);
+                mBottomLayout.setAlpha(0.0f);
+                mBottomLayout.setVisibility(View.VISIBLE);
+                inflateFragment(newFragmentIndex);
+                mROMUpdateDownload.startDownload();
+            }
+        });
 
         mFadeOutAnim_F = new AlphaAnimation(1.0f, 0.0f);
         mFadeOutAnim_F.setDuration(250);
@@ -188,6 +248,7 @@ public class MainActivity extends BaseAppBarActivity {
     }
 
     private void inflateFragment(int index) {
+        appBar.setHomeAsUpButtonVisible(index != 0 || !mIsFromLauncher);
         FragmentTransaction transaction = mFragmentManager.beginTransaction();
         Fragment fragment = mFragmentManager.findFragmentByTag(mFragmentTags[index]);
         if (mFragment == null) {
@@ -195,7 +256,11 @@ public class MainActivity extends BaseAppBarActivity {
         }
         if (mFragment != null) {
             transaction.hide(mFragment);
+            if (mFragment instanceof DownloadProgressFragment) {
+                transaction.remove(mFragment);
+            }
         }
+
         if (fragment != null) {
             mFragment = fragment;
             transaction.show(fragment);
@@ -230,19 +295,75 @@ public class MainActivity extends BaseAppBarActivity {
                 });
     }
 
+    private long getAvailableInternalMemorySize() {
+        StatFs stat = new StatFs(Environment.getExternalStorageDirectory().getPath());
+        return stat.getAvailableBlocksLong() * stat.getBlockSizeLong();
+    }
+
+
+
+    public void animateBottomDownloadButton(boolean enabled, boolean paused) {
+        mBottomButton.setEnabled(enabled);
+        mBottomButton.setAlpha(enabled ? 1.0f : 0.4f);
+        if (paused) {
+            mBottomButton.setText(getString(R.string.mesa_resume));
+            mBottomButton.setOnClickListener(v -> mROMUpdateDownload.resumeDownload());
+        } else {
+            mBottomButton.setText(getString(R.string.mesa_pause));
+            mBottomButton.setOnClickListener(v -> mROMUpdateDownload.pauseDownload());
+        }
+    }
+
+    public void animateBottomInstallButton(boolean enabled) {
+        mBottomButton.setEnabled(enabled);
+        mBottomButton.setAlpha(enabled ? 1.0f : 0.4f);
+        mBottomButton.setText(getString(R.string.mesa_install_now));
+        mBottomButton.setOnClickListener(v -> new GenerateRecoveryScript(mContext).execute());
+        mBottomButton.postDelayed(() -> mBottomButton.setPressed(true), 250);
+        mBottomButton.postDelayed(() -> mBottomButton.setPressed(false), 250);
+    }
+
     public void animateRefreshButton(boolean enabled) {
         mRefreshBtn.setAlpha(enabled ? 1.0f : 0.4f);
         mRefreshBtn.setEnabled(enabled);
     }
 
-    public AppCompatButton getBottomBtnView() {
-        return mBottomButton;
+    public DownloadProgressFragment getDownloadFragment() {
+        if (mFragment instanceof DownloadProgressFragment) {
+            return (DownloadProgressFragment) mFragment;
+        } else {
+            LogUtils.e("MainActivity", "DownloadProgressFragment not inflated!!!");
+            return (DownloadProgressFragment) mFragmentManager.findFragmentById(R.id.mesa_fragmentcontainer_ota_mainactivity);
+        }
+    }
+
+    public void onPreROMUpdateDownload() {
+        mProgressCircle.show();
+        if (getAvailableInternalMemorySize() < PreferencesUtils.ROM.getFileSize()) {
+            Toast.makeText(mContext, getString(R.string.mesa_no_space_left), Toast.LENGTH_LONG).show();
+            mProgressCircle.dismiss();
+            return;
+        }
+        newFragmentIndex = DOWNLOAD_PROGRESS_FRAGMENT;
+        animateRefreshButton(false);
+        mFragmentContainer.startAnimation(mFadeOutAnim_Dwn);
+    }
+
+    public void onPostROMUpdateDownload() {
+        mProgressCircle.dismiss();
+        mFragmentContainer.startAnimation(mFadeInAnim_Dwn);
+    }
+
+    public void onErrorROMUpdateDownload() {
+        Toast.makeText(mContext, getString(R.string.mesa_download_failed), Toast.LENGTH_LONG).show();
+        switchToFragment(MAIN_PAGE_FRAGMENT);
+        mROMUpdateDownload.cancelDownload();
     }
 
     public void switchToFragment(int index) {
         newFragmentIndex = index;
-        appBar.setHomeAsUpButtonVisible(index != 0 || !mIsFromLauncher);
-        animateRefreshButton(!PreferencesUtils.Download.getIsDownloadOnGoing() && newFragmentIndex == 0);
+        mIsDownloadCompleted = PreferencesUtils.Download.getDownloadFinished();
+        animateRefreshButton(!PreferencesUtils.Download.getIsDownloadOnGoing() || !mIsDownloadCompleted);
         mFragmentContainer.startAnimation(mFadeOutAnim_F);
     }
 

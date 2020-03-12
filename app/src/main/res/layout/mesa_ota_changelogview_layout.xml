@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge
-    xmlns:android="http://schemas.android.com/apk/res/android">
-    <com.samsung.android.ui.widget.SeslProgressBar android:id="@+id/mesa_progressbar_changelogview" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center" android:layout_margin="6.0dp" style="@style/mesa_SeslProgressBarStyle"/>
-    <LinearLayout android:id="@+id/mesa_header_changelogview" android:gravity="center_vertical" android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content" android:visibility="gone" android:background="?android:selectableItemBackground">
-        <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_weight="2.0" android:layout_marginStart="24.0dip" android:layout_marginTop="30.0dip" android:layout_marginBottom="30.0dip">
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:gravity="start" android:text="@string/mesa_whats_new" android:fontFamily="sans-serif-light" android:textSize="28.0sp" android:textColor="?primaryTextColor" android:layout_marginBottom="2.0dip"/>
-            <TextView android:layout_width="fill_parent" android:layout_height="wrap_content" android:gravity="start" android:text="@string/mesa_whats_new_subtext" android:fontFamily="@string/sesl_font_family_regular" android:textSize="14.0sp" android:textColor="@color/mesa_changelogview_subtext_color" android:lineSpacingExtra="4.0sp" />
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+    <TextView android:id="@+id/mesa_supertextview_changelogview" android:layout_width="fill_parent" android:layout_height="wrap_content" android:paddingHorizontal="24.0dip" android:paddingVertical="18.0dip" android:visibility="gone" android:fontFamily="@string/sesl_font_family_regular" android:textSize="15.0sp" android:textColor="@color/mesa_changelogview_subtext_color" android:lineSpacingExtra="5.0sp" />
+    <FrameLayout android:id="@+id/mesa_container_changelogview" android:layout_width="fill_parent" android:layout_height="wrap_content" android:background="@drawable/mesa_ota_changelogview_bg">
+        <com.samsung.android.ui.widget.SeslProgressBar android:id="@+id/mesa_progressbar_changelogview" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center" android:layout_margin="6.0dp" style="@style/mesa_SeslProgressBarStyle"/>
+        <LinearLayout android:id="@+id/mesa_header_changelogview" android:gravity="center_vertical" android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content" android:visibility="gone" android:background="@drawable/mesa_ota_changelogview_ripple" android:baselineAligned="false">
+            <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_weight="2.0" android:layout_marginStart="24.0dip" android:layout_marginTop="28.0dip" android:layout_marginBottom="30.0dip">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:gravity="start" android:text="@string/mesa_whats_new" android:fontFamily="sans-serif-light" android:textSize="28.0sp" android:textColor="?primaryTextColor" android:layout_marginBottom="2.0dip"/>
+                <TextView android:layout_width="fill_parent" android:layout_height="wrap_content" android:gravity="start" android:text="@string/mesa_whats_new_subtext" android:fontFamily="@string/sesl_font_family_regular" android:textSize="14.0sp" android:textColor="@color/mesa_changelogview_subtext_color" android:lineSpacingExtra="4.0sp" />
+            </LinearLayout>
+            <LinearLayout android:id="@+id/mesa_img_container_header_changelogview" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_weight="3.0">
+                <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:paddingTop="12.0dip" android:src="@drawable/mesa_whatsnew_changelogview" android:layerType="software" />
+            </LinearLayout>
         </LinearLayout>
-        <LinearLayout android:id="@+id/mesa_img_container_header_changelogview" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_weight="3.0">
-            <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:paddingTop="12.0dip" android:src="@drawable/mesa_whatsnew_changelogview" android:layerType="software" />
-        </LinearLayout>
-    </LinearLayout>
-    <TextView android:id="@+id/mesa_errortextview_changelogview" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_margin="19.0dip" android:gravity="center" android:visibility="gone" android:text="@string/mesa_whats_new_error" android:fontFamily="@string/sesl_font_family_regular" android:textSize="16.0sp" android:textColor="@color/mesa_changelogview_subtext_color" android:lineSpacingExtra="4.0sp" />
+        <TextView android:id="@+id/mesa_errortextview_changelogview" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_margin="24.0dip" android:gravity="center" android:visibility="gone" android:text="@string/mesa_whats_new_error" android:fontFamily="@string/sesl_font_family_regular" android:textSize="16.0sp" android:textColor="@color/mesa_changelogview_subtext_color" android:lineSpacingExtra="4.0sp" />
+    </FrameLayout>
 </merge>

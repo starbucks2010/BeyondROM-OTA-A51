@@ -10,8 +10,10 @@
     <color name="mesa_ota_progress_control_color_normal_dark">#4D00B74D</color>
     <color name="mesa_ota_progress_control_color_normal_light">#4D00B74D</color>
 
+    <color name="mesa_ota_card_ic_update_color">#7882FF</color>
     <color name="mesa_ota_card_ic_firmware_info_color">#BABABA</color>
 
+    <color name="mesa_changelogview_super_bg_color">#EFEFEF</color>
     <color name="mesa_changelogview_subtext_color">#8F8F8F</color>
 
     <color name="mesa_ota_downloadactivity_desc_color">#8F8F8F</color>

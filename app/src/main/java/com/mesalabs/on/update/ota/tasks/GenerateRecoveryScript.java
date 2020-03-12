@@ -6,11 +6,8 @@ import android.os.AsyncTask;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Window;
-import java.io.File;
 
-import com.mesalabs.on.update.ota.utils.Constants;
 import com.mesalabs.on.update.ota.utils.SystemUtils;
-import com.mesalabs.on.update.utils.LogUtils;
 import com.mesalabs.cerberus.utils.Utils;
 import com.mesalabs.on.update.R;
 import com.mesalabs.on.update.ota.utils.PreferencesUtils;
@@ -36,12 +33,10 @@ public class GenerateRecoveryScript extends AsyncTask<Void, String, Boolean> {
     private StringBuilder mScript = new StringBuilder();
     private static String SCRIPT_FILE = "/cache/recovery/openrecoveryscript";
     private static String NEW_LINE = "\n";
-    private String mFilename;
     private String mScriptOutput;
 
     public GenerateRecoveryScript(Context context) {
         mContext = context;
-        mFilename = PreferencesUtils.ROM.getFilename() + ".zip";
     }
 
     protected void onPreExecute() {
@@ -49,69 +44,22 @@ public class GenerateRecoveryScript extends AsyncTask<Void, String, Boolean> {
         mProgressCircle = new Dialog(mContext, Utils.isNightMode(mContext) ? R.style.mesa_ProgressCircleDialogStyle : R.style.mesa_ProgressCircleDialogStyle_Light);
         mProgressCircle.requestWindowFeature(Window.FEATURE_NO_TITLE);
         mProgressCircle.getWindow().setGravity(Gravity.CENTER);
+        mProgressCircle.setCancelable(false);
         mProgressCircle.setCanceledOnTouchOutside(false);
-        mProgressCircle.setContentView(LayoutInflater.from(mContext).inflate(R.layout.mesa_progress_circle_dialog_layout, null));
+        mProgressCircle.setContentView(LayoutInflater.from(mContext).inflate(R.layout.mesa_view_progress_circle_dialog_layout, null));
         mProgressCircle.show();
 
-        if (PreferencesUtils.getORSIsWipeDataEnabled()) {
-            mScript.append("wipe data" + NEW_LINE);
-        }
-        if (PreferencesUtils.getORSIsWipeCacheEnabled()) {
-            mScript.append("wipe cache" + NEW_LINE);
-        }
-        if (PreferencesUtils.getORSIsWipeDalvikEnabled()) {
-            mScript.append("wipe dalvik" + NEW_LINE);
-        }
+        mScript.append("wipe cache" + NEW_LINE);
 
-        mScript.append("install " + "/sdcard"
-                + File.separator
-                + Constants.OTA_DOWNLOAD_DIR
-                + File.separator
-                + mFilename
+        mScript.append("wipe dalvik" + NEW_LINE);
+
+        mScript.append("install "
+                + PreferencesUtils.ROM.getFullFilePathName(mContext)
                 + NEW_LINE);
 
-        File installAfterFlashDir = new File("/sdcard"
-                + File.separator
-                + Constants.OTA_DOWNLOAD_DIR
-                + File.separator
-                + Constants.INSTALL_AFTER_FLASH_DIR);
-
-        File[] filesArr = installAfterFlashDir.listFiles();
-        if(filesArr != null && filesArr.length > 0) {
-            for(int i = 0; i < filesArr.length; i++) {
-                mScript.append(NEW_LINE
-                        + "install "
-                        + "/sdcard"
-                        + File.separator
-                        + Constants.OTA_DOWNLOAD_DIR
-                        + File.separator
-                        + Constants.INSTALL_AFTER_FLASH_DIR
-                        + File.separator
-                        + filesArr[i].getName());
-
-                LogUtils.d(TAG, "install "
-                        + "/sdcard"
-                        + File.separator
-                        + Constants.OTA_DOWNLOAD_DIR
-                        + File.separator
-                        + Constants.INSTALL_AFTER_FLASH_DIR
-                        + File.separator
-                        + filesArr[i].getName());
-            }
-        }
-
-        if (PreferencesUtils.getORSIsDeleteAfterInstallEnabled()) {
-            mScript.append(NEW_LINE
-                    + "cmd rm -rf "
-                    + "/sdcard"
-                    + File.separator
-                    + Constants.OTA_DOWNLOAD_DIR
-                    + File.separator
-                    + Constants.INSTALL_AFTER_FLASH_DIR
-                    + File.separator
-                    + mFilename
-                    + NEW_LINE);
-        }
+        mScript.append("cmd rm -rf "
+                + PreferencesUtils.ROM.getFullFilePathName(mContext)
+                + NEW_LINE);
 
         mScriptOutput = mScript.toString();
     }
@@ -137,7 +85,7 @@ public class GenerateRecoveryScript extends AsyncTask<Void, String, Boolean> {
 
     @Override
     protected void onPostExecute(Boolean value) {
-        mProgressCircle.cancel();
+        PreferencesUtils.setRebootForInstall(true);
         SystemUtils.rebootToRecovery(mContext);
     }
 }

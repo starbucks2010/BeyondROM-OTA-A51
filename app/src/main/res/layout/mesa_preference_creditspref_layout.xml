@@ -6,7 +6,7 @@
             <com.samsung.android.ui.preference.internal.SeslPreferenceImageView android:layout_gravity="center" android:id="@android:id/icon" android:layout_width="wrap_content" android:layout_height="wrap_content" app:maxHeight="@dimen/sesl_preference_item_icon_size" app:maxWidth="@dimen/sesl_preference_item_icon_size" />
         </androidx.cardview.widget.CardView>
     </FrameLayout>
-    <RelativeLayout android:paddingTop="@dimen/sesl_preference_item_padding_vertical" android:paddingBottom="@dimen/sesl_preference_item_padding_vertical" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_weight="1.0">
+    <RelativeLayout android:paddingTop="@dimen/sesl_preference_item_padding_vertical" android:paddingBottom="@dimen/sesl_preference_item_padding_vertical" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.0">
         <TextView android:textAppearance="?textAppearanceListItem" android:ellipsize="end" android:id="@android:id/title" android:layout_width="wrap_content" android:layout_height="wrap_content" android:maxLines="5" android:textAlignment="viewStart" android:paddingEnd="12.0dip" />
         <TextView android:textAppearance="?android:textAppearanceSmall" android:id="@android:id/summary" android:layout_width="wrap_content" android:layout_height="wrap_content" android:maxLines="10" android:layout_below="@android:id/title" android:textAlignment="viewStart" android:paddingEnd="12.0dip" android:layout_alignStart="@android:id/title" />
     </RelativeLayout>

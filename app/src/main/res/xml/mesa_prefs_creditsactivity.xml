@@ -18,8 +18,21 @@
         android:summary="@Samsung - Licensed with Apache 2.0" />
 
     <com.mesalabs.cerberus.ui.preference.CreditsPreference
+        android:key="mesa_credits_spinkit"
         android:icon="@drawable/mesa_credits_spinkit_icon_light"
         android:title="Android-SpinKit"
         android:summary="@ybq - Licensed with MIT" />
+
+    <com.mesalabs.cerberus.ui.preference.CreditsPreference
+        android:key="mesa_credits_fetch"
+        android:icon="@drawable/mesa_credits_fetch_icon_light"
+        android:title="Fetch"
+        android:summary="@tonyofrancis - Licensed with Apache 2.0" />
+
+    <com.mesalabs.cerberus.ui.preference.CreditsPreference
+        android:key="mesa_credits_waitingdots"
+        android:icon="@drawable/mesa_credits_waitingdots_icon_light"
+        android:title="WaitingDots"
+        android:summary="@tajchert - Licensed with MIT" />
 
 </com.samsung.android.ui.preference.PreferenceScreen>

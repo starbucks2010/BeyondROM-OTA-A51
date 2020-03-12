@@ -7,7 +7,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <include layout="@layout/mesa_appbar_layout"/>
+    <include layout="@layout/mesa_view_appbar_layout"/>
 
     <FrameLayout
         android:id="@+id/mesa_container_baseactivity"

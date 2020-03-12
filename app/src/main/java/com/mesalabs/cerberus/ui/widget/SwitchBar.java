@@ -78,7 +78,7 @@ public class SwitchBar extends LinearLayout implements View.OnClickListener, Che
         mContext = context;
         mIsNightMode = Utils.isNightMode(mContext);
 
-        inflate(mContext, R.layout.mesa_switchbar_layout, this);
+        inflate(mContext, R.layout.mesa_view_switchbar_layout, this);
 
         setFocusable(true);
         setClickable(true);

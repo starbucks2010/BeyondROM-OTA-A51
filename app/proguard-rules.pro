@@ -22,3 +22,6 @@
 
 # SeslAppBarLayout
 -keep class com.samsung.android.ui.appbar.** { *; }
+# WaitingDots
+-dontwarn pl.tajchert.waitingdots.**
+-keep public class pl.tajchert.waitingdots.** { public protected private *; }

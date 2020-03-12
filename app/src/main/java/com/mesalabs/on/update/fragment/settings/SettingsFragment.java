@@ -1,6 +1,7 @@
 package com.mesalabs.on.update.fragment.settings;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -11,14 +12,12 @@ import android.util.TypedValue;
 import com.mesalabs.on.update.OnUpdateApp;
 import com.mesalabs.on.update.R;
 import com.mesalabs.on.update.activity.aboutpage.AboutActivity;
-import com.mesalabs.on.update.activity.settings.ORSInnerSettingsActivity;
 import com.mesalabs.on.update.ota.utils.GeneralUtils;
 import com.mesalabs.on.update.ota.utils.PreferencesUtils;
 import com.samsung.android.ui.preference.SeslListPreference;
 import com.samsung.android.ui.preference.SeslPreference;
 import com.samsung.android.ui.preference.SeslPreferenceFragmentCompat;
 import com.samsung.android.ui.preference.SeslSwitchPreferenceCompat;
-import com.samsung.android.ui.preference.SeslSwitchPreferenceScreen;
 
 /*
  * On Update
@@ -37,6 +36,12 @@ public class SettingsFragment extends SeslPreferenceFragmentCompat implements
         SeslPreference.OnPreferenceClickListener {
 
     @Override
+    public void onActivityCreated(Bundle bundle) {
+        super.onActivityCreated(bundle);
+        getListView().seslSetLastOutlineStrokeEnabled(false);
+    }
+
+    @Override
     public void onCreatePreferences(Bundle bundle, String str) {
         addPreferencesFromResource(R.xml.mesa_prefs_settingsactivity);
         seslSetRoundedCornerType(SESL_ROUNDED_CORNER_TYPE_STROKE);
@@ -45,12 +50,6 @@ public class SettingsFragment extends SeslPreferenceFragmentCompat implements
     @Override
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
-
-        SeslSwitchPreferenceScreen orsPref = (SeslSwitchPreferenceScreen) findPreference("mesa_ors_pref");
-        if (!PreferencesUtils.getIsRootAvailable()) {
-            orsPref.setEnabled(false);
-        }
-        orsPref.setOnPreferenceClickListener(this);
 
         SeslSwitchPreferenceCompat bgServicePref = (SeslSwitchPreferenceCompat) findPreference("mesa_bgservice_pref");
         bgServicePref.setOnPreferenceChangeListener(this);
@@ -66,10 +65,11 @@ public class SettingsFragment extends SeslPreferenceFragmentCompat implements
 
         SeslListPreference networkTypePref = (SeslListPreference) findPreference("mesa_networktype_pref");
         networkTypePref.seslSetSummaryColor(getColoredSummaryColor());
+        networkTypePref.setEnabled(!PreferencesUtils.Download.getIsDownloadOnGoing());
 
         SeslPreference aboutActivityPref = findPreference("mesa_aboutactivity_pref");
         if (PreferencesUtils.getIsAppUpdateAvailable()) {
-            aboutActivityPref.setWidgetLayoutResource(R.layout.mesa_prefs_badge_layout);
+            aboutActivityPref.setWidgetLayoutResource(R.layout.mesa_preference_prefs_badge_layout);
         }
         aboutActivityPref.setOnPreferenceClickListener(this);
     }
@@ -77,9 +77,6 @@ public class SettingsFragment extends SeslPreferenceFragmentCompat implements
     @Override
     public void onStart() {
         super.onStart();
-
-        SeslSwitchPreferenceScreen orsPref = (SeslSwitchPreferenceScreen) findPreference("mesa_ors_pref");
-        orsPref.setChecked(PreferencesUtils.getIsOpenRecoveryScriptEnabled());
 
         SeslPreference bgServiceNotiSoundPref = findPreference("mesa_bgservice_noti_sound_pref");
         String title = getString(R.string.mesa_bgservice_noti_sound_silent_sum);
@@ -100,7 +97,7 @@ public class SettingsFragment extends SeslPreferenceFragmentCompat implements
             } else {
                 PreferencesUtils.setBgServiceNotificationSound("");
             }
-            OnUpdateApp.createNotificationChannel();
+            OnUpdateApp.createMainNotificationChannel();
         } else {
             super.onActivityResult(requestCode, resultCode, data);
         }
@@ -123,9 +120,6 @@ public class SettingsFragment extends SeslPreferenceFragmentCompat implements
     @Override
     public boolean onPreferenceClick(SeslPreference preference) {
         switch (preference.getKey()) {
-            case "mesa_ors_pref":
-                startActivity(new Intent(getContext(), ORSInnerSettingsActivity.class));
-                return true;
             case "mesa_bgservice_noti_sound_pref":
                 Intent intent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
                 intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_NOTIFICATION);
@@ -150,10 +144,19 @@ public class SettingsFragment extends SeslPreferenceFragmentCompat implements
         return false;
     }
 
-    private int getColoredSummaryColor() {
-        TypedValue outValue = new TypedValue();
-        getContext().getTheme().resolveAttribute(R.attr.colorPrimaryDark, outValue, true);
-        return outValue.data;
+    private ColorStateList getColoredSummaryColor() {
+        TypedValue colorPrimaryDark = new TypedValue();
+        getContext().getTheme().resolveAttribute(R.attr.colorPrimaryDark, colorPrimaryDark, true);
+
+        int[][] states = new int[][] {
+                new int[] { android.R.attr.state_enabled},
+                new int[] {-android.R.attr.state_enabled}
+        };
+        int[] colors = new int[] {
+                colorPrimaryDark.data,
+                0x4D909090
+        };
+        return new ColorStateList(states, colors);
     }
 
 }

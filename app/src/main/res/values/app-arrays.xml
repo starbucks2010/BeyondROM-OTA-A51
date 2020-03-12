@@ -29,8 +29,8 @@
         <item>@string/mesa_mobileorwifi_pref_sum</item>
     </string-array>
     <string-array name="mesa_networktype_pref_values" translatable="false">
-        <item>2</item>
         <item>1</item>
+        <item>0</item>
     </string-array>
 
     <string-array name="mesa_empty_array" translatable="false" />

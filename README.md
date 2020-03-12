@@ -11,4 +11,9 @@ Please notice the app needs external edits to the following files in order to en
 
 ## App contains as per sources:
 * Latest Cerberus Core
+* Main Home Page with update status
+* Download Page with Pause/Resume & noti support
+* Scheduled update check with notification
+* Automated recovery flash
+* Changelog support via html custom page/custom image header
 

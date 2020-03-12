@@ -15,7 +15,7 @@
     <attr name="roundedCornerStrokeColor" format="color" />
     <attr name="listDividerColor" format="color" />
     <attr name="primaryTextColor" format="string|integer|color|reference" />
-    <attr name="secondaryTextColor" format="string|integer|color|reference" />
+    <attr name="secondaryTextColor" format="color" />
     <attr name="buttonCornerRadius" format="dimension" />
     <attr name="tabLayoutStyle" format="reference" />
 

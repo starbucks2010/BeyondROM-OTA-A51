@@ -72,10 +72,10 @@
     </style>
 
     <style name="mesa_ProgressCircleDialogStyle" parent="@style/mesa_OTA_DialogStyle">
-        <item name="android:windowBackground">@drawable/mesa_progressonly_dialog_bg</item>
+        <item name="android:windowBackground">@drawable/mesa_ota_progress_circle_dialog_bg</item>
     </style>
     <style name="mesa_ProgressCircleDialogStyle.Light" parent="@style/mesa_OTA_DialogStyle.Light">
-        <item name="android:windowBackground">@drawable/mesa_progressonly_dialog_bg</item>
+        <item name="android:windowBackground">@drawable/mesa_ota_progress_circle_dialog_bg</item>
     </style>
 
     <style name="mesa_OTA_AlertDialogOverlayStyle" parent="@style/mesa_OTA_DialogStyle">

@@ -1,6 +1,7 @@
 package com.mesalabs.on.update.activity.settings;
 
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.View;
 
 import androidx.fragment.app.Fragment;
@@ -10,7 +11,9 @@ import androidx.fragment.app.FragmentTransaction;
 import com.mesalabs.cerberus.base.BaseAppBarActivity;
 import com.mesalabs.on.update.R;
 import com.mesalabs.on.update.fragment.settings.SettingsFragment;
+import com.mesalabs.on.update.utils.LogUtils;
 import com.samsung.android.ui.preference.SeslPreferenceFragmentCompat;
+import com.samsung.android.ui.recyclerview.widget.SeslRecyclerView;
 
 /*
  * On Update
@@ -35,12 +38,7 @@ public class SettingsActivity extends BaseAppBarActivity {
         setContentView(R.layout.mesa_ota_base_fragment_layout);
 
         appBar.setTitleText(getString(R.string.mesa_app_settings));
-        appBar.setHomeAsUpButton(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
+        appBar.setHomeAsUpButton(v -> onBackPressed());
 
         inflateFragment();
     }

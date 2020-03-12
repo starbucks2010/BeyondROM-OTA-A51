@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout android:id="@+id/mesa_container_ota_changelogview" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginHorizontal="24.0dip" android:layout_marginVertical="8.0dip" android:gravity="center_vertical" android:orientation="vertical">
+        <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginHorizontal="10.0dip" android:orientation="horizontal">
+            <pl.tajchert.waitingdots.DotsTextView android:id="@+id/mesa_progresstitledots_ota_downloadprogressview" android:layout_width="wrap_content" android:layout_height="wrap_content" android:gravity="start" android:textSize="20.0sp" android:textColor="?primaryTextColor" android:fontFamily="@string/sesl_font_family_regular" app:autoplay="true" app:period="1000" app:jumpHeight="10"/>
+            <TextView android:id="@+id/mesa_progresstitle_ota_downloadprogressview" android:layout_width="wrap_content" android:layout_height="wrap_content" android:gravity="start" android:textSize="20.0sp" android:textColor="?primaryTextColor" android:fontFamily="@string/sesl_font_family_regular"/>
+        </LinearLayout>
+        <ProgressBar android:id="@+id/mesa_progressbar_ota_downloadprogressview" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginVertical="10.0dip" android:minHeight="24.0dip" android:maxHeight="24.0dip" android:progressDrawable="@drawable/mesa_ota_download_progressbar" android:max="100" style="@android:style/Widget.DeviceDefault.Light.ProgressBar.Horizontal" />
+        <TextView android:id="@+id/mesa_progressbody_ota_downloadprogressview" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginHorizontal="10.0dip" android:textDirection="locale" android:textSize="14.0sp" android:textColor="@color/mesa_ota_downloadactivity_desc_color" android:fontFamily="@string/sesl_font_family_regular" />
+    </LinearLayout>
+</merge>

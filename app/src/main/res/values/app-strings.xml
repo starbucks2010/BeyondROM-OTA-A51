@@ -4,24 +4,40 @@
 
     <string name="mesa_onupdate_notichannel_main_name">General</string>
     <string name="mesa_onupdate_notichannel_bg_name">Background</string>
-    <string name="mesa_new_update_noti">A new update is available</string>
-    <string name="mesa_new_update_noti_desc">Click here for more info.</string>
+    <string name="mesa_onupdate_notichannel_dwnl_name">Download</string>
+    <string name="mesa_noti_new_update">A new update is available</string>
+    <string name="mesa_noti_new_update_desc">Click here for more info.</string>
+    <string name="mesa_noti_downloading">Downloading update…</string>
+    <string name="mesa_noti_downloading_eta_sec">%1$ds left</string>
+    <string name="mesa_noti_downloading_eta_min">%1$dm %2$ds left</string>
+    <string name="mesa_noti_downloading_eta_hrs">%1$dh %2$dm %3$ds left</string>
+    <string name="mesa_noti_download_paused">Download paused</string>
+    <string name="mesa_noti_download_complete">Download complete</string>
+    <string name="mesa_noti_download_complete_desc">Click here to install the update now.</string>
+    <string name="mesa_noti_download_failed">Download failed</string>
+    <string name="mesa_noti_download_failed_md5_desc">The update package is damaged. Please start the download again.</string>
+    <string name="mesa_noti_update_installed">Update installed successfully</string>
+    <string name="mesa_noti_update_installed_desc">ROM has been updated to %s.</string>
+    <string name="mesa_noti_update_install_fail">Update install failed</string>
+    <string name="mesa_noti_update_install_fail_desc">There was an error during the install. Please try again.</string>
+
     <string name="mesa_download">Download</string>
+    <string name="mesa_pause">Pause</string>
+    <string name="mesa_resume">Resume</string>
+    <string name="mesa_install_now">Install now</string>
+
+    <string name="mesa_onbackpressed_dwn_dialog_title">Download in progress</string>
+    <string name="mesa_onbackpressed_dwn_dialog_msg">Download is currently in progress, going back will cancel the download.</string>
+
+    <string name="mesa_download_failed_md5">Download failed. Update is damaged.</string>
 
     <string name="mesa_settings">Settings</string>
     <string name="mesa_app_settings">On Update Settings</string>
     <string name="mesa_list_summary" translatable="false">%s</string>
-    <string name="mesa_ors_pref_title">Automatic updates installer</string>
-    <string name="mesa_ors_innerscreen_desc">Allows this app to flash updates via recovery without any interaction needed from the user.</string>
-    <string name="mesa_ors_innerscreencateg_title">Miscs</string>
-    <string name="mesa_ors_wipedata_pref_title">Wipe data</string>
-    <string name="mesa_ors_wipecache_pref_title">Wipe cache</string>
-    <string name="mesa_ors_wipedalvik_pref_title">Wipe ART cache</string>
-    <string name="mesa_ors_deleteafter_pref_title">Delete zip after install</string>
     <string name="mesa_notifs_prefcateg_title">Notifications</string>
-    <string name="mesa_bgservice_pref_title">Notifications</string>
+    <string name="mesa_bgservice_pref_title">Updates notifications</string>
     <string name="mesa_bgservice_pref_sum">Automatically check for updates and show a notification when one is available.</string>
-    <string name="mesa_bgservice_freq_pref_title">Update check frequency</string>
+    <string name="mesa_bgservice_freq_pref_title">Updates check frequency</string>
     <string name="mesa_bgservice_freq_30min_pref_sum">30 minutes</string>
     <string name="mesa_bgservice_freq_60min_pref_sum">60 minutes</string>
     <string name="mesa_bgservice_freq_2h_pref_sum">2 hours</string>
@@ -45,8 +61,10 @@
 
 
 
-
-
+    <string name="mesa_ota_card_dwinst_title">Download and install</string>
+    <string name="mesa_ota_card_dwinst_summary">Tap here to start the update download</string>
+    <string name="mesa_ota_card_inst_title">Install now</string>
+    <string name="mesa_ota_card_inst_summary">Tap here to start the update installation</string>
     <string name="mesa_firmware_info">Firmware info</string>
     <string name="mesa_ota_card_fw_info_summary">View the currently installed version of all the ROM software components</string>
     <string name="mesa_fwinfo_default_summary">Unknown</string>
@@ -60,16 +78,29 @@
 
     <string name="mesa_check_for_updates">Check for updates</string>
     <string name="mesa_update_downloading">Download in progress…</string>
+    <string name="mesa_update_download_complete">Update ready to install.</string>
     <string name="mesa_checking_updates">Checking for updates…</string>
     <string name="mesa_no_updates_available">ROM is up to date.</string>
     <string name="mesa_new_update_available">A new update is available.</string>
     <string name="mesa_updates_check_error">There was an error during update checking.</string>
 
     <string name="mesa_whats_new">What\'s new</string>
+    <string name="mesa_whats_new_supertext_separator">•</string>
+    <string name="mesa_whats_new_supertext_rom_version">Version</string>
+    <string name="mesa_whats_new_supertext_rom_build">Build</string>
+    <string name="mesa_whats_new_supertext_file_size">Size</string>
     <string name="mesa_whats_new_subtext">Find out the new additions in this update.</string>
     <string name="mesa_whats_new_error">There was an error during changelog parsing.</string>
 
-    <string name="mesa_time_left_desc">Time left: %s</string>
+    <string name="mesa_no_space_left">No space available for the download.</string>
+
+    <string name="mesa_downloadprogressview_downloading">Downloading update</string>
+    <string name="mesa_downloadprogressview_md5check">Checking file integrity</string>
+    <string name="mesa_downloadprogressview_download_pause">Download paused</string>
+    <string name="mesa_downloadprogressview_download_failed">Download failed</string>
+    <string name="mesa_downloadprogressview_download_complete">Download completed</string>
+    <string name="mesa_downloadprogressview_waiting_for_network">Waiting for network</string>
+    <string name="mesa_downloadprogressview_time_left">Time left: %s</string>
 
     <string name="mesa_no_root_access_dialog_title">No root access</string>
     <string name="mesa_no_root_access_dialog_message">Root access hasn\'t been granted to this app. This happens when access is denied manually or either root isn\'t present in the device. Please do notice root is needed in order for this app to work properly.</string>

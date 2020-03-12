@@ -40,7 +40,7 @@ public class TipsCardViewPreference extends SeslPreference {
 
     public TipsCardViewPreference(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        setLayoutResource(R.layout.mesa_tipcardviewpref_layout);
+        setLayoutResource(R.layout.mesa_preference_tipcardviewpref_layout);
 
         mTextColor = ContextCompat.getColor(context, R.color.sesl_primary_text_color_dark);
     }

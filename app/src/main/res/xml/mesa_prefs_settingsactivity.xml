@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.samsung.android.ui.preference.PreferenceScreen
-    xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <com.samsung.android.ui.preference.SeslSwitchPreferenceScreen
-        android:key="mesa_ors_pref"
-        android:title="@string/mesa_ors_pref_title"
-        android:defaultValue="true" />
+<com.samsung.android.ui.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <com.samsung.android.ui.preference.PreferenceCategory
         android:title="@string/mesa_notifs_prefcateg_title">
@@ -25,20 +20,14 @@
             android:entries="@array/mesa_bgservice_freq_entries"
             android:entryValues="@array/mesa_bgservice_freq_values" />
 
-    </com.samsung.android.ui.preference.PreferenceCategory>
-
-    <com.samsung.android.ui.preference.PreferenceCategory>
-
         <com.samsung.android.ui.preference.SeslPreference
             android:key="mesa_bgservice_noti_sound_pref"
             android:title="@string/mesa_bgservice_noti_sound_pref_title"
-            android:defaultValue="content://settings/system/notification_sound"
-            android:dependency="mesa_bgservice_pref" />
+            android:defaultValue="content://settings/system/notification_sound" />
 
         <com.samsung.android.ui.preference.SeslSwitchPreferenceCompat
             android:key="mesa_bgservice_noti_vibrate_pref"
             android:title="@string/mesa_bgservice_noti_vibrate_pref_title"
-            android:dependency="mesa_bgservice_pref"
             android:defaultValue="true" />
 
     </com.samsung.android.ui.preference.PreferenceCategory>
@@ -50,7 +39,7 @@
             android:key="mesa_networktype_pref"
             android:title="@string/mesa_networktype_pref_title"
             android:summary="@string/mesa_list_summary"
-            android:defaultValue="2"
+            android:defaultValue="1"
             android:entries="@array/mesa_networktype_pref_entries"
             android:entryValues="@array/mesa_networktype_pref_values" />
 
@@ -60,8 +49,10 @@
 
         <com.samsung.android.ui.preference.SeslPreference
             android:key="mesa_aboutactivity_pref"
-            android:title="@string/mesa_aboutactivity_pref_title"/>
+            android:title="@string/mesa_aboutactivity_pref_title" />
 
     </com.samsung.android.ui.preference.PreferenceCategory>
+
+    <com.samsung.android.ui.preference.PreferenceCategory />
 
 </com.samsung.android.ui.preference.PreferenceScreen>

@@ -9,8 +9,12 @@ import android.media.AudioAttributes;
 import android.net.Uri;
 import android.os.Build;
 
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleObserver;
+import androidx.lifecycle.OnLifecycleEvent;
+import androidx.lifecycle.ProcessLifecycleOwner;
+
 import com.mesalabs.on.update.ota.utils.PreferencesUtils;
-import com.mesalabs.on.update.utils.LogUtils;
 
 /*
  * On Update
@@ -24,9 +28,12 @@ import com.mesalabs.on.update.utils.LogUtils;
  *      http://www.apache.org/licenses/LICENSE-2.0
  */
 
-public class OnUpdateApp extends Application {
+public class OnUpdateApp extends Application implements LifecycleObserver {
     private static OnUpdateApp mAppInstance;
     private static Context mAppContext;
+    // On Update
+    private static boolean mIsInBackground;
+    // On Update
 
     public static Context getAppContext() {
         return mAppContext;
@@ -37,7 +44,7 @@ public class OnUpdateApp extends Application {
     }
 
     public static String getAppName() {
-        return mAppInstance.getString(R.string.mesa_cerberuscore);
+        return mAppInstance.getString(R.string.mesa_onupdate);
     }
 
     public static String getAppPackageName() {
@@ -52,6 +59,12 @@ public class OnUpdateApp extends Application {
         return BuildConfig.VERSION_CODE;
     }
 
+    // On Update
+    public static boolean isAppInBackground()  {
+        return mIsInBackground;
+    }
+    // On Update
+
     public static boolean isDebugBuild()  {
         return BuildConfig.DEBUG;
     }
@@ -61,12 +74,17 @@ public class OnUpdateApp extends Application {
         super.onCreate();
         mAppInstance = this;
         mAppContext = this.getApplicationContext();
+        // On Update
+        ProcessLifecycleOwner.get().getLifecycle().addObserver(this);
         if (PreferencesUtils.getMainNotiChannelName().equals("")) {
-            createNotificationChannel();
+            createMainNotificationChannel();
+            createMinorNotificationChannel();
         }
+        // On Update
     }
 
-    public static void createNotificationChannel() {
+    // On Update
+    public static void createMainNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationManager notificationManager = mAppContext.getSystemService(NotificationManager.class);
 
@@ -86,11 +104,30 @@ public class OnUpdateApp extends Application {
                     .setUsage(AudioAttributes.USAGE_NOTIFICATION)
                     .build());
 
-            NotificationChannel notiBgChannel = new NotificationChannel("mesa_onupdate_notichannel_bg", mAppContext.getString(R.string.mesa_onupdate_notichannel_bg_name), NotificationManager.IMPORTANCE_LOW);
-
             notificationManager.createNotificationChannel(notiMainChannel);
-            notificationManager.createNotificationChannel(notiBgChannel);
         }
     }
+
+    private void createMinorNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationManager notificationManager = mAppContext.getSystemService(NotificationManager.class);
+
+            NotificationChannel notiDwnlChannel = new NotificationChannel("mesa_onupdate_notichannel_dwnl", mAppContext.getString(R.string.mesa_onupdate_notichannel_dwnl_name), NotificationManager.IMPORTANCE_DEFAULT);
+            notiDwnlChannel.setSound(null, null);
+
+            notificationManager.createNotificationChannel(notiDwnlChannel);
+        }
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_START)
+    public void onMoveToForeground() {
+        mIsInBackground = false;
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
+    public void onMoveToBackground() {
+        mIsInBackground = true;
+    }
+    // On Update
 
 }

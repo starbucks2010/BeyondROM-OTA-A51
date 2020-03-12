@@ -87,19 +87,13 @@ public class DownloadProgressFragment extends Fragment {
         mContainer.setLayoutTransition(itemLayoutTransition);
 
         downloadProgressView = mRootView.findViewById(R.id.mesa_dpv_download_ota_mainactivity);
-        downloadProgressView.setProgress(80);
-        downloadProgressView.setTimeLeftText("01:02:54");
 
         changelogView = mRootView.findViewById(R.id.mesa_cv_download_ota_mainactivity);
-        changelogView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(mContext, ChangelogActivity.class));
-            }
-        });
-        changelogView.setClickable(false);
-        changelogView.start(true);
+        changelogView.setOnClickListener(v -> startActivity(new Intent(mContext, ChangelogActivity.class)));
+        changelogView.getChangelog();
+    }
 
-        ((MainActivity) mActivity).getBottomBtnView().setText("Pause");
+    public DownloadProgressView getDownloadProgressView() {
+        return downloadProgressView;
     }
 }

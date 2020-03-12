@@ -1,8 +1,6 @@
 package com.mesalabs.on.update.activity.home;
 
-import android.app.Activity;
 import android.app.Dialog;
-import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -13,8 +11,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.webkit.WebResourceError;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.Toast;
 import java.io.InputStream;
@@ -45,6 +46,7 @@ import com.samsung.android.ui.appbar.SeslAppBarLayout;
 
 public class ChangelogActivity extends BaseAppBarActivity {
     private boolean isBgColorDark;
+    private Dialog mProgressCircle;
     private ImageView mImageView;
     private WebView mWebView;
     private WebSettings mWVSettings;
@@ -59,13 +61,15 @@ public class ChangelogActivity extends BaseAppBarActivity {
             finish();
         }
 
-        TypedValue outValue = new TypedValue();
-        getResources().getValue(R.dimen.sesl_abl_height_proportion, outValue, true);
-
-        if (outValue.getFloat() == 0.0f)
-            setFullscreen();
-
         // init UX
+        mProgressCircle = new Dialog(mContext, Utils.isNightMode(mContext) ? R.style.mesa_ProgressCircleDialogStyle : R.style.mesa_ProgressCircleDialogStyle_Light);
+        mProgressCircle.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        mProgressCircle.getWindow().setGravity(Gravity.CENTER);
+        mProgressCircle.setOnCancelListener(dialog -> finish());
+        mProgressCircle.setCanceledOnTouchOutside(false);
+        mProgressCircle.setContentView(LayoutInflater.from(mContext).inflate(R.layout.mesa_view_progress_circle_dialog_layout, null));
+        mProgressCircle.show();
+
         setBaseContentView(R.layout.mesa_ota_activity_changelogactivity_layout);
 
         appBar = new ActionBarUtils(this);
@@ -86,7 +90,17 @@ public class ChangelogActivity extends BaseAppBarActivity {
         appBar.setHomeAsUpButton(v -> onBackPressed());
         appBar.setTitleText(getString(R.string.mesa_whats_new));
 
+        TypedValue outValue = new TypedValue();
+        getResources().getValue(R.dimen.sesl_abl_height_proportion, outValue, true);
+
+        if (outValue.getFloat() == 0.0f)
+            setFullscreen();
+
         new LoadChangelogTask().execute(PreferencesUtils.ROM.getChangelogHeaderImgUrl());
+    }
+
+    private void dismissProgressCircleDialog() {
+        mProgressCircle.dismiss();
     }
 
     private void setLightStatusBar(boolean enable) {
@@ -108,6 +122,8 @@ public class ChangelogActivity extends BaseAppBarActivity {
             params.flags |= WindowManager.LayoutParams.FLAG_FULLSCREEN;
             Utils.genericInvokeMethod(params, "semAddExtensionFlags", 1 /* WindowManager.LayoutParams.SEM_EXTENSION_FLAG_RESIZE_FULLSCREEN_WINDOW_ON_SOFT_INPUT */);
             getWindow().setAttributes(params);
+        } else {
+            appBar.getAppBarLayout().setFitsSystemWindows(false);
         }
     }
 
@@ -145,29 +161,29 @@ public class ChangelogActivity extends BaseAppBarActivity {
     }
 
     private class LoadChangelogTask extends AsyncTask<String, Void, Bitmap> {
-        private Dialog mProgressCircle;
-
         public LoadChangelogTask() {
             mImageView = findViewById(R.id.mesa_appbarbg_changelogactivity);
             mWebView = findViewById(R.id.mesa_webview_changelogactivity);
-            mWVSettings = mWebView.getSettings();
             mWebView.loadUrl(PreferencesUtils.ROM.getChangelogUrl());
+            mWebView.setWebViewClient(new WebViewClient() {
+                @Override
+                public void onPageFinished(WebView view, String url) {
+                    super.onPageFinished(view, url);
+                    dismissProgressCircleDialog();
+                }
+
+                @Override
+                public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
+                    Toast.makeText(mContext, R.string.mesa_whats_new_error, Toast.LENGTH_LONG).show();
+                    finish();
+                }
+            });
+            mWVSettings = mWebView.getSettings();
             mWVSettings.setSupportZoom(false);
             mWVSettings.setBuiltInZoomControls(false);
             mWVSettings.setDisplayZoomControls(false);
             mWVSettings.setLoadWithOverviewMode(true);
             mWVSettings.setUseWideViewPort(true);
-        }
-
-        @Override
-        protected void onPreExecute() {
-            mProgressCircle = new Dialog(mContext, Utils.isNightMode(mContext) ? R.style.mesa_ProgressCircleDialogStyle : R.style.mesa_ProgressCircleDialogStyle_Light);
-            mProgressCircle.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            mProgressCircle.getWindow().setGravity(Gravity.CENTER);
-            mProgressCircle.setCancelable(false);
-            mProgressCircle.setCanceledOnTouchOutside(false);
-            mProgressCircle.setContentView(LayoutInflater.from(mContext).inflate(R.layout.mesa_progress_circle_dialog_layout, null));
-            mProgressCircle.show();
         }
 
         @Override
@@ -196,8 +212,6 @@ public class ChangelogActivity extends BaseAppBarActivity {
             } else {
                 LogUtils.e("DownloadHeaderImageTask", "result is null!!!");
             }
-
-            mProgressCircle.cancel();
         }
 
         private int getDominantColor(Bitmap bitmap) {

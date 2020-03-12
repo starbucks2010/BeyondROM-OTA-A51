@@ -7,7 +7,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <include layout="@layout/mesa_toolbar_layout"
+    <include layout="@layout/mesa_view_toolbar_layout"
         android:layout_width="fill_parent"
         android:layout_height="?actionBarSize"
         android:layout_marginBottom="@dimen/sesl_material_extended_appbar_bottom_padding"/>

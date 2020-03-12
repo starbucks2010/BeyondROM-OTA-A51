@@ -1,9 +1,5 @@
 package com.mesalabs.on.update.ota.utils;
 
-import android.os.Environment;
-
-import com.mesalabs.cerberus.utils.PropUtils;
-
 /*
  * On Update
  *
@@ -17,23 +13,20 @@ import com.mesalabs.cerberus.utils.PropUtils;
  *      http://www.apache.org/licenses/LICENSE-2.0
  */
 
+import com.mesalabs.cerberus.utils.PropUtils;
+
 public class Constants {
     // Props
-    public static final String OTA_ROMNAME 								= "ro.on.ota.romname";
-    public static final String OTA_VERSION 								= "ro.on.ota.version";
-    public static final String OTA_MANIFEST 							= "ro.on.ota.manifest";
-    public static final String OTA_DOWNLOAD_LOC							= "ro.on.ota.download_loc";
+    public static final String PROP_ROM_BUILD = "ro.on.core.build";
 
-    // Storage
-    public static final String SD_CARD 									= Environment.getExternalStorageDirectory().getAbsolutePath();
-    public static final String OTA_DOWNLOAD_DIR 						= PropUtils.get(OTA_DOWNLOAD_LOC, "OTAUpdates");
-    public static final String INSTALL_AFTER_FLASH_DIR 					= "InstallAfterFlash";
+    // Manifest
+    public static final String OTA_MANIFEST_URL = "https://gitlab.com/BlackMesa123/on-otamanifest/raw/master/" + PropUtils.get(PROP_ROM_BUILD, "0") + "/rom-manifest.xml";
 
     // Broadcast intents
-    public static final String MANIFEST_LOADED 							= "com.mesalabs.on.ota.MANIFEST_LOADED";
-    public static final String MANIFEST_CHECK_BACKGROUND 				= "com.mesalabs.on.ota.MANIFEST_CHECK_BACKGROUND";
-    public static final String START_UPDATE_CHECK 						= "com.mesalabs.on.ota.START_UPDATE_CHECK";
+    public static final String INTENT_MANIFEST_LOADED = "com.mesalabs.on.ota.MANIFEST_LOADED";
+    public static final String INTENT_MANIFEST_CHECK_BACKGROUND = "com.mesalabs.on.ota.MANIFEST_CHECK_BACKGROUND";
+    public static final String INTENT_START_UPDATE_CHECK = "com.mesalabs.on.ota.START_UPDATE_CHECK";
 
-    //Notification
+    // Notification
     public static final int NOTIFICATION_ID 							= 101;
 }

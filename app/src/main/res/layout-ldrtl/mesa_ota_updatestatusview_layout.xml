@@ -1,0 +1,35 @@
+<LinearLayout android:layout_width="fill_parent" android:layout_height="88.0dip" android:paddingHorizontal="31.0dip" android:paddingVertical="12.0dip" android:orientation="horizontal" android:gravity="center_vertical"
+    android:id="@+id/mesa_container_updatestatusview" xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <TextView
+        android:textSize="24.0dip"
+        android:textColor="?primaryTextColor"
+        android:ellipsize="end"
+        android:id="@+id/mesa_textview_updatestatusview"
+        android:layout_width="0.0dip"
+        android:layout_height="fill_parent"
+        android:layout_weight="1.0"
+        android:gravity="end|center_vertical"
+        android:lineSpacingExtra="4.0sp"
+        android:textStyle="normal"
+        android:fontFamily="sans-serif-light"
+        android:maxLines="2" />
+    <FrameLayout
+        android:layout_width="48.0dip"
+        android:layout_height="48.0dip"
+        android:layout_marginStart="8.0dp">
+        <com.github.ybq.android.spinkit.SpinKitView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center"
+            android:id="@+id/mesa_loading_updatestatusview"
+            app:SpinKit_Color="@color/mesa_ota_primary_dark_color_light" />
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:id="@+id/mesa_imageview_updatestatusview"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            android:scaleType="centerInside"
+            android:tint="@color/mesa_ota_primary_dark_color_light"/>
+    </FrameLayout>
+</LinearLayout>

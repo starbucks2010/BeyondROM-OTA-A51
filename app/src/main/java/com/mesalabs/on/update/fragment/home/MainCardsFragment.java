@@ -21,10 +21,13 @@ import com.mesalabs.on.update.activity.home.ChangelogActivity;
 import com.mesalabs.on.update.activity.home.FirmwareInfoActivity;
 import com.mesalabs.on.update.activity.home.MainActivity;
 import com.mesalabs.on.update.ota.ROMUpdate;
+import com.mesalabs.on.update.ota.tasks.GenerateRecoveryScript;
 import com.mesalabs.on.update.ota.utils.PreferencesUtils;
 import com.mesalabs.on.update.ui.widget.CardView;
 import com.mesalabs.on.update.ui.widget.ChangelogView;
 import com.mesalabs.on.update.ui.widget.UpdateStatusView;
+
+import org.jetbrains.annotations.NotNull;
 
 /*
  * On Update
@@ -40,17 +43,11 @@ import com.mesalabs.on.update.ui.widget.UpdateStatusView;
 
 public class MainCardsFragment extends Fragment {
     private ROMUpdate mROMUpdate;
-    private ROMUpdate.StubListener mROMStubListener = new ROMUpdate.StubListener() {
-        public void onUpdateCheckCompleted(int status) {
-            updateStatusView.setUpdateStatus(status);
-            ((MainActivity) mActivity).animateRefreshButton(true);
-            unc.setEnabled(true);
-            changelogView.start(status == ROMUpdate.STATE_NEW_VERSION_AVAILABLE);
-        }
-    };
+    private ROMUpdate.StubListener mROMStubListener = this::postROMUpdatesCheck;
 
     private FragmentActivity mActivity;
     private Context mContext;
+    private boolean mIsDownloaded;
 
     private View mRootView;
     private LinearLayout mContainer;
@@ -61,15 +58,15 @@ public class MainCardsFragment extends Fragment {
     private CardView fic;
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NotNull Context context) {
         super.onAttach(context);
         mActivity = (FragmentActivity) context;
         mContext = mActivity.getApplicationContext();
 
+        mIsDownloaded = PreferencesUtils.Download.getDownloadFinished();
+
         //  init ROMUpdate
         mROMUpdate = new ROMUpdate(context, mROMStubListener);
-        if (!PreferencesUtils.Download.getIsDownloadOnGoing())
-            mROMUpdate.checkUpdates(true);
     }
 
     @Override
@@ -91,7 +88,19 @@ public class MainCardsFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void onHiddenChanged(boolean hidden) {
+        mIsDownloaded = PreferencesUtils.Download.getDownloadFinished();
+        if (mIsDownloaded) {
+            updateStatusView.setUpdateStatus(ROMUpdate.STATE_DOWNLOADED);
+            unc.setIconDrawable(getResources().getDrawable(R.drawable.mesa_ota_card_ic_install, getContext().getTheme()));
+            unc.setTitleText(getString(R.string.mesa_ota_card_inst_title));
+            unc.setDescText(getString(R.string.mesa_ota_card_inst_summary));
+            unc.setOnClickListener(v -> new GenerateRecoveryScript(mActivity).execute());
+        }
+    }
+
+    @Override
+    public void onViewCreated(@NotNull View view, Bundle savedInstanceState) {
         LayoutTransition itemLayoutTransition = new LayoutTransition();
         Animator scaleDown = ObjectAnimator.ofPropertyValuesHolder(mContainer, PropertyValuesHolder.ofFloat("alpha", 1, 0));
         Animator scaleUp = ObjectAnimator.ofPropertyValuesHolder(mContainer, PropertyValuesHolder.ofFloat("alpha", 0, 1));
@@ -108,34 +117,50 @@ public class MainCardsFragment extends Fragment {
 
         updateStatusView = mRootView.findViewById(R.id.mesa_usv_maincards_ota_mainactivity);
         changelogView = mRootView.findViewById(R.id.mesa_cv_maincards_ota_mainactivity);
-        changelogView.setOnClickListener(v -> {
-            startActivity(new Intent(mContext, ChangelogActivity.class));
-        });
+        changelogView.setOnClickListener(v -> startActivity(new Intent(mContext, ChangelogActivity.class)));
         changelogView.setClickable(false);
 
-        unc = mRootView.findViewById(R.id.mesa_m1_ota_mainactivity);
-        unc.setOnClickListener(v -> {
-            ((MainActivity) mActivity).switchToFragment(1);
-            updateStatusView.setUpdateStatus(ROMUpdate.STATE_DOWNLOADING);
-        });
+        unc = mRootView.findViewById(R.id.mesa_card_all_ota_mainactivity);
         unc.setEnabled(false);
 
-        fic = mRootView.findViewById(R.id.mesa_m2_ota_mainactivity);
-        fic.setOnClickListener(v -> {
-            startActivity(new Intent(mContext, FirmwareInfoActivity.class));
-        });
-    }
+        fic = mRootView.findViewById(R.id.mesa_card_fwinfo_ota_mainactivity);
+        fic.setOnClickListener(v -> startActivity(new Intent(mContext, FirmwareInfoActivity.class)));
 
-    public ChangelogView getChangelogView() {
-        return changelogView;
-    }
+        if (mIsDownloaded) {
+            updateStatusView.start(ROMUpdate.STATE_DOWNLOADED);
+            changelogView.start();
+            unc.setEnabled(true);
+            unc.setIconDrawable(getResources().getDrawable(R.drawable.mesa_ota_card_ic_install, getContext().getTheme()));
+            unc.setTitleText(getString(R.string.mesa_ota_card_inst_title));
+            unc.setDescText(getString(R.string.mesa_ota_card_inst_summary));
+            unc.setOnClickListener(v -> new GenerateRecoveryScript(mActivity).execute());
+        } else {
+            updateStatusView.start(ROMUpdate.STATE_CHECKING);
+            checkForROMUpdates();
+        }
 
-    public UpdateStatusView getUpdateStatusView() {
-        return updateStatusView;
     }
 
     public void checkForROMUpdates() {
+        if (updateStatusView.getCheckingStatus() != ROMUpdate.STATE_CHECKING)
+            updateStatusView.setUpdateStatus(ROMUpdate.STATE_CHECKING);
+        changelogView.stop();
+        unc.setEnabled(false);
+        unc.setDescText(null);
+        unc.setOnClickListener(null);
         mROMUpdate.checkUpdates(true);
+    }
+
+    private void postROMUpdatesCheck(int status) {
+        ((MainActivity) mActivity).animateRefreshButton(true);
+        updateStatusView.setUpdateStatus(status);
+
+        if (PreferencesUtils.Download.getUpdateAvailability()) {
+            changelogView.start();
+            unc.setEnabled(true);
+            unc.setDescText(getString(R.string.mesa_ota_card_dwinst_summary));
+            unc.setOnClickListener(v -> ((MainActivity) mActivity).onPreROMUpdateDownload());
+        }
     }
 
 }

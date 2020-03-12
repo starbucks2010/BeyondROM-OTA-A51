@@ -8,18 +8,13 @@
     <com.mesalabs.on.update.ui.widget.DownloadProgressView
         android:id="@+id/mesa_dpv_download_ota_mainactivity"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
-
-    <View
-        android:layout_width="fill_parent"
-        android:layout_height="20.0dip"
-        android:background="?round_and_bgColor"/>
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16.0dip" />
 
     <com.mesalabs.on.update.ui.widget.ChangelogView
         android:id="@+id/mesa_cv_download_ota_mainactivity"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20.0dip"
-        android:visibility="gone"/>
+        android:layout_marginBottom="16.0dip" />
 
 </LinearLayout>

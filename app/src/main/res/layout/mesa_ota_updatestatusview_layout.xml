@@ -16,7 +16,7 @@
     <FrameLayout
         android:layout_width="48.0dip"
         android:layout_height="48.0dip"
-        android:layout_marginStart="4.0dp">
+        android:layout_marginStart="8.0dp">
         <com.github.ybq.android.spinkit.SpinKitView
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"

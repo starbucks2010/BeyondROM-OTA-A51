@@ -32,6 +32,6 @@ public class CreditsPreference extends SeslPreference {
 
     public CreditsPreference(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        setLayoutResource(R.layout.mesa_creditspref_layout);
+        setLayoutResource(R.layout.mesa_preference_creditspref_layout);
     }
 }
