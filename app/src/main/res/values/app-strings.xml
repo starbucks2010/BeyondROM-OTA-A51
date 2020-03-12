@@ -16,9 +16,9 @@
     <string name="mesa_noti_download_complete_desc">Click here to install the update now.</string>
     <string name="mesa_noti_download_failed">Download failed</string>
     <string name="mesa_noti_download_failed_md5_desc">The update package is damaged. Please start the download again.</string>
-    <string name="mesa_noti_update_installed">Update installed successfully</string>
+    <string name="mesa_noti_update_installed">Update installed</string>
     <string name="mesa_noti_update_installed_desc">ROM has been updated to %s.</string>
-    <string name="mesa_noti_update_install_fail">Update install failed</string>
+    <string name="mesa_noti_update_install_fail">Update failed</string>
     <string name="mesa_noti_update_install_fail_desc">There was an error during the install. Please try again.</string>
 
     <string name="mesa_download">Download</string>
@@ -67,6 +67,10 @@
     <string name="mesa_ota_card_inst_summary">Tap here to start the update installation</string>
     <string name="mesa_firmware_info">Firmware info</string>
     <string name="mesa_ota_card_fw_info_summary">View the currently installed version of all the ROM software components</string>
+
+    <string name="mesa_pre_install_warning">Device will be rebooted once the install procedure starts. Please make sure to save all of your work in background before installing the update.</string>
+
+
     <string name="mesa_fwinfo_default_summary">Unknown</string>
     <string name="mesa_fwinfo_on_rom_version_title">ROM version</string>
     <string name="mesa_fwinfo_on_enso_version_title">ensō version</string>

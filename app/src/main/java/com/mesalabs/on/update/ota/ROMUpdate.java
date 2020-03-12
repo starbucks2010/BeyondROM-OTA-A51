@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.Toast;
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -364,6 +365,7 @@ public class ROMUpdate {
                     mActivity.switchToFragment(MainActivity.MAIN_PAGE_FRAGMENT);
                 } else {
                     mDPV.setDownloadCompleteStatus();
+                    mActivity.getDownloadFragment().getPreInstallWarningTextView().setVisibility(View.VISIBLE);
                     mActivity.animateBottomInstallButton(true);
                 }
             } else {

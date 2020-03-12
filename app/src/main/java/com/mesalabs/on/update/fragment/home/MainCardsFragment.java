@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -53,6 +54,7 @@ public class MainCardsFragment extends Fragment {
     private LinearLayout mContainer;
     private UpdateStatusView updateStatusView;
     private ChangelogView changelogView;
+    private TextView preInstallWarningText;
 
     private CardView unc;
     private CardView fic;
@@ -92,6 +94,7 @@ public class MainCardsFragment extends Fragment {
         mIsDownloaded = PreferencesUtils.Download.getDownloadFinished();
         if (mIsDownloaded) {
             updateStatusView.setUpdateStatus(ROMUpdate.STATE_DOWNLOADED);
+            preInstallWarningText.setVisibility(View.VISIBLE);
             unc.setIconDrawable(getResources().getDrawable(R.drawable.mesa_ota_card_ic_install, getContext().getTheme()));
             unc.setTitleText(getString(R.string.mesa_ota_card_inst_title));
             unc.setDescText(getString(R.string.mesa_ota_card_inst_summary));
@@ -119,6 +122,7 @@ public class MainCardsFragment extends Fragment {
         changelogView = mRootView.findViewById(R.id.mesa_cv_maincards_ota_mainactivity);
         changelogView.setOnClickListener(v -> startActivity(new Intent(mContext, ChangelogActivity.class)));
         changelogView.setClickable(false);
+        preInstallWarningText = mRootView.findViewById(R.id.mesa_preinstall_warning_ota_mainactivity);
 
         unc = mRootView.findViewById(R.id.mesa_card_all_ota_mainactivity);
         unc.setEnabled(false);
@@ -129,6 +133,7 @@ public class MainCardsFragment extends Fragment {
         if (mIsDownloaded) {
             updateStatusView.start(ROMUpdate.STATE_DOWNLOADED);
             changelogView.start();
+            preInstallWarningText.setVisibility(View.VISIBLE);
             unc.setEnabled(true);
             unc.setIconDrawable(getResources().getDrawable(R.drawable.mesa_ota_card_ic_install, getContext().getTheme()));
             unc.setTitleText(getString(R.string.mesa_ota_card_inst_title));

@@ -24,6 +24,20 @@
         android:layout_marginBottom="16.0dip"
         android:visibility="gone"/>
 
+    <TextView
+        android:id="@+id/mesa_preinstall_warning_ota_mainactivity"
+        android:visibility="gone"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/sesl_list_item_padding_horizontal"
+        android:layout_marginTop="4.0dip"
+        android:layout_marginBottom="20.0dip"
+        android:textAppearance="?android:textAppearanceListItem"
+        android:textSize="15.0sp"
+        android:textColor="@color/mesa_widget_body_text_color"
+        android:lineSpacingExtra="4.0sp"
+        android:text="@string/mesa_pre_install_warning" />
+
     <com.mesalabs.cerberus.ui.widget.RoundLinearLayout
         android:background="@drawable/mesa_content_area_bg"
         android:layout_width="fill_parent"
