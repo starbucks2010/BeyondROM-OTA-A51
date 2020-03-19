@@ -12,12 +12,13 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.widget.AppCompatButton;
+
 import com.mesalabs.on.update.OnUpdateApp;
 import com.mesalabs.on.update.R;
 import com.mesalabs.on.update.activity.aboutpage.CreditsActivity;
 import com.mesalabs.on.update.activity.aboutpage.OpenSourceLicenseActivity;
 import com.mesalabs.cerberus.ui.callback.OnSingleClickListener;
-import com.mesalabs.cerberus.ui.widget.CustomButton;
 import com.mesalabs.cerberus.update.utils.AppUpdateUtils;
 import com.mesalabs.cerberus.utils.StateUtils;
 import com.mesalabs.cerberus.utils.Utils;
@@ -50,12 +51,12 @@ public class BaseAboutActivity extends BaseAppBarActivity {
     protected View mEmptyMiddle;
     protected View mEmptyTop;
     protected LinearLayout mLowerLayout;
-    protected Button mCredits;
-    protected Button mOpenSource;
-    protected Button mCreditsInLower;
-    protected Button mOpenSourceInLower;
+    protected AppCompatButton mCredits;
+    protected AppCompatButton mOpenSource;
+    protected AppCompatButton mCreditsInLower;
+    protected AppCompatButton mOpenSourceInLower;
     protected ProgressBar mProgressBar;
-    protected CustomButton mUpdateButton;
+    protected AppCompatButton mUpdateButton;
     protected LinearLayout mUpperLayout;
     protected TextView mAppNameText;
     protected TextView mVersionText;
@@ -104,7 +105,7 @@ public class BaseAboutActivity extends BaseAppBarActivity {
         mProgressBar = findViewById(R.id.mesa_progress_appinfolayout_baseaboutactivity);
         mAvailableText = findViewById(R.id.mesa_versionnotice_appinfolayout_baseaboutactivity);
         mUpdateButton = findViewById(R.id.mesa_updatebutton_appinfolayout_baseaboutactivity);
-        mUpdateButton.getTextView().setCompoundDrawables(null, null, null, null);
+        mUpdateButton.setCompoundDrawables(null, null, null, null);
         mCredits = findViewById(R.id.mesa_creditsbtn_baseaboutactivity);
         mOpenSource = findViewById(R.id.mesa_opensourcebtn_baseaboutactivity);
         mCreditsInLower = findViewById(R.id.mesa_creditsbtn_lowerlayout_baseaboutactivity);
@@ -271,7 +272,7 @@ public class BaseAboutActivity extends BaseAppBarActivity {
 
     protected final void setTextSize() {
         ViewUtils.setLargeTextSize(mContext, mAppNameText, (float) getResources().getDimensionPixelSize(R.dimen.mesa_appname_text_baseaboutactivity));
-        ViewUtils.setLargeTextSize(mContext, mUpdateButton.getTextView(), (float) getResources().getDimensionPixelSize(R.dimen.mesa_updatebtn_text_baseaboutactivity));
+        ViewUtils.setLargeTextSize(mContext, mUpdateButton, (float) getResources().getDimensionPixelSize(R.dimen.mesa_updatebtn_text_baseaboutactivity));
 
         float dimensionPixelSize = (float) getResources().getDimensionPixelSize(R.dimen.mesa_version_text_baseaboutactivity);
         ViewUtils.setLargeTextSize(mContext, mVersionText, dimensionPixelSize);

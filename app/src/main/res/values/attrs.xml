@@ -60,9 +60,6 @@
     <attr name="progressActivatedColor" format="reference|color" />
     <attr name="progressNormalColor" format="reference|color" />
 
-    <declare-styleable name="CustomButton">
-        <attr name="text" format="string" />
-    </declare-styleable>
     <declare-styleable name="RoundFrameLayout">
         <attr name="cornersStroke" />
         <attr name="roundedCorners" />

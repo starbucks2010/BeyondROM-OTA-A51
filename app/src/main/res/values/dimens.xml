@@ -315,5 +315,5 @@
     <dimen name="mesa_appname_text_baseaboutactivity">40.0sp</dimen>
     <dimen name="mesa_version_text_baseaboutactivity">16.0sp</dimen>
     <dimen name="mesa_updatebtn_text_baseaboutactivity">18.0sp</dimen>
-    <dimen name="mesa_bottombtn_text_baseaboutactivity">15.0sp</dimen>
+    <dimen name="mesa_bottombtn_text_baseaboutactivity">17.0sp</dimen>
 </resources>
