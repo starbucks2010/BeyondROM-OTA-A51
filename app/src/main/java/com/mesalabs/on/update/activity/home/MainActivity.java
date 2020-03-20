@@ -131,13 +131,19 @@ public class MainActivity extends BaseAppBarActivity {
         });
         if (mIsFromLauncher)
             appBar.setHomeAsUpButtonVisible(false);
-        appBar.addOverflowButton(false, R.drawable.mesa_ota_ic_ab_refresh, R.string.mesa_check_for_updates, v -> {
-            if (!StateUtils.isNetworkConnected(mContext)) {
-                Toast.makeText(mContext, R.string.mesa_no_network_connection, Toast.LENGTH_LONG).show();
-            }
-            animateRefreshButton(false);
-            ((MainCardsFragment) mFragment).checkForROMUpdates();
-        });
+        appBar.addOverflowButton(false,
+                R.drawable.mesa_ota_ic_ab_refresh,
+                R.string.mesa_check_for_updates,
+                new OnSingleClickListener() {
+                    @Override
+                    public void onSingleClick(View view) {
+                        if (!StateUtils.isNetworkConnected(mContext)) {
+                            Toast.makeText(mContext, R.string.mesa_no_network_connection, Toast.LENGTH_LONG).show();
+                        }
+                        animateRefreshButton(false);
+                        ((MainCardsFragment) mFragment).checkForROMUpdates();
+                    }
+                });
         mRefreshBtn = appBar.getOverflowIcon(0);
         initMoreMenuButton();
 
