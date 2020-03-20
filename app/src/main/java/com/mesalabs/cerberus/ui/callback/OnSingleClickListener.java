@@ -18,8 +18,6 @@ import android.view.View;
  * EXTERNALS IS PROHIBITED AND WILL BE PUNISHED WITH ANAL ABUSE.
  */
 
-// kang com.sec.android.app.clockpackage.common.callback.OnSingleClickListener
-
 public abstract class OnSingleClickListener implements View.OnClickListener {
     public long mLastClickTime;
 

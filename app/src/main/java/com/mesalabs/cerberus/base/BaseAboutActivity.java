@@ -75,17 +75,17 @@ public class BaseAboutActivity extends BaseAppBarActivity {
 
         setContentView(R.layout.mesa_baselayout_baseaboutactivity);
 
-        appBar.setHomeAsUpButton(new View.OnClickListener() {
+        appBar.setHomeAsUpButton(new OnSingleClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onSingleClick(View view) {
                 onBackPressed();
             }
         });
         appBar.addOverflowButton(true, R.drawable.sesl_ic_ab_app_info,
                 R.string.mesa_app_info,
-                new View.OnClickListener() {
+                new OnSingleClickListener() {
                     @Override
-                    public void onClick(View v) {
+                    public void onSingleClick(View view) {
                         Intent intent = new Intent("android.settings.APPLICATION_DETAILS_SETTINGS", Uri.fromParts("package", OnUpdateApp.getAppPackageName(), null));
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);

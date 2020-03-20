@@ -7,8 +7,9 @@ import android.widget.TextView;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.mesalabs.on.update.R;
 import com.mesalabs.cerberus.base.BaseAppBarActivity;
+import com.mesalabs.cerberus.ui.callback.OnSingleClickListener;
+import com.mesalabs.on.update.R;
 import com.mesalabs.on.update.fragment.aboutpage.CreditsFragment;
 
 /*
@@ -33,9 +34,9 @@ public class CreditsActivity extends BaseAppBarActivity {
         setContentView(R.layout.mesa_layout_creditsactivity);
 
         appBar.setTitleText(getString(R.string.mesa_credits));
-        appBar.setHomeAsUpButton(new View.OnClickListener() {
+        appBar.setHomeAsUpButton(new OnSingleClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onSingleClick(View view) {
                 onBackPressed();
             }
         });
