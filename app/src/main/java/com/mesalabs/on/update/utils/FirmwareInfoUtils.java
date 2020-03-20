@@ -68,7 +68,7 @@ public class FirmwareInfoUtils {
             return null;
         }
         try {
-            return DateFormat.format(DateFormat.getBestDateTimePattern(Locale.UK, "dMMMMyyyy"), new SimpleDateFormat("yyyy-MM-dd").parse(patch)).toString();
+            return DateFormat.format(DateFormat.getBestDateTimePattern(Locale.getDefault(), "dMMMMyyyy"), new SimpleDateFormat("yyyy-MM-dd").parse(patch)).toString();
         } catch (ParseException e) {
             return patch;
         }

@@ -59,7 +59,7 @@ public class MainActivity extends BaseAppBarActivity {
     public static int DOWNLOAD_PROGRESS_FRAGMENT = 1;
 
     private boolean mAppUpdateAvailable = false;
-    private boolean mIsDownloadCompleted = false;
+    private boolean mIsDownloadeing = false;
     private boolean mIsFromLauncher = true;
     private final Class[] mFragmentClasses = {MainCardsFragment.class, DownloadProgressFragment.class};
     private final String[] mFragmentTags = {"MainCards", "DownloadProgress"};
@@ -103,9 +103,9 @@ public class MainActivity extends BaseAppBarActivity {
             mIsFromLauncher = getIntent().getExtras().getBoolean("mesa_ota_isfromlauncher", true);
         }
 
-        mIsDownloadCompleted = PreferencesUtils.Download.getDownloadFinished();
+        mIsDownloadeing = PreferencesUtils.Download.getDownloadFinished();
 
-        if (!mIsDownloadCompleted) {
+        if (!mIsDownloadeing) {
             PreferencesUtils.ROM.clean();
             PreferencesUtils.Download.clean();
         }
@@ -362,8 +362,8 @@ public class MainActivity extends BaseAppBarActivity {
 
     public void switchToFragment(int index) {
         newFragmentIndex = index;
-        mIsDownloadCompleted = PreferencesUtils.Download.getDownloadFinished();
-        animateRefreshButton(!PreferencesUtils.Download.getIsDownloadOnGoing() || !mIsDownloadCompleted);
+        mIsDownloadeing = PreferencesUtils.Download.getDownloadFinished() || PreferencesUtils.Download.getIsDownloadOnGoing();
+        animateRefreshButton(!mIsDownloadeing);
         mFragmentContainer.startAnimation(mFadeOutAnim_F);
     }
 

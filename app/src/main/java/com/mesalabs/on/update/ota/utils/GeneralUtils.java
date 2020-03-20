@@ -44,21 +44,6 @@ public class GeneralUtils {
         return PendingIntent.getBroadcast(context, 1673, intent, PendingIntent.FLAG_NO_CREATE) != null;
     }
 
-    public static void setHasFileDownloaded(Context context) {
-        File file = new File(PreferencesUtils.ROM.getFullFilePathName(context));
-        long filesize = PreferencesUtils.ROM.getFileSize();
-        boolean downloadIsRunning = PreferencesUtils.Download.getIsDownloadOnGoing();
-
-        boolean status = false;
-
-        LogUtils.d(TAG, "Local file: " + file.getAbsolutePath() + ", local filesize: " + file.length() + ", remote filesize: " + filesize);
-
-        if (file.length() != 0L && file.length() == filesize && !downloadIsRunning) {
-            status = true;
-        }
-        PreferencesUtils.Download.setDownloadFinished(status);
-    }
-
     public static void setBackgroundCheck(Context context, boolean set) {
         scheduleNotification(context, set);
     }

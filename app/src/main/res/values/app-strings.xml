@@ -38,15 +38,11 @@
     <string name="mesa_bgservice_pref_title">Updates notifications</string>
     <string name="mesa_bgservice_pref_sum">Automatically check for updates and show a notification when one is available.</string>
     <string name="mesa_bgservice_freq_pref_title">Updates check frequency</string>
-    <string name="mesa_bgservice_freq_30min_pref_sum">30 minutes</string>
     <string name="mesa_bgservice_freq_60min_pref_sum">60 minutes</string>
-    <string name="mesa_bgservice_freq_2h_pref_sum">2 hours</string>
     <string name="mesa_bgservice_freq_3h_pref_sum">3 hours</string>
     <string name="mesa_bgservice_freq_6h_pref_sum">6 hours</string>
     <string name="mesa_bgservice_freq_12h_pref_sum">12 hours</string>
     <string name="mesa_bgservice_freq_24h_pref_sum">Daily</string>
-    <string name="mesa_bgservice_freq_2d_pref_sum">2 days</string>
-    <string name="mesa_bgservice_freq_3d_pref_sum">3 days</string>
     <string name="mesa_bgservice_freq_7d_pref_sum">Weekly</string>
     <string name="mesa_bgservice_noti_sound_pref_title">Sound</string>
     <string name="mesa_bgservice_noti_sound_silent_sum">Silent</string>

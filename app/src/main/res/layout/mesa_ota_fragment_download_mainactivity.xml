@@ -27,7 +27,7 @@
         android:layout_marginBottom="20.0dip"
         android:textAppearance="?android:textAppearanceListItem"
         android:textSize="15.0sp"
-        android:textColor="@color/mesa_widget_body_text_color"
+        android:textColor="?secondaryTextColor"
         android:lineSpacingExtra="4.0sp"
         android:text="@string/mesa_pre_install_warning" />
 

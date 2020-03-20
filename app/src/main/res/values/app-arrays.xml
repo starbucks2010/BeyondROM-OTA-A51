@@ -1,25 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="mesa_bgservice_freq_entries">
-        <item>@string/mesa_bgservice_freq_30min_pref_sum</item>
         <item>@string/mesa_bgservice_freq_60min_pref_sum</item>
-        <item>@string/mesa_bgservice_freq_2h_pref_sum</item>
         <item>@string/mesa_bgservice_freq_3h_pref_sum</item>
         <item>@string/mesa_bgservice_freq_6h_pref_sum</item>
         <item>@string/mesa_bgservice_freq_12h_pref_sum</item>
         <item>@string/mesa_bgservice_freq_24h_pref_sum</item>
-        <item>@string/mesa_bgservice_freq_3d_pref_sum</item>
         <item>@string/mesa_bgservice_freq_7d_pref_sum</item>
     </string-array>
     <string-array name="mesa_bgservice_freq_values" translatable="false">
-        <item>1800</item>
         <item>3600</item>
-        <item>7200</item>
         <item>10800</item>
         <item>21600</item>
         <item>43200</item>
         <item>86400</item>
-        <item>259200</item>
         <item>604800</item>
     </string-array>
 

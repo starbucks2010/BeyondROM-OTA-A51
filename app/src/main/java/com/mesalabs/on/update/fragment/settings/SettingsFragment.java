@@ -1,10 +1,13 @@
 package com.mesalabs.on.update.fragment.settings;
 
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.TypedValue;
@@ -77,6 +80,12 @@ public class SettingsFragment extends SeslPreferenceFragmentCompat implements
     @Override
     public void onStart() {
         super.onStart();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationManager notificationManager = getContext().getSystemService(NotificationManager.class);
+            Uri value = notificationManager.getNotificationChannel(PreferencesUtils.getMainNotiChannelName()).getSound();
+            PreferencesUtils.setBgServiceNotificationSound(value == null ? "" : value.toString());
+        }
 
         SeslPreference bgServiceNotiSoundPref = findPreference("mesa_bgservice_noti_sound_pref");
         String title = getString(R.string.mesa_bgservice_noti_sound_silent_sum);
@@ -153,8 +162,8 @@ public class SettingsFragment extends SeslPreferenceFragmentCompat implements
                 new int[] {-android.R.attr.state_enabled}
         };
         int[] colors = new int[] {
-                colorPrimaryDark.data,
-                0x4D909090
+                Color.argb(0xff, Color.red(colorPrimaryDark.data), Color.green(colorPrimaryDark.data), Color.blue(colorPrimaryDark.data)),
+                Color.argb(0x4d, Color.red(colorPrimaryDark.data), Color.green(colorPrimaryDark.data), Color.blue(colorPrimaryDark.data))
         };
         return new ColorStateList(states, colors);
     }

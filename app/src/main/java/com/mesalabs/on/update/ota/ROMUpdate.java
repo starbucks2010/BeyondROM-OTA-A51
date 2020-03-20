@@ -357,7 +357,7 @@ public class ROMUpdate {
         @Override
         protected void onPostExecute(Boolean result) {
             PreferencesUtils.Download.setIsDownloadOnGoing(false);
-            GeneralUtils.setHasFileDownloaded(mActivity);
+            PreferencesUtils.Download.setDownloadFinished(result);
 
             if (result) {
                 if (OnUpdateApp.isAppInBackground()) {

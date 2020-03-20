@@ -11,7 +11,7 @@
             android:summary="@string/mesa_bgservice_pref_sum"
             android:defaultValue="true" />
 
-        <com.samsung.android.ui.preference.SeslListPreference
+        <com.samsung.android.ui.preference.DropDownPreference
             android:key="mesa_bgservice_freq_pref"
             android:title="@string/mesa_bgservice_freq_pref_title"
             android:summary="@string/mesa_list_summary"
@@ -35,7 +35,7 @@
     <com.samsung.android.ui.preference.PreferenceCategory
         android:title="@string/mesa_network_prefcateg_title">
 
-        <com.samsung.android.ui.preference.SeslListPreference
+        <com.samsung.android.ui.preference.DropDownPreference
             android:key="mesa_networktype_pref"
             android:title="@string/mesa_networktype_pref_title"
             android:summary="@string/mesa_list_summary"
