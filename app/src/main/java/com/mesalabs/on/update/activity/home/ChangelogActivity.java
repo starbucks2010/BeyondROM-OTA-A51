@@ -24,6 +24,7 @@ import java.net.URL;
 import androidx.core.graphics.ColorUtils;
 
 import com.mesalabs.cerberus.base.BaseAppBarActivity;
+import com.mesalabs.cerberus.ui.callback.OnSingleClickListener;
 import com.mesalabs.cerberus.ui.utils.ActionBarUtils;
 import com.mesalabs.cerberus.utils.StateUtils;
 import com.mesalabs.cerberus.utils.Utils;
@@ -87,7 +88,12 @@ public class ChangelogActivity extends BaseAppBarActivity {
                 setLightStatusBar(state == State.COLLAPSED ? !Utils.isNightMode(mContext) : !isBgColorDark);
             }
         });
-        appBar.setHomeAsUpButton(v -> onBackPressed());
+        appBar.setHomeAsUpButton(new OnSingleClickListener() {
+            @Override
+            public void onSingleClick(View view) {
+                onBackPressed();
+            }
+        });
         appBar.setTitleText(getString(R.string.mesa_whats_new));
 
         TypedValue outValue = new TypedValue();

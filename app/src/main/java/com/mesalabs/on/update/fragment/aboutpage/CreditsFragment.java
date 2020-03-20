@@ -3,6 +3,7 @@ package com.mesalabs.on.update.fragment.aboutpage;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.SystemClock;
 
 import com.mesalabs.cerberus.ui.preference.CreditsPreference;
 import com.mesalabs.on.update.R;
@@ -22,6 +23,8 @@ import com.samsung.android.ui.preference.SeslPreferenceFragmentCompat;
  */
 
 public class CreditsFragment extends SeslPreferenceFragmentCompat  implements SeslPreference.OnPreferenceClickListener {
+    private long mLastClickTime = 0L;
+
     @Override
     public void onCreatePreferences(Bundle bundle, String str) {
         addPreferencesFromResource(R.xml.mesa_prefs_creditsactivity);
@@ -42,6 +45,11 @@ public class CreditsFragment extends SeslPreferenceFragmentCompat  implements Se
 
     @Override
     public boolean onPreferenceClick(SeslPreference preference) {
+        if (SystemClock.elapsedRealtime() - mLastClickTime < 600L) {
+            return false;
+        }
+        mLastClickTime = SystemClock.elapsedRealtime();
+
         Intent intent = new Intent(Intent.ACTION_VIEW);
         String url = null;
         switch (preference.getKey()) {

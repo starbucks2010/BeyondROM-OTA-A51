@@ -10,6 +10,7 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.provider.Settings;
 import android.util.TypedValue;
 
@@ -38,6 +39,7 @@ import com.samsung.android.ui.preference.SeslSwitchPreferenceCompat;
 public class SettingsFragment extends SeslPreferenceFragmentCompat implements
         SeslPreference.OnPreferenceChangeListener,
         SeslPreference.OnPreferenceClickListener {
+    private long mLastClickTime = 0L;
 
     @Override
     public void onActivityCreated(Bundle bundle) {
@@ -138,6 +140,11 @@ public class SettingsFragment extends SeslPreferenceFragmentCompat implements
 
     @Override
     public boolean onPreferenceClick(SeslPreference preference) {
+        if (SystemClock.elapsedRealtime() - mLastClickTime < 600L) {
+            return false;
+        }
+        mLastClickTime = SystemClock.elapsedRealtime();
+
         switch (preference.getKey()) {
             case "mesa_bgservice_noti_sound_pref":
                 Intent intent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);

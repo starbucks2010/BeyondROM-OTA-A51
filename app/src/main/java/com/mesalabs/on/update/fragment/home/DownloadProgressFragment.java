@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
 
+import com.mesalabs.cerberus.ui.callback.OnSingleClickListener;
 import com.mesalabs.cerberus.utils.ViewUtils;
 import com.mesalabs.on.update.R;
 import com.mesalabs.on.update.activity.home.ChangelogActivity;
@@ -91,7 +92,12 @@ public class DownloadProgressFragment extends Fragment {
         downloadProgressView = mRootView.findViewById(R.id.mesa_dpv_download_ota_mainactivity);
 
         changelogView = mRootView.findViewById(R.id.mesa_cv_download_ota_mainactivity);
-        changelogView.setOnClickListener(v -> startActivity(new Intent(mContext, ChangelogActivity.class)));
+        changelogView.setOnClickListener(new OnSingleClickListener() {
+            @Override
+            public void onSingleClick(View view) {
+                startActivity(new Intent(mContext, ChangelogActivity.class));
+            }
+        });
         changelogView.getChangelog();
 
         preInstallWarningText = mRootView.findViewById(R.id.mesa_preinstall_warning_download_ota_mainactivity);

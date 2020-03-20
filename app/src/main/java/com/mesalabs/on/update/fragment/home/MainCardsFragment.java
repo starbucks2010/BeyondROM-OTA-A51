@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
 
+import com.mesalabs.cerberus.ui.callback.OnSingleClickListener;
 import com.mesalabs.on.update.R;
 import com.mesalabs.on.update.activity.home.ChangelogActivity;
 import com.mesalabs.on.update.activity.home.FirmwareInfoActivity;
@@ -98,7 +99,12 @@ public class MainCardsFragment extends Fragment {
             unc.setIconDrawable(getResources().getDrawable(R.drawable.mesa_ota_card_ic_install, getContext().getTheme()));
             unc.setTitleText(getString(R.string.mesa_ota_card_inst_title));
             unc.setDescText(getString(R.string.mesa_ota_card_inst_summary));
-            unc.setOnClickListener(v -> new GenerateRecoveryScript(mActivity).execute());
+            unc.setOnClickListener(new OnSingleClickListener() {
+                @Override
+                public void onSingleClick(View view) {
+                    new GenerateRecoveryScript(mActivity).execute();
+                }
+            });
         }
     }
 
@@ -120,7 +126,12 @@ public class MainCardsFragment extends Fragment {
 
         updateStatusView = mRootView.findViewById(R.id.mesa_usv_maincards_ota_mainactivity);
         changelogView = mRootView.findViewById(R.id.mesa_cv_maincards_ota_mainactivity);
-        changelogView.setOnClickListener(v -> startActivity(new Intent(mContext, ChangelogActivity.class)));
+        changelogView.setOnClickListener(new OnSingleClickListener() {
+            @Override
+            public void onSingleClick(View view) {
+                startActivity(new Intent(mContext, ChangelogActivity.class));
+            }
+        });
         changelogView.setClickable(false);
         preInstallWarningText = mRootView.findViewById(R.id.mesa_preinstall_warning_ota_mainactivity);
 
@@ -128,7 +139,12 @@ public class MainCardsFragment extends Fragment {
         unc.setEnabled(false);
 
         fic = mRootView.findViewById(R.id.mesa_card_fwinfo_ota_mainactivity);
-        fic.setOnClickListener(v -> startActivity(new Intent(mContext, FirmwareInfoActivity.class)));
+        fic.setOnClickListener(new OnSingleClickListener() {
+            @Override
+            public void onSingleClick(View view) {
+                startActivity(new Intent(mContext, FirmwareInfoActivity.class));
+            }
+        });
 
         if (mIsDownloaded) {
             updateStatusView.start(ROMUpdate.STATE_DOWNLOADED);
@@ -138,7 +154,12 @@ public class MainCardsFragment extends Fragment {
             unc.setIconDrawable(getResources().getDrawable(R.drawable.mesa_ota_card_ic_install, getContext().getTheme()));
             unc.setTitleText(getString(R.string.mesa_ota_card_inst_title));
             unc.setDescText(getString(R.string.mesa_ota_card_inst_summary));
-            unc.setOnClickListener(v -> new GenerateRecoveryScript(mActivity).execute());
+            unc.setOnClickListener(new OnSingleClickListener() {
+                @Override
+                public void onSingleClick(View view) {
+                    new GenerateRecoveryScript(mActivity).execute();
+                }
+            });
         } else {
             updateStatusView.start(ROMUpdate.STATE_CHECKING);
             checkForROMUpdates();
@@ -164,7 +185,12 @@ public class MainCardsFragment extends Fragment {
             changelogView.start();
             unc.setEnabled(true);
             unc.setDescText(getString(R.string.mesa_ota_card_dwinst_summary));
-            unc.setOnClickListener(v -> ((MainActivity) mActivity).onPreROMUpdateDownload());
+            unc.setOnClickListener(new OnSingleClickListener() {
+                @Override
+                public void onSingleClick(View view) {
+                    ((MainActivity) mActivity).onPreROMUpdateDownload();
+                }
+            });
         }
     }
 

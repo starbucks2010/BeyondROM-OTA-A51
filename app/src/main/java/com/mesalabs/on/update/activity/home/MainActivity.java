@@ -23,6 +23,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.mesalabs.cerberus.base.BaseAppBarActivity;
+import com.mesalabs.cerberus.ui.callback.OnSingleClickListener;
 import com.mesalabs.cerberus.ui.utils.ActionBarUtils;
 import com.mesalabs.cerberus.ui.widget.ToolbarImageButton;
 import com.mesalabs.cerberus.update.utils.AppUpdateUtils;
@@ -122,7 +123,12 @@ public class MainActivity extends BaseAppBarActivity {
         appBar = new ActionBarUtils(this);
         appBar.initAppBar(false);
         appBar.setTitleText(getString(R.string.mesa_onupdate));
-        appBar.setHomeAsUpButton(v -> onBackPressed());
+        appBar.setHomeAsUpButton(new OnSingleClickListener() {
+            @Override
+            public void onSingleClick(View view) {
+                onBackPressed();
+            }
+        });
         if (mIsFromLauncher)
             appBar.setHomeAsUpButtonVisible(false);
         appBar.addOverflowButton(false, R.drawable.mesa_ota_ic_ab_refresh, R.string.mesa_check_for_updates, v -> {
@@ -318,7 +324,12 @@ public class MainActivity extends BaseAppBarActivity {
         mBottomButton.setEnabled(enabled);
         mBottomButton.setAlpha(enabled ? 1.0f : 0.4f);
         mBottomButton.setText(getString(R.string.mesa_install_now));
-        mBottomButton.setOnClickListener(v -> new GenerateRecoveryScript(mContext).execute());
+        mBottomButton.setOnClickListener(new OnSingleClickListener() {
+            @Override
+            public void onSingleClick(View view) {
+                new GenerateRecoveryScript(mContext).execute();
+            }
+        });
         mBottomButton.postDelayed(() -> mBottomButton.setPressed(true), 250);
         mBottomButton.postDelayed(() -> mBottomButton.setPressed(false), 250);
     }

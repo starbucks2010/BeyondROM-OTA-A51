@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.mesalabs.cerberus.base.BaseAppBarActivity;
+import com.mesalabs.cerberus.ui.callback.OnSingleClickListener;
 import com.mesalabs.on.update.R;
 import com.mesalabs.on.update.fragment.home.FirmwareInfoFragment;
 import com.mesalabs.on.update.fragment.settings.SettingsFragment;
@@ -36,9 +37,9 @@ public class FirmwareInfoActivity extends BaseAppBarActivity {
         setContentView(R.layout.mesa_ota_base_fragment_layout);
 
         appBar.setTitleText(getString(R.string.mesa_firmware_info));
-        appBar.setHomeAsUpButton(new View.OnClickListener() {
+        appBar.setHomeAsUpButton(new OnSingleClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onSingleClick(View v) {
                 onBackPressed();
             }
         });

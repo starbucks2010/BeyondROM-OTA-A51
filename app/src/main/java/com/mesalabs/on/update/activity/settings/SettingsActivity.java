@@ -9,6 +9,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.mesalabs.cerberus.base.BaseAppBarActivity;
+import com.mesalabs.cerberus.ui.callback.OnSingleClickListener;
 import com.mesalabs.on.update.R;
 import com.mesalabs.on.update.fragment.settings.SettingsFragment;
 import com.mesalabs.on.update.utils.LogUtils;
@@ -38,7 +39,12 @@ public class SettingsActivity extends BaseAppBarActivity {
         setContentView(R.layout.mesa_ota_base_fragment_layout);
 
         appBar.setTitleText(getString(R.string.mesa_app_settings));
-        appBar.setHomeAsUpButton(v -> onBackPressed());
+        appBar.setHomeAsUpButton(new OnSingleClickListener() {
+            @Override
+            public void onSingleClick(View view) {
+                onBackPressed();
+            }
+        });
 
         inflateFragment();
     }
