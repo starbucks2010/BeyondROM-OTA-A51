@@ -73,6 +73,10 @@ public class PreferencesUtils {
         return sp.getBoolean(KEY_BGSERVICE, true);
     }
 
+    public static void setBgServiceEnabled(boolean value) {
+        sp.put(KEY_BGSERVICE, value);
+    }
+
     public static int getBgServiceCheckFrequency() {
         return Integer.parseInt(sp.getString(KEY_BGSERVICE_CHECK_FREQ, "86400"));
     }
@@ -91,6 +95,10 @@ public class PreferencesUtils {
 
     public static boolean getBgServiceNotificationVibrate() {
         return sp.getBoolean(KEY_BGSERVICE_NOTI_VIBRATE, true);
+    }
+
+    public static void setBgServiceNotificationVibrate(boolean value) {
+        sp.put(KEY_BGSERVICE_NOTI_VIBRATE, value);
     }
 
 

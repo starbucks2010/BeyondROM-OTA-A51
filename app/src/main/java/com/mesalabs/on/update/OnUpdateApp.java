@@ -103,6 +103,7 @@ public class OnUpdateApp extends Application implements LifecycleObserver {
                     .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
                     .setUsage(AudioAttributes.USAGE_NOTIFICATION)
                     .build());
+            notiMainChannel.enableVibration(PreferencesUtils.getBgServiceNotificationVibrate());
 
             notificationManager.createNotificationChannel(notiMainChannel);
         }

@@ -1,5 +1,6 @@
 package com.mesalabs.on.update.fragment.settings;
 
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Intent;
 import android.content.res.ColorStateList;
@@ -63,8 +64,10 @@ public class SettingsFragment extends SeslPreferenceFragmentCompat implements
 
         SeslPreference bgServiceNotiSoundPref = findPreference("mesa_bgservice_noti_sound_pref");
         bgServiceNotiSoundPref.seslSetSummaryColor(getColoredSummaryColor());
-        bgServiceNotiSoundPref.setOnPreferenceChangeListener(this);
         bgServiceNotiSoundPref.setOnPreferenceClickListener(this);
+
+        SeslSwitchPreferenceCompat bgServiceNotiVibratePref = (SeslSwitchPreferenceCompat) findPreference("mesa_bgservice_noti_vibrate_pref");
+        bgServiceNotiVibratePref.setOnPreferenceChangeListener(this);
 
         SeslListPreference networkTypePref = (SeslListPreference) findPreference("mesa_networktype_pref");
         networkTypePref.seslSetSummaryColor(getColoredSummaryColor());
@@ -82,9 +85,10 @@ public class SettingsFragment extends SeslPreferenceFragmentCompat implements
         super.onStart();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationManager notificationManager = getContext().getSystemService(NotificationManager.class);
-            Uri value = notificationManager.getNotificationChannel(PreferencesUtils.getMainNotiChannelName()).getSound();
+            NotificationChannel mainNotiChannel = getContext().getSystemService(NotificationManager.class).getNotificationChannel(PreferencesUtils.getMainNotiChannelName());
+            Uri value = mainNotiChannel.getSound();
             PreferencesUtils.setBgServiceNotificationSound(value == null ? "" : value.toString());
+            PreferencesUtils.setBgServiceNotificationVibrate(mainNotiChannel.shouldVibrate());
         }
 
         SeslPreference bgServiceNotiSoundPref = findPreference("mesa_bgservice_noti_sound_pref");
@@ -114,13 +118,19 @@ public class SettingsFragment extends SeslPreferenceFragmentCompat implements
 
     @Override
     public boolean onPreferenceChange(SeslPreference preference, Object newValue) {
-        if (preference.getKey().equals("mesa_bgservice_pref")) {
-            GeneralUtils.setBackgroundCheck(getContext(), (boolean) newValue);
-            return true;
-        } else if (preference.getKey().equals("mesa_bgservice_freq_pref")) {
-            PreferencesUtils.setBgServiceCheckFrequency((String) newValue);
-            GeneralUtils.scheduleNotification(getContext(), PreferencesUtils.getBgServiceEnabled());
-            return true;
+        switch (preference.getKey()) {
+            case "mesa_bgservice_pref":
+                PreferencesUtils.setBgServiceEnabled((boolean) newValue);
+                GeneralUtils.setBackgroundCheck(getContext(), (boolean) newValue);
+                return true;
+            case "mesa_bgservice_freq_pref":
+                PreferencesUtils.setBgServiceCheckFrequency((String) newValue);
+                GeneralUtils.scheduleNotification(getContext(), PreferencesUtils.getBgServiceEnabled());
+                return true;
+            case "mesa_bgservice_noti_vibrate_pref":
+                PreferencesUtils.setBgServiceNotificationVibrate((boolean) newValue);
+                OnUpdateApp.createMainNotificationChannel();
+                return true;
         }
 
         return false;
