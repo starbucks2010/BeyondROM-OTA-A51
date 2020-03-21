@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -25,7 +26,7 @@ import com.mesalabs.on.update.fragment.aboutpage.CreditsFragment;
  */
 
 public class CreditsActivity extends BaseAppBarActivity {
-    private FragmentManager mFragmentManager;
+    private Fragment mFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,16 +42,29 @@ public class CreditsActivity extends BaseAppBarActivity {
             }
         });
 
-        mFragmentManager = getSupportFragmentManager();
-        FragmentTransaction transaction = mFragmentManager.beginTransaction();
-        transaction.add(R.id.mesa_fragmentcontainer_creditsactivity, new CreditsFragment(), "root");
-        transaction.commit();
-
-        mFragmentManager.executePendingTransactions();
+        inflateFragment();
 
         TextView desc = findViewById(R.id.mesa_textview_creditsactivity);
         desc.setPadding(desc.getPaddingLeft(), desc.getPaddingTop() - appBar.getAppBarLayout().getPaddingBottom(), desc.getPaddingRight(), desc.getPaddingBottom());
 
+    }
+
+    private void inflateFragment() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        Fragment fragment = fragmentManager.findFragmentByTag("root");
+        if (mFragment != null) {
+            transaction.hide(mFragment);
+        }
+        if (fragment != null) {
+            mFragment = fragment;
+            transaction.show(fragment);
+        } else {
+            mFragment = new CreditsFragment();
+            transaction.add(R.id.mesa_fragmentcontainer_creditsactivity, mFragment, "root");
+        }
+        transaction.commit();
+        fragmentManager.executePendingTransactions();
     }
 
     @Override
