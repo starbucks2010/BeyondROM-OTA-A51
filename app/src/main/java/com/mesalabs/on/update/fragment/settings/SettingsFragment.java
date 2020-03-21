@@ -94,6 +94,7 @@ public class SettingsFragment extends SeslPreferenceFragmentCompat implements
         }
 
         SeslPreference bgServiceNotiSoundPref = findPreference("mesa_bgservice_noti_sound_pref");
+        SeslSwitchPreferenceCompat bgServiceNotiVibratePref = (SeslSwitchPreferenceCompat) findPreference("mesa_bgservice_noti_vibrate_pref");
         String title = getString(R.string.mesa_bgservice_noti_sound_silent_sum);
         String value = PreferencesUtils.getBgServiceNotificationSound();
         if (!value.equals("")) {
@@ -101,6 +102,7 @@ public class SettingsFragment extends SeslPreferenceFragmentCompat implements
             title = ringtone.getTitle(getContext());
         }
         bgServiceNotiSoundPref.setSummary(title);
+        bgServiceNotiVibratePref.setChecked(PreferencesUtils.getBgServiceNotificationVibrate());
     }
 
     @Override
