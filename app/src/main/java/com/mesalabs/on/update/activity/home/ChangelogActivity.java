@@ -3,23 +3,30 @@ package com.mesalabs.on.update.activity.home;
 import android.app.Dialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.icu.text.SimpleDateFormat;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.format.DateFormat;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.webkit.WebResourceError;
-import android.webkit.WebResourceRequest;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.StringWriter;
+import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.text.ParseException;
+import java.util.Locale;
 
 import androidx.core.graphics.ColorUtils;
 
@@ -48,9 +55,12 @@ import com.samsung.android.ui.appbar.SeslAppBarLayout;
 public class ChangelogActivity extends BaseAppBarActivity {
     private boolean isBgColorDark;
     private Dialog mProgressCircle;
+
     private ImageView mImageView;
-    private WebView mWebView;
-    private WebSettings mWVSettings;
+    private TextView mContainerTitle;
+    private TextView mContainerDate;
+    private View mDivider;
+    private TextView mContentText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,7 +112,7 @@ public class ChangelogActivity extends BaseAppBarActivity {
         if (outValue.getFloat() == 0.0f)
             setFullscreen();
 
-        new LoadChangelogTask().execute(PreferencesUtils.ROM.getChangelogHeaderImgUrl());
+        new LoadChangelogTask().execute(PreferencesUtils.ROM.getChangelogHeaderImgUrl(), PreferencesUtils.ROM.getChangelogUrl());
     }
 
     private void dismissProgressCircleDialog() {
@@ -167,45 +177,51 @@ public class ChangelogActivity extends BaseAppBarActivity {
     }
 
     private class LoadChangelogTask extends AsyncTask<String, Void, Bitmap> {
+        String title;
+        String date;
+        String content = "";
+
         public LoadChangelogTask() {
             mImageView = findViewById(R.id.mesa_appbarbg_changelogactivity);
-            mWebView = findViewById(R.id.mesa_webview_changelogactivity);
-            mWebView.loadUrl(PreferencesUtils.ROM.getChangelogUrl());
-            mWebView.setWebViewClient(new WebViewClient() {
-                @Override
-                public void onPageFinished(WebView view, String url) {
-                    super.onPageFinished(view, url);
-                    dismissProgressCircleDialog();
-                }
-
-                @Override
-                public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
-                    Toast.makeText(mContext, R.string.mesa_whats_new_error, Toast.LENGTH_LONG).show();
-                    finish();
-                }
-            });
-            mWVSettings = mWebView.getSettings();
-            mWVSettings.setSupportZoom(false);
-            mWVSettings.setBuiltInZoomControls(false);
-            mWVSettings.setDisplayZoomControls(false);
-            mWVSettings.setLoadWithOverviewMode(true);
-            mWVSettings.setUseWideViewPort(true);
+            mContainerTitle = findViewById(R.id.mesa_title_container_changelogactivity);
+            mContainerDate = findViewById(R.id.mesa_date_container_changelogactivity);
+            mDivider = findViewById(R.id.mesa_divider_container_changelogactivity);
+            mContentText = findViewById(R.id.mesa_contenttext_container_changelogactivity);
         }
 
         @Override
         protected Bitmap doInBackground(String... urls) {
-            String headerUrl = urls[0];
-            Bitmap mIcon = null;
+            String headerBgUrl = urls[0];
+            String changelogUrl = urls[1];
+            Bitmap mBg = null;
+            String line;
 
             try {
-                InputStream in = new URL(headerUrl).openStream();
-                mIcon = BitmapFactory.decodeStream(in);
+                InputStream in = new URL(headerBgUrl).openStream();
+                mBg = BitmapFactory.decodeStream(in);
                 in.close();
             } catch (Exception e) {
                 LogUtils.e("Exception", e.getMessage());
             }
 
-            return mIcon;
+            title = PreferencesUtils.ROM.getRomName() + " v" + PreferencesUtils.ROM.getVersionName();
+            date = String.valueOf(PreferencesUtils.ROM.getBuildNumber());
+            try {
+                date = DateFormat.format(DateFormat.getBestDateTimePattern(Locale.getDefault(), "d/MM/yyyy"), new SimpleDateFormat("yyyyMMdd").parse(date)).toString();
+            } catch (ParseException ignored) { }
+
+            try {
+                InputStream in = new URL(changelogUrl).openConnection().getInputStream();
+                BufferedReader br = new BufferedReader(new InputStreamReader(in));
+                while ((line = br.readLine()) != null) {
+                    content += line + "\n";
+                }
+                br.close();
+            } catch (Exception e) {
+                LogUtils.e("Exception", e.getMessage());
+            }
+
+            return mBg;
         }
 
         @Override
@@ -218,6 +234,11 @@ public class ChangelogActivity extends BaseAppBarActivity {
             } else {
                 LogUtils.e("DownloadHeaderImageTask", "result is null!!!");
             }
+            mContainerTitle.setText(title);
+            mContainerDate.setText(date);
+            mDivider.setVisibility(View.VISIBLE);
+            mContentText.setText(content);
+            dismissProgressCircleDialog();
         }
 
         private int getDominantColor(Bitmap bitmap) {

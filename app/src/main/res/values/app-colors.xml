@@ -16,5 +16,7 @@
     <color name="mesa_changelogview_super_bg_color">#EFEFEF</color>
     <color name="mesa_changelogview_subtext_color">#8F8F8F</color>
 
+    <color name="mesa_changelog_content_color">#505050</color>
+
     <color name="mesa_ota_downloadactivity_desc_color">#8F8F8F</color>
 </resources>

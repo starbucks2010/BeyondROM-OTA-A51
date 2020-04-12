@@ -3,4 +3,5 @@
     <color name="mesa_changelogview_super_bg_color">#1A1A1A</color>
     <color name="mesa_changelogview_subtext_color">#909090</color>
     <color name="mesa_ota_downloadactivity_desc_color">#999999</color>
+    <color name="mesa_changelog_content_color">#E0E0E0</color>
 </resources>
