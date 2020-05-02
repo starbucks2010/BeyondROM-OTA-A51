@@ -147,8 +147,6 @@
         <item name="buttonBarPositiveButtonStyle">@style/mesa_DialogButtonStyle</item>
         <item name="buttonBarStyle">@style/mesa_ButtonBarStyle</item>
 
-        <item name="android:windowAnimationStyle">@style/mesa_ActivityAnimStyle</item>
-
         <item name="preferenceTheme">@style/mesa_PreferenceThemeStyle</item>
         <item name="android:listSeparatorTextViewStyle">@style/mesa_SeslListSeparatorStyle</item>
         <item name="android:listDivider">@drawable/sesl_list_divider_dark</item>
@@ -327,8 +325,6 @@
         <item name="buttonBarNeutralButtonStyle">@style/mesa_DialogButtonStyle</item>
         <item name="buttonBarPositiveButtonStyle">@style/mesa_DialogButtonStyle</item>
         <item name="buttonBarStyle">@style/mesa_ButtonBarStyle</item>
-
-        <item name="android:windowAnimationStyle">@style/mesa_ActivityAnimStyle</item>
 
         <item name="preferenceTheme">@style/mesa_PreferenceThemeStyle</item>
         <item name="android:listSeparatorTextViewStyle">@style/mesa_SeslListSeparatorStyle.Light</item>
