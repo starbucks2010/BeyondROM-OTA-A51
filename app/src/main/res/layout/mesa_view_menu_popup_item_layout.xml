@@ -3,10 +3,14 @@
     android:gravity="center_horizontal"
     android:orientation="horizontal"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_height="wrap_content"
+    android:minWidth="@dimen/sesl_popup_menu_item_min_width"
+    android:minHeight="@dimen/sesl_popup_menu_item_min_height"
     android:layoutDirection="locale"
     android:paddingStart="@dimen/sesl_popup_menu_item_start_padding"
+    android:paddingTop="@dimen/sesl_popup_menu_item_top_padding"
     android:paddingEnd="@dimen/sesl_popup_menu_item_end_padding"
+    android:paddingBottom="@dimen/sesl_popup_menu_item_bottom_padding"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <TextView
@@ -14,8 +18,6 @@
         android:textColor="?actionMenuTextColor"
         android:layout_gravity="start|center"
         android:id="@+id/mesa_titletext_moremenupopup"
-        android:paddingTop="@dimen/sesl_popup_menu_item_top_padding"
-        android:paddingBottom="@dimen/sesl_popup_menu_item_bottom_padding"
         android:layout_width="0.0dip"
         android:layout_height="wrap_content"
         android:layout_weight="1.0"
