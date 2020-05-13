@@ -104,6 +104,15 @@
         <item name="toolbarStyle">@style/mesa_ToolbarStyle</item>
         <item name="toolbarNavigationButtonStyle">@style/mesa_ToolbarNavButtonStyle</item>
 
+        <!-- SeslRecyclerViewFastScroll -->
+        <item name="android:fastScrollThumbDrawable">@drawable/sesl_fastscroll_thumb</item>
+        <item name="android:fastScrollPreviewBackgroundLeft">@drawable/sesl_fastscroll_label_left</item>
+        <item name="android:fastScrollPreviewBackgroundRight">@drawable/sesl_fastscroll_label_right</item>
+        <item name="android:fastScrollTrackDrawable">@drawable/sesl_fastscroll_track</item>
+        <item name="android:fastScrollOverlayPosition">aboveThumb</item>
+        <item name="android:fastScrollTextColor">@color/sesl_fasts_scroll_preview_text_color_light</item>
+        <item name="android:fastScrollStyle">@style/mesa_SeslRecyclerViewFastScrollStyle</item>
+
         <!-- Color palette -->
         <item name="colorPrimaryDark">@color/sesl_primary_dark_color_dark</item>
         <item name="colorPrimary">@color/sesl_primary_color_dark</item>
@@ -286,6 +295,15 @@
         <!-- Color palette -->
         <item name="colorPrimaryDark">@color/sesl_primary_dark_color_light</item>
         <item name="colorPrimary">@color/sesl_primary_color_light</item>
+
+        <!-- SeslRecyclerViewFastScroll -->
+        <item name="android:fastScrollThumbDrawable">@drawable/sesl_fastscroll_thumb</item>
+        <item name="android:fastScrollPreviewBackgroundLeft">@drawable/sesl_fastscroll_label_left</item>
+        <item name="android:fastScrollPreviewBackgroundRight">@drawable/sesl_fastscroll_label_right</item>
+        <item name="android:fastScrollTrackDrawable">@drawable/sesl_fastscroll_track</item>
+        <item name="android:fastScrollOverlayPosition">aboveThumb</item>
+        <item name="android:fastScrollTextColor">@color/sesl_fasts_scroll_preview_text_color_light</item>
+        <item name="android:fastScrollStyle">@style/mesa_SeslRecyclerViewFastScrollStyle</item>
 
         <item name="colorControlNormal">@color/sesl_control_normal_color_light</item>
         <item name="colorControlActivated">@color/sesl_control_activated_color</item>

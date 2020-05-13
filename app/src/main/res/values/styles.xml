@@ -107,6 +107,15 @@
         <item name="toolbarStyle">@style/mesa_ToolbarStyle</item>
         <item name="toolbarNavigationButtonStyle">@style/mesa_ToolbarNavButtonStyle</item>
 
+        <!-- SeslRecyclerViewFastScroll -->
+        <item name="android:fastScrollThumbDrawable">@drawable/sesl_fastscroll_thumb</item>
+        <item name="android:fastScrollPreviewBackgroundLeft">@drawable/sesl_fastscroll_label_left</item>
+        <item name="android:fastScrollPreviewBackgroundRight">@drawable/sesl_fastscroll_label_right</item>
+        <item name="android:fastScrollTrackDrawable">@drawable/sesl_fastscroll_track</item>
+        <item name="android:fastScrollOverlayPosition">aboveThumb</item>
+        <item name="android:fastScrollTextColor">@color/sesl_fasts_scroll_preview_text_color_light</item>
+        <item name="android:fastScrollStyle">@style/mesa_SeslRecyclerViewFastScrollStyle</item>
+
         <!-- Color palette -->
         <item name="colorPrimaryDark">@color/sesl_primary_dark_color_dark</item>
         <item name="colorPrimary">@color/sesl_primary_color_dark</item>
@@ -292,6 +301,15 @@
         <!-- Color palette -->
         <item name="colorPrimaryDark">@color/sesl_primary_dark_color_light</item>
         <item name="colorPrimary">@color/sesl_primary_color_light</item>
+
+        <!-- SeslRecyclerViewFastScroll -->
+        <item name="android:fastScrollThumbDrawable">@drawable/sesl_fastscroll_thumb</item>
+        <item name="android:fastScrollPreviewBackgroundLeft">@drawable/sesl_fastscroll_label_left</item>
+        <item name="android:fastScrollPreviewBackgroundRight">@drawable/sesl_fastscroll_label_right</item>
+        <item name="android:fastScrollTrackDrawable">@drawable/sesl_fastscroll_track</item>
+        <item name="android:fastScrollOverlayPosition">aboveThumb</item>
+        <item name="android:fastScrollTextColor">@color/sesl_fasts_scroll_preview_text_color_light</item>
+        <item name="android:fastScrollStyle">@style/mesa_SeslRecyclerViewFastScrollStyle</item>
 
         <item name="colorControlNormal">@color/sesl_control_normal_color_light</item>
         <item name="colorControlActivated">@color/sesl_control_activated_color</item>
@@ -1114,6 +1132,26 @@
         <item name="android:textColor">@android:color/white</item>
         <item name="fontFamily">sec-roboto-light</item>
         <item name="textAllCaps">false</item>
+    </style>
+
+    <!-- SeslRecyclerViewFastScroll -->
+    <style name="mesa_SeslRecyclerViewFastScrollStyle" parent="@android:style/Widget.Material.FastScroll">
+        <item name="android:textAppearance">@style/mesa_SeslRecyclerViewFastScrollTextStyle</item>
+        <item name="android:textSize">15.0sp</item>
+        <item name="android:padding">16.0dip</item>
+        <item name="android:minWidth">56.0dip</item>
+        <item name="android:minHeight">30.0dip</item>
+        <item name="thumbDrawable">?android:fastScrollThumbDrawable</item>
+        <item name="thumbMinWidth">0.0dip</item>
+        <item name="thumbMinHeight">0.0dip</item>
+        <item name="trackDrawable">?android:fastScrollTrackDrawable</item>
+        <item name="backgroundRight">?android:fastScrollPreviewBackgroundRight</item>
+        <item name="backgroundLeft">?android:fastScrollPreviewBackgroundLeft</item>
+        <item name="position">?android:fastScrollOverlayPosition</item>
+    </style>
+    <style name="mesa_SeslRecyclerViewFastScrollTextStyle" parent="@android:style/TextAppearance.Widget">
+        <item name="android:textStyle">normal</item>
+        <item name="android:fontFamily">@string/sesl_font_family_regular</item>
     </style>
 
     <!-- List -->

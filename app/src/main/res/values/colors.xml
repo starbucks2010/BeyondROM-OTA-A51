@@ -249,6 +249,8 @@
     <color name="sesl_progress_control_color_normal_dark">#4D0381FE</color>
     <color name="sesl_progress_control_color_normal_light">#4D0381FE</color>
 
+    <color name="sesl_fasts_scroll_preview_text_color_light">@color/sesl_white</color>
+
 
 
 
