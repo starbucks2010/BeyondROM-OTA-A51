@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    android:gravity="center_horizontal"
+    android:gravity="center_vertical"
     android:orientation="horizontal"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
@@ -18,11 +18,12 @@
         android:textColor="?actionMenuTextColor"
         android:layout_gravity="start|center"
         android:id="@+id/mesa_titletext_moremenupopup"
-        android:layout_width="0.0dip"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1.0"
+        android:paddingEnd="7.0dip"
         android:singleLine="true"
         android:fontFamily="@string/sesl_font_family_regular"
+        android:textAlignment="viewStart"
         android:textDirection="locale" />
 
     <TextView

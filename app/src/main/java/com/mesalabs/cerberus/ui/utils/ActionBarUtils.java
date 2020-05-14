@@ -142,7 +142,7 @@ public class ActionBarUtils {
             i++;
             viewGroup = linearLayout;
         }
-        return measuredWidth + 25;
+        return measuredWidth;
     }
 
     public SeslAppBarLayout getAppBarLayout() {
