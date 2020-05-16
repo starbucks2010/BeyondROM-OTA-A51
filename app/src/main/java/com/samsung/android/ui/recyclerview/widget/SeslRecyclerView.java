@@ -53,6 +53,8 @@ import android.widget.TextView;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.ref.WeakReference;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -1029,8 +1031,47 @@ public class SeslRecyclerView extends ViewGroup implements NestedScrollingChild2
         return var1;
     }
 
-    private void createLayoutManager(Context param1, String param2, AttributeSet param3, int param4, int param5) {
-        // $FF: Couldn't be decompiled
+    private void createLayoutManager(Context context, String className, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+        if (className != null) {
+            className = className.trim();
+            if (!className.isEmpty()) {
+                className = getFullClassName(context, className);
+                try {
+                    ClassLoader classLoader;
+                    if (isInEditMode()) {
+                        classLoader = this.getClass().getClassLoader();
+                    } else {
+                        classLoader = context.getClassLoader();
+                    }
+                    Class<? extends LayoutManager> layoutManagerClass = Class.forName(className, false, classLoader).asSubclass(LayoutManager.class);
+                    Constructor<? extends LayoutManager> constructor;
+                    Object[] constructorArgs = null;
+                    try {
+                        constructor = layoutManagerClass.getConstructor(LAYOUT_MANAGER_CONSTRUCTOR_SIGNATURE);
+                        constructorArgs = new Object[]{context, attrs, defStyleAttr, defStyleRes};
+                    } catch (NoSuchMethodException e) {
+                        try {
+                            constructor = layoutManagerClass.getConstructor();
+                        } catch (NoSuchMethodException e1) {
+                            e1.initCause(e);
+                            throw new IllegalStateException(attrs.getPositionDescription() + ": Error creating LayoutManager " + className, e1);
+                        }
+                    }
+                    constructor.setAccessible(true);
+                    setLayoutManager(constructor.newInstance(constructorArgs));
+                } catch (ClassNotFoundException e) {
+                    throw new IllegalStateException(attrs.getPositionDescription() + ": Unable to find LayoutManager " + className, e);
+                } catch (InvocationTargetException e) {
+                    throw new IllegalStateException(attrs.getPositionDescription() + ": Could not instantiate the LayoutManager: " + className, e);
+                } catch (InstantiationException e) {
+                    throw new IllegalStateException(attrs.getPositionDescription() + ": Could not instantiate the LayoutManager: " + className, e);
+                } catch (IllegalAccessException e) {
+                    throw new IllegalStateException(attrs.getPositionDescription() + ": Cannot access non-public constructor " + className, e);
+                } catch (ClassCastException e) {
+                    throw new IllegalStateException(attrs.getPositionDescription() + ": Class is not a LayoutManager " + className, e);
+                }
+            }
+        }
     }
 
     private boolean didChildRangeChange(int var1, int var2) {
@@ -1336,14 +1377,14 @@ public class SeslRecyclerView extends ViewGroup implements NestedScrollingChild2
         int var1 = 0;
         if (this.mLayout instanceof SeslLinearLayoutManager) {
             var1 = ((SeslLinearLayoutManager)this.mLayout).findFirstVisibleItemPosition();
-        //} else if (this.mLayout instanceof StaggeredGridLayoutManager) {
-        //    if (this.mLayout.getLayoutDirection() == 1) {
-        //        var1 = ((StaggeredGridLayoutManager)this.mLayout).getSpanCount() - 1;
-        //    } else {
-        //        var1 = 0;
-        //    }
-        //
-        //    var1 = ((StaggeredGridLayoutManager)this.mLayout).findFirstVisibleItemPositions((int[])null)[var1];
+        } else if (this.mLayout instanceof StaggeredGridLayoutManager) {
+            if (this.mLayout.getLayoutDirection() == 1) {
+                var1 = ((StaggeredGridLayoutManager)this.mLayout).getSpanCount() - 1;
+            } else {
+                var1 = 0;
+            }
+
+            var1 = ((StaggeredGridLayoutManager)this.mLayout).findFirstVisibleItemPositions((int[])null)[var1];
         }
 
         int var2 = var1;
@@ -3604,9 +3645,9 @@ public class SeslRecyclerView extends ViewGroup implements NestedScrollingChild2
                             var6 = this.getChildCount();
                             if (this.computeVerticalScrollOffset() != 0) {
                                 this.stopScroll();
-                                //if (this.mLayout instanceof StaggeredGridLayoutManager) {
-                                //    ((StaggeredGridLayoutManager)this.mLayout).scrollToPositionWithOffset(0, 0);
-                                //} else {
+                                if (this.mLayout instanceof StaggeredGridLayoutManager) {
+                                    ((StaggeredGridLayoutManager)this.mLayout).scrollToPositionWithOffset(0, 0);
+                                } else {
                                     this.mGoToToping = true;
                                     if (var6 > 0 && var6 < this.findFirstVisibleItemPosition()) {
                                         if (this.mLayout instanceof SeslLinearLayoutManager) {
@@ -3621,7 +3662,7 @@ public class SeslRecyclerView extends ViewGroup implements NestedScrollingChild2
                                             SeslRecyclerView.this.smoothScrollToPosition(0);
                                         }
                                     });
-                                //}
+                                }
 
                                 if (this.mTopGlow != null) {
                                     this.seslShowGoToTopEdge(500.0F / (float)this.getHeight(), (float)var4 / (float)this.getWidth(), 150);
@@ -3950,8 +3991,8 @@ public class SeslRecyclerView extends ViewGroup implements NestedScrollingChild2
         int var1;
         if (this.mLayout instanceof SeslLinearLayoutManager) {
             var1 = ((SeslLinearLayoutManager)this.mLayout).findFirstVisibleItemPosition();
-        //} else if (this.mLayout instanceof StaggeredGridLayoutManager) {
-        //    var1 = ((StaggeredGridLayoutManager)this.mLayout).findFirstVisibleItemPositions((int[])null)[0];
+        } else if (this.mLayout instanceof StaggeredGridLayoutManager) {
+            var1 = ((StaggeredGridLayoutManager)this.mLayout).findFirstVisibleItemPositions((int[])null)[0];
         } else {
             var1 = -1;
         }
@@ -3963,8 +4004,8 @@ public class SeslRecyclerView extends ViewGroup implements NestedScrollingChild2
         int var1;
         if (this.mLayout instanceof SeslLinearLayoutManager) {
             var1 = ((SeslLinearLayoutManager)this.mLayout).findLastVisibleItemPosition();
-        //} else if (this.mLayout instanceof StaggeredGridLayoutManager) {
-        //    var1 = ((StaggeredGridLayoutManager)this.mLayout).findLastVisibleItemPositions((int[])null)[0];
+        } else if (this.mLayout instanceof StaggeredGridLayoutManager) {
+            var1 = ((StaggeredGridLayoutManager)this.mLayout).findLastVisibleItemPositions((int[])null)[0];
         } else {
             var1 = -1;
         }
@@ -4302,17 +4343,17 @@ public class SeslRecyclerView extends ViewGroup implements NestedScrollingChild2
                     var8 = super.focusSearch(var1, var6);
                 }
 
-                //if (this.mIsArrowKeyPressed && var8 == null && this.mLayout instanceof StaggeredGridLayoutManager) {
-                //    var2 = 0;
-                //    if (var6 == 130) {
-                //        var2 = this.getFocusedChild().getBottom() - this.getBottom();
-                //    } else if (var6 == 33) {
-                //        var2 = this.getFocusedChild().getTop() - this.getTop();
-                //    }
-                //
-                //    ((StaggeredGridLayoutManager)this.mLayout).scrollBy(var2, this.mRecycler, this.mState);
-                //    this.mIsArrowKeyPressed = false;
-                //}
+                if (this.mIsArrowKeyPressed && var8 == null && this.mLayout instanceof StaggeredGridLayoutManager) {
+                    var2 = 0;
+                    if (var6 == 130) {
+                        var2 = this.getFocusedChild().getBottom() - this.getBottom();
+                    } else if (var6 == 33) {
+                        var2 = this.getFocusedChild().getTop() - this.getTop();
+                    }
+
+                    ((StaggeredGridLayoutManager)this.mLayout).scrollBy(var2, this.mRecycler, this.mState);
+                    this.mIsArrowKeyPressed = false;
+                }
 
                 var1 = var8;
             }
@@ -6032,9 +6073,9 @@ public class SeslRecyclerView extends ViewGroup implements NestedScrollingChild2
             this.invalidate();
         }
 
-        //if (this.mLayout instanceof StaggeredGridLayoutManager && (!this.canScrollVertically(-1) || !this.canScrollVertically(1))) {
-        //    this.mLayout.onScrollStateChanged(0);
-        //}
+        if (this.mLayout instanceof StaggeredGridLayoutManager && (!this.canScrollVertically(-1) || !this.canScrollVertically(1))) {
+            this.mLayout.onScrollStateChanged(0);
+        }
 
         if (var9 != 0 || var11 != 0) {
             var4 = true;
