@@ -32,8 +32,6 @@ import com.samsung.android.ui.recyclerview.widget.SeslRecyclerView;
  */
 
 public class CreditsActivity extends BaseAppBarActivity {
-
-
     private TextView mSubheaderText;
     private SeslRecyclerView mListView;
 
@@ -52,7 +50,7 @@ public class CreditsActivity extends BaseAppBarActivity {
         });
 
         mSubheaderText = findViewById(R.id.mesa_textview_creditsactivity);
-        mSubheaderText.setPadding(mSubheaderText.getPaddingLeft(), mSubheaderText.getPaddingTop() - appBar.getAppBarLayout().getPaddingBottom(), mSubheaderText.getPaddingRight(), mSubheaderText.getPaddingBottom());
+        mSubheaderText.setPadding(mSubheaderText.getPaddingLeft(), getResources().getDimensionPixelSize(R.dimen.sesl_list_divider_inset) - appBar.getAppBarLayout().getPaddingBottom(), mSubheaderText.getPaddingRight(), mSubheaderText.getPaddingBottom());
 
         initListView();
     }
@@ -60,7 +58,7 @@ public class CreditsActivity extends BaseAppBarActivity {
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        mSubheaderText.setPadding(mSubheaderText.getPaddingLeft(), mSubheaderText.getPaddingTop() - appBar.getAppBarLayout().getPaddingBottom(), mSubheaderText.getPaddingRight(), mSubheaderText.getPaddingBottom());
+        mSubheaderText.setPadding(mSubheaderText.getPaddingLeft(), getResources().getDimensionPixelSize(R.dimen.sesl_list_divider_inset) - appBar.getAppBarLayout().getPaddingBottom(), mSubheaderText.getPaddingRight(), mSubheaderText.getPaddingBottom());
     }
 
     @Override
