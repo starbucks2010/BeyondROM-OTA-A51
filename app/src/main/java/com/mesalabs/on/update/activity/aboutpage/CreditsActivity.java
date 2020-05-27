@@ -1,17 +1,23 @@
 package com.mesalabs.on.update.activity.aboutpage;
 
+import android.content.Context;
+import android.content.res.Configuration;
+import android.content.res.TypedArray;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.TextView;
-
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.mesalabs.cerberus.base.BaseAppBarActivity;
 import com.mesalabs.cerberus.ui.callback.OnSingleClickListener;
 import com.mesalabs.on.update.R;
-import com.mesalabs.on.update.fragment.aboutpage.CreditsFragment;
+import com.mesalabs.on.update.ui.creditspage.CreditsListViewModel;
+import com.mesalabs.on.update.ui.creditspage.CreditsPageListAdapter;
+import com.mesalabs.on.update.ui.creditspage.CreditsPageListItemDecoration;
+import com.samsung.android.ui.recyclerview.widget.SeslLinearLayoutManager;
+import com.samsung.android.ui.recyclerview.widget.SeslRecyclerView;
 
 /*
  * On Update
@@ -26,7 +32,10 @@ import com.mesalabs.on.update.fragment.aboutpage.CreditsFragment;
  */
 
 public class CreditsActivity extends BaseAppBarActivity {
-    private Fragment mFragment;
+
+
+    private TextView mSubheaderText;
+    private SeslRecyclerView mListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,34 +51,66 @@ public class CreditsActivity extends BaseAppBarActivity {
             }
         });
 
-        inflateFragment();
+        mSubheaderText = findViewById(R.id.mesa_textview_creditsactivity);
+        mSubheaderText.setPadding(mSubheaderText.getPaddingLeft(), mSubheaderText.getPaddingTop() - appBar.getAppBarLayout().getPaddingBottom(), mSubheaderText.getPaddingRight(), mSubheaderText.getPaddingBottom());
 
-        TextView desc = findViewById(R.id.mesa_textview_creditsactivity);
-        desc.setPadding(desc.getPaddingLeft(), desc.getPaddingTop() - appBar.getAppBarLayout().getPaddingBottom(), desc.getPaddingRight(), desc.getPaddingBottom());
-
+        initListView();
     }
 
-    private void inflateFragment() {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        Fragment fragment = fragmentManager.findFragmentByTag("root");
-        if (mFragment != null) {
-            transaction.hide(mFragment);
-        }
-        if (fragment != null) {
-            mFragment = fragment;
-            transaction.show(fragment);
-        } else {
-            mFragment = new CreditsFragment();
-            transaction.add(R.id.mesa_fragmentcontainer_creditsactivity, mFragment, "root");
-        }
-        transaction.commit();
-        fragmentManager.executePendingTransactions();
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        mSubheaderText.setPadding(mSubheaderText.getPaddingLeft(), mSubheaderText.getPaddingTop() - appBar.getAppBarLayout().getPaddingBottom(), mSubheaderText.getPaddingRight(), mSubheaderText.getPaddingBottom());
     }
 
     @Override
     protected boolean getIsAppBarExpanded() {
         return false;
+    }
+
+    private void initListView() {
+        mListView = findViewById(R.id.mesa_recyclerview_creditsactivity);
+
+        SeslRecyclerView.Adapter adapter = new CreditsPageListAdapter(this, getCreditsList());
+        CreditsPageListItemDecoration decoration = new CreditsPageListItemDecoration(this);
+        TypedValue divider = new TypedValue();
+        mContext.getTheme().resolveAttribute(android.R.attr.listDivider, divider, true);
+
+        mListView.setLayoutManager(new SeslLinearLayoutManager(mContext));
+        mListView.setAdapter(adapter);
+
+        mListView.addItemDecoration(decoration);
+        decoration.setDivider(mContext.getDrawable(divider.resourceId));
+        mListView.setItemAnimator(null);
+        mListView.seslSetFillBottomEnabled(true);
+        mListView.seslSetLastOutlineStrokeEnabled(false);
+    }
+
+    private List<CreditsListViewModel> getCreditsList() {
+        List<CreditsListViewModel> modelList = new ArrayList<>();
+
+        TypedArray libIcons = getResources().obtainTypedArray(R.array.mesa_creditspage_lib_icon);
+        String [] libNames = getResources().getStringArray(R.array.mesa_creditspage_lib_title);
+        String [] libDescs = getResources().getStringArray(R.array.mesa_creditspage_lib_desc);
+        String [] libWebLinks = getResources().getStringArray(R.array.mesa_creditspage_lib_web);
+
+        for (int i = 0; i < libNames.length; i++) {
+            modelList.add(new CreditsListViewModel(getResources().getDrawable(libIcons.getResourceId(i, 0), null),
+                    libNames[i],
+                    libDescs[i],
+                    libWebLinks[i]));
+        }
+        modelList.add(new CreditsListViewModel());
+
+        return modelList;
+    }
+
+    public Context getContext() {
+        return mContext;
+    }
+
+    public SeslRecyclerView getListView() {
+        return mListView;
     }
 
 }

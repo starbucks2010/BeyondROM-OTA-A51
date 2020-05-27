@@ -64,7 +64,7 @@ public class UpdateStatusView extends LinearLayout {
     private void init() {
         removeAllViews();
 
-        LayoutInflater.from(mContext).inflate(R.layout.mesa_ota_updatestatusview_layout, this);
+        LayoutInflater.from(mContext).inflate(R.layout.mesa_ota_view_updatestatusview_layout, this);
 
         mContainerView = findViewById(R.id.mesa_container_updatestatusview);
         mTextView = findViewById(R.id.mesa_textview_updatestatusview);

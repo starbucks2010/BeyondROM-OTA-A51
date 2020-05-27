@@ -32,7 +32,8 @@ public class CardView extends LinearLayout {
     private TextView mTitleTextView;
     private TextView mDescTextView;
     private View mDividerView;
-    private RelativeLayout mContainerView;
+    private RelativeLayout mParentView;
+    private LinearLayout mContainerView;
     private int mIconColor;
     private Drawable mIconDrawable;
     private String mTitleText;
@@ -51,9 +52,9 @@ public class CardView extends LinearLayout {
         removeAllViews();
 
         if (mIconDrawable == null) {
-            inflate(mContext, R.layout.mesa_cardview_item_layout, this);
+            inflate(mContext, R.layout.mesa_view_cardview_item_layout, this);
         } else {
-            inflate(mContext, R.layout.mesa_cardview_icon_item_layout, this);
+            inflate(mContext, R.layout.mesa_view_cardview_icon_item_layout, this);
 
             mIconImageView = findViewById(R.id.mesa_icon_cardview);
             mIconImageView.setImageDrawable(mIconDrawable);
@@ -61,7 +62,9 @@ public class CardView extends LinearLayout {
                 mIconImageView.getDrawable().setTint(mIconColor);
         }
 
-        mContainerView = findViewById(R.id.mesa_container_cardview);
+        mParentView = findViewById(R.id.mesa_container_cardview);
+
+        mContainerView = findViewById(R.id.mesa_linearlayout_cardview);
 
         mTitleTextView = findViewById(R.id.mesa_titletext_cardview);
         mTitleTextView.setText(mTitleText);
@@ -94,7 +97,7 @@ public class CardView extends LinearLayout {
         super.setEnabled(enabled);
         setFocusable(enabled);
         setClickable(enabled);
-        mContainerView.setEnabled(enabled);
+        mParentView.setEnabled(enabled);
         mContainerView.setAlpha(enabled ? 1.0f : 0.4f);
     }
 

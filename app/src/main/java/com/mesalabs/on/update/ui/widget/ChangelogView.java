@@ -105,7 +105,7 @@ public class ChangelogView extends LinearLayout {
         itemLayoutTransition.setAnimator(LayoutTransition.DISAPPEARING, scaleDown);
         itemLayoutTransition.setDuration(LayoutTransition.DISAPPEARING, 80);
 
-        LayoutInflater.from(mContext).inflate(R.layout.mesa_ota_changelogview_layout, this);
+        LayoutInflater.from(mContext).inflate(R.layout.mesa_ota_view_changelogview_layout, this);
 
         mSuperText = findViewById(R.id.mesa_supertextview_changelogview);
         mMainContainer = findViewById(R.id.mesa_container_changelogview);

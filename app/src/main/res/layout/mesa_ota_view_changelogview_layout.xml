@@ -9,7 +9,7 @@
                 <TextView android:layout_width="fill_parent" android:layout_height="wrap_content" android:gravity="start" android:text="@string/mesa_whats_new_subtext" android:fontFamily="@string/sesl_font_family_regular" android:textSize="14.0sp" android:textColor="@color/mesa_changelogview_subtext_color" android:lineSpacingExtra="4.0sp" />
             </LinearLayout>
             <LinearLayout android:id="@+id/mesa_img_container_header_changelogview" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_weight="3.0">
-                <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:paddingTop="12.0dip" android:src="@drawable/mesa_whatsnew_changelogview" android:layerType="software" />
+                <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content"  android:paddingTop="12.0dip" android:paddingBottom="@dimen/mesa_changelogview_stroke" android:src="@drawable/mesa_whatsnew_changelogview" android:layerType="software" />
             </LinearLayout>
         </LinearLayout>
         <TextView android:id="@+id/mesa_errortextview_changelogview" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_margin="24.0dip" android:gravity="center" android:visibility="gone" android:text="@string/mesa_whats_new_error" android:fontFamily="@string/sesl_font_family_regular" android:textSize="16.0sp" android:textColor="@color/mesa_changelogview_subtext_color" android:lineSpacingExtra="4.0sp" />

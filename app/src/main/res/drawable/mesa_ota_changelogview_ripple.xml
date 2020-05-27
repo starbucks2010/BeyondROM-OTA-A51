@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ripple android:color="?colorControlHighlight"
   xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@android:id/mask">
+    <item android:id="@android:id/mask" android:left="@dimen/mesa_changelogview_stroke" android:top="@dimen/mesa_changelogview_stroke" android:right="@dimen/mesa_changelogview_stroke" android:bottom="@dimen/mesa_changelogview_stroke">
         <shape android:shape="rectangle">
             <corners android:radius="26.0dip" />
             <solid android:color="@android:color/white" />

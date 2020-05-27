@@ -42,7 +42,7 @@ public class DownloadProgressView extends FrameLayout {
     private void init() {
         removeAllViews();
 
-        LayoutInflater.from(mContext).inflate(R.layout.mesa_ota_downloadprogressview_layout, this);
+        LayoutInflater.from(mContext).inflate(R.layout.mesa_ota_view_downloadprogressview_layout, this);
 
         mTitleTextView = findViewById(R.id.mesa_progresstitle_ota_downloadprogressview);
         mDotsTextView = findViewById(R.id.mesa_progresstitledots_ota_downloadprogressview);

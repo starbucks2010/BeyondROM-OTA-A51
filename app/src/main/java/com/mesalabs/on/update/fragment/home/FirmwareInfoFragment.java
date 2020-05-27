@@ -1,26 +1,13 @@
 package com.mesalabs.on.update.fragment.home;
 
-import android.content.ComponentName;
-import android.content.Intent;
-import android.icu.text.SimpleDateFormat;
 import android.os.Build;
 import android.os.Bundle;
-import android.system.Os;
-import android.system.StructUtsname;
 import android.text.BidiFormatter;
-import android.text.format.DateFormat;
 
-import com.mesalabs.cerberus.utils.PropUtils;
 import com.mesalabs.on.update.R;
 import com.mesalabs.on.update.utils.FirmwareInfoUtils;
-import com.mesalabs.on.update.utils.LogUtils;
 import com.samsung.android.ui.preference.SeslPreference;
 import com.samsung.android.ui.preference.SeslPreferenceFragmentCompat;
-
-import java.text.ParseException;
-import java.util.Locale;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /*
  * On Update
@@ -45,7 +32,7 @@ public class FirmwareInfoFragment extends SeslPreferenceFragmentCompat {
 
     @Override
     public void onCreatePreferences(Bundle bundle, String str) {
-        addPreferencesFromResource(R.xml.mesa_prefs_firmwareinfoactivity);
+        addPreferencesFromResource(R.xml.mesa_ota_prefs_firmwareinfoactivity);
         seslSetRoundedCornerType(SESL_ROUNDED_CORNER_TYPE_STROKE);
     }
 
@@ -73,7 +60,7 @@ public class FirmwareInfoFragment extends SeslPreferenceFragmentCompat {
         bn.setSummary(BidiFormatter.getInstance().unicodeWrap(Build.DISPLAY));
         // Security Patch
         SeslPreference sp = findPreference("mesa_fwinfo_sp_version");
-        setFwInfoPrefSummary(sp, FirmwareInfoUtils.getSecurityPatchVersion(getContext()));
+        setFwInfoPrefSummary(sp, FirmwareInfoUtils.getSecurityPatchVersion());
     }
 
     private static void setFwInfoPrefSummary(SeslPreference pref, String summary) {

@@ -49,7 +49,7 @@ public class SettingsFragment extends SeslPreferenceFragmentCompat implements
 
     @Override
     public void onCreatePreferences(Bundle bundle, String str) {
-        addPreferencesFromResource(R.xml.mesa_prefs_settingsactivity);
+        addPreferencesFromResource(R.xml.mesa_ota_prefs_settingsactivity);
         seslSetRoundedCornerType(SESL_ROUNDED_CORNER_TYPE_STROKE);
     }
 

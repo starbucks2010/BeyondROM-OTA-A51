@@ -12,8 +12,26 @@
     <string name="mesa_updates_error_phone">"Can't check for updates. Your phone's network connection isn't stable."</string>
     <string name="mesa_updates_error_tablet">"Can't check for updates. Your tablet's network connection isn't stable."</string>
     <string name="mesa_no_network_connection">No network connection</string>
+
     <string name="mesa_credits">Credits</string>
     <string name="mesa_credits_desc">The following page contains all the libraries/code snippets used in this app.</string>
+    <string name="mesa_credits_androidx_title">Android Jetpack Library</string>
+    <string name="mesa_credits_androidx_description">"@Google - Licensed with Apache 2.0"</string>
+    <string name="mesa_credits_gmaterial_title">Material Components Library</string>
+    <string name="mesa_credits_gmaterial_description">"@Google - Licensed with Apache 2.0"</string>
+    <string name="mesa_credits_oneui_title">Samsung Experience Software Library</string>
+    <string name="mesa_credits_oneui_description">"@Samsung - Licensed with Apache 2.0"</string>
+    <string name="mesa_credits_spinkit_title">Android-SpinKit</string>
+    <string name="mesa_credits_spinkit_description">"@ybq - Licensed with MIT"</string>
+    <string name="mesa_credits_fetch_title">Fetch</string>
+    <string name="mesa_credits_fetch_description">"@tonyofrancis - Licensed with Apache 2.0"</string>
+    <string name="mesa_credits_waitingdots_title">WaitingDots</string>
+    <string name="mesa_credits_waitingdots_description">"@tajchert - Licensed with MIT"</string>
+
+
+
+
+
     <string name="mesa_open_source_licence">Open source licenses</string>
     <string name="mesa_update">Update</string>
     <string name="mesa_retry">Retry</string>

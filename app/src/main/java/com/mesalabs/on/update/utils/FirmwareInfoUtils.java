@@ -32,7 +32,7 @@ public class FirmwareInfoUtils {
         int prop = PropUtils.getInt("ro.on.enso.version", 0);
 
         if (prop != 0) {
-            return String.valueOf(prop / 10000) + "." + String.valueOf((prop % 10000) / 100) + "." + String.valueOf((prop % 1000) / 100);
+            return prop / 10000 + "." + (prop % 10000) / 100 + "." + (prop % 1000) / 100;
         } else
             return null;
     }
@@ -57,12 +57,12 @@ public class FirmwareInfoUtils {
 
         if (prop != 0) {
             int oneUIversion = prop - 90000;
-            return String.valueOf(oneUIversion / 10000) + "." + String.valueOf((oneUIversion % 10000) / 100);
+            return oneUIversion / 10000 + "." + (oneUIversion % 10000) / 100;
         } else
             return null;
     }
 
-    public static String getSecurityPatchVersion(Context context) {
+    public static String getSecurityPatchVersion() {
         String patch = Build.VERSION.SECURITY_PATCH;
         if ("".equals(patch)) {
             return null;
@@ -78,7 +78,7 @@ public class FirmwareInfoUtils {
         int prop = PropUtils.getInt("ro.on.core.version", 0);
 
         if (prop != 0) {
-            return String.valueOf(prop / 10000) + "." + String.valueOf((prop % 10000) / 100) + "." + String.valueOf((prop % 1000) / 100);
+            return prop / 10000 + "." + (prop % 10000) / 100 + "." + (prop % 1000) / 100;
         } else
             return null;
     }
