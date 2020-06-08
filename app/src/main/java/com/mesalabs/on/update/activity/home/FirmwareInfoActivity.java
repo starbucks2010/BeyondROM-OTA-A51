@@ -1,17 +1,18 @@
 package com.mesalabs.on.update.activity.home;
 
+import android.os.Build;
 import android.os.Bundle;
+import android.text.BidiFormatter;
 import android.view.View;
 
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.mesalabs.cerberus.base.BaseAppBarActivity;
 import com.mesalabs.cerberus.ui.callback.OnSingleClickListener;
 import com.mesalabs.on.update.R;
-import com.mesalabs.on.update.fragment.home.FirmwareInfoFragment;
-import com.mesalabs.on.update.fragment.settings.SettingsFragment;
+import com.mesalabs.on.update.ui.widget.CardView;
+import com.mesalabs.on.update.utils.FirmwareInfoUtils;
+import com.samsung.android.ui.preference.SeslPreference;
 import com.samsung.android.ui.preference.SeslPreferenceFragmentCompat;
 
 /*
@@ -27,14 +28,11 @@ import com.samsung.android.ui.preference.SeslPreferenceFragmentCompat;
  */
 
 public class FirmwareInfoActivity extends BaseAppBarActivity {
-    private SeslPreferenceFragmentCompat mFragment;
-    private FragmentManager mFragmentManager;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.mesa_ota_base_fragment_layout);
+        setContentView(R.layout.mesa_ota_activity_firmwareinfo_layout);
 
         appBar.setTitleText(getString(R.string.mesa_firmware_info));
         appBar.setHomeAsUpButton(new OnSingleClickListener() {
@@ -44,7 +42,7 @@ public class FirmwareInfoActivity extends BaseAppBarActivity {
             }
         });
 
-        inflateFragment();
+        init();
     }
 
     @Override
@@ -52,21 +50,34 @@ public class FirmwareInfoActivity extends BaseAppBarActivity {
         return false;
     }
 
-    private void inflateFragment() {
-        mFragmentManager = getSupportFragmentManager();
-        FragmentTransaction transaction = mFragmentManager.beginTransaction();
-        Fragment fragment = mFragmentManager.findFragmentByTag("root");
-        if (mFragment != null) {
-            transaction.hide(mFragment);
-        }
-        if (fragment != null) {
-            mFragment = (SeslPreferenceFragmentCompat) fragment;
-            transaction.show(fragment);
-        } else {
-            mFragment = new FirmwareInfoFragment();
-            transaction.add(R.id.mesa_fragmentcontainer_base, mFragment, "root");
-        }
-        transaction.commit();
-        mFragmentManager.executePendingTransactions();
+    private void init()  {
+        // ROM Version
+        CardView rom = findViewById(R.id.mesa_card_rom_ota_firmwareinfo);
+        setFwInfoCardSummary(rom, FirmwareInfoUtils.getROMVersion());
+        // On ensō Version
+        CardView enso = findViewById(R.id.mesa_card_enso_ota_firmwareinfo);
+        setFwInfoCardSummary(enso, FirmwareInfoUtils.getEnsoVersion());
+        // OneUI Version
+        CardView oneui = findViewById(R.id.mesa_card_oneui_ota_firmwareinfo);
+        setFwInfoCardSummary(oneui, FirmwareInfoUtils.getOneUIVersion());
+        // Android Version
+        CardView android = findViewById(R.id.mesa_card_android_ota_firmwareinfo);
+        setFwInfoCardSummary(android, Build.VERSION.RELEASE);
+        // Android Version
+        CardView kernel = findViewById(R.id.mesa_card_kernel_ota_firmwareinfo);
+        setFwInfoCardSummary(kernel, FirmwareInfoUtils.getKernelVersion());
+        // Build Number
+        CardView bn = findViewById(R.id.mesa_card_build_ota_firmwareinfo);
+        setFwInfoCardSummary(bn, BidiFormatter.getInstance().unicodeWrap(Build.DISPLAY));
+        // Security Patch
+        CardView sp = findViewById(R.id.mesa_card_patch_ota_firmwareinfo);
+        setFwInfoCardSummary(sp, FirmwareInfoUtils.getSecurityPatchVersion());
     }
+
+    private void setFwInfoCardSummary(CardView card, String summary) {
+        if (summary != null) {
+            card.setDescText(summary);
+        }
+    }
+
 }

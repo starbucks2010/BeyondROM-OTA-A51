@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.LayoutTransition;
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -142,7 +144,17 @@ public class MainCardsFragment extends Fragment {
         fic.setOnClickListener(new OnSingleClickListener() {
             @Override
             public void onSingleClick(View view) {
-                startActivity(new Intent(mContext, FirmwareInfoActivity.class));
+                Intent intent = mContext.getPackageManager().getLaunchIntentForPackage("com.mesalabs.on.workshop");
+                if (intent != null) {
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    Bundle b = new Bundle();
+                    b.putString("mesa_tb_category", "about_device");
+                    intent.putExtras(b);
+                    mContext.startActivity(intent);
+                } else {
+                    startActivity(new Intent(mContext, FirmwareInfoActivity.class));
+                }
             }
         });
 

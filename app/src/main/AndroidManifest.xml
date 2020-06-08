@@ -42,7 +42,13 @@
         <activity android:name=".activity.home.FirmwareInfoActivity" android:theme="@style/mesa_OTA_AppStyle.DayNight" android:hardwareAccelerated="true" android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize" android:windowSoftInputMode="adjustResize|stateHidden" />
 
         <!-- Settings Activity -->
-        <activity android:name=".activity.settings.SettingsActivity" android:theme="@style/mesa_OTA_AppStyle.DayNight" android:hardwareAccelerated="true" android:configChanges="keyboardHidden|orientation|screenSize|smallestScreenSize" android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".activity.settings.SettingsActivity" android:theme="@style/mesa_OTA_AppStyle.DayNight" android:hardwareAccelerated="true" android:configChanges="keyboardHidden|orientation|screenSize|smallestScreenSize" android:windowSoftInputMode="adjustResize">
+            <intent-filter>
+                <action android:name="com.sec.android.intent.action.SEC_APPLICATION_SETTINGS"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="com.sec.android.intent.category.SEC_APPLICATION_SETTINGS"/>
+            </intent-filter>
+        </activity>
 
         <!-- About Page Activity -->
         <activity android:name=".activity.aboutpage.AboutActivity" android:theme="@style/mesa_AboutActivity_AppStyle.DayNight" android:hardwareAccelerated="true" android:configChanges="keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize" />

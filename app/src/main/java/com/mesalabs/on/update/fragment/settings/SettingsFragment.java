@@ -93,16 +93,7 @@ public class SettingsFragment extends SeslPreferenceFragmentCompat implements
             PreferencesUtils.setBgServiceNotificationVibrate(mainNotiChannel.shouldVibrate());
         }
 
-        SeslPreference bgServiceNotiSoundPref = findPreference("mesa_bgservice_noti_sound_pref");
-        SeslSwitchPreferenceCompat bgServiceNotiVibratePref = (SeslSwitchPreferenceCompat) findPreference("mesa_bgservice_noti_vibrate_pref");
-        String title = getString(R.string.mesa_bgservice_noti_sound_silent_sum);
-        String value = PreferencesUtils.getBgServiceNotificationSound();
-        if (!value.equals("")) {
-            Ringtone ringtone = RingtoneManager.getRingtone(getContext(), Uri.parse(value));
-            title = ringtone.getTitle(getContext());
-        }
-        bgServiceNotiSoundPref.setSummary(title);
-        bgServiceNotiVibratePref.setChecked(PreferencesUtils.getBgServiceNotificationVibrate());
+        setRingtoneSummary();
     }
 
     @Override
@@ -114,6 +105,7 @@ public class SettingsFragment extends SeslPreferenceFragmentCompat implements
             } else {
                 PreferencesUtils.setBgServiceNotificationSound("");
             }
+            setRingtoneSummary();
             OnUpdateApp.createMainNotificationChannel();
         } else {
             super.onActivityResult(requestCode, resultCode, data);
@@ -185,6 +177,19 @@ public class SettingsFragment extends SeslPreferenceFragmentCompat implements
                 Color.argb(0x4d, Color.red(colorPrimaryDark.data), Color.green(colorPrimaryDark.data), Color.blue(colorPrimaryDark.data))
         };
         return new ColorStateList(states, colors);
+    }
+
+    private void setRingtoneSummary() {
+        SeslPreference bgServiceNotiSoundPref = findPreference("mesa_bgservice_noti_sound_pref");
+        SeslSwitchPreferenceCompat bgServiceNotiVibratePref = (SeslSwitchPreferenceCompat) findPreference("mesa_bgservice_noti_vibrate_pref");
+        String title = getString(R.string.mesa_bgservice_noti_sound_silent_sum);
+        String value = PreferencesUtils.getBgServiceNotificationSound();
+        if (!value.equals("")) {
+            Ringtone ringtone = RingtoneManager.getRingtone(getContext(), Uri.parse(value));
+            title = ringtone.getTitle(getContext());
+        }
+        bgServiceNotiSoundPref.setSummary(title);
+        bgServiceNotiVibratePref.setChecked(PreferencesUtils.getBgServiceNotificationVibrate());
     }
 
 }
