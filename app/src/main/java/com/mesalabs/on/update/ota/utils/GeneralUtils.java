@@ -97,12 +97,13 @@ public class GeneralUtils {
                 .setContentIntent(resultPendingIntent)
                 .setAutoCancel(true)
                 .setPriority(NotificationCompat.PRIORITY_MAX)
-                .setDefaults(NotificationCompat.DEFAULT_LIGHTS)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setSound(Uri.parse(PreferencesUtils.getBgServiceNotificationSound()));
 
         if (PreferencesUtils.getBgServiceNotificationVibrate()) {
-            mBuilder.setDefaults(NotificationCompat.DEFAULT_VIBRATE);
+            mBuilder.setDefaults(NotificationCompat.DEFAULT_LIGHTS | NotificationCompat.DEFAULT_VIBRATE);
+        } else {
+            mBuilder.setDefaults(NotificationCompat.DEFAULT_LIGHTS);
         }
 
         mNotifyManager.notify(Constants.NOTIFICATION_ID, mBuilder.build());
@@ -127,12 +128,13 @@ public class GeneralUtils {
                 .setContentIntent(resultPendingIntent)
                 .setAutoCancel(true)
                 .setPriority(NotificationCompat.PRIORITY_MAX)
-                .setDefaults(NotificationCompat.DEFAULT_LIGHTS)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setSound(Uri.parse(PreferencesUtils.getBgServiceNotificationSound()));
 
         if (PreferencesUtils.getBgServiceNotificationVibrate()) {
-            mBuilder.setDefaults(NotificationCompat.DEFAULT_VIBRATE);
+            mBuilder.setDefaults(NotificationCompat.DEFAULT_LIGHTS | NotificationCompat.DEFAULT_VIBRATE);
+        } else {
+            mBuilder.setDefaults(NotificationCompat.DEFAULT_LIGHTS);
         }
 
         mNotifyManager.notify(Constants.NOTIFICATION_ID, mBuilder.build());
@@ -157,12 +159,13 @@ public class GeneralUtils {
                 .setContentIntent(resultPendingIntent)
                 .setAutoCancel(true)
                 .setPriority(NotificationCompat.PRIORITY_MAX)
-                .setDefaults(NotificationCompat.DEFAULT_LIGHTS)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setSound(Uri.parse(PreferencesUtils.getBgServiceNotificationSound()));
 
         if (PreferencesUtils.getBgServiceNotificationVibrate()) {
-            mBuilder.setDefaults(NotificationCompat.DEFAULT_VIBRATE);
+            mBuilder.setDefaults(NotificationCompat.DEFAULT_LIGHTS | NotificationCompat.DEFAULT_VIBRATE);
+        } else {
+            mBuilder.setDefaults(NotificationCompat.DEFAULT_LIGHTS);
         }
 
         mNotifyManager.notify(Constants.NOTIFICATION_ID, mBuilder.build());

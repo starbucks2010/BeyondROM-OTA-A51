@@ -19,6 +19,7 @@ import com.mesalabs.on.update.R;
 import com.mesalabs.on.update.activity.aboutpage.AboutActivity;
 import com.mesalabs.on.update.ota.utils.GeneralUtils;
 import com.mesalabs.on.update.ota.utils.PreferencesUtils;
+import com.samsung.android.ui.preference.PreferenceCategory;
 import com.samsung.android.ui.preference.SeslListPreference;
 import com.samsung.android.ui.preference.SeslPreference;
 import com.samsung.android.ui.preference.SeslPreferenceFragmentCompat;
@@ -57,6 +58,8 @@ public class SettingsFragment extends SeslPreferenceFragmentCompat implements
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
 
+        PreferenceCategory bgServicePrefParent = (PreferenceCategory) findPreference("mesa_bgservice");
+
         SeslSwitchPreferenceCompat bgServicePref = (SeslSwitchPreferenceCompat) findPreference("mesa_bgservice_pref");
         bgServicePref.setOnPreferenceChangeListener(this);
 
@@ -69,7 +72,11 @@ public class SettingsFragment extends SeslPreferenceFragmentCompat implements
         bgServiceNotiSoundPref.setOnPreferenceClickListener(this);
 
         SeslSwitchPreferenceCompat bgServiceNotiVibratePref = (SeslSwitchPreferenceCompat) findPreference("mesa_bgservice_noti_vibrate_pref");
-        bgServiceNotiVibratePref.setOnPreferenceChangeListener(this);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            bgServicePrefParent.removePreference(bgServiceNotiVibratePref);
+        } else {
+            bgServiceNotiVibratePref.setOnPreferenceChangeListener(this);
+        }
 
         SeslListPreference networkTypePref = (SeslListPreference) findPreference("mesa_networktype_pref");
         networkTypePref.seslSetSummaryColor(getColoredSummaryColor());
@@ -90,7 +97,6 @@ public class SettingsFragment extends SeslPreferenceFragmentCompat implements
             NotificationChannel mainNotiChannel = getContext().getSystemService(NotificationManager.class).getNotificationChannel(PreferencesUtils.getMainNotiChannelName());
             Uri value = mainNotiChannel.getSound();
             PreferencesUtils.setBgServiceNotificationSound(value == null ? "" : value.toString());
-            PreferencesUtils.setBgServiceNotificationVibrate(mainNotiChannel.shouldVibrate());
         }
 
         setRingtoneSummary();
@@ -106,7 +112,6 @@ public class SettingsFragment extends SeslPreferenceFragmentCompat implements
                 PreferencesUtils.setBgServiceNotificationSound("");
             }
             setRingtoneSummary();
-            OnUpdateApp.createMainNotificationChannel();
         } else {
             super.onActivityResult(requestCode, resultCode, data);
         }
@@ -125,7 +130,6 @@ public class SettingsFragment extends SeslPreferenceFragmentCompat implements
                 return true;
             case "mesa_bgservice_noti_vibrate_pref":
                 PreferencesUtils.setBgServiceNotificationVibrate((boolean) newValue);
-                OnUpdateApp.createMainNotificationChannel();
                 return true;
         }
 
@@ -141,20 +145,28 @@ public class SettingsFragment extends SeslPreferenceFragmentCompat implements
 
         switch (preference.getKey()) {
             case "mesa_bgservice_noti_sound_pref":
-                Intent intent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
-                intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_NOTIFICATION);
-                intent.putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_DEFAULT, true);
-                intent.putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_SILENT, true);
-                intent.putExtra(RingtoneManager.EXTRA_RINGTONE_DEFAULT_URI, Settings.System.DEFAULT_NOTIFICATION_URI);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    Intent intent = new Intent(Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS);
+                    intent.putExtra(Settings.EXTRA_APP_PACKAGE, OnUpdateApp.getAppPackageName());
+                    intent.putExtra(Settings.EXTRA_CHANNEL_ID, PreferencesUtils.getMainNotiChannelName());
+                    startActivity(intent);
+                } else  {
+                    Intent intent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
+                    intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_NOTIFICATION);
+                    intent.putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_DEFAULT, true);
+                    intent.putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_SILENT, true);
+                    intent.putExtra(RingtoneManager.EXTRA_RINGTONE_DEFAULT_URI, Settings.System.DEFAULT_NOTIFICATION_URI);
 
-                String existingValue = PreferencesUtils.getBgServiceNotificationSound();
-                if (existingValue.length() == 0) {
-                    intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, (Uri) null);
-                } else {
-                    intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, Uri.parse(existingValue));
+                    String existingValue = PreferencesUtils.getBgServiceNotificationSound();
+                    if (existingValue.length() == 0) {
+                        intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, (Uri) null);
+                    } else {
+                        intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, Uri.parse(existingValue));
+                    }
+
+                    startActivityForResult(intent, 1);
                 }
 
-                startActivityForResult(intent, 1);
                 return true;
             case "mesa_aboutactivity_pref":
                 startActivity(new Intent(getContext(), AboutActivity.class));
@@ -180,16 +192,19 @@ public class SettingsFragment extends SeslPreferenceFragmentCompat implements
     }
 
     private void setRingtoneSummary() {
-        SeslPreference bgServiceNotiSoundPref = findPreference("mesa_bgservice_noti_sound_pref");
-        SeslSwitchPreferenceCompat bgServiceNotiVibratePref = (SeslSwitchPreferenceCompat) findPreference("mesa_bgservice_noti_vibrate_pref");
         String title = getString(R.string.mesa_bgservice_noti_sound_silent_sum);
         String value = PreferencesUtils.getBgServiceNotificationSound();
         if (!value.equals("")) {
             Ringtone ringtone = RingtoneManager.getRingtone(getContext(), Uri.parse(value));
             title = ringtone.getTitle(getContext());
         }
+
+        SeslPreference bgServiceNotiSoundPref = findPreference("mesa_bgservice_noti_sound_pref");
         bgServiceNotiSoundPref.setSummary(title);
-        bgServiceNotiVibratePref.setChecked(PreferencesUtils.getBgServiceNotificationVibrate());
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+            SeslSwitchPreferenceCompat bgServiceNotiVibratePref = (SeslSwitchPreferenceCompat) findPreference("mesa_bgservice_noti_vibrate_pref");
+            bgServiceNotiVibratePref.setChecked(PreferencesUtils.getBgServiceNotificationVibrate());
+        }
     }
 
 }

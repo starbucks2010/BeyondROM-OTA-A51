@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <com.samsung.android.ui.preference.PreferenceCategory
-        android:title="@string/mesa_notifs_prefcateg_title">
+        android:title="@string/mesa_notifs_prefcateg_title"
+        android:key="mesa_bgservice">
 
         <com.samsung.android.ui.preference.SeslSwitchPreferenceCompat
             android:key="mesa_bgservice_pref"
