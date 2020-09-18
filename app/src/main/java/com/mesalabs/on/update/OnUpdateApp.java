@@ -97,7 +97,7 @@ public class OnUpdateApp extends Application implements LifecycleObserver {
 
             PreferencesUtils.setMainNotiChannelName("mesa_onupdate_notichannel_main" + "_" + randomId);
             NotificationChannel notiMainChannel = new NotificationChannel(PreferencesUtils.getMainNotiChannelName(), mAppContext.getString(R.string.mesa_onupdate_notichannel_main_name), NotificationManager.IMPORTANCE_HIGH);
-            notiMainChannel.setLightColor(Color.GREEN);
+            notiMainChannel.setLightColor(mAppContext.getColor(R.color.mesa_ota_control_activated_color));
             notiMainChannel.enableLights(true);
             notiMainChannel.setSound(Uri.parse(PreferencesUtils.getBgServiceNotificationSound()), new AudioAttributes.Builder()
                     .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
