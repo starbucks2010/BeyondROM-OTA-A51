@@ -13,8 +13,6 @@
 
     <color name="sesl_round_and_bgcolor_dark">#010101</color>
     <color name="sesl_round_and_bgcolor_light">#F2F2F2</color>
-    <color name="sesl_round_stroke_dark">#00D6D6D6</color>
-    <color name="sesl_round_stroke_light">#D6D6D6</color>
 
     <color name="sesl_background_color_dark">@color/sesl_black</color>
     <color name="sesl_background_color_light">#FCFCFC</color>
@@ -36,15 +34,15 @@
     <color name="sesl_btn_default_text_color_light">@color/sesl_black</color>
 
     <color name="sesl_ripple_color_dark">#33FFFFFF</color>
-    <color name="sesl_ripple_color_light">#29000000</color>
+    <color name="sesl_ripple_color_light">#1A000000</color>
 
-    <color name="sesl_list_ripple_color_dark">#29FFFFFF</color>
-    <color name="sesl_list_ripple_color_light">#1A000000</color>
+    <color name="sesl_list_ripple_color_dark">@color/sesl_ripple_color_dark</color>
+    <color name="sesl_list_ripple_color_light">@color/sesl_ripple_color_light</color>
 
     <color name="sesl_highlighted_text_color_dark">#66B2CC</color>
     <color name="sesl_highlighted_text_color_light">#C4E9FC</color>
 
-    <color name="sesl_action_bar_background_color_dark">@color/sesl_appbar_background_black</color>
+    <color name="sesl_action_bar_background_color_dark">#010101</color>
     <color name="sesl_action_bar_background_color_light">#F2F2F2</color>
     <color name="sesl_action_bar_text_color_title_dark">#FAFAFA</color>
     <color name="sesl_action_bar_text_color_title_light">#252525</color>
@@ -55,8 +53,6 @@
     <color name="sesl_extended_appbar_subtitle_dark">#9C9C9C</color>
     <color name="sesl_extended_appbar_subtitle_light">#636363</color>
 
-    <color name="sesl_appbar_background_black">#080808</color>
-
     <color name="sesl_menu_popup_background_color">#FCFCFC</color>
     <color name="sesl_menu_popup_background_color_dark">#252525</color>
     <color name="sesl_menu_popup_background_stroke_color">#FCFCFC</color>
@@ -65,41 +61,37 @@
     <color name="sesl_menu_badge_background_color">#F56A0D</color>
     <color name="sesl_menu_badge_text_color">@color/sesl_white</color>
 
-    <color name="sesl_dropdown_scrollbar_handle_color">#DEDEDE</color>
+    <color name="sesl_dropdown_scrollbar_handle_color_light">#DEDEDE</color>
     <color name="sesl_dropdown_scrollbar_handle_color_dark">#595959</color>
 
-    <color name="sesl_search_url_text_normal">#7FA87F</color>
+    <color name="sesl_search_url_text_default">#7FA87F</color>
     <color name="sesl_search_url_text_pressed">#000000</color>
     <color name="sesl_search_url_text_selected">#000000</color>
 
     <color name="sesl_context_menu_title_text_color">#000000</color>
-    <color name="sesl_context_menu_title_text_color_dark">#FAFAFA</color>
+    <color name="sesl_context_menu_title_text_color_dark">@color/sesl_white</color>
 
     <color name="sesl_spinner_icon_color_disabled_light">#663B3B3B</color>
-    <color name="sesl_spinner_icon_color_disabled_dark">#66D9D9D9</color>
+    <color name="sesl_spinner_icon_color_disabled_dark">#66FAFAFA</color>
     <color name="sesl_spinner_icon_color_default_light">#3B3B3B</color>
     <color name="sesl_spinner_icon_color_default_dark">#D9D9D9</color>
 
-    <color name="sesl_spinner_item_text_color_disabled">#66252525</color>
+    <color name="sesl_spinner_item_text_color_disabled_light">#66252525</color>
     <color name="sesl_spinner_item_text_color_disabled_dark">#66FAFAFA</color>
-    <color name="sesl_spinner_item_text_color_normal">#252525</color>
-    <color name="sesl_spinner_item_text_color_normal_dark">#FAFAFA</color>
+    <color name="sesl_spinner_item_text_color_normal_light">@color/sesl_black</color>
+    <color name="sesl_spinner_item_text_color_normal_dark">@color/sesl_white</color>
 
-    <color name="sesl_popup_menu_item_text_color_checked">?colorPrimaryDark</color>
+    <color name="sesl_popup_menu_item_text_color_checked_light">?colorPrimaryDark</color>
     <color name="sesl_popup_menu_item_text_color_checked_dark">?colorPrimaryDark</color>
-    <color name="sesl_popup_menu_item_text_color_disabled">#66000000</color>
+    <color name="sesl_popup_menu_item_text_color_disabled_light">#66000000</color>
     <color name="sesl_popup_menu_item_text_color_disabled_dark">#66FAFAFA</color>
     <color name="sesl_popup_menu_item_text_color_normal">#000000</color>
     <color name="sesl_popup_menu_item_text_color_normal_dark">#FAFAFA</color>
     <color name="sesl_spinner_dropdown_item_checkmark">?colorPrimaryDark</color>
-    <color name="sesl_spinner_dropdown_item_text_color_disabled">#66000000</color>
+    <color name="sesl_spinner_dropdown_item_text_color_disabled_light">#66000000</color>
     <color name="sesl_spinner_dropdown_item_text_color_disabled_dark">#66FAFAFA</color>
-    <color name="sesl_spinner_dropdown_item_text_color_normal">#000000</color>
-    <color name="sesl_spinner_dropdown_item_text_color_normal_dark">#FAFAFA</color>
-
     <color name="sesl_spinner_dropdown_item_text_color_normal_light">#000000</color>
-    <color name="sesl_popup_menu_item_text_color_checked_light">?colorPrimaryDark</color>
-    <color name="sesl_spinner_item_text_color_normal_light">@color/sesl_black</color>
+    <color name="sesl_spinner_dropdown_item_text_color_normal_dark">#FAFAFA</color>
 
     <color name="sesl_dialog_window_background_color_material_dark">#252525</color>
     <color name="sesl_dialog_window_background_color_material_light">#FCFCFC</color>
@@ -154,13 +146,15 @@
 
     <color name="sesl_switchbar_off_background_color_dark">#2BFAFAFA</color>
     <color name="sesl_switchbar_off_background_color_light">#FAFAFA</color>
+    <color name="sesl_switchbar_on_background_color_dark">#520381FE</color>
+    <color name="sesl_switchbar_on_background_color_light">#AAD2FA</color>
     <color name="sesl_switchbar_off_text_color_dark">#FAFAFA</color>
     <color name="sesl_switchbar_off_text_color_light">#252525</color>
     <color name="sesl_switchbar_on_text_color_dark">#FAFAFA</color>
     <color name="sesl_switchbar_on_text_color_light">#FAFAFA</color>
     <color name="sesl_switchbar_ripple_color_light">@color/sesl_ripple_color_light</color>
 
-    <color name="sesl_switch_divider_color_dark">#26D4D4D4</color>
+    <color name="sesl_switch_divider_color_dark">#33D4D4D4</color>
     <color name="sesl_switch_divider_color_light">#C4C4C4</color>
     <color name="sesl_switch_thumb_off_color">#FAFAFA</color>
     <color name="sesl_switch_thumb_off_disabled_color">#FAFAFA</color>
@@ -178,20 +172,15 @@
     <color name="sesl_switch_track_off_disabled_stroke_color">#66888888</color>
     <color name="sesl_switch_track_off_stroke_color">#CC8F8F8F</color>
     <color name="sesl_switch_track_on_disabled_color">#668F8F8F</color>
-    <color name="sesl_switch_track_on_disabled_stroke_color">#66FFFFFF</color>
-    <color name="sesl_switch_track_on_disabled_stroke_color_dark">#00FFFFFF</color>
-    <color name="sesl_switch_track_on_stroke_color">#66FFFFFF</color>
-    <color name="sesl_switch_track_on_stroke_color_dark">#00FFFFFF</color>
-
 
     <color name="sesl_seekbar_control_color_activated">#0381FE</color>
-    <color name="sesl_seekbar_control_color_normal">#4D0381FE</color>
+    <color name="sesl_seekbar_control_color_default">#4D0381FE</color>
     <color name="sesl_seekbar_control_color_secondary">#7AB9CB</color>
     <color name="sesl_seekbar_disable_color_activated_dark">#545454</color>
     <color name="sesl_seekbar_disable_color_activated_light">#D2D2D2</color>
     <color name="sesl_seekbar_overlap_color_activated">#FF6021</color>
-    <color name="sesl_seekbar_overlap_color_normal">#FCCBB8</color>
-    <color name="sesl_seekbar_overlap_color_normal_dark">#673724</color>
+    <color name="sesl_seekbar_overlap_color_default_light">#FCCBB8</color>
+    <color name="sesl_seekbar_overlap_color_default_dark">#673724</color>
 
     <color name="sesl_thumb_control_color_activated">#0381FE</color>
     <color name="sesl_thumb_tint_color_disabled">#E7E7E7</color>
@@ -239,10 +228,6 @@
     <color name="sesl_list_go_to_top_ripple_dark">@color/sesl_ripple_color_dark</color>
     <color name="sesl_list_go_to_top_ripple_light">@color/sesl_ripple_color_light</color>
 
-    <color name="sesl_show_button_background_color_default">#74FFFFFF</color>
-    <color name="sesl_show_button_background_color_disabled">#66FFFFFF</color>
-    <color name="sesl_show_button_background_stroke_color_default">#4D000000</color>
-    <color name="sesl_show_button_background_stroke_color_disabled">#66000000</color>
     <color name="sesl_show_button_shapes_color_default">#47FFFFFF</color>
     <color name="sesl_show_button_shapes_color_disabled">#66FFFFFF</color>
     <color name="sesl_show_button_shapes_stroke_color_default">#4D000000</color>
@@ -258,12 +243,6 @@
     <color name="sesl_progress_control_color_normal_light">#4D0381FE</color>
 
     <color name="sesl_fasts_scroll_preview_text_color_light">@color/sesl_white</color>
-
-    <color name="sesl_search_url_text_default">#7FA87F</color>
-
-    <color name="sesl_dropdown_scrollbar_handle_color_light">#DEDEDE</color>
-
-    <color name="sesl_seekbar_control_color_default">#4D0381FE</color>
 
 
 

@@ -254,7 +254,7 @@ public class SeslCollapsingToolbarLayout extends FrameLayout {
 
     private void updateTitleLayout() {
         TypedValue typedValue = new TypedValue();
-        getResources().getValue(R.dimen.sesl_abl_height_proportion, typedValue, true);
+        getResources().getValue(R.dimen.sesl_appbar_height_proportion, typedValue, true);
         mHeightPercent = typedValue.getFloat();
         if (mCollapsingToolbarLayoutTitleEnabled) {
             TypedArray appearance = getContext().obtainStyledAttributes(mExtendTitleAppearance, R.styleable.TextAppearance);
@@ -961,7 +961,7 @@ public class SeslCollapsingToolbarLayout extends FrameLayout {
     protected void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         TypedValue typedValue = new TypedValue();
-        getResources().getValue(R.dimen.sesl_abl_height_proportion, typedValue, true);
+        getResources().getValue(R.dimen.sesl_appbar_height_proportion, typedValue, true);
         mHeightPercent = typedValue.getFloat();
         updateDefaultHeightDP();
         updateTitleLayout();

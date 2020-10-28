@@ -1,6 +1,7 @@
 package com.samsung.android.ui.preference;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
@@ -63,7 +64,12 @@ public class SeslSwitchPreferenceScreen extends SeslSwitchPreferenceCompat {
         if (fragment == null || fragment.equals("")) {
             LogUtils.w("SwitchPreferenceScreen", "SwitchPreferenceScreen should get fragment property. Fragment property does not exsit in SwitchPreferenceScreen");
         }
-        setLayoutResource(R.layout.sesl_switch_preference_screen);
+        Configuration conf = context.getResources().getConfiguration();
+        if ((conf.screenWidthDp > 320 || conf.fontScale < 1.1F) && (conf.screenWidthDp >= 411 || conf.fontScale < 1.3F)) {
+            setLayoutResource(R.layout.sesl_switch_preference_screen);
+        } else {
+            setLayoutResource(R.layout.sesl_switch_preference_screen_large);
+        }
         setWidgetLayoutResource(R.layout.sesl_switch_preference_screen_widget_divider);
         a.recycle();
     }

@@ -245,12 +245,12 @@ public abstract class SeslAbsSeekBar extends SeslProgressBar {
 
         this.mIsLightTheme = var5;
         Resources var8 = var1.getResources();
-        this.mDefaultNormalProgressColor = this.colorToColorStateList(var8.getColor(R.color.sesl_seekbar_control_color_normal, null));
+        this.mDefaultNormalProgressColor = this.colorToColorStateList(var8.getColor(R.color.sesl_seekbar_control_color_default, null));
         this.mDefaultActivatedProgressColor = this.colorToColorStateList(var8.getColor(R.color.sesl_seekbar_control_color_activated, null));
         if (this.mIsLightTheme) {
-            var3 = R.color.sesl_seekbar_overlap_color_normal;
+            var3 = R.color.sesl_seekbar_overlap_color_default_light;
         } else {
-            var3 = R.color.sesl_seekbar_overlap_color_normal_dark;
+            var3 = R.color.sesl_seekbar_overlap_color_default_dark;
         }
 
         this.mOverlapNormalProgressColor = this.colorToColorStateList(var8.getColor(var3, null));

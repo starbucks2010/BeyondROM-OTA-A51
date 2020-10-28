@@ -1,3 +1,3 @@
 <resources>
-    <item type="dimen" format="float" name="sesl_abl_height_proportion">0.3967</item>
+    <item type="dimen" format="float" name="sesl_appbar_height_proportion">0.3967</item>
 </resources>

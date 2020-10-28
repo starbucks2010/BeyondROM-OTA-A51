@@ -139,7 +139,7 @@ public class SeslAppBarLayout extends LinearLayout implements ABLBehavior {
         }
 
         TypedValue var5 = new TypedValue();
-        this.getResources().getValue(R.dimen.sesl_abl_height_proportion, var5, true);
+        this.getResources().getValue(R.dimen.sesl_appbar_height_proportion, var5, true);
         this.mHeightPercent = var5.getFloat();
         if (var4.hasValue(R.styleable.SeslAppBarLayout_android_paddingBottom)) {
             this.mBottomPadding = var4.getDimensionPixelSize(R.styleable.SeslAppBarLayout_android_paddingBottom, 0);
@@ -560,7 +560,7 @@ public class SeslAppBarLayout extends LinearLayout implements ABLBehavior {
         }
 
         TypedValue var3 = new TypedValue();
-        this.getResources().getValue(R.dimen.sesl_abl_height_proportion, var3, true);
+        this.getResources().getValue(R.dimen.sesl_appbar_height_proportion, var3, true);
         this.mHeightPercent = var3.getFloat();
         if (this.mHeightCustom > 0.0F) {
             LogUtils.d("Sesl_AppBarLayout", "onConfigurationChanged");
