@@ -107,7 +107,7 @@ public class ChangelogActivity extends BaseAppBarActivity {
         appBar.setTitleText(getString(R.string.mesa_whats_new));
 
         TypedValue outValue = new TypedValue();
-        getResources().getValue(R.dimen.sesl_abl_height_proportion, outValue, true);
+        getResources().getValue(R.dimen.sesl_appbar_height_proportion, outValue, true);
 
         if (outValue.getFloat() == 0.0f)
             setFullscreen();

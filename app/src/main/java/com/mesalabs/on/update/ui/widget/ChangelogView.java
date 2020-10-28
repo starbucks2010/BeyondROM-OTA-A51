@@ -67,7 +67,7 @@ public class ChangelogView extends LinearLayout {
         setBackgroundColor(getResources().getColor(R.color.mesa_changelogview_super_bg_color, mContext.getTheme()));
         setOrientation(VERTICAL);
 
-        mSeslRoundedCorner = new SeslRoundedCorner(mContext, false, true);
+        mSeslRoundedCorner = new SeslRoundedCorner(mContext, true);
         mSeslRoundedCorner.setRoundedCorners(15);
         mSeslRoundedCorner.setRoundedCornerColor(15, ViewUtils.getRoundAndBgColor(mContext));
 

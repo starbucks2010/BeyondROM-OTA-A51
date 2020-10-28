@@ -24,7 +24,6 @@
         android:layout_height="fill_parent"
         android:background="?cardBgColor"
         android:scrollbars="vertical"
-        app:cornersStroke="false"
         app:roundedCorners="top_left|top_right"
         app:layout_behavior="@string/sesl_appbar_scrolling_view_behavior">
 
