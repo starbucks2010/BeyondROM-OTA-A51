@@ -551,7 +551,7 @@ public class SeslAppBarLayout extends LinearLayout implements ABLBehavior {
             }
         }
 
-        this.mBottomPadding = this.getContext().getResources().getDimensionPixelSize(R.dimen.sesl_material_extended_appbar_bottom_padding);
+        this.mBottomPadding = this.getContext().getResources().getDimensionPixelSize(R.dimen.sesl_extended_appbar_bottom_padding);
         this.setPadding(0, 0, 0, this.mBottomPadding);
         if (this.mBottomPadding > 0) {
             mAppBarHeight = (float)this.getResources().getDimensionPixelSize(R.dimen.sesl_material_action_bar_default_height_padding);

@@ -20,17 +20,15 @@ import android.view.View;
  */
 
 public abstract class SeslAbsIndicatorView extends View {
-    int mIndicatorColor;
-
     abstract void onHide();
-
-    abstract void onPressed();
-
-    abstract void onReleased();
 
     abstract void onSetSelectedIndicatorColor(int i);
 
     abstract void onShow();
+
+    abstract void startPressEffect();
+
+    abstract void startReleaseEffect();
 
     public SeslAbsIndicatorView(Context context) {
         super(context);
@@ -49,23 +47,20 @@ public abstract class SeslAbsIndicatorView extends View {
     }
 
     public void setSelectedIndicatorColor(int color) {
-        mIndicatorColor = color;
-        onSetSelectedIndicatorColor(mIndicatorColor);
+        onSetSelectedIndicatorColor(color);
     }
 
     public void setPressed() {
-        onPressed();
+        startPressEffect();
     }
 
     public void setReleased() {
-        onReleased();
+        startReleaseEffect();
     }
 
     public void setHide() {
         onHide();
     }
-
-    public void setHideImmediatly() { }
 
     public void setShow() {
         onShow();

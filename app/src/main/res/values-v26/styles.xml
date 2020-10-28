@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="mesa_AppBarLayoutStyle" parent="@android:style/Widget">
-        <item name="android:paddingBottom">@dimen/sesl_material_extended_appbar_bottom_padding</item>
+        <item name="android:paddingBottom">@dimen/sesl_extended_appbar_bottom_padding</item>
         <item name="android:stateListAnimator">@null</item>
         <item name="android:touchscreenBlocksFocus">false</item>
         <item name="android:keyboardNavigationCluster">true</item>

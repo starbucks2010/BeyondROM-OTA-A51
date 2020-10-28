@@ -6,16 +6,4 @@
             <solid android:color="@color/mesa_layoutpref_help_image_bg_color" />
         </shape>
     </item>
-    <item android:gravity="start">
-        <shape android:shape="rectangle">
-            <size android:width="1.0px" />
-            <solid android:color="?roundedCornerStrokeColor" />
-        </shape>
-    </item>
-    <item android:gravity="end">
-        <shape android:shape="rectangle">
-            <size android:width="1.0px" />
-            <solid android:color="?roundedCornerStrokeColor" />
-        </shape>
-    </item>
 </layer-list>

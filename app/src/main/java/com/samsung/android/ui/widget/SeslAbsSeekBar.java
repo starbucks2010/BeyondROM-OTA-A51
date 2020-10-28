@@ -2,6 +2,7 @@ package com.samsung.android.ui.widget;
 
 import android.animation.AnimatorSet;
 import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
@@ -174,6 +175,7 @@ public abstract class SeslAbsSeekBar extends SeslProgressBar {
         this(var1, var2, var3, 0);
     }
 
+    @SuppressLint("RestrictedApi")
     public SeslAbsSeekBar(Context var1, AttributeSet var2, int var3, int var4) throws Throwable {
         super(var1, var2, var3, var4);
         this.mTempRect = new Rect();
@@ -417,6 +419,7 @@ public abstract class SeslAbsSeekBar extends SeslProgressBar {
         this.applyThumbTint();
     }
 
+    @SuppressLint("RestrictedApi")
     private void setThumbPos(int var1, Drawable var2, float var3, int var4) {
         if (super.mCurrentMode == 3) {
             this.setThumbPosInVertical(this.getHeight(), var2, var3, var4);
@@ -531,6 +534,7 @@ public abstract class SeslAbsSeekBar extends SeslProgressBar {
         this.mHoveringLevel = (int)(var6 + var7 * (float)this.getMax());
     }
 
+    @SuppressLint("RestrictedApi")
     private void trackTouchEvent(MotionEvent var1) throws Throwable {
         if (super.mCurrentMode == 3) {
             this.trackTouchEventInVertical(var1);
@@ -675,6 +679,7 @@ public abstract class SeslAbsSeekBar extends SeslProgressBar {
         }
     }
 
+    @SuppressLint("RestrictedApi")
     private void updateSplitProgress() {
         if (super.mCurrentMode == 4) {
             Drawable var1 = this.mSplitProgress;
@@ -853,10 +858,11 @@ public abstract class SeslAbsSeekBar extends SeslProgressBar {
 
     }
 
+    @SuppressLint("RestrictedApi")
     public void drawTrack(Canvas var1) {
         Drawable var2 = this.mThumb;
         if (var2 != null && this.mSplitTrack) {
-            Rect var3 = DrawableUtils.getOpticalBounds(var2);
+            @SuppressLint("RestrictedApi") Rect var3 = DrawableUtils.getOpticalBounds(var2);
             Rect var4 = this.mTempRect;
             var2.copyBounds(var4);
             var4.offset(this.getPaddingLeft() - this.mThumbOffset, this.getPaddingTop());
@@ -1117,6 +1123,7 @@ public abstract class SeslAbsSeekBar extends SeslProgressBar {
     public void onKeyChange() {
     }
 
+    @SuppressLint("RestrictedApi")
     public boolean onKeyDown(int var1, KeyEvent var2) {
         if (this.isEnabled()) {
             int var3 = this.mKeyProgressIncrement;
@@ -1605,7 +1612,7 @@ public abstract class SeslAbsSeekBar extends SeslProgressBar {
                         this.updateSplitProgress();
                     }
                 } else {
-                    this.setThumb(this.getContext().getResources().getDrawable(R.drawable.sesl_scrubber_control_anim, null));
+                    this.setThumb(this.getContext().getResources().getDrawable(mIsLightTheme ? R.drawable.sesl_scrubber_control_anim_light : R.drawable.sesl_scrubber_control_anim_dark, null));
                 }
             } else {
                 this.updateWarningMode(this.getProgress());

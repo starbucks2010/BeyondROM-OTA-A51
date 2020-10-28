@@ -260,7 +260,7 @@ public class Utils {
     }
 
     public static boolean isInSamsungDeXMode(Context context) {
-        return context.getResources().getBoolean(R.bool.sesl_config_desktop_mode);
+        return context.getResources().getBoolean(R.bool.sesl_material_desktop_mode);
     }
 
     private static boolean isInSamsungMultiWindowMode() {

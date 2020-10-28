@@ -403,7 +403,7 @@ public class SeslAlertController {
                 Utils.genericInvokeMethod(this.mButtonPositive, Build.VERSION.SDK_INT >= 29 ? "hidden_semSetButtonShapeEnabled" : "semSetButtonShapeEnabled", var4);
             }
         } else if (var4) {
-            this.mButtonPositive.setBackgroundResource(R.drawable.sesl_dialog_show_button_background);
+            this.mButtonPositive.setBackgroundResource(R.drawable.sesl_dialog_btn_show_button_shapes_background);
         }
 
         int var6;
@@ -433,7 +433,7 @@ public class SeslAlertController {
                 Utils.genericInvokeMethod(this.mButtonNegative, Build.VERSION.SDK_INT >= 29 ? "hidden_semSetButtonShapeEnabled" : "semSetButtonShapeEnabled", var4);
             }
         } else if (var4) {
-            this.mButtonNegative.setBackgroundResource(R.drawable.sesl_dialog_show_button_background);
+            this.mButtonNegative.setBackgroundResource(R.drawable.sesl_dialog_btn_show_button_shapes_background);
         }
 
         if (TextUtils.isEmpty(this.mButtonNegativeText) && this.mButtonNegativeIcon == null) {
@@ -460,7 +460,7 @@ public class SeslAlertController {
                 Utils.genericInvokeMethod(this.mButtonNeutral, Build.VERSION.SDK_INT >= 29 ? "hidden_semSetButtonShapeEnabled" : "semSetButtonShapeEnabled", var4);
             }
         } else if (var4) {
-            this.mButtonNeutral.setBackgroundResource(R.drawable.sesl_dialog_show_button_background);
+            this.mButtonNeutral.setBackgroundResource(R.drawable.sesl_dialog_btn_show_button_shapes_background);
         }
 
         if (TextUtils.isEmpty(this.mButtonNeutralText) && this.mButtonNeutralIcon == null) {

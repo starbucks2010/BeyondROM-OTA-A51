@@ -1,16 +1,23 @@
 package com.samsung.android.ui.tabs;
 
 import android.content.Context;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.NinePatchDrawable;
 import android.util.AttributeSet;
 import android.util.TypedValue;
+import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.ScaleAnimation;
 
+import androidx.core.content.ContextCompat;
+import androidx.core.view.ViewCompat;
+
 import com.mesalabs.on.update.R;
+import com.mesalabs.cerberus.utils.Utils;
+import com.samsung.android.ui.view.animation.SeslAnimationUtils;
 
 /*
  * Cerberus Core App
@@ -28,7 +35,6 @@ import com.mesalabs.on.update.R;
  */
 
 public class SeslTabRoundRectIndicator extends SeslAbsIndicatorView {
-    private Drawable mBackground;
     private AnimationSet mPressAnimationSet;
 
     public SeslTabRoundRectIndicator(Context context) {
@@ -45,44 +51,38 @@ public class SeslTabRoundRectIndicator extends SeslAbsIndicatorView {
 
     public SeslTabRoundRectIndicator(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
-
-        Drawable drawable;
-        if (isLightTheme()) {
-            drawable = getContext().getDrawable(R.drawable.sesl_tablayout_subtab_indicator_background);
-        } else {
-            drawable = getContext().getDrawable(R.drawable.sesl_tablayout_subtab_indicator_background_dark);
-        }
-        mBackground = drawable;
-        setBackground(mBackground);
+        ViewCompat.setBackground(this, ContextCompat.getDrawable(context, Utils.isNightMode(context) ? R.drawable.sesl_tablayout_subtab_indicator_background_dark : R.drawable.sesl_tablayout_subtab_indicator_background_light));
     }
 
     @Override
-    public void setHideImmediatly() {
-        AlphaAnimation alphaAnimation = new AlphaAnimation(0.0f, 0.0f);
-        alphaAnimation.setDuration(0);
-        alphaAnimation.setFillAfter(true);
-        startAnimation(alphaAnimation);
+    protected void onVisibilityChanged(View changedView, int visibility) {
+        super.onVisibilityChanged(changedView, visibility);
+        if (visibility != 0 && !isSelected()) {
+            onHide();
+        }
     }
 
     @Override
     void onHide() {
-        AlphaAnimation alphaAnimation = new AlphaAnimation(1.0f, 0.0f);
+        AlphaAnimation alphaAnimation = new AlphaAnimation(0.0f, 0.0f);
+        alphaAnimation.setDuration(0);
+        alphaAnimation.setFillAfter(true);
+        startAnimation(alphaAnimation);
+        setAlpha(0.0f);
+    }
+
+    @Override
+    void onShow() {
+        setAlpha(1.0f);
+        AlphaAnimation alphaAnimation = new AlphaAnimation(1.0f, 1.0f);
         alphaAnimation.setDuration(0);
         alphaAnimation.setFillAfter(true);
         startAnimation(alphaAnimation);
     }
 
     @Override
-    void onShow() {
-        if (mPressAnimationSet == null) {
-            onReleased();
-        } else if (mPressAnimationSet != null && mPressAnimationSet.hasEnded()) {
-            onReleased();
-        }
-    }
-
-    @Override
-    void onPressed() {
+    void startPressEffect() {
+        setAlpha(1.0f);
         mPressAnimationSet = new AnimationSet(false);
         mPressAnimationSet.setStartOffset(50);
         mPressAnimationSet.setFillAfter(true);
@@ -100,7 +100,7 @@ public class SeslTabRoundRectIndicator extends SeslAbsIndicatorView {
 
         ScaleAnimation scaleAnimation = new ScaleAnimation(1.0f, 0.95f, 1.0f, 0.95f, 1, 0.5f, 1, 0.5f);
         scaleAnimation.setDuration(50);
-        scaleAnimation.setInterpolator(getContext(), SeslTabLayout.SESL_TAB_ANIM_INTERPOLATOR);
+        scaleAnimation.setInterpolator(SeslAnimationUtils.SINE_IN_OUT_80);
         scaleAnimation.setFillAfter(true);
         mPressAnimationSet.addAnimation(scaleAnimation);
 
@@ -108,7 +108,7 @@ public class SeslTabRoundRectIndicator extends SeslAbsIndicatorView {
             AlphaAnimation alphaAnimation = new AlphaAnimation(0.0f, 1.0f);
             alphaAnimation.setDuration(50);
             alphaAnimation.setFillAfter(true);
-            alphaAnimation.setInterpolator(getContext(), SeslTabLayout.SESL_TAB_ANIM_INTERPOLATOR);
+            alphaAnimation.setInterpolator(SeslAnimationUtils.SINE_IN_OUT_80);
             mPressAnimationSet.addAnimation(alphaAnimation);
         }
 
@@ -116,33 +116,24 @@ public class SeslTabRoundRectIndicator extends SeslAbsIndicatorView {
     }
 
     @Override
-    void onReleased() {
-        mPressAnimationSet = null;
-
+    void startReleaseEffect() {
+        setAlpha(1.0f);
         AnimationSet animationSet = new AnimationSet(false);
         animationSet.setFillAfter(true);
-
         ScaleAnimation scaleAnimation = new ScaleAnimation(0.95f, 1.0f, 0.95f, 1.0f, 1, 0.5f, 1, 0.5f);
         scaleAnimation.setDuration(350);
-        scaleAnimation.setInterpolator(getContext(), SeslTabLayout.SESL_TAB_ANIM_INTERPOLATOR);
+        scaleAnimation.setInterpolator(SeslAnimationUtils.SINE_IN_OUT_80);
         scaleAnimation.setFillAfter(true);
         animationSet.addAnimation(scaleAnimation);
-
         startAnimation(animationSet);
-    }
-
-    private boolean isLightTheme() {
-        TypedValue outValue = new TypedValue();
-        getContext().getTheme().resolveAttribute(R.attr.isLightTheme, outValue, true);
-        return outValue.data != 0;
     }
 
     @Override
     void onSetSelectedIndicatorColor(int color) {
         if (!(getBackground() instanceof NinePatchDrawable)) {
-            getBackground().setTint(color);
+            getBackground().setColorFilter(color, PorterDuff.Mode.SRC_IN);
             if (!isSelected()) {
-                setHideImmediatly();
+                setHide();
             }
         }
     }

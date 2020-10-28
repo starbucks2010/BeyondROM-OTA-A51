@@ -252,7 +252,7 @@ public abstract class SeslPreferenceFragmentCompat extends Fragment implements P
                 this.mList.setItemAnimator(null);
                 var6 = this.mRoundedCornerType;
                 if (var6 == SESL_ROUNDED_CORNER_TYPE_SOLID) {
-                    this.mSeslSubheaderRoundedCorner = new SeslSubheaderRoundedCorner(this.getContext(), false);
+                    this.mSeslSubheaderRoundedCorner = new SeslSubheaderRoundedCorner(this.getContext());
                     this.mSeslRoundedCorner = new SeslRoundedCorner(this.getContext(), false);
                     this.mSubheaderColor = var13.getColor(R.color.sesl_round_and_bgcolor_dark, null);
                     this.mSeslSubheaderRoundedCorner.setRoundedCornerColor(15, this.mSubheaderColor);
@@ -266,7 +266,7 @@ public abstract class SeslPreferenceFragmentCompat extends Fragment implements P
                 if (this.mRoundedCornerType != SESL_ROUNDED_CORNER_TYPE_NONE) {
                     var12.seslSetFillBottomEnabled(true);
                     var12.seslSetFillBottomColor(this.mSubheaderColor);
-                    this.mSeslListRoundedCorner = new SeslRoundedCorner(this.getContext(), false, true);
+                    this.mSeslListRoundedCorner = new SeslRoundedCorner(this.getContext(), true);
                     this.mSeslListRoundedCorner.setRoundedCornerColor(15, this.mSubheaderColor);
                     this.mSeslListRoundedCorner.setRoundedCorners(3);
                     this.mSeslStrokeListRoundedCorner = new SeslRoundedCorner(this.getContext());

@@ -43,14 +43,10 @@ public class RoundFrameLayout extends FrameLayout {
 
         TypedArray obtainStyledAttributes = mContext.obtainStyledAttributes(attrs, R.styleable.RoundFrameLayout);
 
-        boolean cornersStroke = obtainStyledAttributes.getBoolean(R.styleable.RoundFrameLayout_cornersStroke, true);
         int roundedCorners = obtainStyledAttributes.getInt(R.styleable.RoundFrameLayout_roundedCorners, 15);
 
-        mSeslRoundedCorner = new SeslRoundedCorner(mContext, cornersStroke);
+        mSeslRoundedCorner = new SeslRoundedCorner(mContext);
         mSeslRoundedCorner.setRoundedCorners(roundedCorners);
-        if (!cornersStroke) {
-            mSeslRoundedCorner.setRoundedCornerColor(roundedCorners, ViewUtils.getRoundAndBgColor(mContext));
-        }
 
         obtainStyledAttributes.recycle();
     }

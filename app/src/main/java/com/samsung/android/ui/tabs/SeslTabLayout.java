@@ -1,10 +1,9 @@
 package com.samsung.android.ui.tabs;
 
 import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
-import android.content.ContentResolver;
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
@@ -13,17 +12,19 @@ import android.content.res.TypedArray;
 import android.database.DataSetObserver;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.RectF;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.text.Layout;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.util.TypedValue;
-import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
-import android.view.SoundEffectConstants;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
@@ -33,6 +34,7 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.ScaleAnimation;
+import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -42,10 +44,13 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.content.res.AppCompatResources;
+import androidx.appcompat.widget.TooltipCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.util.Pools;
-import androidx.core.view.GravityCompat;
+import androidx.core.view.AccessibilityDelegateCompat;
+import androidx.core.view.MarginLayoutParamsCompat;
 import androidx.core.view.PointerIconCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.widget.TextViewCompat;
@@ -53,9 +58,15 @@ import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.SeslViewPager;
 
 import com.google.android.material.animation.AnimationUtils;
-import com.google.android.material.tabs.TabItem;
+import com.google.android.material.badge.BadgeDrawable;
+import com.google.android.material.badge.BadgeUtils;
+import com.google.android.material.internal.ViewUtils;
+import com.google.android.material.resources.MaterialResources;
+import com.google.android.material.shape.MaterialShapeDrawable;
+import com.google.android.material.shape.MaterialShapeUtils;
 import com.mesalabs.on.update.R;
-import com.samsung.android.ui.widget.SeslTooltip;
+import com.mesalabs.cerberus.utils.Utils;
+import com.samsung.android.ui.view.animation.SeslAnimationUtils;
 
 /*
  * Cerberus Core App
@@ -74,1825 +85,2606 @@ import com.samsung.android.ui.widget.SeslTooltip;
 
 @SeslViewPager.DecorView
 public class SeslTabLayout extends HorizontalScrollView {
-    private static final int DEFAULT_HEIGHT_WITH_TEXT_ICON = 72;
-    static final int DEFAULT_GAP_TEXT_ICON = 8;
-    private static final int INVALID_WIDTH = -1;
-    private static final int DEFAULT_HEIGHT = 48;
-    private static final int TAB_MIN_WIDTH_MARGIN = 56;
-    static final int FIXED_WRAP_GUTTER_MIN = 16;
-    static final int MOTION_NON_ADJACENT_OFFSET = 24;
-    public static final int MODE_SCROLLABLE = 0;
-    public static final int MODE_FIXED = 1;
-    private static final int ANIMATION_DURATION = 300;
-    public static final int GRAVITY_FILL = 0;
-    public static final int GRAVITY_CENTER = 1;
+    public static final Pools.Pool<SeslTabLayout.Tab> tabPool = new Pools.SynchronizedPool(16);
+    public SeslTabLayout.AdapterChangeListener adapterChangeListener;
+    public int contentInsetStart;
+    public SeslTabLayout.BaseOnTabSelectedListener currentVpSelectedListener;
+    public boolean inlineLabel;
+    public int mBadgeColor;
+    public int mBadgeTextColor;
+    public Typeface mBoldTypeface;
+    public int mDepthStyle;
+    public int mIconTextGap;
+    public boolean mIsScaledTextSizeType;
+    public Typeface mNormalTypeface;
+    public int mRequestedTabWidth;
+    public int mSubTabIndicatorHeight;
+    public int mSubTabSelectedIndicatorColor;
+    public int mTabSelectedIndicatorColor;
+    public int mode;
+    public SeslTabLayout.TabLayoutOnPageChangeListener pageChangeListener;
+    public PagerAdapter pagerAdapter;
+    public DataSetObserver pagerAdapterObserver;
+    public final int requestedTabMaxWidth;
+    public final int requestedTabMinWidth;
+    public ValueAnimator scrollAnimator;
+    public final int scrollableTabMinWidth;
+    public SeslTabLayout.BaseOnTabSelectedListener selectedListener;
+    public final ArrayList<SeslTabLayout.BaseOnTabSelectedListener> selectedListeners;
+    public SeslTabLayout.Tab selectedTab;
+    public boolean setupViewPagerImplicitly;
+    public final SeslTabLayout.SlidingTabIndicator slidingTabIndicator;
+    public final int tabBackgroundResId;
+    public int tabGravity;
+    public ColorStateList tabIconTint;
+    public PorterDuff.Mode tabIconTintMode;
+    public int tabIndicatorAnimationDuration;
+    public boolean tabIndicatorFullWidth;
+    public int tabIndicatorGravity;
+    public int tabMaxWidth;
+    public int tabPaddingBottom;
+    public int tabPaddingEnd;
+    public int tabPaddingStart;
+    public int tabPaddingTop;
+    public ColorStateList tabRippleColorStateList;
+    public Drawable tabSelectedIndicator;
+    public int tabTextAppearance;
+    public ColorStateList tabTextColors;
+    public float tabTextMultiLineSize;
+    public float tabTextSize;
+    public final RectF tabViewContentBounds;
+    public final Pools.Pool<SeslTabLayout.TabView> tabViewPool;
+    public final ArrayList<SeslTabLayout.Tab> tabs;
+    public boolean unboundedRipple;
+    public SeslViewPager viewPager;
 
-    public static final int SESL_TAB_ANIM_INTERPOLATOR = R.anim.sine_in_out_80;
-    private static final Pools.Pool<SeslTab> sTabPool = new Pools.SynchronizedPool(16);
-    private AdapterChangeListener mAdapterChangeListener;
-    private int mBadgeColor = -1;
-    private int mBadgeTextColor = -1;
-    private Typeface mBoldTypeface;
-    private int mContentInsetStart;
-    private ContentResolver mContentResolver;
-    private OnTabSelectedListener mCurrentVpSelectedListener;
-    private int mDepthStyle = 1;
-    private boolean mIsScaledTextSizeType = false;
-    int mMode;
-    private Typeface mNormalTypeface;
-    private TabLayoutOnPageChangeListener mPageChangeListener;
-    private PagerAdapter mPagerAdapter;
-    private DataSetObserver mPagerAdapterObserver;
-    private final int mRequestedTabMaxWidth;
-    private final int mRequestedTabMinWidth;
-    private int mRequestedTabWidth = -1;
-    private ValueAnimator mScrollAnimator;
-    private final int mScrollableTabMinWidth;
-    private OnTabSelectedListener mSelectedListener;
-    private final ArrayList<OnTabSelectedListener> mSelectedListeners = new ArrayList<>();
-    private SeslTab mSelectedTab;
-    private boolean mSetupViewPagerImplicitly;
-    private int mSubTabIndicatorHeight = 1;
-    private int mSubTabSelectedIndicatorColor = -1;
-    final int mTabBackgroundResId;
-    int mTabGravity;
-    int mTabMaxWidth = 0x7fffffff;
-    int mTabPaddingBottom;
-    int mTabPaddingEnd;
-    int mTabPaddingStart;
-    int mTabPaddingTop;
-    private int mTabSelectedIndicatorColor;
-    private final SlidingTabStrip mTabStrip;
-    int mTabTextAppearance;
-    ColorStateList mTabTextColors;
-    float mTabTextMultiLineSize;
-    float mTabTextSize;
-    private final Pools.Pool<SeslTabView> mTabViewPool = new Pools.SimplePool(12);
-    private final ArrayList<SeslTab> mTabs = new ArrayList<>();
-    SeslViewPager mViewPager;
-
-    public SeslTabLayout(Context context) {
-        this(context, null);
+    public SeslTabLayout(Context var1) {
+        this(var1, (AttributeSet)null);
     }
 
-    public SeslTabLayout(Context context, AttributeSet attrs) {
-        this(context, attrs, 0);
+    public SeslTabLayout(Context var1, AttributeSet var2) {
+        this(var1, var2, R.attr.tabStyle);
     }
 
-    public SeslTabLayout(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-
-        setHorizontalScrollBarEnabled(false);
-
-        mTabStrip = new SlidingTabStrip(context);
-        super.addView(mTabStrip, 0, new HorizontalScrollView.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT));
-
-        TypedArray a;
-        if (isLightTheme()) {
-            a = context.obtainStyledAttributes(attrs, R.styleable.SeslTabLayout, defStyleAttr, R.style.mesa_SeslTabLayoutStyle_Light);
+    @SuppressLint({"RestrictedApi", "WrongConstant"})
+    public SeslTabLayout(Context var1, AttributeSet var2, int var3) {
+        super(var1, var2, var3);
+        this.tabs = new ArrayList();
+        this.tabViewContentBounds = new RectF();
+        this.tabMaxWidth = 2147483647;
+        this.selectedListeners = new ArrayList();
+        this.tabViewPool = new Pools.SimplePool(12);
+        this.mIconTextGap = -1;
+        this.mDepthStyle = 1;
+        this.mBadgeColor = -1;
+        this.mBadgeTextColor = -1;
+        this.mRequestedTabWidth = -1;
+        this.mSubTabSelectedIndicatorColor = -1;
+        this.mSubTabIndicatorHeight = 1;
+        this.mIsScaledTextSizeType = false;
+        this.setHorizontalScrollBarEnabled(false);
+        this.slidingTabIndicator = new SeslTabLayout.SlidingTabIndicator(var1);
+        super.addView(this.slidingTabIndicator, 0, new LayoutParams(-2, -1));
+        int[] var4 = R.styleable.SeslTabLayout;
+        int var5;
+        if (Utils.isNightMode(var1)) {
+            var5 = R.style.mesa_SeslTabLayoutStyle;
         } else {
-            a = context.obtainStyledAttributes(attrs, R.styleable.SeslTabLayout, defStyleAttr, R.style.mesa_SeslTabLayoutStyle);
+            var5 = R.style.mesa_SeslTabLayoutStyle_Light;
         }
 
-        mTabStrip.setSelectedIndicatorHeight(a.getDimensionPixelSize(R.styleable.SeslTabLayout_tabIndicatorHeight, 0));
-        mTabSelectedIndicatorColor = a.getColor(R.styleable.SeslTabLayout_tabIndicatorColor, 0);
-        mTabStrip.setSelectedIndicatorColor(mTabSelectedIndicatorColor);
+        TypedArray var9 = var1.obtainStyledAttributes(var2, var4, var3, var5);
+        if (this.getBackground() instanceof ColorDrawable) {
+            ColorDrawable var6 = (ColorDrawable)this.getBackground();
+            MaterialShapeDrawable var10 = new MaterialShapeDrawable();
+            var10.setFillColor(ColorStateList.valueOf(var6.getColor()));
+            var10.initializeElevationOverlay(var1);
+            var10.setElevation(ViewCompat.getElevation(this));
+            ViewCompat.setBackground(this, var10);
+        }
 
-        int dimensionPixelSize = a.getDimensionPixelSize(R.styleable.SeslTabLayout_tabPadding, 0);
-        mTabPaddingStart = a.getDimensionPixelSize(R.styleable.SeslTabLayout_tabPaddingStart, dimensionPixelSize);
-        mTabPaddingTop = a.getDimensionPixelSize(R.styleable.SeslTabLayout_tabPaddingTop, dimensionPixelSize);
-        mTabPaddingEnd = a.getDimensionPixelSize(R.styleable.SeslTabLayout_tabPaddingEnd, dimensionPixelSize);
-        mTabPaddingBottom = a.getDimensionPixelSize(R.styleable.SeslTabLayout_tabPaddingBottom, dimensionPixelSize);
+        this.slidingTabIndicator.setSelectedIndicatorHeight(var9.getDimensionPixelSize(R.styleable.SeslTabLayout_tabIndicatorHeight, -1));
+        this.mTabSelectedIndicatorColor = var9.getColor(R.styleable.SeslTabLayout_tabIndicatorColor, 0);
+        this.slidingTabIndicator.setSelectedIndicatorColor(this.mTabSelectedIndicatorColor);
+        this.slidingTabIndicator.setSelectedIndicatorColor(this.mTabSelectedIndicatorColor);
+        this.setSelectedTabIndicator(MaterialResources.getDrawable(var1, var9, R.styleable.SeslTabLayout_tabIndicator));
+        this.setSelectedTabIndicatorGravity(var9.getInt(R.styleable.SeslTabLayout_tabIndicatorGravity, 0));
+        this.setTabIndicatorFullWidth(var9.getBoolean(R.styleable.SeslTabLayout_tabIndicatorFullWidth, true));
+        var3 = var9.getDimensionPixelSize(R.styleable.SeslTabLayout_tabPadding, 0);
+        this.tabPaddingBottom = var3;
+        this.tabPaddingEnd = var3;
+        this.tabPaddingTop = var3;
+        this.tabPaddingStart = var3;
+        this.tabPaddingStart = var9.getDimensionPixelSize(R.styleable.SeslTabLayout_tabPaddingStart, this.tabPaddingStart);
+        this.tabPaddingTop = var9.getDimensionPixelSize(R.styleable.SeslTabLayout_tabPaddingTop, this.tabPaddingTop);
+        this.tabPaddingEnd = var9.getDimensionPixelSize(R.styleable.SeslTabLayout_tabPaddingEnd, this.tabPaddingEnd);
+        this.tabPaddingBottom = var9.getDimensionPixelSize(R.styleable.SeslTabLayout_tabPaddingBottom, this.tabPaddingBottom);
+        this.tabTextAppearance = var9.getResourceId(R.styleable.SeslTabLayout_tabTextAppearance, R.style.mesa_SeslTabTextStyle);
+        TypedArray var11 = var1.obtainStyledAttributes(this.tabTextAppearance, androidx.appcompat.R.styleable.TextAppearance);
 
-        mTabTextAppearance = a.getResourceId(R.styleable.SeslTabLayout_tabTextAppearance, R.style.mesa_SeslTabTextStyle_Light);
-
-        final TypedArray ta = context.obtainStyledAttributes(mTabTextAppearance, androidx.appcompat.R.styleable.TextAppearance);
         try {
-            mTabTextSize = ta.getDimensionPixelSize(androidx.appcompat.R.styleable.TextAppearance_android_textSize, 0);
-            mIsScaledTextSizeType = ta.getText(androidx.appcompat.R.styleable.TextAppearance_android_textSize).toString().contains("sp");
-            mTabTextColors = ta.getColorStateList(androidx.appcompat.R.styleable.TextAppearance_android_textColor);
-            ta.recycle();
-
-            mBoldTypeface = Typeface.create("sec-roboto-light", Typeface.BOLD);
-            mNormalTypeface = Typeface.create("sec-roboto-light", Typeface.NORMAL);
-
-            mContentResolver = context.getContentResolver();
-
-            mSubTabIndicatorHeight = getContext().getResources().getDimensionPixelSize(R.dimen.sesl_tablayout_subtab_indicator_height);
-
-            if (a.hasValue(R.styleable.SeslTabLayout_tabTextColor)) {
-                mTabTextColors = a.getColorStateList(R.styleable.SeslTabLayout_tabTextColor);
-            }
-            if (a.hasValue(R.styleable.SeslTabLayout_tabSelectedTextColor)) {
-                mTabTextColors = createColorStateList(mTabTextColors.getDefaultColor(), a.getColor(R.styleable.SeslTabLayout_tabSelectedTextColor, 0));
-            }
-
-            mRequestedTabMinWidth = a.getDimensionPixelSize(R.styleable.SeslTabLayout_tabMinWidth, -1);
-            mRequestedTabMaxWidth = a.getDimensionPixelSize(R.styleable.SeslTabLayout_tabMaxWidth, -1);
-            mTabBackgroundResId = a.getResourceId(R.styleable.SeslTabLayout_tabBackground, 0);
-            mContentInsetStart = a.getDimensionPixelSize(R.styleable.SeslTabLayout_tabContentStart, 0);
-
-            mMode = a.getInt(R.styleable.SeslTabLayout_tabMode, 1);
-            if (mMode == 16) {
-                mMode = MODE_FIXED;
-            }
-
-            mTabGravity = a.getInt(R.styleable.SeslTabLayout_tabGravity, 0);
-            a.recycle();
-
-            Resources res = getResources();
-            mTabTextMultiLineSize = res.getDimensionPixelSize(R.dimen.sesl_tab_text_size_2line);
-            mScrollableTabMinWidth = res.getDimensionPixelSize(R.dimen.sesl_tab_scrollable_min_width);
-
-            applyModeAndGravity();
-        } catch (Throwable th) {
-            ta.recycle();
-            throw th;
-        }
-    }
-
-    private boolean isLightTheme() {
-        TypedValue outValue = new TypedValue();
-        getContext().getTheme().resolveAttribute(R.attr.isLightTheme, outValue, true);
-        return outValue.data != 0;
-    }
-
-    public void setSelectedTabIndicatorColor(int color) {
-        mTabSelectedIndicatorColor = color;
-
-        Iterator it = mTabs.iterator();
-        while (it.hasNext()) {
-            SeslAbsIndicatorView iv = ((SeslTab) it.next()).mView.mIndicatorView;
-            if (iv != null) {
-                if (mDepthStyle != 2 || mSubTabSelectedIndicatorColor == -1) {
-                    iv.setSelectedIndicatorColor(color);
-                } else {
-                    iv.setSelectedIndicatorColor(mSubTabSelectedIndicatorColor);
-                }
-                iv.invalidate();
-            }
-        }
-    }
-
-    public void setSelectedTabIndicatorHeight(int height) {
-        mTabStrip.setSelectedIndicatorHeight(height);
-    }
-
-    public void setScrollPosition(int position, float positionOffset, boolean updateSelectedText) {
-        setScrollPosition(position, positionOffset, updateSelectedText, true);
-    }
-
-    void setScrollPosition(int position, float positionOffset, boolean updateSelectedText, boolean updateIndicatorPosition) {
-        final int roundedPosition = Math.round(position + positionOffset);
-        if (roundedPosition < 0 || roundedPosition >= mTabStrip.getChildCount()) {
-            return;
+            this.tabTextSize = (float)var11.getDimensionPixelSize(androidx.appcompat.R.styleable.TextAppearance_android_textSize, 0);
+            this.mIsScaledTextSizeType = var11.getText(androidx.appcompat.R.styleable.TextAppearance_android_textSize).toString().contains("sp");
+            this.tabTextColors = MaterialResources.getColorStateList(var1, var11, androidx.appcompat.R.styleable.TextAppearance_android_textColor);
+        } finally {
+            var11.recycle();
         }
 
-        if (updateIndicatorPosition) {
-            mTabStrip.setIndicatorPositionFromTabPosition(position, positionOffset);
+        Resources var12 = this.getResources();
+        String var13 = var12.getString(R.string.sesl_font_family_regular);
+        this.mBoldTypeface = Typeface.create(var13, 1);
+        this.mNormalTypeface = Typeface.create(var13, 0);
+        this.mSubTabIndicatorHeight = var12.getDimensionPixelSize(R.dimen.sesl_tablayout_subtab_indicator_height);
+        if (var9.hasValue(R.styleable.SeslTabLayout_tabTextColor)) {
+            this.tabTextColors = MaterialResources.getColorStateList(var1, var9, R.styleable.SeslTabLayout_tabTextColor);
         }
 
-        if (mScrollAnimator != null && mScrollAnimator.isRunning()) {
-            mScrollAnimator.cancel();
-        }
-        scrollTo(calculateScrollXForTab(position, positionOffset), 0);
-
-        if (updateSelectedText) {
-            setSelectedTabView(roundedPosition);
-        }
-    }
-
-    private float getScrollPosition() {
-        return mTabStrip.getIndicatorPosition();
-    }
-
-    public void addTab(SeslTab tab) {
-        addTab(tab, mTabs.isEmpty());
-    }
-
-    public void addTab(SeslTab tab, boolean setSelected) {
-        addTab(tab, mTabs.size(), setSelected);
-    }
-
-    public void addTab(SeslTab tab, int position, boolean setSelected) {
-        if (tab.mParent != this) {
-            throw new IllegalArgumentException("SeslTab belongs to a different SeslTabLayout.");
-        }
-        configureTab(tab, position);
-        addTabView(tab);
-
-        if (setSelected) {
-            tab.select();
-        }
-    }
-
-    private void addTabFromItemView(TabItem item) {
-        final SeslTab tab = newTab();
-        if (item.text != null) {
-            tab.setText(item.text);
-        }
-        if (item.icon != null) {
-            tab.setIcon(item.icon);
-        }
-        if (item.customLayout != 0) {
-            tab.setCustomView(item.customLayout);
-        }
-        if (!TextUtils.isEmpty(item.getContentDescription())) {
-            tab.setContentDescription(item.getContentDescription());
-        }
-        addTab(tab);
-    }
-
-    @Deprecated
-    public void setOnTabSelectedListener(OnTabSelectedListener listener) {
-        if (mSelectedListener != null) {
-            removeOnTabSelectedListener(mSelectedListener);
+        if (var9.hasValue(R.styleable.SeslTabLayout_tabSelectedTextColor)) {
+            var3 = var9.getColor(R.styleable.SeslTabLayout_tabSelectedTextColor, 0);
+            this.tabTextColors = createColorStateList(this.tabTextColors.getDefaultColor(), var3);
         }
 
-        mSelectedListener = listener;
-        if (listener != null) {
-            addOnTabSelectedListener(listener);
-        }
+        this.tabIconTint = MaterialResources.getColorStateList(var1, var9, R.styleable.SeslTabLayout_tabIconTint);
+        this.tabIconTintMode = ViewUtils.parseTintMode(var9.getInt(R.styleable.SeslTabLayout_tabIconTintMode, -1), (PorterDuff.Mode)null);
+        this.tabRippleColorStateList = MaterialResources.getColorStateList(var1, var9, R.styleable.SeslTabLayout_tabRippleColor);
+        this.tabIndicatorAnimationDuration = var9.getInt(R.styleable.SeslTabLayout_tabIndicatorAnimationDuration, 300);
+        this.requestedTabMinWidth = var9.getDimensionPixelSize(R.styleable.SeslTabLayout_tabMinWidth, -1);
+        this.requestedTabMaxWidth = var9.getDimensionPixelSize(R.styleable.SeslTabLayout_tabMaxWidth, -1);
+        this.tabBackgroundResId = var9.getResourceId(R.styleable.SeslTabLayout_tabBackground, 0);
+        this.contentInsetStart = var9.getDimensionPixelSize(R.styleable.SeslTabLayout_tabContentStart, 0);
+        this.mode = var9.getInt(R.styleable.SeslTabLayout_tabMode, 1);
+        this.tabGravity = var9.getInt(R.styleable.SeslTabLayout_tabGravity, 0);
+        this.inlineLabel = var9.getBoolean(R.styleable.SeslTabLayout_tabInlineLabel, false);
+        this.unboundedRipple = var9.getBoolean(R.styleable.SeslTabLayout_tabUnboundedRipple, false);
+        var9.recycle();
+        this.tabTextMultiLineSize = (float)var12.getDimensionPixelSize(R.dimen.sesl_tab_text_size_2line);
+        this.scrollableTabMinWidth = var12.getDimensionPixelSize(R.dimen.sesl_tab_scrollable_min_width);
+        this.applyModeAndGravity();
     }
 
-    public void addOnTabSelectedListener(OnTabSelectedListener listener) {
-        if (!mSelectedListeners.contains(listener)) {
-            mSelectedListeners.add(listener);
-        }
-    }
-
-    public void removeOnTabSelectedListener(OnTabSelectedListener listener) {
-        mSelectedListeners.remove(listener);
-    }
-
-    public SeslTab newTab() {
-        SeslTab tab = sTabPool.acquire();
-        if (tab == null) {
-            tab = new SeslTab();
-        }
-        tab.mParent = this;
-        tab.mView = createTabView(tab);
-        return tab;
-    }
-
-    public int getTabCount() {
-        return mTabs.size();
-    }
-
-    public SeslTab getTabAt(int index) {
-        return (index < 0 || index >= getTabCount()) ? null : mTabs.get(index);
-    }
-
-    public int getSelectedTabPosition() {
-        return mSelectedTab != null ? mSelectedTab.getPosition() : -1;
-    }
-
-    public void removeAllTabs() {
-        for (int i = mTabStrip.getChildCount() - 1; i >= 0; i--) {
-            removeTabViewAt(i);
-        }
-
-        for (final Iterator<SeslTab> i2 = mTabs.iterator(); i2.hasNext();) {
-            final SeslTab tab = i2.next();
-            i2.remove();
-            tab.reset();
-            sTabPool.release(tab);
-        }
-
-        mSelectedTab = null;
-    }
-
-    public void setTabMode(int mode) {
-        if (mode != mMode) {
-            if (mode == 16) {
-                mMode = MODE_FIXED;
-            } else {
-                mMode = mode;
-            }
-            applyModeAndGravity();
-        }
-    }
-
-    public int getTabMode() {
-        return mMode;
-    }
-
-    public void setTabGravity(int gravity) {
-        if (mTabGravity != gravity) {
-            mTabGravity = gravity;
-            applyModeAndGravity();
-        }
-    }
-
-    public int getTabGravity() {
-        return mTabGravity;
-    }
-
-    public void setTabTextColors(ColorStateList textColor) {
-        if (mTabTextColors != textColor) {
-            mTabTextColors = textColor;
-            updateAllTabs();
-        }
-    }
-    public ColorStateList getTabTextColors() {
-        return mTabTextColors;
-    }
-
-    public void setupWithViewPager(SeslViewPager viewPager) {
-        setupWithViewPager(viewPager, true);
-    }
-
-    public void setupWithViewPager(final SeslViewPager viewPager, boolean autoRefresh) {
-        setupWithViewPager(viewPager, autoRefresh, false);
-    }
-
-    private void setupWithViewPager(final SeslViewPager viewPager, boolean autoRefresh, boolean implicitSetup) {
-        if (mViewPager != null) {
-            if (mPageChangeListener != null) {
-                mViewPager.removeOnPageChangeListener(mPageChangeListener);
-            }
-            if (mAdapterChangeListener != null) {
-                mViewPager.removeOnAdapterChangeListener(mAdapterChangeListener);
-            }
-        }
-
-        if (mCurrentVpSelectedListener != null) {
-            removeOnTabSelectedListener(mCurrentVpSelectedListener);
-            mCurrentVpSelectedListener = null;
-        }
-
-        if (viewPager != null) {
-            mViewPager = viewPager;
-
-            if (mPageChangeListener == null) {
-                mPageChangeListener = new TabLayoutOnPageChangeListener(this);
-            }
-            mPageChangeListener.reset();
-            viewPager.addOnPageChangeListener(mPageChangeListener);
-
-            mCurrentVpSelectedListener = new ViewPagerOnTabSelectedListener(viewPager);
-            addOnTabSelectedListener(mCurrentVpSelectedListener);
-
-            final PagerAdapter adapter = viewPager.getAdapter();
-            if (adapter != null) {
-                setPagerAdapter(adapter, autoRefresh);
-            }
-
-            if (mAdapterChangeListener == null) {
-                mAdapterChangeListener = new AdapterChangeListener();
-            }
-            mAdapterChangeListener.setAutoRefresh(autoRefresh);
-            viewPager.addOnAdapterChangeListener(mAdapterChangeListener);
-
-            setScrollPosition(viewPager.getCurrentItem(), 0.0f, true);
-        } else {
-            mViewPager = null;
-            setPagerAdapter(null, false);
-        }
-
-        mSetupViewPagerImplicitly = implicitSetup;
-    }
-
-    @Deprecated
-    public void setTabsFromPagerAdapter(final PagerAdapter adapter) {
-        setPagerAdapter(adapter, false);
-    }
-
-    @Override
-    public boolean shouldDelayChildPressedState() {
-        return getTabScrollRange() > 0;
-    }
-
-    @Override
-    protected void onAttachedToWindow() {
-        super.onAttachedToWindow();
-
-        for (int i = 0; i < getTabCount(); i++) {
-            if (getTabAt(i) != null || getTabAt(i).mView != null) {
-                if (getTabAt(i).mView.mMainTabTouchBackground != null) {
-                    getTabAt(i).mView.mMainTabTouchBackground.setAlpha(0.0f);
-                }
-                if (getTabAt(i).mView.mIndicatorView != null) {
-                    if (getSelectedTabPosition() == i) {
-                        getTabAt(i).mView.mIndicatorView.setShow();
-                    } else {
-                        getTabAt(i).mView.mIndicatorView.setHideImmediatly();
-                    }
-                }
-            }
-        }
-
-        if (mViewPager == null) {
-            final ViewParent vp = getParent();
-            if (vp instanceof SeslViewPager) {
-                setupWithViewPager((SeslViewPager) vp, true, true);
-            }
-        }
-    }
-
-    @Override
-    protected void onDetachedFromWindow() {
-        super.onDetachedFromWindow();
-
-        if (mSetupViewPagerImplicitly) {
-            setupWithViewPager(null);
-            mSetupViewPagerImplicitly = false;
-        }
-    }
-
-    private int getTabScrollRange() {
-        return Math.max(0, mTabStrip.getWidth() - getWidth() - getPaddingLeft() - getPaddingRight());
-    }
-
-    void setPagerAdapter(final PagerAdapter adapter, final boolean addObserver) {
-        if (mPagerAdapter != null && mPagerAdapterObserver != null) {
-            mPagerAdapter.unregisterDataSetObserver(mPagerAdapterObserver);
-        }
-
-        mPagerAdapter = adapter;
-
-        if (addObserver && adapter != null) {
-            if (mPagerAdapterObserver == null) {
-                mPagerAdapterObserver = new PagerAdapterObserver();
-            }
-            adapter.registerDataSetObserver(mPagerAdapterObserver);
-        }
-
-        populateFromPagerAdapter();
-    }
-
-    void populateFromPagerAdapter() {
-        removeAllTabs();
-
-        if (mPagerAdapter != null) {
-            final int adapterCount = mPagerAdapter.getCount();
-            for (int i = 0; i < adapterCount; i++) {
-                addTab(newTab().setText(mPagerAdapter.getPageTitle(i)), false);
-            }
-
-            if (mViewPager != null && adapterCount > 0) {
-                final int curItem = mViewPager.getCurrentItem();
-                if (curItem != getSelectedTabPosition() && curItem < getTabCount()) {
-                    selectTab(getTabAt(curItem));
-                }
-            }
-        }
-    }
-
-    private void updateAllTabs() {
-        for (int i = 0, z = mTabs.size(); i < z; i++) {
-            mTabs.get(i).updateView();
-        }
-    }
-
-    private SeslTabView createTabView(final SeslTab tab) {
-        SeslTabView tabView = mTabViewPool != null ? mTabViewPool.acquire() : null;
-        if (tabView == null) {
-            tabView = new SeslTabView(getContext());
-        }
-        tabView.setTab(tab);
-        tabView.setFocusable(true);
-        tabView.setMinimumWidth(getTabMinWidth());
-        return tabView;
-    }
-
-    private void configureTab(SeslTab tab, int position) {
-        tab.setPosition(position);
-        mTabs.add(position, tab);
-
-        final int count = mTabs.size();
-        for (int i = position + 1; i < count; i++) {
-            mTabs.get(i).setPosition(i);
-        }
-    }
-
-    private void addTabView(SeslTab tab) {
-        final SeslTabView tabView = tab.mView;
-        mTabStrip.addView(tabView, tab.getPosition(), createLayoutParamsForTabs());
-    }
-
-    @Override
-    public void addView(View child) {
-        addViewInternal(child);
-    }
-
-    @Override
-    public void addView(View child, int index) {
-        addViewInternal(child);
-    }
-
-    @Override
-    public void addView(View child, ViewGroup.LayoutParams params) {
-        addViewInternal(child);
-    }
-
-    @Override
-    public void addView(View child, int index, ViewGroup.LayoutParams params) {
-        addViewInternal(child);
-    }
-
-    private void addViewInternal(View child) {
-        if (child instanceof TabItem) {
-            addTabFromItemView((TabItem) child);
-            return;
-        }
-        throw new IllegalArgumentException("Only TabItem instances can be added to SeslTabLayout");
-    }
-
-    private LinearLayout.LayoutParams createLayoutParamsForTabs() {
-        final LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT);
-        updateTabViewLayoutParams(lp);
-        return lp;
-    }
-
-    private void updateTabViewLayoutParams(LinearLayout.LayoutParams lp) {
-        if (mMode == MODE_FIXED && mTabGravity == GRAVITY_FILL) {
-            lp.width = 0;
-            lp.weight = 1.0f;
-        } else {
-            lp.width = LinearLayout.LayoutParams.WRAP_CONTENT;
-            lp.weight = 0.0f;
-        }
-    }
-
-    int dpToPx(int dps) {
-        return Math.round(getResources().getDisplayMetrics().density * dps);
-    }
-
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        final int idealHeight = dpToPx(getDefaultHeight()) + getPaddingTop() + getPaddingBottom();
-        switch (MeasureSpec.getMode(heightMeasureSpec)) {
-            case MeasureSpec.AT_MOST:
-                heightMeasureSpec = MeasureSpec.makeMeasureSpec(Math.min(idealHeight, MeasureSpec.getSize(heightMeasureSpec)), MeasureSpec.EXACTLY);
-                break;
-            case MeasureSpec.UNSPECIFIED:
-                heightMeasureSpec = MeasureSpec.makeMeasureSpec(idealHeight, MeasureSpec.EXACTLY);
-                break;
-        }
-
-        final int specWidth = MeasureSpec.getSize(widthMeasureSpec);
-        if (MeasureSpec.getMode(widthMeasureSpec) != MeasureSpec.UNSPECIFIED) {
-            mTabMaxWidth = mRequestedTabMaxWidth > 0 ? mRequestedTabMaxWidth : specWidth - dpToPx(TAB_MIN_WIDTH_MARGIN);
-        }
-
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-
-        if (getChildCount() == 1) {
-            final View child = getChildAt(0);
-            boolean remeasure = false;
-
-            switch (mMode) {
-                case MODE_SCROLLABLE:
-                    remeasure = child.getMeasuredWidth() < getMeasuredWidth();
-                    break;
-                case MODE_FIXED:
-                    remeasure = child.getMeasuredWidth() != getMeasuredWidth();
-                    break;
-            }
-            if (remeasure) {
-                int childHeightMeasureSpec = getChildMeasureSpec(heightMeasureSpec, getPaddingTop() + getPaddingBottom(), child.getLayoutParams().height);
-                int childWidthMeasureSpec = MeasureSpec.makeMeasureSpec(getMeasuredWidth(), MeasureSpec.EXACTLY);
-                child.measure(childWidthMeasureSpec, childHeightMeasureSpec);
-            }
-        }
-    }
-
-    private void removeTabViewAt(int position) {
-        SeslTabView view = (SeslTabView) mTabStrip.getChildAt(position);
-        mTabStrip.removeViewAt(position);
-        if (view != null) {
-            view.reset();
-            mTabViewPool.release(view);
-        }
-        requestLayout();
-    }
-
-    private void animateToTab(int newPosition) {
-        if (newPosition == SeslTab.INVALID_POSITION) {
-            return;
-        }
-
-        if (getWindowToken() == null || !ViewCompat.isLaidOut(this) || mTabStrip.childrenNeedLayout()) {
-            setScrollPosition(newPosition, 0.0f, true);
-            return;
-        }
-
-        final int startScrollX = getScrollX();
-        final int targetScrollX = calculateScrollXForTab(newPosition, 0);
-
-        if (startScrollX != targetScrollX) {
-            ensureScrollAnimator();
-
-            mScrollAnimator.setIntValues(startScrollX, targetScrollX);
-            mScrollAnimator.start();
-        }
-
-        mTabStrip.animateIndicatorToPosition(newPosition, ANIMATION_DURATION);
-    }
-
-    private void ensureScrollAnimator() {
-        if (mScrollAnimator == null) {
-            mScrollAnimator = new ValueAnimator();
-            mScrollAnimator.setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
-            mScrollAnimator.setDuration(ANIMATION_DURATION);
-            mScrollAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                @Override
-                public void onAnimationUpdate(ValueAnimator animator) {
-                    scrollTo((int) animator.getAnimatedValue(), 0);
-                }
-            });
-        }
-    }
-
-    void setScrollAnimatorListener(Animator.AnimatorListener listener) {
-        ensureScrollAnimator();
-        mScrollAnimator.addListener(listener);
-    }
-
-    private void setSelectedTabView(int position) {
-        int selectedTabPosition = getSelectedTabPosition();
-        int tabCount = mTabStrip.getChildCount();
-        if (position < tabCount) {
-            for (int i = 0; i < tabCount; i++) {
-                View child = mTabStrip.getChildAt(i);
-                child.setSelected(i == position);
-            }
-
-            mTabs.get(position).mView.setSelected(true);
-            for (int i2 = 0; i2 < getTabCount(); i2++) {
-                SeslTabView tabView = mTabs.get(i2).mView;
-                if (i2 == position) {
-                    if (tabView.mTextView != null) {
-                        if (tabView.mTextView.getCurrentTextColor() != seslGetSelctedTabTextColor()) {
-                            seslStartTextColorChangeAnimation(tabView.mTextView, mTabTextColors.getDefaultColor(), seslGetSelctedTabTextColor());
-                        } else {
-                            seslStartTextColorChangeAnimation(tabView.mTextView, seslGetSelctedTabTextColor(), seslGetSelctedTabTextColor());
-                        }
-                        tabView.mTextView.setTypeface(mBoldTypeface);
-                        tabView.mTextView.setSelected(true);
-                    }
-                    if (mTabs.get(i2).mView.mIndicatorView != null) {
-                        mTabs.get(i2).mView.mIndicatorView.setReleased();
-                    }
-                } else {
-                    if (tabView.mIndicatorView != null) {
-                        tabView.mIndicatorView.setHideImmediatly();
-                    }
-                    if (tabView.mTextView != null) {
-                        tabView.mTextView.setTypeface(mNormalTypeface);
-                        if (tabView.mTextView.getCurrentTextColor() != mTabTextColors.getDefaultColor()) {
-                            seslStartTextColorChangeAnimation(tabView.mTextView, seslGetSelctedTabTextColor(), mTabTextColors.getDefaultColor());
-                        } else {
-                            seslStartTextColorChangeAnimation(tabView.mTextView, mTabTextColors.getDefaultColor(), mTabTextColors.getDefaultColor());
-                        }
-                        tabView.mTextView.setSelected(false);
-                    }
-                }
-            }
-        }
-    }
-
-    void selectTab(SeslTab tab) {
-        selectTab(tab, true);
-    }
-
-    void selectTab(SeslTab tab, boolean updateIndicator) {
-        if (tab.mView.isEnabled() || mViewPager == null) {
-            final SeslTab currentTab = mSelectedTab;
-
-            if (currentTab == tab) {
-                if (currentTab != null) {
-                    dispatchTabReselected(tab);
-                    animateToTab(tab.getPosition());
-                }
-            } else {
-                final int newPosition = tab != null ? tab.getPosition() : SeslTab.INVALID_POSITION;
-                if (updateIndicator) {
-                    if ((currentTab == null || currentTab.getPosition() == SeslTab.INVALID_POSITION) && newPosition != SeslTab.INVALID_POSITION) {
-                        setScrollPosition(newPosition, 0f, true);
-                    } else {
-                        animateToTab(newPosition);
-                    }
-                    if (newPosition != SeslTab.INVALID_POSITION) {
-                        setSelectedTabView(newPosition);
-                    }
-                }
-                if (currentTab != null) {
-                    dispatchTabUnselected(currentTab);
-                }
-                mSelectedTab = tab;
-                if (tab != null) {
-                    dispatchTabSelected(tab);
-                }
-            }
-        } else {
-            mViewPager.setCurrentItem(getSelectedTabPosition());
-        }
-    }
-
-    private void dispatchTabSelected(SeslTab tab) {
-        for (int i = mSelectedListeners.size() - 1; i >= 0; i--) {
-            mSelectedListeners.get(i).onTabSelected(tab);
-        }
-    }
-
-    private void dispatchTabUnselected(SeslTab tab) {
-        for (int i = mSelectedListeners.size() - 1; i >= 0; i--) {
-            mSelectedListeners.get(i).onTabUnselected(tab);
-        }
-    }
-
-    private void dispatchTabReselected(SeslTab tab) {
-        for (int i = mSelectedListeners.size() - 1; i >= 0; i--) {
-            mSelectedListeners.get(i).onTabReselected(tab);
-        }
-    }
-
-    private int calculateScrollXForTab(int position, float positionOffset) {
-        if (mMode == MODE_SCROLLABLE) {
-            final View selectedChild = mTabStrip.getChildAt(position);
-            final View nextChild = position + 1 < mTabStrip.getChildCount() ? mTabStrip.getChildAt(position + 1) : null;
-            final int selectedWidth = selectedChild != null ? selectedChild.getWidth() : 0;
-            final int nextWidth = nextChild != null ? nextChild.getWidth() : 0;
-
-            int scrollBase = selectedChild.getLeft() + (selectedWidth / 2) - (getWidth() / 2);
-            int scrollOffset = (int) ((selectedWidth + nextWidth) * 0.5f * positionOffset);
-
-            return (ViewCompat.getLayoutDirection(this) == ViewCompat.LAYOUT_DIRECTION_LTR) ? scrollBase + scrollOffset : scrollBase - scrollOffset;
-        }
-        return 0;
-    }
-
-    private void applyModeAndGravity() {
-        mTabStrip.setPaddingRelative(0, 0, 0, 0);
-        switch (mMode) {
-            case MODE_SCROLLABLE:
-                mTabStrip.setGravity(GravityCompat.START);
-                break;
-            case MODE_FIXED:
-                mTabStrip.setGravity(Gravity.CENTER_HORIZONTAL);
-                break;
-        }
-        updateTabViews(true);
-    }
-
-    void updateTabViews(boolean requestLayout) {
-        for (int i = 0; i < mTabStrip.getChildCount(); i++) {
-            View child = mTabStrip.getChildAt(i);
-            child.setMinimumWidth(getTabMinWidth());
-            updateTabViewLayoutParams((LinearLayout.LayoutParams) child.getLayoutParams());
-            if (requestLayout) {
-                child.requestLayout();
-            }
-        }
-    }
-
-    private static ColorStateList createColorStateList(int defaultColor, int selectedColor) {
-        final int[][] states = new int[2][];
-        final int[] colors = new int[2];
-        int i = 0;
-
-        states[i] = SELECTED_STATE_SET;
-        colors[i] = selectedColor;
-        i++;
-
-        states[i] = EMPTY_STATE_SET;
-        colors[i] = defaultColor;
-        i++;
-
-        return new ColorStateList(states, colors);
+    public static ColorStateList createColorStateList(int var0, int var1) {
+        return new ColorStateList(new int[][]{HorizontalScrollView.SELECTED_STATE_SET, HorizontalScrollView.EMPTY_STATE_SET}, new int[]{var1, var0});
     }
 
     private int getDefaultHeight() {
-        boolean hasIconAndText = false;
-        for (int i = 0, count = mTabs.size(); i < count; i++) {
-            SeslTab tab = mTabs.get(i);
-            if (tab != null && tab.getIcon() != null && !TextUtils.isEmpty(tab.getText())) {
-                hasIconAndText = true;
+        int var1 = this.tabs.size();
+        boolean var2 = false;
+        int var3 = 0;
+
+        boolean var4;
+        while(true) {
+            var4 = var2;
+            if (var3 >= var1) {
                 break;
             }
+
+            SeslTabLayout.Tab var5 = (SeslTabLayout.Tab)this.tabs.get(var3);
+            if (var5 != null && var5.getIcon() != null && !TextUtils.isEmpty(var5.getText())) {
+                var4 = true;
+                break;
+            }
+
+            ++var3;
         }
-        return hasIconAndText ? DEFAULT_HEIGHT_WITH_TEXT_ICON : DEFAULT_HEIGHT;
+
+        byte var6;
+        if (var4 && !this.inlineLabel) {
+            var6 = 72;
+        } else {
+            var6 = 48;
+        }
+
+        return var6;
+    }
+
+    private int getSelectedTabTextColor() {
+        ColorStateList var1 = this.tabTextColors;
+        if (var1 != null) {
+            int var2 = var1.getDefaultColor();
+            return var1.getColorForState(new int[]{16842913, 16842910}, var2);
+        } else {
+            return -1;
+        }
     }
 
     private int getTabMinWidth() {
-        if (mRequestedTabMinWidth != INVALID_WIDTH) {
-            return mRequestedTabMinWidth;
+        int var1 = this.requestedTabMinWidth;
+        return var1 != -1 ? var1 : 0;
+    }
+
+    private int getTabScrollRange() {
+        return Math.max(0, this.slidingTabIndicator.getWidth() - this.getWidth() - this.getPaddingLeft() - this.getPaddingRight());
+    }
+
+    @Deprecated
+    public void addOnTabSelectedListener(SeslTabLayout.BaseOnTabSelectedListener var1) {
+        if (!this.selectedListeners.contains(var1)) {
+            this.selectedListeners.add(var1);
         }
-        return mMode == MODE_SCROLLABLE ? mScrollableTabMinWidth : 0;
+
     }
 
-    @Override
-    public LayoutParams generateLayoutParams(AttributeSet attrs) {
-        return generateDefaultLayoutParams();
+    public void addTab(SeslTabLayout.Tab var1) {
+        this.addTab(var1, this.tabs.isEmpty());
     }
 
-    int getTabMaxWidth() {
-        return mTabMaxWidth;
-    }
+    public void addTab(SeslTabLayout.Tab var1, int var2, boolean var3) {
+        if (var1.parent == this) {
+            this.configureTab(var1, var2);
+            this.addTabView(var1);
+            if (var3) {
+                var1.select();
+            }
 
-    private void checkMaxFontScale(TextView textview, int baseSize) {
-        float currentFontScale = getResources().getConfiguration().fontScale;
-        if (textview != null && mIsScaledTextSizeType && currentFontScale > 1.3f) {
-            textview.setTextSize(0, 1.3f * (((float) baseSize) / currentFontScale));
+        } else {
+            throw new IllegalArgumentException("Tab belongs to a different TabLayout.");
         }
     }
 
-    private void seslUpdateBadgePosition() {
-        if (mTabs != null && mTabs.size() > 0) {
-            for (int i = 0; i < mTabs.size(); i++) {
-                if (!(mTabs.get(i) == null || ((SeslTab) mTabs.get(i)).mView == null)) {
-                    SeslTabView tabView = ((SeslTab) mTabs.get(i)).mView;
-                    TextView title = tabView.mTextView;
-                    if (tabView.getWidth() > 0 && title != null && title.getWidth() > 0) {
-                        TextView badge = null;
-                        if (tabView.mNBadgeView != null && tabView.mNBadgeView.getVisibility() == View.VISIBLE) {
-                            badge = tabView.mNBadgeView;
-                        } else if (tabView.mDotBadgeView != null && tabView.mDotBadgeView.getVisibility() == View.VISIBLE) {
-                            badge = tabView.mDotBadgeView;
-                        }
-                        if (badge != null) {
-                            badge.measure(0, 0);
-                            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) badge.getLayoutParams();
-                            if ((tabView.getWidth() - title.getWidth()) / 2 < badge.getMeasuredWidth()) {
-                                RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) badge.getLayoutParams();
-                                if (getRelativeLayoutRule(params, 17) != 0) {
-                                    params.addRule(17, 0);
-                                    params.addRule(21);
-                                    badge.setLayoutParams(params);
-                                }
-                            } else {
-                                RelativeLayout.LayoutParams params2 = (RelativeLayout.LayoutParams) badge.getLayoutParams();
-                                if (getRelativeLayoutRule(params2, 17) != R.id.title) {
-                                    params2.addRule(17, R.id.title);
-                                    params2.removeRule(21);
-                                    badge.setLayoutParams(params2);
-                                }
-                            }
-                        }
-                    }
+    public void addTab(SeslTabLayout.Tab var1, boolean var2) {
+        this.addTab(var1, this.tabs.size(), var2);
+    }
+
+    public final void addTabFromItemView(SeslTabItem var1) {
+        SeslTabLayout.Tab var2 = this.newTab();
+        CharSequence var3 = var1.text;
+        if (var3 != null) {
+            var2.setText(var3);
+        }
+
+        Drawable var5 = var1.icon;
+        if (var5 != null) {
+            var2.setIcon(var5);
+        }
+
+        int var4 = var1.customLayout;
+        if (var4 != 0) {
+            var2.setCustomView(var4);
+        }
+
+        if (!TextUtils.isEmpty(var1.getContentDescription())) {
+            var2.setContentDescription(var1.getContentDescription());
+        }
+
+        this.addTab(var2);
+    }
+
+    public final void addTabView(SeslTabLayout.Tab var1) {
+        SeslTabLayout.TabView var2 = var1.view;
+        var2.setSelected(false);
+        var2.setActivated(false);
+        this.slidingTabIndicator.addView(var2, var1.getPosition(), this.createLayoutParamsForTabs());
+    }
+
+    public void addView(View var1) {
+        this.addViewInternal(var1);
+    }
+
+    public void addView(View var1, int var2) {
+        this.addViewInternal(var1);
+    }
+
+    public void addView(View var1, int var2, android.view.ViewGroup.LayoutParams var3) {
+        this.addViewInternal(var1);
+    }
+
+    public void addView(View var1, android.view.ViewGroup.LayoutParams var2) {
+        this.addViewInternal(var1);
+    }
+
+    public final void addViewInternal(View var1) {
+        if (var1 instanceof SeslTabItem) {
+            this.addTabFromItemView((SeslTabItem)var1);
+        } else {
+            throw new IllegalArgumentException("Only TabItem instances can be added to TabLayout");
+        }
+    }
+
+    public final void animateToTab(int var1) {
+        if (var1 != -1) {
+            if (this.getWindowToken() != null && ViewCompat.isLaidOut(this) && !this.slidingTabIndicator.childrenNeedLayout()) {
+                int var2 = this.getScrollX();
+                int var3 = this.calculateScrollXForTab(var1, 0.0F);
+                if (var2 != var3) {
+                    this.ensureScrollAnimator();
+                    this.scrollAnimator.setIntValues(new int[]{var2, var3});
+                    this.scrollAnimator.start();
                 }
+
+                this.slidingTabIndicator.animateIndicatorToPosition(var1, this.tabIndicatorAnimationDuration);
+            } else {
+                this.setScrollPosition(var1, 0.0F, true);
             }
         }
     }
 
-    private int getRelativeLayoutRule(RelativeLayout.LayoutParams params, int verb) {
-        int[] rules = params.getRules();
-        if (verb == 17) {
-            verb = isLayoutRTL() ? 16 : 1;
-        }
-        return rules[verb];
-    }
-
-    private boolean isLayoutRTL() {
-        return getLayoutDirection() == View.LAYOUT_DIRECTION_RTL;
-    }
-
-    private int seslGetSelctedTabTextColor() {
-        if (mTabTextColors != null) {
-            return mTabTextColors.getColorForState(new int[]{android.R.attr.state_selected, android.R.attr.state_enabled}, mTabTextColors.getDefaultColor());
-        }
-        return -1;
-    }
-
-    private void seslStartTextColorChangeAnimation(TextView textview, int fromColor, int toColor) {
-        if (textview != null) {
-            textview.setTextColor(toColor);
-        }
-    }
-
-    @Override
-    public void onVisibilityChanged(View changedView, int visibility) {
-        super.onVisibilityChanged(changedView, visibility);
-        for (int i = 0; i < getTabCount(); i++) {
-            if (getTabAt(i) != null || getTabAt(i).mView != null || getTabAt(i).mView.mMainTabTouchBackground != null) {
-                getTabAt(i).mView.mMainTabTouchBackground.setAlpha(0.0f);
+    public final void applyModeAndGravity() {
+        ViewCompat.setPaddingRelative(this.slidingTabIndicator, 0, 0, 0, 0);
+        int var1 = this.mode;
+        if (var1 != 0) {
+            if (var1 == 1 || var1 == 2) {
+                this.slidingTabIndicator.setGravity(1);
             }
+        } else {
+            this.slidingTabIndicator.setGravity(8388611);
         }
+
+        this.updateTabViews(true);
     }
 
-    @Override
-    protected void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        for (int i = 0; i < getTabCount(); i++) {
-            if (getTabAt(i) != null || getTabAt(i).mView != null || getTabAt(i).mView.mMainTabTouchBackground != null) {
-                getTabAt(i).mView.mMainTabTouchBackground.setAlpha(0.0f);
-            }
-        }
-    }
-
-
-    private class AdapterChangeListener implements SeslViewPager.OnAdapterChangeListener {
-        private boolean mAutoRefresh;
-
-        AdapterChangeListener() { }
-
-        @Override
-        public void onAdapterChanged(SeslViewPager viewPager, PagerAdapter oldAdapter, PagerAdapter newAdapter) {
-            if (mViewPager == viewPager) {
-                setPagerAdapter(newAdapter, mAutoRefresh);
-            }
-        }
-
-        void setAutoRefresh(boolean autoRefresh) {
-            mAutoRefresh = autoRefresh;
-        }
-    }
-
-    public interface OnTabSelectedListener {
-        public void onTabSelected(SeslTab tab);
-
-        public void onTabUnselected(SeslTab tab);
-
-        public void onTabReselected(SeslTab tab);
-    }
-
-    private class PagerAdapterObserver extends DataSetObserver {
-        PagerAdapterObserver() { }
-
-        @Override
-        public void onChanged() {
-            populateFromPagerAdapter();
-        }
-
-        @Override
-        public void onInvalidated() {
-            populateFromPagerAdapter();
-        }
-    }
-
-    private class SlidingTabStrip extends LinearLayout {
-        private ValueAnimator mIndicatorAnimator;
-        private int mIndicatorLeft = -1;
-        private int mIndicatorRight = -1;
-        private int mIndicatorTop = -1;
-        private int mInterval;
-        private int mLayoutDirection = -1;
-        private int mRadius;
-        private int mSelectedIndicatorHeight;
-        private final Paint mSelectedIndicatorPaint;
-        int mSelectedPosition = -1;
-        float mSelectionOffset;
-
-        SlidingTabStrip(Context context) {
-            super(context);
-            setWillNotDraw(false);
-            mSelectedIndicatorPaint = new Paint();
-            mRadius = (int) TypedValue.applyDimension(1, 1.0f, context.getResources().getDisplayMetrics());
-            mInterval = mRadius * 2;
-        }
-
-        void setSelectedIndicatorColor(int color) {
-            if (mSelectedIndicatorPaint.getColor() != color) {
-                mSelectedIndicatorPaint.setColor(color);
-                ViewCompat.postInvalidateOnAnimation(this);
-            }
-        }
-
-        void setSelectedIndicatorHeight(int height) {
-            if (mSelectedIndicatorHeight != height) {
-                mSelectedIndicatorHeight = height;
-                ViewCompat.postInvalidateOnAnimation(this);
-            }
-        }
-
-        boolean childrenNeedLayout() {
-            for (int i = 0, z = getChildCount(); i < z; i++) {
-                final View child = getChildAt(i);
-                if (child.getWidth() <= 0) {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        void setIndicatorPositionFromTabPosition(int position, float positionOffset) {
-            if (mIndicatorAnimator != null && mIndicatorAnimator.isRunning()) {
-                mIndicatorAnimator.cancel();
+    @SuppressLint("WrongConstant")
+    public final int calculateScrollXForTab(int var1, float var2) {
+        int var3 = this.mode;
+        int var4 = 0;
+        if (var3 != 0 && var3 != 2) {
+            return 0;
+        } else {
+            View var5 = this.slidingTabIndicator.getChildAt(var1);
+            ++var1;
+            View var6;
+            if (var1 < this.slidingTabIndicator.getChildCount()) {
+                var6 = this.slidingTabIndicator.getChildAt(var1);
+            } else {
+                var6 = null;
             }
 
-            mSelectedPosition = position;
-            mSelectionOffset = positionOffset;
-            updateIndicatorPosition();
-        }
-
-        float getIndicatorPosition() {
-            return mSelectedPosition + mSelectionOffset;
-        }
-
-        @Override
-        public void onRtlPropertiesChanged(int layoutDirection) {
-            super.onRtlPropertiesChanged(layoutDirection);
-
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-                if (mLayoutDirection != layoutDirection) {
-                    requestLayout();
-                    mLayoutDirection = layoutDirection;
-                }
+            if (var5 != null) {
+                var1 = var5.getWidth();
+            } else {
+                var1 = 0;
             }
+
+            if (var6 != null) {
+                var4 = var6.getWidth();
+            }
+
+            var3 = var5.getLeft() + var1 / 2 - this.getWidth() / 2;
+            var1 = (int)((float)(var1 + var4) * 0.5F * var2);
+            if (ViewCompat.getLayoutDirection(this) == 0) {
+                var1 += var3;
+            } else {
+                var1 = var3 - var1;
+            }
+
+            return var1;
+        }
+    }
+
+    public final void checkMaxFontScale(TextView var1, int var2) {
+        float var3 = this.getResources().getConfiguration().fontScale;
+        if (var1 != null && this.mIsScaledTextSizeType && var3 > 1.3F) {
+            var1.setTextSize(0, (float)var2 / var3 * 1.3F);
         }
 
-        @Override
-        protected void onMeasure(final int widthMeasureSpec, final int heightMeasureSpec) {
-            super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+    }
 
-            if (MeasureSpec.getMode(widthMeasureSpec) != MeasureSpec.EXACTLY) {
+    public final void configureTab(SeslTabLayout.Tab var1, int var2) {
+        var1.setPosition(var2);
+        this.tabs.add(var2, var1);
+        int var3 = this.tabs.size();
+
+        while(true) {
+            ++var2;
+            if (var2 >= var3) {
                 return;
             }
 
-            if (mMode == MODE_FIXED && mTabGravity == GRAVITY_CENTER) {
-                final int count = getChildCount();
+            ((SeslTabLayout.Tab)this.tabs.get(var2)).setPosition(var2);
+        }
+    }
 
-                int largestTabWidth = 0;
-                for (int i = 0, z = count; i < z; i++) {
-                    View child = getChildAt(i);
-                    if (child.getVisibility() == VISIBLE) {
-                        largestTabWidth = Math.max(largestTabWidth, child.getMeasuredWidth());
+    public final android.widget.LinearLayout.LayoutParams createLayoutParamsForTabs() {
+        android.widget.LinearLayout.LayoutParams var1 = new android.widget.LinearLayout.LayoutParams(-2, -1);
+        this.updateTabViewLayoutParams(var1);
+        return var1;
+    }
+
+    public SeslTabLayout.Tab createTabFromPool() {
+        SeslTabLayout.Tab var1 = (SeslTabLayout.Tab)tabPool.acquire();
+        SeslTabLayout.Tab var2 = var1;
+        if (var1 == null) {
+            var2 = new SeslTabLayout.Tab();
+        }
+
+        return var2;
+    }
+
+    public final SeslTabLayout.TabView createTabView(SeslTabLayout.Tab var1) {
+        Pools.Pool var2 = this.tabViewPool;
+        SeslTabLayout.TabView var4;
+        if (var2 != null) {
+            var4 = (SeslTabLayout.TabView)var2.acquire();
+        } else {
+            var4 = null;
+        }
+
+        SeslTabLayout.TabView var3 = var4;
+        if (var4 == null) {
+            var3 = new SeslTabLayout.TabView(this.getContext());
+        }
+
+        if (var3.mMainTabTouchBackground != null) {
+            var3.mMainTabTouchBackground.setAlpha(0.0F);
+        }
+
+        var3.setTab(var1);
+        var3.setFocusable(true);
+        var3.setMinimumWidth(this.getTabMinWidth());
+        if (TextUtils.isEmpty(var1.contentDesc)) {
+            var3.setContentDescription(var1.text);
+        } else {
+            var3.setContentDescription(var1.contentDesc);
+        }
+
+        return var3;
+    }
+
+    public final void dispatchTabReselected(SeslTabLayout.Tab var1) {
+        for(int var2 = this.selectedListeners.size() - 1; var2 >= 0; --var2) {
+            ((SeslTabLayout.BaseOnTabSelectedListener)this.selectedListeners.get(var2)).onTabReselected(var1);
+        }
+
+    }
+
+    public final void dispatchTabSelected(SeslTabLayout.Tab var1) {
+        for(int var2 = this.selectedListeners.size() - 1; var2 >= 0; --var2) {
+            ((SeslTabLayout.BaseOnTabSelectedListener)this.selectedListeners.get(var2)).onTabSelected(var1);
+        }
+
+    }
+
+    public final void dispatchTabUnselected(SeslTabLayout.Tab var1) {
+        for(int var2 = this.selectedListeners.size() - 1; var2 >= 0; --var2) {
+            ((SeslTabLayout.BaseOnTabSelectedListener)this.selectedListeners.get(var2)).onTabUnselected(var1);
+        }
+
+    }
+
+    public final void ensureScrollAnimator() {
+        if (this.scrollAnimator == null) {
+            this.scrollAnimator = new ValueAnimator();
+            this.scrollAnimator.setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
+            this.scrollAnimator.setDuration((long)this.tabIndicatorAnimationDuration);
+            this.scrollAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                public void onAnimationUpdate(ValueAnimator var1) {
+                    SeslTabLayout.this.scrollTo((Integer)var1.getAnimatedValue(), 0);
+                }
+            });
+        }
+
+    }
+
+    public LayoutParams generateLayoutParams(AttributeSet var1) {
+        return this.generateDefaultLayoutParams();
+    }
+
+    public int getSelectedTabPosition() {
+        SeslTabLayout.Tab var1 = this.selectedTab;
+        int var2;
+        if (var1 != null) {
+            var2 = var1.getPosition();
+        } else {
+            var2 = -1;
+        }
+
+        return var2;
+    }
+
+    public SeslTabLayout.Tab getTabAt(int var1) {
+        SeslTabLayout.Tab var2;
+        if (var1 >= 0 && var1 < this.getTabCount()) {
+            var2 = (SeslTabLayout.Tab)this.tabs.get(var1);
+        } else {
+            var2 = null;
+        }
+
+        return var2;
+    }
+
+    public int getTabCount() {
+        return this.tabs.size();
+    }
+
+    public int getTabGravity() {
+        return this.tabGravity;
+    }
+
+    public ColorStateList getTabIconTint() {
+        return this.tabIconTint;
+    }
+
+    public int getTabIndicatorGravity() {
+        return this.tabIndicatorGravity;
+    }
+
+    public int getTabMaxWidth() {
+        return this.tabMaxWidth;
+    }
+
+    public int getTabMode() {
+        return this.mode;
+    }
+
+    public ColorStateList getTabRippleColor() {
+        return this.tabRippleColorStateList;
+    }
+
+    public Drawable getTabSelectedIndicator() {
+        return this.tabSelectedIndicator;
+    }
+
+    public ColorStateList getTabTextColors() {
+        return this.tabTextColors;
+    }
+
+    public SeslTabLayout.Tab newTab() {
+        SeslTabLayout.Tab var1 = this.createTabFromPool();
+        var1.parent = this;
+        var1.view = this.createTabView(var1);
+        return var1;
+    }
+
+    public void onAttachedToWindow() {
+        TabView tabView;
+        super.onAttachedToWindow();
+        for (int i = 0; i < getTabCount(); i++) {
+            Tab tabAt = getTabAt(i);
+            if (!(tabAt == null || (tabView = tabAt.view) == null)) {
+                if (tabView.mMainTabTouchBackground != null) {
+                    tabAt.view.mMainTabTouchBackground.setAlpha(0.0f);
+                }
+                if (tabAt.view.mIndicatorView != null) {
+                    if (getSelectedTabPosition() == i) {
+                        tabAt.view.mIndicatorView.setShow();
+                    } else {
+                        tabAt.view.mIndicatorView.setHide();
+                    }
+                }
+            }
+        }
+        MaterialShapeUtils.setParentAbsoluteElevation(this);
+        if (this.viewPager == null) {
+            ViewParent parent = getParent();
+            if (parent instanceof SeslViewPager) {
+                setupWithViewPager((SeslViewPager) parent, true, true);
+            }
+        }
+    }
+
+    public void onConfigurationChanged(Configuration var1) {
+        super.onConfigurationChanged(var1);
+
+        for(int var2 = 0; var2 < this.getTabCount(); ++var2) {
+            SeslTabLayout.Tab var3 = this.getTabAt(var2);
+            if (var3 != null) {
+                SeslTabLayout.TabView var4 = var3.view;
+                if (var4 != null && var4.mMainTabTouchBackground != null) {
+                    var3.view.mMainTabTouchBackground.setAlpha(0.0F);
+                }
+            }
+        }
+
+        this.updateBadgePosition();
+    }
+
+    public void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        if (this.setupViewPagerImplicitly) {
+            setupWithViewPager((SeslViewPager) null);
+            this.setupViewPagerImplicitly = false;
+        }
+    }
+
+    public void onDraw(Canvas var1) {
+        for(int var2 = 0; var2 < this.slidingTabIndicator.getChildCount(); ++var2) {
+            View var3 = this.slidingTabIndicator.getChildAt(var2);
+            if (var3 instanceof SeslTabLayout.TabView) {
+                ((SeslTabLayout.TabView)var3).drawBackground(var1);
+            }
+        }
+
+        super.onDraw(var1);
+    }
+
+    public void onLayout(boolean var1, int var2, int var3, int var4, int var5) {
+        super.onLayout(var1, var2, var3, var4, var5);
+        if (var1) {
+            this.updateBadgePosition();
+        }
+
+    }
+
+    @SuppressLint({"RestrictedApi", "WrongConstant"})
+    public void onMeasure(int var1, int var2) {
+        int var3 = (int)ViewUtils.dpToPx(this.getContext(), this.getDefaultHeight());
+        int var4 = MeasureSpec.getMode(var2);
+        boolean var5 = false;
+        if (var4 != -2147483648) {
+            if (var4 != 0) {
+                var4 = var2;
+            } else {
+                var4 = MeasureSpec.makeMeasureSpec(var3 + this.getPaddingTop() + this.getPaddingBottom(), 1073741824);
+            }
+        } else {
+            var4 = var2;
+            if (this.getChildCount() == 1) {
+                var4 = var2;
+                if (MeasureSpec.getSize(var2) >= var3) {
+                    this.getChildAt(0).setMinimumHeight(var3);
+                    var4 = var2;
+                }
+            }
+        }
+
+        var3 = MeasureSpec.getSize(var1);
+        if (MeasureSpec.getMode(var1) != 0) {
+            var2 = this.requestedTabMaxWidth;
+            if (var2 <= 0) {
+                var2 = (int)((float)var3 - ViewUtils.dpToPx(this.getContext(), 56));
+            }
+
+            this.tabMaxWidth = var2;
+        }
+
+        super.onMeasure(var1, var4);
+        if (this.getChildCount() == 1) {
+            View var6;
+            boolean var7;
+            label46: {
+                label45: {
+                    var6 = this.getChildAt(0);
+                    var1 = this.mode;
+                    if (var1 != 0) {
+                        if (var1 == 1) {
+                            var7 = var5;
+                            if (var6.getMeasuredWidth() == this.getMeasuredWidth()) {
+                                break label46;
+                            }
+                            break label45;
+                        }
+
+                        if (var1 != 2) {
+                            var7 = var5;
+                            break label46;
+                        }
+                    }
+
+                    var7 = var5;
+                    if (var6.getMeasuredWidth() >= this.getMeasuredWidth()) {
+                        break label46;
                     }
                 }
 
-                if (largestTabWidth <= 0) {
+                var7 = true;
+            }
+
+            if (var7) {
+                var1 = HorizontalScrollView.getChildMeasureSpec(var4, this.getPaddingTop() + this.getPaddingBottom(), var6.getLayoutParams().height);
+                var6.measure(MeasureSpec.makeMeasureSpec(this.getMeasuredWidth(), 1073741824), var1);
+            }
+        }
+
+    }
+
+    public void onVisibilityChanged(View var1, int var2) {
+        super.onVisibilityChanged(var1, var2);
+
+        for(var2 = 0; var2 < this.getTabCount(); ++var2) {
+            SeslTabLayout.Tab var4 = this.getTabAt(var2);
+            if (var4 != null) {
+                SeslTabLayout.TabView var3 = var4.view;
+                if (var3 != null && var3.mMainTabTouchBackground != null) {
+                    var4.view.mMainTabTouchBackground.setAlpha(0.0F);
+                }
+            }
+        }
+
+    }
+
+    public void populateFromPagerAdapter() {
+        int currentItem;
+        removeAllTabs();
+        PagerAdapter pagerAdapter2 = this.pagerAdapter;
+        if (pagerAdapter2 != null) {
+            int count = pagerAdapter2.getCount();
+            for (int i = 0; i < count; i++) {
+                Tab newTab = newTab();
+                newTab.setText(this.pagerAdapter.getPageTitle(i));
+                addTab(newTab, false);
+            }
+            SeslViewPager viewPager2 = this.viewPager;
+            if (viewPager2 != null && count > 0 && (currentItem = viewPager2.getCurrentItem()) != getSelectedTabPosition() && currentItem < getTabCount()) {
+                selectTab(getTabAt(currentItem), true, true);
+            }
+        }
+    }
+
+    public boolean releaseFromTabPool(SeslTabLayout.Tab var1) {
+        return tabPool.release(var1);
+    }
+
+    public void removeAllTabs() {
+        for(int var1 = this.slidingTabIndicator.getChildCount() - 1; var1 >= 0; --var1) {
+            this.removeTabViewAt(var1);
+        }
+
+        Iterator var2 = this.tabs.iterator();
+
+        while(var2.hasNext()) {
+            SeslTabLayout.Tab var3 = (SeslTabLayout.Tab)var2.next();
+            var2.remove();
+            var3.reset();
+            this.releaseFromTabPool(var3);
+        }
+
+        this.selectedTab = null;
+    }
+
+    @Deprecated
+    public void removeOnTabSelectedListener(SeslTabLayout.BaseOnTabSelectedListener var1) {
+        this.selectedListeners.remove(var1);
+    }
+
+    public final void removeTabViewAt(int var1) {
+        SeslTabLayout.TabView var2 = (SeslTabLayout.TabView)this.slidingTabIndicator.getChildAt(var1);
+        this.slidingTabIndicator.removeViewAt(var1);
+        if (var2 != null) {
+            var2.reset();
+            this.tabViewPool.release(var2);
+        }
+
+        this.requestLayout();
+    }
+
+    public void selectTab(SeslTabLayout.Tab var1) {
+        this.selectTab(var1, true);
+    }
+
+    public void selectTab(SeslTabLayout.Tab var1, boolean var2) {
+        this.selectTab(var1, var2, true);
+    }
+
+    public final void selectTab(SeslTabLayout.Tab var1, boolean var2, boolean var3) {
+        SeslViewPager viewPager2;
+        if (var1 == null || var1.view.isEnabled() || (viewPager2 = this.viewPager) == null) {
+            Tab tab2 = this.selectedTab;
+            if (tab2 != var1) {
+                int position = var1 != null ? var1.getPosition() : -1;
+                if (var2) {
+                    if ((tab2 == null || tab2.getPosition() == -1) && position != -1) {
+                        setScrollPosition(position, 0.0f, true);
+                    } else {
+                        animateToTab(position);
+                    }
+                    if (position != -1) {
+                        setSelectedTabView(position, var3);
+                    }
+                }
+                this.selectedTab = var1;
+                if (tab2 != null) {
+                    dispatchTabUnselected(tab2);
+                }
+                if (var1 != null) {
+                    dispatchTabSelected(var1);
+                }
+            } else if (tab2 != null) {
+                dispatchTabReselected(var1);
+                animateToTab(var1.getPosition());
+            }
+        } else {
+            viewPager2.setCurrentItem(getSelectedTabPosition());
+        }
+    }
+
+    public void setElevation(float var1) {
+        super.setElevation(var1);
+        MaterialShapeUtils.setElevation(this, var1);
+    }
+
+    public void setInlineLabel(boolean var1) {
+        if (this.inlineLabel != var1) {
+            this.inlineLabel = var1;
+
+            for(int var2 = 0; var2 < this.slidingTabIndicator.getChildCount(); ++var2) {
+                View var3 = this.slidingTabIndicator.getChildAt(var2);
+                if (var3 instanceof SeslTabLayout.TabView) {
+                    ((SeslTabLayout.TabView)var3).updateOrientation();
+                }
+            }
+
+            this.applyModeAndGravity();
+        }
+
+    }
+
+    public void setInlineLabelResource(int var1) {
+        this.setInlineLabel(this.getResources().getBoolean(var1));
+    }
+
+    @Deprecated
+    public void setOnTabSelectedListener(SeslTabLayout.BaseOnTabSelectedListener var1) {
+        SeslTabLayout.BaseOnTabSelectedListener var2 = this.selectedListener;
+        if (var2 != null) {
+            this.removeOnTabSelectedListener(var2);
+        }
+
+        this.selectedListener = var1;
+        if (var1 != null) {
+            this.addOnTabSelectedListener(var1);
+        }
+
+    }
+
+    @Deprecated
+    public void setOnTabSelectedListener(SeslTabLayout.OnTabSelectedListener var1) {
+        this.setOnTabSelectedListener((SeslTabLayout.BaseOnTabSelectedListener)var1);
+    }
+
+    public void setPagerAdapter(PagerAdapter var1, boolean var2) {
+        PagerAdapter var3 = this.pagerAdapter;
+        if (var3 != null) {
+            DataSetObserver var4 = this.pagerAdapterObserver;
+            if (var4 != null) {
+                var3.unregisterDataSetObserver(var4);
+            }
+        }
+
+        this.pagerAdapter = var1;
+        if (var2 && var1 != null) {
+            if (this.pagerAdapterObserver == null) {
+                this.pagerAdapterObserver = new SeslTabLayout.PagerAdapterObserver();
+            }
+
+            var1.registerDataSetObserver(this.pagerAdapterObserver);
+        }
+
+        this.populateFromPagerAdapter();
+    }
+
+    public void setScrollAnimatorListener(Animator.AnimatorListener var1) {
+        this.ensureScrollAnimator();
+        this.scrollAnimator.addListener(var1);
+    }
+
+    public void setScrollPosition(int var1, float var2, boolean var3) {
+        this.setScrollPosition(var1, var2, var3, true);
+    }
+
+    public void setScrollPosition(int var1, float var2, boolean var3, boolean var4) {
+        int var5 = Math.round((float)var1 + var2);
+        if (var5 >= 0 && var5 < this.slidingTabIndicator.getChildCount()) {
+            if (var4) {
+                this.slidingTabIndicator.setIndicatorPositionFromTabPosition(var1, var2);
+            }
+
+            ValueAnimator var6 = this.scrollAnimator;
+            if (var6 != null && var6.isRunning()) {
+                this.scrollAnimator.cancel();
+            }
+
+            this.scrollTo(this.calculateScrollXForTab(var1, var2), 0);
+            if (var3) {
+                this.setSelectedTabView(var5, true);
+            }
+        }
+
+    }
+
+    public void setSelectedTabIndicator(int var1) {
+        if (var1 != 0) {
+            this.setSelectedTabIndicator(AppCompatResources.getDrawable(this.getContext(), var1));
+        } else {
+            this.setSelectedTabIndicator((Drawable)null);
+        }
+
+    }
+
+    public void setSelectedTabIndicator(Drawable var1) {
+        if (this.tabSelectedIndicator != var1) {
+            this.tabSelectedIndicator = var1;
+            ViewCompat.postInvalidateOnAnimation(this.slidingTabIndicator);
+        }
+
+    }
+
+    public void setSelectedTabIndicatorColor(int var1) {
+        this.mTabSelectedIndicatorColor = var1;
+        Iterator var2 = this.tabs.iterator();
+
+        while(true) {
+            SeslAbsIndicatorView var3;
+            do {
+                if (!var2.hasNext()) {
                     return;
                 }
 
-                final int gutter = dpToPx(FIXED_WRAP_GUTTER_MIN);
-                boolean remeasure = false;
+                var3 = ((SeslTabLayout.Tab)var2.next()).view.mIndicatorView;
+            } while(var3 == null);
 
-                if (largestTabWidth * count <= getMeasuredWidth() - gutter * 2) {
-                    for (int i2 = 0; i2 < count; i2++) {
-                        final LinearLayout.LayoutParams lp = (LayoutParams) getChildAt(i2).getLayoutParams();
-                        if (lp.width != largestTabWidth || lp.weight != 0) {
-                            lp.width = largestTabWidth;
-                            lp.weight = 0;
-                            remeasure = true;
-                        }
-                    }
-                } else {
-                    mTabGravity = GRAVITY_FILL;
-                    updateTabViews(false);
-                    remeasure = true;
-                }
-
-                if (remeasure) {
-                    super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-                }
-            }
-        }
-
-        @Override
-        protected void onLayout(boolean changed, int l, int t, int r, int b) {
-            super.onLayout(changed, l, t, r, b);
-
-            if (mIndicatorAnimator != null && mIndicatorAnimator.isRunning()) {
-                mIndicatorAnimator.cancel();
-                final long duration = mIndicatorAnimator.getDuration();
-                animateIndicatorToPosition(mSelectedPosition, Math.round((1f - mIndicatorAnimator.getAnimatedFraction()) * duration));
-            } else {
-                updateIndicatorPosition();
-            }
-        }
-
-        private void updateIndicatorPosition() {
-            final View selectedTitle = getChildAt(mSelectedPosition);
-            int left, right;
-
-            if (selectedTitle != null && selectedTitle.getWidth() > 0) {
-                left = selectedTitle.getLeft();
-                right = selectedTitle.getRight();
-
-                if (mSelectionOffset > 0f && mSelectedPosition < getChildCount() - 1) {
-                    View nextTitle = getChildAt(mSelectedPosition + 1);
-                    left = (int) (mSelectionOffset * nextTitle.getLeft() + (1.0f - mSelectionOffset) * left);
-                    right = (int) (mSelectionOffset * nextTitle.getRight() + (1.0f - mSelectionOffset) * right);
-                }
-
-                SeslTabView selectedGroup = (SeslTabView) selectedTitle;
-                if (selectedGroup.mCustomView == null) {
-                    int bottom = -1;
-                    for (int i = 0; i < selectedGroup.getChildCount(); i++) {
-                        View child = selectedGroup.getChildAt(i);
-                        if (bottom < child.getBottom()) {
-                            bottom = child.getBottom();
-                        }
-                        if (child instanceof TextView) {
-                            left = selectedTitle.getLeft() + child.getLeft();
-                            right = selectedTitle.getLeft() + child.getRight();
-                        }
-                    }
-                    mIndicatorTop = bottom;
-                }
-            } else {
-                left = right = -1;
-            }
-
-            setIndicatorPosition(left, right);
-        }
-
-        void setIndicatorPosition(int left, int right) {
-            if (left != mIndicatorLeft || right != mIndicatorRight) {
-                mIndicatorLeft = left;
-                mIndicatorRight = right;
-                ViewCompat.postInvalidateOnAnimation(this);
-            }
-        }
-
-        void animateIndicatorToPosition(final int position, int duration) {
-            final int startLeft;
-            final int startRight;
-
-            if (mIndicatorAnimator != null && mIndicatorAnimator.isRunning()) {
-                mIndicatorAnimator.cancel();
-            }
-
-            final boolean isRtl = ViewCompat.getLayoutDirection(this) == ViewCompat.LAYOUT_DIRECTION_RTL;
-
-            final View targetView = getChildAt(position);
-            if (targetView == null) {
-                updateIndicatorPosition();
-                return;
-            }
-
-            int tLeft = targetView.getLeft();
-            int tRight = targetView.getRight();
-
-            if (((SeslTabView) targetView).mCustomView == null) {
-                SeslTabView tv = (SeslTabView) targetView;
-                for (int i = 0; i < tv.getChildCount(); i++) {
-                    View child = tv.getChildAt(i);
-                    if (child instanceof TextView) {
-                        tLeft = child.getLeft() + targetView.getLeft();
-                        tRight = child.getRight() + targetView.getLeft();
+            label21: {
+                if (this.mDepthStyle == 2) {
+                    int var4 = this.mSubTabSelectedIndicatorColor;
+                    if (var4 != -1) {
+                        var3.setSelectedIndicatorColor(var4);
+                        break label21;
                     }
                 }
-                mSelectedPosition = position;
-                mIndicatorLeft = tLeft;
-                mIndicatorRight = tRight;
-                invalidate();
-                return;
+
+                var3.setSelectedIndicatorColor(var1);
             }
 
-            final int targetLeft = tLeft;
-            final int targetRight = tRight;
-
-            if (Math.abs(position - mSelectedPosition) <= 1) {
-                startLeft = mIndicatorLeft;
-                startRight = mIndicatorRight;
-            } else {
-                final int offset = dpToPx(MOTION_NON_ADJACENT_OFFSET);
-                if (position < mSelectedPosition) {
-                    if (isRtl) {
-                        startLeft = startRight = targetLeft - offset;
-                    } else {
-                        startLeft = startRight = targetRight + offset;
-                    }
-                } else {
-                    if (isRtl) {
-                        startLeft = startRight = targetRight + offset;
-                    } else {
-                        startLeft = startRight = targetLeft - offset;
-                    }
-                }
-            }
-
-            if (startLeft != targetLeft || startRight != targetRight) {
-                ValueAnimator animator = mIndicatorAnimator = new ValueAnimator();
-                animator.setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
-                animator.setDuration(duration);
-                animator.setFloatValues(0, 1);
-                animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                    @SuppressLint("RestrictedApi")
-                    @Override
-                    public void onAnimationUpdate(ValueAnimator animator) {
-                        final float fraction = animator.getAnimatedFraction();
-                        setIndicatorPosition(AnimationUtils.lerp(startLeft, targetLeft, fraction), AnimationUtils.lerp(startRight, targetRight, fraction));
-                    }
-                });
-                final int i2 = position;
-                animator.addListener(new AnimatorListenerAdapter() {
-                    @Override
-                    public void onAnimationEnd(Animator animator) {
-                        mSelectedPosition = i2;
-                        mSelectionOffset = 0f;
-                    }
-                });
-                animator.start();
-            }
-        }
-
-        @Override
-        public void draw(Canvas canvas) {
-            super.draw(canvas);
+            var3.invalidate();
         }
     }
 
-    public static final class SeslTab {
-        public static final int INVALID_POSITION = -1;
+    public void setSelectedTabIndicatorGravity(int var1) {
+        if (this.tabIndicatorGravity != var1) {
+            this.tabIndicatorGravity = var1;
+            ViewCompat.postInvalidateOnAnimation(this.slidingTabIndicator);
+        }
 
-        private CharSequence mContentDesc;
-        private View mCustomView;
-        private Drawable mIcon;
-        SeslTabLayout mParent;
-        private int mPosition = -1;
-        private Object mTag;
-        private CharSequence mText;
-        SeslTabView mView;
+    }
 
-        SeslTab() { }
+    @Deprecated
+    public void setSelectedTabIndicatorHeight(int var1) {
+        this.slidingTabIndicator.setSelectedIndicatorHeight(var1);
+    }
+
+    public final void setSelectedTabView(int var1, boolean var2) {
+        int var3 = this.slidingTabIndicator.getChildCount();
+        if (var1 < var3) {
+            int var4 = 0;
+
+            while(true) {
+                boolean var5 = true;
+                if (var4 >= var3) {
+                    ((SeslTabLayout.Tab)this.tabs.get(var1)).view.setSelected(true);
+
+                    for(var4 = 0; var4 < this.getTabCount(); ++var4) {
+                        SeslTabLayout.TabView var8 = ((SeslTabLayout.Tab)this.tabs.get(var4)).view;
+                        if (var4 == var1) {
+                            if (var8.textView != null) {
+                                this.startTextColorChangeAnimation(var8.textView, this.getSelectedTabTextColor());
+                                var8.textView.setTypeface(this.mBoldTypeface);
+                                var8.textView.setSelected(true);
+                            }
+
+                            if (var8.mIndicatorView != null) {
+                                if (var2) {
+                                    if (var8.mIndicatorView.getAlpha() != 1.0F) {
+                                        var8.mIndicatorView.setShow();
+                                    }
+                                } else {
+                                    ((SeslTabLayout.Tab)this.tabs.get(var4)).view.mIndicatorView.setReleased();
+                                }
+                            }
+                        } else {
+                            if (var8.mIndicatorView != null) {
+                                var8.mIndicatorView.setHide();
+                            }
+
+                            if (var8.textView != null) {
+                                var8.textView.setTypeface(this.mNormalTypeface);
+                                this.startTextColorChangeAnimation(var8.textView, this.tabTextColors.getDefaultColor());
+                                var8.textView.setSelected(false);
+                            }
+                        }
+                    }
+                    break;
+                }
+
+                View var6 = this.slidingTabIndicator.getChildAt(var4);
+                boolean var7;
+                if (var4 == var1) {
+                    var7 = true;
+                } else {
+                    var7 = false;
+                }
+
+                var6.setSelected(var7);
+                if (var4 == var1) {
+                    var7 = var5;
+                } else {
+                    var7 = false;
+                }
+
+                var6.setActivated(var7);
+                ++var4;
+            }
+        }
+
+    }
+
+    public void setTabGravity(int var1) {
+        if (this.tabGravity != var1) {
+            this.tabGravity = var1;
+            this.applyModeAndGravity();
+        }
+
+    }
+
+    public void setTabIconTint(ColorStateList var1) {
+        if (this.tabIconTint != var1) {
+            this.tabIconTint = var1;
+            this.updateAllTabs();
+        }
+
+    }
+
+    public void setTabIconTintResource(int var1) {
+        this.setTabIconTint(AppCompatResources.getColorStateList(this.getContext(), var1));
+    }
+
+    public void setTabIndicatorFullWidth(boolean var1) {
+        this.tabIndicatorFullWidth = var1;
+        ViewCompat.postInvalidateOnAnimation(this.slidingTabIndicator);
+    }
+
+    public void setTabMode(int var1) {
+        if (var1 != this.mode) {
+            this.mode = var1;
+            this.applyModeAndGravity();
+        }
+
+    }
+
+    public void setTabRippleColor(ColorStateList var1) {
+        if (this.tabRippleColorStateList != var1) {
+            this.tabRippleColorStateList = var1;
+
+            for(int var2 = 0; var2 < this.slidingTabIndicator.getChildCount(); ++var2) {
+                View var3 = this.slidingTabIndicator.getChildAt(var2);
+                if (var3 instanceof SeslTabLayout.TabView) {
+                    ((SeslTabLayout.TabView)var3).updateBackgroundDrawable(this.getContext());
+                }
+            }
+        }
+
+    }
+
+    public void setTabRippleColorResource(int var1) {
+        this.setTabRippleColor(AppCompatResources.getColorStateList(this.getContext(), var1));
+    }
+
+    public void setTabTextColors(ColorStateList var1) {
+        if (this.tabTextColors != var1) {
+            this.tabTextColors = var1;
+            this.updateAllTabs();
+        }
+
+    }
+
+    @Deprecated
+    public void setTabsFromPagerAdapter(PagerAdapter var1) {
+        this.setPagerAdapter(var1, false);
+    }
+
+    public void setUnboundedRipple(boolean var1) {
+        if (this.unboundedRipple != var1) {
+            this.unboundedRipple = var1;
+
+            for(int var2 = 0; var2 < this.slidingTabIndicator.getChildCount(); ++var2) {
+                View var3 = this.slidingTabIndicator.getChildAt(var2);
+                if (var3 instanceof SeslTabLayout.TabView) {
+                    ((SeslTabLayout.TabView)var3).updateBackgroundDrawable(this.getContext());
+                }
+            }
+        }
+
+    }
+
+    public void setUnboundedRippleResource(int var1) {
+        this.setUnboundedRipple(this.getResources().getBoolean(var1));
+    }
+
+    public void setupWithViewPager(SeslViewPager var1) {
+        this.setupWithViewPager(var1, true);
+    }
+
+    public void setupWithViewPager(SeslViewPager var1, boolean var2) {
+        this.setupWithViewPager(var1, var2, false);
+    }
+
+    public final void setupWithViewPager(SeslViewPager var1, boolean var2, boolean var3) {
+        SeslViewPager var4 = this.viewPager;
+        if (var4 != null) {
+            SeslTabLayout.TabLayoutOnPageChangeListener var5 = this.pageChangeListener;
+            if (var5 != null) {
+                var4.removeOnPageChangeListener(var5);
+            }
+
+            SeslTabLayout.AdapterChangeListener var7 = this.adapterChangeListener;
+            if (var7 != null) {
+                this.viewPager.removeOnAdapterChangeListener(var7);
+            }
+        }
+
+        SeslTabLayout.BaseOnTabSelectedListener var8 = this.currentVpSelectedListener;
+        if (var8 != null) {
+            this.removeOnTabSelectedListener(var8);
+            this.currentVpSelectedListener = null;
+        }
+
+        if (var1 != null) {
+            this.viewPager = var1;
+            if (this.pageChangeListener == null) {
+                this.pageChangeListener = new SeslTabLayout.TabLayoutOnPageChangeListener(this);
+            }
+
+            this.pageChangeListener.reset();
+            var1.addOnPageChangeListener(this.pageChangeListener);
+            this.currentVpSelectedListener = new SeslTabLayout.ViewPagerOnTabSelectedListener(var1);
+            this.addOnTabSelectedListener(this.currentVpSelectedListener);
+            PagerAdapter var6 = var1.getAdapter();
+            if (var6 != null) {
+                this.setPagerAdapter(var6, var2);
+            }
+
+            if (this.adapterChangeListener == null) {
+                this.adapterChangeListener = new SeslTabLayout.AdapterChangeListener();
+            }
+
+            this.adapterChangeListener.setAutoRefresh(var2);
+            var1.addOnAdapterChangeListener(this.adapterChangeListener);
+            this.setScrollPosition(var1.getCurrentItem(), 0.0F, true);
+        } else {
+            this.viewPager = null;
+            this.setPagerAdapter((PagerAdapter)null, false);
+        }
+
+        this.setupViewPagerImplicitly = var3;
+    }
+
+    public boolean shouldDelayChildPressedState() {
+        boolean var1;
+        if (this.getTabScrollRange() > 0) {
+            var1 = true;
+        } else {
+            var1 = false;
+        }
+
+        return var1;
+    }
+
+    public final void startTextColorChangeAnimation(TextView var1, int var2) {
+        if (var1 != null) {
+            var1.setTextColor(var2);
+        }
+
+    }
+
+    public final void updateAllTabs() {
+        int var1 = this.tabs.size();
+
+        for(int var2 = 0; var2 < var1; ++var2) {
+            ((SeslTabLayout.Tab)this.tabs.get(var2)).updateView();
+        }
+
+    }
+
+    @SuppressLint("WrongConstant")
+    public final void updateBadgePosition() {
+        ArrayList var1 = this.tabs;
+        if (var1 != null && var1.size() != 0) {
+            for(int var2 = 0; var2 < this.tabs.size(); ++var2) {
+                SeslTabLayout.Tab var10 = (SeslTabLayout.Tab)this.tabs.get(var2);
+                SeslTabLayout.TabView var3 = ((SeslTabLayout.Tab)this.tabs.get(var2)).view;
+                if (var10 != null && var3 != null) {
+                    TextView var4 = var3.textView;
+                    if (var3.getWidth() > 0 && var4 != null && var4.getWidth() > 0) {
+                        TextView var11 = null;
+                        int var5;
+                        int var6;
+                        if (var3.mNBadgeView != null && var3.mNBadgeView.getVisibility() == 0) {
+                            var11 = var3.mNBadgeView;
+                            var5 = ((android.widget.RelativeLayout.LayoutParams)var11.getLayoutParams()).getMarginStart();
+                            var6 = this.getContext().getResources().getDimensionPixelSize(R.dimen.sesl_tablayout_subtab_n_badge_xoffset);
+                        } else if (var3.mDotBadgeView != null && var3.mDotBadgeView.getVisibility() == 0) {
+                            var11 = var3.mDotBadgeView;
+                            var5 = ((android.widget.RelativeLayout.LayoutParams)var11.getLayoutParams()).getMarginStart();
+                            var6 = this.getContext().getResources().getDimensionPixelSize(R.dimen.sesl_tablayout_subtab_dot_badge_offset_x);
+                        } else {
+                            var6 = this.getContext().getResources().getDimensionPixelSize(R.dimen.sesl_tablayout_subtab_n_badge_xoffset);
+                            var5 = 0;
+                        }
+
+                        if (var11 != null && var11.getVisibility() == 0) {
+                            int var7;
+                            int var8;
+                            int var9;
+                            label56: {
+                                var11.measure(0, 0);
+                                var7 = var11.getMeasuredWidth();
+                                var8 = var3.getWidth();
+                                if (var5 != 0) {
+                                    var9 = var5;
+                                    if (var5 >= var4.getRight()) {
+                                        break label56;
+                                    }
+                                }
+
+                                var9 = var4.getRight() + var6;
+                            }
+
+                            if (var9 > var8) {
+                                var5 = var8 - var7;
+                            } else {
+                                var6 = var9 + var7;
+                                var5 = var9;
+                                if (var6 > var8) {
+                                    var5 = var9 - (var6 - var8);
+                                }
+                            }
+
+                            var5 = Math.max(0, var5);
+                            android.widget.RelativeLayout.LayoutParams var12 = (android.widget.RelativeLayout.LayoutParams)var11.getLayoutParams();
+                            var12.setMarginStart(var5);
+                            var12.width = var7;
+                            var11.setLayoutParams(var12);
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+
+    public final void updateTabViewLayoutParams(android.widget.LinearLayout.LayoutParams var1) {
+        if (this.mode == 1 && this.tabGravity == 0) {
+            var1.width = 0;
+            var1.weight = 1.0F;
+        } else {
+            var1.width = -2;
+            var1.weight = 0.0F;
+        }
+
+    }
+
+    public void updateTabViews(boolean var1) {
+        for(int var2 = 0; var2 < this.slidingTabIndicator.getChildCount(); ++var2) {
+            View var3 = this.slidingTabIndicator.getChildAt(var2);
+            var3.setMinimumWidth(this.getTabMinWidth());
+            this.updateTabViewLayoutParams((android.widget.LinearLayout.LayoutParams)var3.getLayoutParams());
+            if (var1) {
+                var3.requestLayout();
+            }
+        }
+
+        this.updateBadgePosition();
+    }
+
+    private class AdapterChangeListener implements SeslViewPager.OnAdapterChangeListener {
+        public boolean autoRefresh;
+
+        public AdapterChangeListener() {
+        }
+
+        public void onAdapterChanged(SeslViewPager var1, PagerAdapter var2, PagerAdapter var3) {
+            SeslTabLayout var4 = SeslTabLayout.this;
+            if (var4.viewPager == var1) {
+                var4.setPagerAdapter(var3, this.autoRefresh);
+            }
+
+        }
+
+        public void setAutoRefresh(boolean var1) {
+            this.autoRefresh = var1;
+        }
+    }
+
+    @Deprecated
+    public interface BaseOnTabSelectedListener<T extends SeslTabLayout.Tab> {
+        void onTabReselected(T var1);
+
+        void onTabSelected(T var1);
+
+        void onTabUnselected(T var1);
+    }
+
+    public interface OnTabSelectedListener extends SeslTabLayout.BaseOnTabSelectedListener<SeslTabLayout.Tab> {
+    }
+
+    private class PagerAdapterObserver extends DataSetObserver {
+        public PagerAdapterObserver() {
+        }
+
+        public void onChanged() {
+            SeslTabLayout.this.populateFromPagerAdapter();
+        }
+
+        public void onInvalidated() {
+            SeslTabLayout.this.populateFromPagerAdapter();
+        }
+    }
+
+    private class SlidingTabIndicator extends LinearLayout {
+        public final GradientDrawable defaultSelectionIndicator;
+        public ValueAnimator indicatorAnimator;
+        public int indicatorLeft = -1;
+        public int indicatorRight = -1;
+        public int layoutDirection = -1;
+        public int selectedIndicatorHeight;
+        public final Paint selectedIndicatorPaint;
+        public int selectedPosition = -1;
+        public float selectionOffset;
+
+        public SlidingTabIndicator(Context var2) {
+            super(var2);
+            this.setWillNotDraw(false);
+            this.selectedIndicatorPaint = new Paint();
+            this.defaultSelectionIndicator = new GradientDrawable();
+        }
+
+        public void animateIndicatorToPosition(int var1, int var2) {
+        }
+
+        public boolean childrenNeedLayout() {
+            int var1 = this.getChildCount();
+
+            for(int var2 = 0; var2 < var1; ++var2) {
+                if (this.getChildAt(var2).getWidth() <= 0) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public void draw(Canvas var1) {
+            super.draw(var1);
+        }
+
+        public void onLayout(boolean var1, int var2, int var3, int var4, int var5) {
+            super.onLayout(var1, var2, var3, var4, var5);
+            ValueAnimator var6 = this.indicatorAnimator;
+            if (var6 != null && var6.isRunning()) {
+                this.indicatorAnimator.cancel();
+                long var7 = this.indicatorAnimator.getDuration();
+                this.animateIndicatorToPosition(this.selectedPosition, Math.round((1.0F - this.indicatorAnimator.getAnimatedFraction()) * (float)var7));
+            } else {
+                this.updateIndicatorPosition();
+            }
+
+        }
+
+        @SuppressLint({"RestrictedApi", "WrongConstant"})
+        public void onMeasure(int var1, int var2) {
+            super.onMeasure(var1, var2);
+            if (MeasureSpec.getMode(var1) == 1073741824) {
+                SeslTabLayout var3 = SeslTabLayout.this;
+                if (var3.tabGravity == 1 || var3.mode == 2) {
+                    int var4 = this.getChildCount();
+                    byte var5 = 0;
+                    int var6 = 0;
+
+                    int var7;
+                    int var8;
+                    for(var7 = var6; var6 < var4; var7 = var8) {
+                        View var9 = this.getChildAt(var6);
+                        var8 = var7;
+                        if (var9.getVisibility() == 0) {
+                            var8 = Math.max(var7, var9.getMeasuredWidth());
+                        }
+
+                        ++var6;
+                    }
+
+                    if (var7 <= 0) {
+                        return;
+                    }
+
+                    var6 = (int)ViewUtils.dpToPx(this.getContext(), 16);
+                    boolean var11;
+                    if (var7 * var4 > this.getMeasuredWidth() - var6 * 2) {
+                        var3 = SeslTabLayout.this;
+                        var3.tabGravity = 0;
+                        var3.updateTabViews(false);
+                        var11 = true;
+                    } else {
+                        boolean var12 = false;
+                        var8 = var5;
+
+                        while(true) {
+                            var11 = var12;
+                            if (var8 >= var4) {
+                                break;
+                            }
+
+                            android.widget.LinearLayout.LayoutParams var10 = (android.widget.LinearLayout.LayoutParams)this.getChildAt(var8).getLayoutParams();
+                            if (var10.width != var7 || var10.weight != 0.0F) {
+                                var10.width = var7;
+                                var10.weight = 0.0F;
+                                var12 = true;
+                            }
+
+                            ++var8;
+                        }
+                    }
+
+                    if (var11) {
+                        super.onMeasure(var1, var2);
+                    }
+                }
+
+            }
+        }
+
+        public void onRtlPropertiesChanged(int var1) {
+            super.onRtlPropertiesChanged(var1);
+            if (Build.VERSION.SDK_INT < 23 && this.layoutDirection != var1) {
+                this.requestLayout();
+                this.layoutDirection = var1;
+            }
+
+        }
+
+        public void setIndicatorPositionFromTabPosition(int var1, float var2) {
+            ValueAnimator var3 = this.indicatorAnimator;
+            if (var3 != null && var3.isRunning()) {
+                this.indicatorAnimator.cancel();
+            }
+
+            this.selectedPosition = var1;
+            this.selectionOffset = var2;
+            this.updateIndicatorPosition();
+        }
+
+        public void setSelectedIndicatorColor(int var1) {
+            if (this.selectedIndicatorPaint.getColor() != var1) {
+                this.selectedIndicatorPaint.setColor(var1);
+                ViewCompat.postInvalidateOnAnimation(this);
+            }
+
+        }
+
+        public void setSelectedIndicatorHeight(int var1) {
+            if (this.selectedIndicatorHeight != var1) {
+                this.selectedIndicatorHeight = var1;
+                ViewCompat.postInvalidateOnAnimation(this);
+            }
+
+        }
+
+        public final void updateIndicatorPosition() {
+        }
+    }
+
+    public static class Tab {
+        public CharSequence contentDesc;
+        public View customView;
+        public Drawable icon;
+        public int labelVisibilityMode = 1;
+        public SeslTabLayout parent;
+        public int position = -1;
+        public Object tag;
+        public CharSequence text;
+        public SeslTabLayout.TabView view;
+
+        public Tab() {
+        }
 
         public View getCustomView() {
-            return mCustomView;
-        }
-
-        public TextView seslGetTextView() {
-            if (mCustomView != null || mView == null) {
-                return null;
-            }
-            return mView.mTextView;
-        }
-
-        public SeslTab setCustomView(View view) {
-            if (mView.mTextView != null) {
-                mView.removeAllViews();
-            }
-            mCustomView = view;
-            updateView();
-            return this;
-        }
-
-        public SeslTab setCustomView(int resId) {
-            final LayoutInflater inflater = LayoutInflater.from(mView.getContext());
-            return setCustomView(inflater.inflate(resId, mView, false));
+            return this.customView;
         }
 
         public Drawable getIcon() {
-            return mIcon;
+            return this.icon;
         }
 
         public int getPosition() {
-            return mPosition;
+            return this.position;
         }
 
-        void setPosition(int position) {
-            mPosition = position;
+        public int getTabLabelVisibility() {
+            return this.labelVisibilityMode;
         }
 
         public CharSequence getText() {
-            return mText;
-        }
-
-        public SeslTab setIcon(Drawable icon) {
-            mIcon = icon;
-            updateView();
-            return this;
-        }
-
-        public SeslTab setText(CharSequence text) {
-            mText = text;
-            updateView();
-            return this;
-        }
-
-        public void select() {
-            if (mParent == null) {
-                throw new IllegalArgumentException("SeslTab not attached to a SeslTabLayout");
-            }
-            mParent.selectTab(this);
+            return this.text;
         }
 
         public boolean isSelected() {
-            if (mParent == null) {
-                throw new IllegalArgumentException("SeslTab not attached to a SeslTabLayout");
+            SeslTabLayout var1 = this.parent;
+            if (var1 != null) {
+                boolean var2;
+                if (var1.getSelectedTabPosition() == this.position) {
+                    var2 = true;
+                } else {
+                    var2 = false;
+                }
+
+                return var2;
+            } else {
+                throw new IllegalArgumentException("Tab not attached to a TabLayout");
             }
-            return mParent.getSelectedTabPosition() == mPosition;
         }
 
-        public SeslTab setContentDescription(CharSequence contentDesc) {
-            mContentDesc = contentDesc;
-            updateView();
+        public void reset() {
+            this.parent = null;
+            this.view = null;
+            this.tag = null;
+            this.icon = null;
+            this.text = null;
+            this.contentDesc = null;
+            this.position = -1;
+            this.customView = null;
+        }
+
+        public void select() {
+            SeslTabLayout var1 = this.parent;
+            if (var1 != null) {
+                var1.selectTab(this);
+            } else {
+                throw new IllegalArgumentException("Tab not attached to a TabLayout");
+            }
+        }
+
+        public TextView seslGetTextView() {
+            TextView var2;
+            if (this.customView == null) {
+                SeslTabLayout.TabView var1 = this.view;
+                if (var1 != null) {
+                    var2 = var1.textView;
+                    return var2;
+                }
+            }
+
+            var2 = null;
+            return var2;
+        }
+
+        public SeslTabLayout.Tab setContentDescription(CharSequence var1) {
+            this.contentDesc = var1;
+            this.updateView();
             return this;
         }
 
-        public CharSequence getContentDescription() {
-            return mContentDesc;
+        public SeslTabLayout.Tab setCustomView(int var1) {
+            this.setCustomView(LayoutInflater.from(this.view.getContext()).inflate(var1, this.view, false));
+            return this;
         }
 
-        void updateView() {
-            if (mView != null) {
-                mView.update();
+        public SeslTabLayout.Tab setCustomView(View var1) {
+            if (this.view.textView != null) {
+                this.view.removeAllViews();
             }
+
+            this.customView = var1;
+            this.updateView();
+            return this;
         }
 
-        void reset() {
-            mParent = null;
-            mView = null;
-            mTag = null;
-            mIcon = null;
-            mText = null;
-            mContentDesc = null;
-            mPosition = INVALID_POSITION;
-            mCustomView = null;
+        public SeslTabLayout.Tab setIcon(Drawable var1) {
+            this.icon = var1;
+            SeslTabLayout var2 = this.parent;
+            if (var2.tabGravity == 1 || var2.mode == 2) {
+                this.parent.updateTabViews(true);
+            }
+
+            this.updateView();
+            if (BadgeUtils.USE_COMPAT_PARENT && this.view.hasBadgeDrawable() && this.view.badgeDrawable.isVisible()) {
+                this.view.invalidate();
+            }
+
+            return this;
+        }
+
+        public void setPosition(int var1) {
+            this.position = var1;
+        }
+
+        public SeslTabLayout.Tab setText(CharSequence var1) {
+            if (TextUtils.isEmpty(this.contentDesc) && !TextUtils.isEmpty(var1)) {
+                this.view.setContentDescription(var1);
+            }
+
+            this.text = var1;
+            this.updateView();
+            return this;
+        }
+
+        public void updateView() {
+            SeslTabLayout.TabView var1 = this.view;
+            if (var1 != null) {
+                var1.update();
+            }
+
         }
     }
 
     public static class TabLayoutOnPageChangeListener implements SeslViewPager.OnPageChangeListener {
-        private final WeakReference<SeslTabLayout> mTabLayoutRef;
-        private int mPreviousScrollState;
-        private int mScrollState;
+        public int previousScrollState;
+        public int scrollState;
+        public final WeakReference<SeslTabLayout> tabLayoutRef;
 
-        public TabLayoutOnPageChangeListener(SeslTabLayout tabLayout) {
-            mTabLayoutRef = new WeakReference<>(tabLayout);
+        public TabLayoutOnPageChangeListener(SeslTabLayout var1) {
+            this.tabLayoutRef = new WeakReference(var1);
         }
 
-        @Override
-        public void onPageScrollStateChanged(final int state) {
-            mPreviousScrollState = mScrollState;
-            mScrollState = state;
+        public void onPageScrollStateChanged(int var1) {
+            this.previousScrollState = this.scrollState;
+            this.scrollState = var1;
         }
 
-        @Override
-        public void onPageScrolled(final int position, final float positionOffset, final int positionOffsetPixels) {
-            final SeslTabLayout tabLayout = mTabLayoutRef.get();
-            if (tabLayout != null) {
-                final boolean updateText = mScrollState != 2 || mPreviousScrollState == 1;
-                final boolean updateIndicator = !(mScrollState == 2 && mPreviousScrollState == 0);
-                tabLayout.setScrollPosition(position, positionOffset, updateText, updateIndicator);
+        public void onPageScrolled(int var1, float var2, int var3) {
+            SeslTabLayout var4 = (SeslTabLayout)this.tabLayoutRef.get();
+            if (var4 != null) {
+                var3 = this.scrollState;
+                boolean var5 = false;
+                boolean var6;
+                if (var3 == 2 && this.previousScrollState != 1) {
+                    var6 = false;
+                } else {
+                    var6 = true;
+                }
+
+                if (this.scrollState != 2 || this.previousScrollState != 0) {
+                    var5 = true;
+                }
+
+                var4.setScrollPosition(var1, var2, var6, var5);
             }
+
         }
 
-        @Override
-        public void onPageSelected(final int position) {
-            final SeslTabLayout tabLayout = mTabLayoutRef.get();
-            if (tabLayout != null && tabLayout.getSelectedTabPosition() != position && position < tabLayout.getTabCount()) {
-                final boolean updateIndicator = mScrollState == 0 || (mScrollState == 2 && mPreviousScrollState == 0);
-                tabLayout.selectTab(tabLayout.getTabAt(position), updateIndicator);
+        public void onPageSelected(int var1) {
+            SeslTabLayout var2 = (SeslTabLayout)this.tabLayoutRef.get();
+            if (var2 != null && var2.getSelectedTabPosition() != var1 && var1 < var2.getTabCount()) {
+                int var3 = this.scrollState;
+                boolean var4;
+                if (var3 == 0 || var3 == 2 && this.previousScrollState == 0) {
+                    var4 = true;
+                } else {
+                    var4 = false;
+                }
+
+                var2.selectTab(var2.getTabAt(var1), var4);
             }
+
         }
 
-        void reset() {
-            mPreviousScrollState = mScrollState = 0;
+        public void reset() {
+            this.scrollState = 0;
+            this.previousScrollState = 0;
         }
     }
 
-    @SuppressWarnings("deprecation")
-    class SeslTabView extends LinearLayout {
-        private ImageView mCustomIconView;
-        private TextView mCustomTextView;
-        private View mCustomView;
-        private int mDefaultMaxLines = 1;
-        TextView mDotBadgeView;
-        private ImageView mIconView;
-        private SeslAbsIndicatorView mIndicatorView;
-        private boolean mIsCallPerformClick;
-        private View mMainTabTouchBackground;
-        TextView mNBadgeView;
-        private SeslTab mTab;
-        private RelativeLayout mTextParentView;
-        private TextView mTextView;
+    public final class TabView extends LinearLayout {
+        public View badgeAnchorView;
+        public BadgeDrawable badgeDrawable;
+        public Drawable baseBackgroundDrawable;
+        public ImageView customIconView;
+        public TextView customTextView;
+        public View customView;
+        public int defaultMaxLines = 2;
+        public ImageView iconView;
+        public TextView mDotBadgeView;
+        public int mIconSize;
+        public SeslAbsIndicatorView mIndicatorView;
+        public boolean mIsCallPerformClick;
+        public View mMainTabTouchBackground;
+        public TextView mNBadgeView;
+        public OnKeyListener mTabViewKeyListener = new OnKeyListener() {
+            public boolean onKey(View var1, int var2, KeyEvent var3) {
+                return false;
+            }
+        };
+        public RelativeLayout mTextParentView;
+        public SeslTabLayout.Tab tab;
+        public TextView textView;
 
-        public SeslTabView(Context context) {
-            super(context);
-            if (mTabBackgroundResId != 0 || mDepthStyle != 2) {
-                ViewCompat.setBackground(this, AppCompatResources.getDrawable(context, mTabBackgroundResId));
+        public TabView(Context var2) {
+            super(var2);
+            this.updateBackgroundDrawable(var2);
+            this.setGravity(17);
+            this.setOrientation(SeslTabLayout.this.inlineLabel ? HORIZONTAL : VERTICAL);
+            this.setClickable(true);
+            ViewCompat.setPointerIcon(this, PointerIconCompat.getSystemIcon(this.getContext(), 1002));
+            ViewCompat.setAccessibilityDelegate(this, (AccessibilityDelegateCompat)null);
+            this.setOnKeyListener(this.mTabViewKeyListener);
+            if (SeslTabLayout.this.mDepthStyle == 1) {
+                ViewCompat.setPaddingRelative(this, 0, SeslTabLayout.this.tabPaddingTop, 0, SeslTabLayout.this.tabPaddingBottom);
             }
-            if (mDepthStyle == 1) {
-                setPaddingRelative(mTabPaddingStart, mTabPaddingTop, mTabPaddingEnd, mTabPaddingBottom);
-            } else {
-                setPaddingRelative(0, mTabPaddingTop, 0, mTabPaddingBottom);
-            }
-            setGravity(Gravity.CENTER);
-            setOrientation(VERTICAL);
-            setClickable(true);
-            ViewCompat.setPointerIcon(this, PointerIconCompat.getSystemIcon(getContext(), PointerIconCompat.TYPE_HAND));
+
+            this.mIconSize = this.getResources().getDimensionPixelOffset(R.dimen.sesl_tab_icon_size);
         }
 
-        public boolean onTouchEvent(MotionEvent event) {
-            if (isEnabled()) {
-                return startTabTouchAnimation(event);
-            }
-            return super.onTouchEvent(event);
+        private BadgeDrawable getBadge() {
+            return this.badgeDrawable;
         }
 
-        private boolean startTabTouchAnimation(MotionEvent event) {
-            int action = event.getAction() & MotionEvent.ACTION_MASK;
-            if (mTab.getCustomView() == null && mTextView != null) {
-                switch (action) {
-                    case MotionEvent.ACTION_DOWN:
-                        mIsCallPerformClick = false;
-                        if (mTab.mPosition != getSelectedTabPosition() && mTextView != null) {
-                            mTextView.setTypeface(mBoldTypeface);
-                            seslStartTextColorChangeAnimation(mTextView, mTabTextColors.getDefaultColor(), seslGetSelctedTabTextColor());
-                            if (mIndicatorView != null) {
-                                mIndicatorView.setPressed();
-                            }
-                            SeslTab oldSelectedTab = getTabAt(getSelectedTabPosition());
-                            if (oldSelectedTab != null) {
-                                if (oldSelectedTab.mView.mTextView != null) {
-                                    oldSelectedTab.mView.mTextView.setTypeface(mNormalTypeface);
-                                    seslStartTextColorChangeAnimation(oldSelectedTab.mView.mTextView, seslGetSelctedTabTextColor(), mTabTextColors.getDefaultColor());
-                                }
-                                if (oldSelectedTab.mView.mIndicatorView != null) {
-                                    oldSelectedTab.mView.mIndicatorView.setHide();
-                                }
-                            }
-                        } else if (mTab.mPosition == getSelectedTabPosition() && mIndicatorView != null) {
-                            mIndicatorView.setPressed();
-                        }
-                        showMainTabTouchBackground(MotionEvent.ACTION_DOWN);
-                        break;
-                    case MotionEvent.ACTION_UP:
-                        showMainTabTouchBackground(MotionEvent.ACTION_UP);
-                        if (mTab.mPosition == getSelectedTabPosition() && mIndicatorView != null) {
-                            mIndicatorView.setReleased();
-                            mIndicatorView.onTouchEvent(event);
-                        }
-                        performClick();
-                        mIsCallPerformClick = true;
-                        break;
-                    case MotionEvent.ACTION_CANCEL:
-                        mTextView.setTypeface(mNormalTypeface);
-                        seslStartTextColorChangeAnimation(mTextView, seslGetSelctedTabTextColor(), mTabTextColors.getDefaultColor());
-                        if (mIndicatorView != null && !mIndicatorView.isSelected()) {
-                            mIndicatorView.setHide();
-                        }
-                        SeslTab oldSelectedTab2 = getTabAt(getSelectedTabPosition());
-                        if (oldSelectedTab2 != null) {
-                            if (oldSelectedTab2.mView.mTextView != null) {
-                                oldSelectedTab2.mView.mTextView.setTypeface(mBoldTypeface);
-                                seslStartTextColorChangeAnimation(oldSelectedTab2.mView.mTextView, mTabTextColors.getDefaultColor(), seslGetSelctedTabTextColor());
-                            }
-                            if (oldSelectedTab2.mView.mIndicatorView != null) {
-                                oldSelectedTab2.mView.mIndicatorView.setShow();
-                            }
-                        }
-                        showMainTabTouchBackground(MotionEvent.ACTION_CANCEL);
-                        break;
-                }
-            }
-            return super.onTouchEvent(event);
-        }
+        @SuppressLint("WrongConstant")
+        private int getContentWidth() {
+            View[] var1 = new View[3];
+            TextView var2 = this.textView;
+            int var3 = 0;
+            var1[0] = var2;
+            var1[1] = this.iconView;
+            var1[2] = this.customView;
+            int var4 = var1.length;
+            int var5 = 0;
+            int var6 = var5;
 
-        private void showMainTabTouchBackground(int action) {
-            if (mMainTabTouchBackground != null && mDepthStyle == 1) {
-                mMainTabTouchBackground.setAlpha(1.0f);
-                AnimationSet animationSet = new AnimationSet(true);
-                animationSet.setFillAfter(true);
-                switch (action) {
-                    case MotionEvent.ACTION_DOWN:
-                        AlphaAnimation aa = new AlphaAnimation(0.0f, 1.0f);
-                        aa.setDuration(100);
-                        aa.setFillAfter(true);
-                        animationSet.addAnimation(aa);
-                        ScaleAnimation ca = new ScaleAnimation(0.95f, 1.0f, 0.95f, 1.0f, 1, 0.5f, 1, 0.5f);
-                        ca.setDuration(350);
-                        ca.setInterpolator(getContext(), SESL_TAB_ANIM_INTERPOLATOR);
-                        ca.setFillAfter(true);
-                        animationSet.addAnimation(ca);
-                        mMainTabTouchBackground.startAnimation(animationSet);
-                        return;
-                    case MotionEvent.ACTION_UP:
-                    case MotionEvent.ACTION_CANCEL:
-                        if (mMainTabTouchBackground.getAnimation() == null) {
-                            return;
-                        }
-                        if (mMainTabTouchBackground.getAnimation().hasEnded()) {
-                            AlphaAnimation aa_u = new AlphaAnimation(1.0f, 0.0f);
-                            aa_u.setDuration(400);
-                            aa_u.setFillAfter(true);
-                            animationSet.addAnimation(aa_u);
-                            mMainTabTouchBackground.startAnimation(animationSet);
-                            return;
-                        }
-                        mMainTabTouchBackground.getAnimation().setAnimationListener(new Animation.AnimationListener() {
-                            public void onAnimationStart(Animation animation) {
-                            }
-
-                            public void onAnimationRepeat(Animation animation) {
-                            }
-
-                            public void onAnimationEnd(Animation animation) {
-                                AnimationSet as_u = new AnimationSet(true);
-                                as_u.setFillAfter(true);
-                                AlphaAnimation aa_u = new AlphaAnimation(1.0f, 0.0f);
-                                aa_u.setDuration(400);
-                                aa_u.setFillAfter(true);
-                                as_u.addAnimation(aa_u);
-                                SeslTabView.this.mMainTabTouchBackground.startAnimation(aa_u);
-                            }
-                        });
-                        return;
-                    default:
-                        return;
-                }
-            }
-        }
-
-        @Override
-        public boolean performClick() {
-            if (mIsCallPerformClick) {
-                mIsCallPerformClick = false;
-                return true;
-            }
-
-            final boolean performClick = super.performClick();
-
-            if (mTab != null) {
-                playSoundEffect(SoundEffectConstants.CLICK);
-                mTab.select();
-                return true;
-            } else {
-                return performClick;
-            }
-
-        }
-
-        @Override
-        public void setSelected(final boolean selected) {
-            if (isEnabled()) {
-                final boolean changed = isSelected() != selected;
-
-                super.setSelected(selected);
-
-                if (mTextView != null) {
-                    mTextView.setSelected(selected);
-                }
-                if (mIconView != null) {
-                    mIconView.setSelected(selected);
-                }
-                if (mCustomView != null) {
-                    mCustomView.setSelected(selected);
-                }
-                if (mCustomView == null && mIndicatorView != null) {
-                    if (selected) {
-                        mIndicatorView.setShow();
-                    } else {
-                        mIndicatorView.setHideImmediatly();
-                    }
-                }
-            }
-        }
-
-        @Override
-        public void onInitializeAccessibilityEvent(AccessibilityEvent event) {
-            super.onInitializeAccessibilityEvent(event);
-            event.setClassName(ActionBar.Tab.class.getName());
-        }
-
-        @Override
-        public void onInitializeAccessibilityNodeInfo(AccessibilityNodeInfo info) {
-            super.onInitializeAccessibilityNodeInfo(info);
-            info.setClassName(ActionBar.Tab.class.getName());
-        }
-
-        @Override
-        protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
-            super.onLayout(changed, left, top, right, bottom);
-            if (mMainTabTouchBackground != null) {
-                mMainTabTouchBackground.setLeft(0);
-                mMainTabTouchBackground.setRight(right - left);
-                if (mMainTabTouchBackground.getAnimation() != null && mMainTabTouchBackground.getAnimation().hasEnded()) {
-                    mMainTabTouchBackground.setAlpha(0.0f);
-                }
-            }
-            seslUpdateBadgePosition();
-        }
-
-        @Override
-        public void onMeasure(final int origWidthMeasureSpec, final int origHeightMeasureSpec) {
-            final int specWidthSize = MeasureSpec.getSize(origWidthMeasureSpec);
-            final int specWidthMode = MeasureSpec.getMode(origWidthMeasureSpec);
-            final int maxWidth = getTabMaxWidth();
-
-            final int widthMeasureSpec;
-            final int heightMeasureSpec = origHeightMeasureSpec;
-
-            if (mRequestedTabWidth != -1) {
-                widthMeasureSpec = MeasureSpec.makeMeasureSpec(mRequestedTabWidth, MeasureSpec.EXACTLY);
-            } else if (maxWidth > 0 && (specWidthMode == MeasureSpec.UNSPECIFIED || specWidthSize > maxWidth)) {
-                widthMeasureSpec = MeasureSpec.makeMeasureSpec(mTabMaxWidth, MeasureSpec.AT_MOST);
-            } else {
-                widthMeasureSpec = origWidthMeasureSpec;
-            }
-
-            super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-
-            if (mTextView != null && mCustomView == null) {
-                final Resources resources = getResources();
-                float textSize = mTabTextSize;
-                checkMaxFontScale(mTextView, (int) textSize);
-                int maxLines = mDefaultMaxLines;
-
-                if (mIconView != null && mIconView.getVisibility() == VISIBLE) {
-                    maxLines = 1;
-                } else if (mTextView != null && mTextView.getLineCount() > 1) {
-                    textSize = mTabTextMultiLineSize;
-                }
-
-                final float curTextSize = mTextView.getTextSize();
-                final int curLineCount = mTextView.getLineCount();
-                final int curMaxLines = TextViewCompat.getMaxLines(mTextView);
-
-                if (textSize != curTextSize || (curMaxLines >= 0 && maxLines != curMaxLines)) {
-                    boolean updateTextView = true;
-
-                    if (mMode == MODE_FIXED && textSize > curTextSize && curLineCount == 1) {
-                        final Layout layout = mTextView.getLayout();
-                        if (layout == null || approximateLineWidth(layout, 0, textSize) > getMeasuredWidth() - getPaddingLeft() - getPaddingRight()) {
-                            updateTextView = false;
-                        }
-                    }
-
-                    if (updateTextView) {
-                        mTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize);
-                        checkMaxFontScale(mTextView, (int) textSize);
-                        mTextView.setMaxLines(maxLines);
-                        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-                    }
-                }
-            }
-        }
-
-        void setTab(final SeslTab tab) {
-            if (tab != mTab) {
-                mTab = tab;
-                update();
-            }
-        }
-
-        void reset() {
-            setTab(null);
-            setSelected(false);
-        }
-
-        final void update() {
-            final SeslTab tab = mTab;
-            final View custom = tab != null ? tab.getCustomView() : null;
-            RelativeLayout parentView;
-            int height_mode;
-            int width_mode = LayoutParams.MATCH_PARENT;
-            Drawable drawable;
-
-            if (custom != null) {
-                final ViewParent customParent = custom.getParent();
-                if (customParent != this) {
-                    if (customParent != null) {
-                        ((ViewGroup) customParent).removeView(custom);
-                    }
-                    addView(custom);
-                }
-                mCustomView = custom;
-                if (mTextView != null) {
-                    mTextView.setVisibility(GONE);
-                }
-                if (mIconView != null) {
-                    mIconView.setVisibility(GONE);
-                    mIconView.setImageDrawable(null);
-                }
-
-                mCustomTextView = custom.findViewById(android.R.id.text1);
-                if (mCustomTextView != null) {
-                    mDefaultMaxLines = TextViewCompat.getMaxLines(mCustomTextView);
-                }
-                mCustomIconView = custom.findViewById(android.R.id.icon);
-            } else {
-                if (mCustomView != null) {
-                    removeView(mCustomView);
-                    mCustomView = null;
-                }
-                mCustomTextView = null;
-                mCustomIconView = null;
-            }
-
-            if (mCustomView == null) {
-                if (mIconView == null) {
-                    ImageView iconView = (ImageView) LayoutInflater.from(getContext()).inflate(R.layout.sesl_layout_tab_icon, this, false);
-                    addView(iconView, 0);
-                    mIconView = iconView;
-                }
-                if (mTab != null || mTab.mIcon != null || mTextParentView != null) {
-                    removeView(mTextParentView);
-                    mTextView = null;
-                }
-                if (mTextView == null) {
-                    if (mDepthStyle == 2) {
-                        parentView = (RelativeLayout) LayoutInflater.from(getContext()).inflate(R.layout.sesl_layout_sub_tab_text, this, false);
-                        if (mMode == 0) {
-                            width_mode = LayoutParams.WRAP_CONTENT;
-                        }
-                        height_mode = mSubTabIndicatorHeight;
-                        mIndicatorView = parentView.findViewById(R.id.indicator);
-                        if (mIndicatorView != null || mSubTabSelectedIndicatorColor != -1) {
-                            mIndicatorView.setSelectedIndicatorColor(mSubTabSelectedIndicatorColor);
-                        }
-                    } else {
-                        parentView = (RelativeLayout) LayoutInflater.from(getContext()).inflate(R.layout.sesl_layout_tab_text, this, false);
-                        if (mTab.mIcon == null) {
-                            height_mode = LayoutParams.MATCH_PARENT;
+            int var10;
+            for(int var7 = var5; var3 < var4; var7 = var10) {
+                View var11 = var1[var3];
+                int var8 = var5;
+                int var9 = var6;
+                var10 = var7;
+                if (var11 != null) {
+                    var8 = var5;
+                    var9 = var6;
+                    var10 = var7;
+                    if (var11.getVisibility() == 0) {
+                        if (var7 != 0) {
+                            var6 = Math.min(var6, var11.getLeft());
                         } else {
-                            height_mode = LayoutParams.MATCH_PARENT;
-                            width_mode = LayoutParams.WRAP_CONTENT;
+                            var6 = var11.getLeft();
                         }
-                        mIndicatorView = parentView.findViewById(R.id.indicator);
-                        if (mIndicatorView != null) {
-                            mIndicatorView.setSelectedIndicatorColor(mTabSelectedIndicatorColor);
+
+                        if (var7 != 0) {
+                            var7 = Math.max(var5, var11.getRight());
+                        } else {
+                            var7 = var11.getRight();
                         }
-                        mMainTabTouchBackground = parentView.findViewById(R.id.main_tab_touch_background);
-                        if (mMainTabTouchBackground != null && mTab.mIcon == null) {
-                            View view = mMainTabTouchBackground;
-                            if (isLightTheme()) {
-                                drawable = getContext().getDrawable(R.drawable.sesl_tablayout_maintab_touch_background_light);
-                            } else {
-                                drawable = getContext().getDrawable(R.drawable.sesl_tablayout_maintab_touch_background_dark);
+
+                        var10 = 1;
+                        var9 = var6;
+                        var8 = var7;
+                    }
+                }
+
+                ++var3;
+                var5 = var8;
+                var6 = var9;
+            }
+
+            return var5 - var6;
+        }
+
+        private BadgeDrawable getOrCreateBadge() {
+            if (this.badgeDrawable == null) {
+                this.badgeDrawable = BadgeDrawable.create(this.getContext());
+            }
+
+            this.tryUpdateBadgeAnchor();
+            BadgeDrawable var1 = this.badgeDrawable;
+            if (var1 != null) {
+                return var1;
+            } else {
+                throw new IllegalStateException("Unable to create badge");
+            }
+        }
+
+        public final void addOnLayoutChangeListener(final View var1) {
+            if (var1 != null) {
+                var1.addOnLayoutChangeListener(new OnLayoutChangeListener() {
+                    @SuppressLint("WrongConstant")
+                    public void onLayoutChange(View var1x, int var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9) {
+                        if (var1.getVisibility() == 0) {
+                            SeslTabLayout.TabView.this.tryUpdateBadgeDrawableBounds(var1);
+                        }
+
+                    }
+                });
+            }
+        }
+
+        public final float approximateLineWidth(Layout var1, int var2, float var3) {
+            return var1.getLineWidth(var2) * (var3 / var1.getPaint().getTextSize());
+        }
+
+        public final void drawBackground(Canvas var1) {
+            Drawable var2 = this.baseBackgroundDrawable;
+            if (var2 != null) {
+                var2.setBounds(this.getLeft(), this.getTop(), this.getRight(), this.getBottom());
+                this.baseBackgroundDrawable.draw(var1);
+            }
+
+        }
+
+        public void drawableStateChanged() {
+            super.drawableStateChanged();
+            int[] var1 = this.getDrawableState();
+            Drawable var2 = this.baseBackgroundDrawable;
+            if (var2 != null && var2.isStateful()) {
+                this.baseBackgroundDrawable.setState(var1);
+            }
+
+        }
+
+        public final FrameLayout getCustomParentForBadge(View var1) {
+            ImageView var2 = this.iconView;
+            FrameLayout var3 = null;
+            if (var1 != var2 && var1 != this.textView) {
+                return null;
+            } else {
+                if (BadgeUtils.USE_COMPAT_PARENT) {
+                    var3 = (FrameLayout)var1.getParent();
+                }
+
+                return var3;
+            }
+        }
+
+        public SeslTabLayout.Tab getTab() {
+            return this.tab;
+        }
+
+        public final boolean hasBadgeDrawable() {
+            boolean var1;
+            if (this.badgeDrawable != null) {
+                var1 = true;
+            } else {
+                var1 = false;
+            }
+
+            return var1;
+        }
+
+        public void onConfigurationChanged(Configuration var1) {
+            super.onConfigurationChanged(var1);
+            this.mIconSize = this.getResources().getDimensionPixelOffset(R.dimen.sesl_tab_icon_size);
+        }
+
+        public void onInitializeAccessibilityEvent(AccessibilityEvent var1) {
+            super.onInitializeAccessibilityEvent(var1);
+            var1.setClassName(androidx.appcompat.app.ActionBar.Tab.class.getName());
+        }
+
+        @SuppressLint("WrongConstant")
+        @TargetApi(14)
+        public void onInitializeAccessibilityNodeInfo(AccessibilityNodeInfo var1) {
+            super.onInitializeAccessibilityNodeInfo(var1);
+            var1.setClassName(androidx.appcompat.app.ActionBar.Tab.class.getName());
+            BadgeDrawable var2 = this.badgeDrawable;
+            StringBuilder var4;
+            if (var2 != null && var2.isVisible()) {
+                CharSequence var3 = this.getContentDescription();
+                var4 = new StringBuilder();
+                var4.append(var3);
+                var4.append(", ");
+                var4.append(this.badgeDrawable.getContentDescription());
+                var1.setContentDescription(var4.toString());
+            }
+
+            TextView var5 = this.mNBadgeView;
+            if (var5 != null && var5.getVisibility() == 0 && this.mNBadgeView.getContentDescription() != null) {
+                var4 = new StringBuilder();
+                var4.append(this.getContentDescription());
+                var4.append(", ");
+                var4.append(this.mNBadgeView.getContentDescription());
+                var1.setContentDescription(var4.toString());
+            }
+
+        }
+
+        @SuppressLint("RestrictedApi")
+        public void onLayout(boolean var1, int var2, int var3, int var4, int var5) {
+            super.onLayout(var1, var2, var3, var4, var5);
+            View var6 = this.mMainTabTouchBackground;
+            if (var6 != null) {
+                var6.setLeft(0);
+                View var7 = this.mMainTabTouchBackground;
+                RelativeLayout var8 = this.mTextParentView;
+                if (var8 != null) {
+                    var2 = var8.getWidth();
+                } else {
+                    var2 = var4 - var2;
+                }
+
+                var7.setRight(var2);
+                if (this.mMainTabTouchBackground.getAnimation() != null && this.mMainTabTouchBackground.getAnimation().hasEnded()) {
+                    this.mMainTabTouchBackground.setAlpha(0.0F);
+                }
+            }
+
+            if (this.iconView != null && this.tab.icon != null) {
+                TextView var9 = this.textView;
+                if (var9 != null && this.mIndicatorView != null && this.mTextParentView != null) {
+                    var3 = this.mIconSize + var9.getMeasuredWidth();
+                    var2 = var3;
+                    if (SeslTabLayout.this.mIconTextGap != -1) {
+                        var2 = var3 + SeslTabLayout.this.mIconTextGap;
+                    }
+
+                    var2 = Math.abs((this.getWidth() - var2) / 2);
+                    if (ViewUtils.isLayoutRtl(this)) {
+                        var2 = -var2;
+                        if (this.iconView.getRight() == this.mTextParentView.getRight()) {
+                            this.textView.offsetLeftAndRight(var2);
+                            this.iconView.offsetLeftAndRight(var2);
+                            this.mIndicatorView.offsetLeftAndRight(var2);
+                        }
+                    } else if (this.iconView.getLeft() == this.mTextParentView.getLeft()) {
+                        this.textView.offsetLeftAndRight(var2);
+                        this.iconView.offsetLeftAndRight(var2);
+                        this.mIndicatorView.offsetLeftAndRight(var2);
+                    }
+                }
+            }
+
+        }
+
+        @SuppressLint("WrongConstant")
+        public void onMeasure(int var1, int var2) {
+            int var3 = MeasureSpec.getSize(var1);
+            int var4 = MeasureSpec.getMode(var1);
+            int var5 = SeslTabLayout.this.getTabMaxWidth();
+            int var6;
+            if (SeslTabLayout.this.mRequestedTabWidth != -1) {
+                var6 = MeasureSpec.makeMeasureSpec(SeslTabLayout.this.mRequestedTabWidth, 1073741824);
+            } else {
+                var6 = var1;
+                if (var5 > 0) {
+                    label80: {
+                        if (var4 != 0) {
+                            var6 = var1;
+                            if (var3 <= var5) {
+                                break label80;
                             }
-                            view.setBackground(drawable);
-                            mMainTabTouchBackground.setAlpha(0.0f);
+                        }
+
+                        var6 = MeasureSpec.makeMeasureSpec(SeslTabLayout.this.tabMaxWidth, -2147483648);
+                    }
+                }
+            }
+
+            super.onMeasure(var6, var2);
+            TextView var7 = this.textView;
+            if (var7 != null && this.customView == null) {
+                SeslTabLayout var8 = SeslTabLayout.this;
+                float var9 = var8.tabTextSize;
+                var8.checkMaxFontScale(var7, (int)var9);
+                var4 = this.defaultMaxLines;
+                ImageView var15 = this.iconView;
+                boolean var13 = true;
+                float var10;
+                if (var15 != null && var15.getVisibility() == 0) {
+                    var1 = 1;
+                    var10 = var9;
+                } else {
+                    var7 = this.textView;
+                    var1 = var4;
+                    var10 = var9;
+                    if (var7 != null) {
+                        var1 = var4;
+                        var10 = var9;
+                        if (var7.getLineCount() > 1) {
+                            var10 = SeslTabLayout.this.tabTextMultiLineSize;
+                            var1 = var4;
                         }
                     }
-                    TextView textView = parentView.findViewById(R.id.title);
-                    addView(parentView, width_mode, height_mode);
-                    mTextView = textView;
-                    mTextParentView = parentView;
-                    mDefaultMaxLines = TextViewCompat.getMaxLines(mTextView);
                 }
-                TextViewCompat.setTextAppearance(mTextView, mTabTextAppearance);
-                checkMaxFontScale(mTextView, (int) mTabTextSize);
-                if (mTextView != null || mTabTextColors != null) {
-                    mTextView.setTextColor(mTabTextColors);
+
+                var9 = this.textView.getTextSize();
+                int var11 = this.textView.getLineCount();
+                var4 = TextViewCompat.getMaxLines(this.textView);
+                float var19;
+                int var12 = (var19 = var10 - var9) == 0.0F ? 0 : (var19 < 0.0F ? -1 : 1);
+                if (var12 != 0 || var4 >= 0 && var1 != var4) {
+                    boolean var14 = var13;
+                    if (SeslTabLayout.this.mode == 1) {
+                        var14 = var13;
+                        if (var12 > 0) {
+                            var14 = var13;
+                            if (var11 == 1) {
+                                label89: {
+                                    Layout var16 = this.textView.getLayout();
+                                    if (var16 != null) {
+                                        var14 = var13;
+                                        if (this.approximateLineWidth(var16, 0, var10) <= (float)(this.getMeasuredWidth() - this.getPaddingLeft() - this.getPaddingRight())) {
+                                            break label89;
+                                        }
+                                    }
+
+                                    var14 = false;
+                                }
+                            }
+                        }
+                    }
+
+                    if (var14) {
+                        this.textView.setTextSize(0, var10);
+                        SeslTabLayout.this.checkMaxFontScale(this.textView, (int)var10);
+                        this.textView.setMaxLines(var1);
+                        super.onMeasure(var6, var2);
+                    }
                 }
-                updateTextAndIcon(mTextView, mIconView);
+            }
+
+            if (this.customTextView == null && this.mTextParentView != null && this.textView != null && this.tab != null) {
+                SeslTabLayout var17 = SeslTabLayout.this;
+                if (var17.mode == 0 && var17.mDepthStyle == 2) {
+                    if (var5 > 0) {
+                        this.textView.measure(var5, 0);
+                    } else {
+                        this.textView.measure(0, 0);
+                    }
+
+                    var1 = this.textView.getMeasuredWidth();
+                    android.view.ViewGroup.LayoutParams var18 = this.mTextParentView.getLayoutParams();
+                    var18.width = var1 + this.getContext().getResources().getDimensionPixelSize(R.dimen.sesl_tablayout_subtab_side_space) * 2;
+                    this.mTextParentView.setLayoutParams(var18);
+                    super.onMeasure(MeasureSpec.makeMeasureSpec(var18.width, -2147483648), var2);
+                }
+            }
+
+        }
+
+        public boolean onTouchEvent(MotionEvent var1) {
+            if (this.isEnabled()) {
+                return this.tab.getCustomView() != null ? super.onTouchEvent(var1) : this.startTabTouchAnimation(var1, (KeyEvent)null);
             } else {
-                if (mCustomTextView != null && mCustomIconView != null) {
-                    updateTextAndIcon(mCustomTextView, mCustomIconView);
-                }
+                return super.onTouchEvent(var1);
             }
-
-            setSelected(tab != null && tab.isSelected());
         }
 
-        private void updateTextAndIcon(final TextView textView, final ImageView iconView) {
-            final Drawable icon = mTab != null ? mTab.getIcon() : null;
-            final CharSequence text = mTab != null ? mTab.getText() : null;
-            final CharSequence contentDesc = mTab != null ? mTab.getContentDescription() : null;
+        public boolean performClick() {
+            if (this.mIsCallPerformClick) {
+                this.mIsCallPerformClick = false;
+                return true;
+            } else {
+                boolean var1 = super.performClick();
+                if (this.tab != null) {
+                    if (!var1) {
+                        this.playSoundEffect(0);
+                    }
 
-            if (iconView != null) {
-                if (icon != null) {
-                    iconView.setImageDrawable(icon);
-                    iconView.setVisibility(VISIBLE);
-                    setVisibility(VISIBLE);
+                    this.tab.select();
+                    return true;
                 } else {
-                    iconView.setVisibility(GONE);
-                    iconView.setImageDrawable(null);
-                }
-                iconView.setContentDescription(contentDesc);
-            }
-
-            final boolean hasText = !TextUtils.isEmpty(text);
-            if (textView != null) {
-                if (hasText) {
-                    textView.setText(text);
-                    textView.setVisibility(VISIBLE);
-                    setVisibility(VISIBLE);
-                } else {
-                    textView.setVisibility(GONE);
-                    textView.setText(null);
-                }
-                textView.setContentDescription(contentDesc);
-            }
-
-            if (iconView != null) {
-                MarginLayoutParams lp = ((MarginLayoutParams) iconView.getLayoutParams());
-                int bottomMargin = 0;
-                if (hasText && iconView.getVisibility() == VISIBLE) {
-                    bottomMargin = dpToPx(DEFAULT_GAP_TEXT_ICON);
-                }
-                if (bottomMargin != lp.bottomMargin) {
-                    lp.bottomMargin = bottomMargin;
-                    iconView.requestLayout();
+                    return var1;
                 }
             }
-            SeslTooltip.setTooltipText(this, hasText ? null : contentDesc);
         }
 
-        private float approximateLineWidth(Layout layout, int line, float textSize) {
-            return layout.getLineWidth(line) * (textSize / layout.getPaint().getTextSize());
+        public void reset() {
+            this.setTab((SeslTabLayout.Tab)null);
+            this.setSelected(false);
+        }
+
+        public void setEnabled(boolean var1) {
+            super.setEnabled(var1);
+            View var2 = this.mMainTabTouchBackground;
+            if (var2 != null) {
+                byte var3;
+                if (var1) {
+                    var3 = 0;
+                } else {
+                    var3 = 8;
+                }
+
+                var2.setVisibility(var3);
+            }
+
+        }
+
+        public void setSelected(boolean var1) {
+            if (this.isEnabled()) {
+                boolean var2;
+                if (this.isSelected() != var1) {
+                    var2 = true;
+                } else {
+                    var2 = false;
+                }
+
+                super.setSelected(var1);
+
+                TextView var3 = this.textView;
+                if (var3 != null) {
+                    var3.setSelected(var1);
+                }
+
+                ImageView var4 = this.iconView;
+                if (var4 != null) {
+                    var4.setSelected(var1);
+                }
+
+                View var5 = this.customView;
+                if (var5 != null) {
+                    var5.setSelected(var1);
+                }
+
+                SeslAbsIndicatorView var6 = this.mIndicatorView;
+                if (var6 != null) {
+                    var6.setSelected(var1);
+                }
+
+            }
+        }
+
+        public void setTab(SeslTabLayout.Tab var1) {
+            if (var1 != this.tab) {
+                this.tab = var1;
+                this.update();
+            }
+
+        }
+
+        public final void showMainTabTouchBackground(int var1) {
+            if (this.mMainTabTouchBackground != null && SeslTabLayout.this.mDepthStyle == 1 && SeslTabLayout.this.tabBackgroundResId == 0) {
+                this.mMainTabTouchBackground.setAlpha(1.0F);
+                AnimationSet var2 = new AnimationSet(true);
+                var2.setFillAfter(true);
+                AlphaAnimation var3;
+                if (var1 != 0) {
+                    if ((var1 == 1 || var1 == 3) && this.mMainTabTouchBackground.getAnimation() != null) {
+                        if (this.mMainTabTouchBackground.getAnimation().hasEnded()) {
+                            var3 = new AlphaAnimation(1.0F, 0.0F);
+                            var3.setDuration(400L);
+                            var3.setFillAfter(true);
+                            var2.addAnimation(var3);
+                            this.mMainTabTouchBackground.startAnimation(var2);
+                        } else {
+                            this.mMainTabTouchBackground.getAnimation().setAnimationListener(new Animation.AnimationListener() {
+                                public void onAnimationEnd(Animation var1) {
+                                    AnimationSet var2 = new AnimationSet(true);
+                                    var2.setFillAfter(true);
+                                    AlphaAnimation var3 = new AlphaAnimation(1.0F, 0.0F);
+                                    var3.setDuration(400L);
+                                    var3.setFillAfter(true);
+                                    var2.addAnimation(var3);
+                                    SeslTabLayout.TabView.this.mMainTabTouchBackground.startAnimation(var3);
+                                }
+
+                                public void onAnimationRepeat(Animation var1) {
+                                }
+
+                                public void onAnimationStart(Animation var1) {
+                                }
+                            });
+                        }
+                    }
+                } else {
+                    var3 = new AlphaAnimation(0.0F, 1.0F);
+                    var3.setDuration(100L);
+                    var3.setFillAfter(true);
+                    var2.addAnimation(var3);
+                    ScaleAnimation var4 = new ScaleAnimation(0.95F, 1.0F, 0.95F, 1.0F, 1, 0.5F, 1, 0.5F);
+                    var4.setDuration(350L);
+                    var4.setInterpolator(SeslAnimationUtils.SINE_IN_OUT_80);
+                    var4.setFillAfter(true);
+                    var2.addAnimation(var4);
+                    this.mMainTabTouchBackground.startAnimation(var2);
+                }
+            }
+
+        }
+
+        public final boolean startTabTouchAnimation(MotionEvent var1, KeyEvent var2) {
+            if (var1 != null && this.tab.getCustomView() == null && this.textView != null && (var1 != null || var2 != null) && (var1 == null || var2 == null)) {
+                int var3 = var1.getAction() & 255;
+                TextView var4;
+                SeslTabLayout var5;
+                SeslAbsIndicatorView var6;
+                SeslTabLayout.Tab var7;
+                SeslTabLayout var8;
+                if (var3 != 0) {
+                    if (var3 != 1) {
+                        if (var3 == 3) {
+                            this.textView.setTypeface(SeslTabLayout.this.mNormalTypeface);
+                            var5 = SeslTabLayout.this;
+                            var5.startTextColorChangeAnimation(this.textView, var5.tabTextColors.getDefaultColor());
+                            var6 = this.mIndicatorView;
+                            if (var6 != null && !var6.isSelected()) {
+                                this.mIndicatorView.setHide();
+                            }
+
+                            var5 = SeslTabLayout.this;
+                            var7 = var5.getTabAt(var5.getSelectedTabPosition());
+                            if (var7 != null) {
+                                var4 = var7.view.textView;
+                                if (var4 != null) {
+                                    var4.setTypeface(SeslTabLayout.this.mBoldTypeface);
+                                    var8 = SeslTabLayout.this;
+                                    var8.startTextColorChangeAnimation(var7.view.textView, var8.getSelectedTabTextColor());
+                                }
+
+                                var6 = var7.view.mIndicatorView;
+                                if (var6 != null) {
+                                    var6.setShow();
+                                }
+                            }
+
+                            if (SeslTabLayout.this.mDepthStyle == 1) {
+                                this.showMainTabTouchBackground(3);
+                            } else {
+                                var6 = this.mIndicatorView;
+                                if (var6 != null && var6.isSelected()) {
+                                    this.mIndicatorView.setReleased();
+                                }
+                            }
+                        }
+                    } else {
+                        this.showMainTabTouchBackground(1);
+                        var6 = this.mIndicatorView;
+                        if (var6 != null) {
+                            var6.setReleased();
+                            this.mIndicatorView.onTouchEvent(var1);
+                        }
+
+                        this.performClick();
+                        this.mIsCallPerformClick = true;
+                    }
+                } else {
+                    label73: {
+                        this.mIsCallPerformClick = false;
+                        if (this.tab.position != SeslTabLayout.this.getSelectedTabPosition()) {
+                            TextView var9 = this.textView;
+                            if (var9 != null) {
+                                var9.setTypeface(SeslTabLayout.this.mBoldTypeface);
+                                var5 = SeslTabLayout.this;
+                                var5.startTextColorChangeAnimation(this.textView, var5.getSelectedTabTextColor());
+                                var6 = this.mIndicatorView;
+                                if (var6 != null) {
+                                    var6.setPressed();
+                                }
+
+                                var5 = SeslTabLayout.this;
+                                var7 = var5.getTabAt(var5.getSelectedTabPosition());
+                                if (var7 != null) {
+                                    var4 = var7.view.textView;
+                                    if (var4 != null) {
+                                        var4.setTypeface(SeslTabLayout.this.mNormalTypeface);
+                                        var8 = SeslTabLayout.this;
+                                        var8.startTextColorChangeAnimation(var7.view.textView, var8.tabTextColors.getDefaultColor());
+                                    }
+
+                                    var6 = var7.view.mIndicatorView;
+                                    if (var6 != null) {
+                                        var6.setHide();
+                                    }
+                                }
+                                break label73;
+                            }
+                        }
+
+                        if (this.tab.position == SeslTabLayout.this.getSelectedTabPosition()) {
+                            var6 = this.mIndicatorView;
+                            if (var6 != null) {
+                                var6.setPressed();
+                            }
+                        }
+                    }
+
+                    this.showMainTabTouchBackground(0);
+                }
+
+                return super.onTouchEvent(var1);
+            } else {
+                return false;
+            }
+        }
+
+        @SuppressLint("RestrictedApi")
+        public final void tryAttachBadgeToAnchor(View var1) {
+            if (this.hasBadgeDrawable()) {
+                if (var1 != null) {
+                    this.setClipChildren(false);
+                    this.setClipToPadding(false);
+                    BadgeUtils.attachBadgeDrawable(this.badgeDrawable, var1, this.getCustomParentForBadge(var1));
+                    this.badgeAnchorView = var1;
+                }
+
+            }
+        }
+
+        @SuppressLint("RestrictedApi")
+        public final void tryRemoveBadgeFromAnchor() {
+            if (this.hasBadgeDrawable()) {
+                if (this.badgeAnchorView != null) {
+                    this.setClipChildren(true);
+                    this.setClipToPadding(true);
+                    BadgeDrawable var1 = this.badgeDrawable;
+                    View var2 = this.badgeAnchorView;
+                    BadgeUtils.detachBadgeDrawable(var1, var2, this.getCustomParentForBadge(var2));
+                    this.badgeAnchorView = null;
+                }
+
+            }
+        }
+
+        public final void tryUpdateBadgeAnchor() {
+            if (this.hasBadgeDrawable()) {
+                if (this.customView != null) {
+                    this.tryRemoveBadgeFromAnchor();
+                } else {
+                    SeslTabLayout.Tab var1;
+                    View var3;
+                    if (this.iconView != null) {
+                        var1 = this.tab;
+                        if (var1 != null && var1.getIcon() != null) {
+                            var3 = this.badgeAnchorView;
+                            ImageView var4 = this.iconView;
+                            if (var3 != var4) {
+                                this.tryRemoveBadgeFromAnchor();
+                                this.tryAttachBadgeToAnchor(this.iconView);
+                            } else {
+                                this.tryUpdateBadgeDrawableBounds(var4);
+                            }
+
+                            return;
+                        }
+                    }
+
+                    if (this.textView != null) {
+                        var1 = this.tab;
+                        if (var1 != null && var1.getTabLabelVisibility() == 1) {
+                            var3 = this.badgeAnchorView;
+                            TextView var2 = this.textView;
+                            if (var3 != var2) {
+                                this.tryRemoveBadgeFromAnchor();
+                                this.tryAttachBadgeToAnchor(this.textView);
+                            } else {
+                                this.tryUpdateBadgeDrawableBounds(var2);
+                            }
+
+                            return;
+                        }
+                    }
+
+                    this.tryRemoveBadgeFromAnchor();
+                }
+
+            }
+        }
+
+        @SuppressLint("RestrictedApi")
+        public final void tryUpdateBadgeDrawableBounds(View var1) {
+            if (this.hasBadgeDrawable() && var1 == this.badgeAnchorView) {
+                BadgeUtils.setBadgeDrawableBounds(this.badgeDrawable, var1, this.getCustomParentForBadge(var1));
+            }
+
+        }
+
+        @SuppressLint("WrongConstant")
+        public final void update() {
+            RelativeLayout relativeLayout;
+            int i;
+            RelativeLayout relativeLayout2;
+            Tab tab2 = this.tab;
+            Drawable drawable = null;
+            View customView2 = tab2 != null ? tab2.getCustomView() : null;
+            if (customView2 != null) {
+                ViewParent parent = customView2.getParent();
+                if (parent != this) {
+                    if (parent != null) {
+                        ((ViewGroup) parent).removeView(customView2);
+                    }
+                    addView(customView2);
+                }
+                this.customView = customView2;
+                TextView textView2 = this.textView;
+                if (textView2 != null) {
+                    textView2.setVisibility(8);
+                }
+                ImageView imageView = this.iconView;
+                if (imageView != null) {
+                    imageView.setVisibility(8);
+                    this.iconView.setImageDrawable((Drawable) null);
+                }
+                this.customTextView = (TextView) customView2.findViewById(android.R.id.text1);
+                TextView textView3 = this.customTextView;
+                if (textView3 != null) {
+                    this.defaultMaxLines = TextViewCompat.getMaxLines(textView3);
+                }
+                this.customIconView = (ImageView) customView2.findViewById(android.R.id.icon);
+            } else {
+                View view = this.customView;
+                if (view != null) {
+                    removeView(view);
+                    this.customView = null;
+                }
+                this.customTextView = null;
+                this.customIconView = null;
+            }
+            boolean z = false;
+            if (this.customView == null) {
+                if (this.textView == null) {
+                    Context context = getContext();
+                    int i2 = -2;
+                    if (SeslTabLayout.this.mDepthStyle == 2) {
+                        relativeLayout2 = (RelativeLayout) LayoutInflater.from(context).inflate(R.layout.sesl_tabs_sub_tab_layout, this, false);
+                        if (SeslTabLayout.this.mode != 0) {
+                            i2 = -1;
+                        }
+                        i = SeslTabLayout.this.mSubTabIndicatorHeight;
+                        this.mIndicatorView = (SeslAbsIndicatorView) relativeLayout2.findViewById(R.id.indicator);
+                        if (!(this.mIndicatorView == null || SeslTabLayout.this.mSubTabSelectedIndicatorColor == -1)) {
+                            this.mIndicatorView.setSelectedIndicatorColor(SeslTabLayout.this.mSubTabSelectedIndicatorColor);
+                        }
+                    } else {
+                        RelativeLayout relativeLayout3 = (RelativeLayout) LayoutInflater.from(context).inflate(R.layout.sesl_tabs_main_tab_layout, this, false);
+                        if (this.tab.icon == null) {
+                            i2 = -1;
+                        }
+                        this.mIndicatorView = (SeslAbsIndicatorView) relativeLayout3.findViewById(R.id.indicator);
+                        SeslAbsIndicatorView seslAbsIndicatorView = this.mIndicatorView;
+                        if (seslAbsIndicatorView != null) {
+                            seslAbsIndicatorView.setSelectedIndicatorColor(SeslTabLayout.this.mTabSelectedIndicatorColor);
+                        }
+                        this.mMainTabTouchBackground = relativeLayout3.findViewById(R.id.main_tab_touch_background);
+                        if (this.mMainTabTouchBackground != null && this.tab.icon == null) {
+                            ViewCompat.setBackground(this.mMainTabTouchBackground, ContextCompat.getDrawable(context, Utils.isNightMode(context) ? R.drawable.sesl_tablayout_maintab_touch_background_dark : R.drawable.sesl_tablayout_maintab_touch_background_light));
+                            this.mMainTabTouchBackground.setAlpha(0.0f);
+                        }
+                        relativeLayout2 = relativeLayout3;
+                        i = -1;
+                    }
+                    relativeLayout2.getLayoutParams().width = i2;
+                    addView(relativeLayout2, i2, i);
+                    this.textView = (TextView) relativeLayout2.findViewById(R.id.title);
+                    this.mTextParentView = relativeLayout2;
+                    this.defaultMaxLines = TextViewCompat.getMaxLines(this.textView);
+                }
+                if (this.iconView == null && (relativeLayout = this.mTextParentView) != null) {
+                    this.iconView = (ImageView) relativeLayout.findViewById(R.id.icon);
+                }
+                if (!(tab2 == null || tab2.getIcon() == null)) {
+                    drawable = DrawableCompat.wrap(tab2.getIcon()).mutate();
+                }
+                if (drawable != null) {
+                    DrawableCompat.setTintList(drawable, SeslTabLayout.this.tabIconTint);
+                    PorterDuff.Mode mode = SeslTabLayout.this.tabIconTintMode;
+                    if (mode != null) {
+                        DrawableCompat.setTintMode(drawable, mode);
+                    }
+                }
+                TextViewCompat.setTextAppearance(this.textView, SeslTabLayout.this.tabTextAppearance);
+                SeslTabLayout tabLayout = SeslTabLayout.this;
+                tabLayout.checkMaxFontScale(this.textView, (int) tabLayout.tabTextSize);
+                ColorStateList colorStateList = SeslTabLayout.this.tabTextColors;
+                if (colorStateList != null) {
+                    this.textView.setTextColor(colorStateList);
+                }
+                updateTextAndIcon(this.textView, this.iconView);
+                tryUpdateBadgeAnchor();
+                addOnLayoutChangeListener(this.iconView);
+                addOnLayoutChangeListener(this.textView);
+            } else if (!(this.customTextView == null && this.customIconView == null)) {
+                updateTextAndIcon(this.customTextView, this.customIconView);
+            }
+            if (tab2 != null && !TextUtils.isEmpty(tab2.contentDesc)) {
+                setContentDescription(tab2.contentDesc);
+            }
+            if (tab2 != null && tab2.isSelected()) {
+                z = true;
+            }
+            setSelected(z);
+        }
+
+        public final void updateBackgroundDrawable(Context var1) {
+            SeslTabLayout var2 = SeslTabLayout.this;
+            if (var2.tabBackgroundResId != 0 && var2.mDepthStyle != 2) {
+                this.baseBackgroundDrawable = AppCompatResources.getDrawable(var1, SeslTabLayout.this.tabBackgroundResId);
+                Drawable var3 = this.baseBackgroundDrawable;
+                if (var3 != null && var3.isStateful()) {
+                    this.baseBackgroundDrawable.setState(this.getDrawableState());
+                }
+
+                ViewCompat.setBackground(this, this.baseBackgroundDrawable);
+            } else {
+                this.baseBackgroundDrawable = null;
+            }
+
+        }
+
+        public final void updateOrientation() {
+            this.setOrientation(SeslTabLayout.this.inlineLabel ? HORIZONTAL : VERTICAL);
+            if (this.customTextView == null && this.customIconView == null) {
+                this.updateTextAndIcon(this.textView, this.iconView);
+            } else {
+                this.updateTextAndIcon(this.customTextView, this.customIconView);
+            }
+
+        }
+
+        @SuppressLint({"RestrictedApi", "WrongConstant"})
+        public final void updateTextAndIcon(TextView var1, ImageView var2) {
+            SeslTabLayout.Tab var3 = this.tab;
+            Drawable var10;
+            if (var3 != null && var3.getIcon() != null) {
+                var10 = DrawableCompat.wrap(this.tab.getIcon()).mutate();
+            } else {
+                var10 = null;
+            }
+
+            SeslTabLayout.Tab var4 = this.tab;
+            CharSequence var11;
+            if (var4 != null) {
+                var11 = var4.getText();
+            } else {
+                var11 = null;
+            }
+
+            if (var2 != null) {
+                if (var10 != null) {
+                    var2.setImageDrawable(var10);
+                    var2.setVisibility(0);
+                    this.setVisibility(0);
+                } else {
+                    var2.setVisibility(8);
+                    var2.setImageDrawable((Drawable)null);
+                }
+            }
+
+            boolean var5 = !TextUtils.isEmpty(var11);
+            if (var1 != null) {
+                if (var5) {
+                    var1.setText(var11);
+                    if (this.tab.labelVisibilityMode == 1) {
+                        var1.setVisibility(0);
+                    } else {
+                        var1.setVisibility(8);
+                    }
+
+                    this.setVisibility(0);
+                } else {
+                    var1.setVisibility(8);
+                    var1.setText((CharSequence)null);
+                }
+            }
+
+            if (var2 != null) {
+                MarginLayoutParams var12 = (MarginLayoutParams)var2.getLayoutParams();
+                int var6;
+                if (var5 && var2.getVisibility() == 0) {
+                    if (SeslTabLayout.this.mIconTextGap != -1) {
+                        var6 = SeslTabLayout.this.mIconTextGap;
+                    } else {
+                        var6 = (int)ViewUtils.dpToPx(this.getContext(), 8);
+                    }
+                } else {
+                    var6 = 0;
+                }
+
+                if (var6 != MarginLayoutParamsCompat.getMarginEnd(var12)) {
+                    MarginLayoutParamsCompat.setMarginEnd(var12, var6);
+                    var12.bottomMargin = 0;
+                    var2.setLayoutParams(var12);
+                    var2.requestLayout();
+                    if (var1 != null) {
+                        android.widget.RelativeLayout.LayoutParams var9 = (android.widget.RelativeLayout.LayoutParams)var1.getLayoutParams();
+                        var9.addRule(13, 0);
+                        var9.addRule(15, 1);
+                        var9.addRule(17, R.id.icon);
+                        var1.setLayoutParams(var9);
+                    }
+                }
+            }
+
+            SeslTabLayout.Tab var7 = this.tab;
+            CharSequence var8;
+            if (var7 != null) {
+                var8 = var7.contentDesc;
+            } else {
+                var8 = null;
+            }
+
+            if (var5) {
+                var8 = null;
+            }
+
+            TooltipCompat.setTooltipText(this, var8);
         }
     }
 
     public static class ViewPagerOnTabSelectedListener implements SeslTabLayout.OnTabSelectedListener {
-        private final SeslViewPager mViewPager;
+        public final SeslViewPager viewPager;
 
-        public ViewPagerOnTabSelectedListener(SeslViewPager viewPager) {
-            mViewPager = viewPager;
+        public ViewPagerOnTabSelectedListener(SeslViewPager var1) {
+            this.viewPager = var1;
         }
 
-        @Override
-        public void onTabSelected(SeslTabLayout.SeslTab tab) {
-            mViewPager.setCurrentItem(tab.getPosition());
+        public void onTabReselected(SeslTabLayout.Tab var1) {
         }
 
-        @Override
-        public void onTabUnselected(SeslTabLayout.SeslTab tab) { }
+        public void onTabSelected(SeslTabLayout.Tab var1) {
+            this.viewPager.setCurrentItem(var1.getPosition());
+        }
 
-        @Override
-        public void onTabReselected(SeslTabLayout.SeslTab tab) { }
+        public void onTabUnselected(SeslTabLayout.Tab var1) {
+        }
     }
 }

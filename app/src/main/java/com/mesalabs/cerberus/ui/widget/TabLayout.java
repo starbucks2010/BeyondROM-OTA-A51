@@ -47,7 +47,7 @@ public class TabLayout extends SeslTabLayout implements View.OnSystemUiVisibilit
         mTextViews = new ArrayList<>();
 
         for (int tabPosition = 0; tabPosition < getTabCount(); tabPosition++) {
-            SeslTab tab = getTabAt(tabPosition);
+            Tab tab = getTabAt(tabPosition);
             ViewGroup tabView = (ViewGroup) getTabView(tabPosition);
             if (!(tab == null || tabView == null)) {
                 TextView textView = tab.seslGetTextView();
@@ -173,7 +173,7 @@ public class TabLayout extends SeslTabLayout implements View.OnSystemUiVisibilit
     }
 
     @Override
-    protected void onConfigurationChanged(Configuration newConfig) {
+    public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         invalidateTabLayout();
     }

@@ -841,10 +841,8 @@ public class SeslRecyclerView extends ViewGroup implements NestedScrollingChild2
 
         this.mRectPaint.setColor(this.mRectColor);
         this.mRectPaint.setStyle(Style.FILL_AND_STROKE);
-        var1.getTheme().resolveAttribute(R.attr.roundedCornerStrokeColor, var11, true);
-        if (var11.resourceId > 0) {
-            this.mStrokeColor = var8.getColor(var11.resourceId, null);
-        }
+//temp
+        this.mStrokeColor = 0;
 
         this.mStrokePaint.setColor(this.mStrokeColor);
         this.mStrokePaint.setStyle(Style.FILL_AND_STROKE);
@@ -3091,7 +3089,7 @@ public class SeslRecyclerView extends ViewGroup implements NestedScrollingChild2
             var2 = this.getBottom();
             var3 = this.getRight();
             int var5 = this.getBottom();
-            var4.drawRoundedCorner(0, var2, var3, this.mSeslRoundedCorner.getRoundedCornerRadius() + var5, var1);
+            var4.drawRoundedCorner(0, var2, var3, var5, var1);
         }
 
     }
@@ -6466,7 +6464,7 @@ public class SeslRecyclerView extends ViewGroup implements NestedScrollingChild2
         if (this.mLayout instanceof SeslLinearLayoutManager) {
             this.mDrawOutlineStroke = var1;
             this.mDrawWhiteTheme = var2;
-            this.mSeslRoundedCorner = new SeslSubheaderRoundedCorner(this.getContext(), var2);
+            this.mSeslRoundedCorner = new SeslSubheaderRoundedCorner(this.getContext());
             this.mSeslRoundedCorner.setRoundedCorners(12);
             if (!this.mDrawWhiteTheme) {
                 this.mRectPaint.setColor(this.getResources().getColor(R.color.sesl_round_and_bgcolor_dark, null));

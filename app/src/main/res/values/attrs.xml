@@ -12,8 +12,8 @@
     <attr name="cardBgColor" format="string|integer|color|reference" />
     <attr name="goToTopStyle" format="reference" />
     <attr name="roundedCornerColor" format="color" />
-    <attr name="roundedCornerStrokeColor" format="color" />
     <attr name="listDividerColor" format="color" />
+    <attr name="switchDividerColor" format="color" />
     <attr name="primaryTextColor" format="string|integer|color|reference" />
     <attr name="secondaryTextColor" format="color" />
     <attr name="buttonCornerRadius" format="dimension" />
@@ -40,7 +40,6 @@
     <attr name="progressLayout" format="reference" />
     <attr name="horizontalProgressLayout" format="reference" />
 
-    <attr name="cornersStroke" format="boolean" />
     <attr name="roundedCorners"  format="integer">
         <flag name="all" value="0x0000000f" />
         <flag name="bottom_left" value="0x00000004" />
@@ -61,15 +60,12 @@
     <attr name="progressNormalColor" format="reference|color" />
 
     <declare-styleable name="RoundFrameLayout">
-        <attr name="cornersStroke" />
         <attr name="roundedCorners" />
     </declare-styleable>
     <declare-styleable name="RoundLinearLayout">
-        <attr name="cornersStroke" />
         <attr name="roundedCorners" />
     </declare-styleable>
     <declare-styleable name="RoundNestedScrollView">
-        <attr name="cornersStroke" />
         <attr name="roundedCorners" />
     </declare-styleable>
     <declare-styleable name="SwitchBar">
@@ -198,12 +194,21 @@
         <attr name="showText" format="boolean" />
     </declare-styleable>
     <declare-styleable name="SeslTabLayout">
+        <attr name="tabIndicator" format="reference" />
         <attr name="tabIndicatorColor" format="color"/>
         <attr name="tabIndicatorHeight" format="dimension"/>
+        <attr name="tabIndicatorFullWidth" format="boolean" />
+        <attr name="tabIndicatorGravity" />
+        <attr name="tabIconTint" format="color" />
+        <attr name="tabIconTintMode" />
         <attr name="tabContentStart" format="dimension"/>
         <attr name="tabBackground" format="reference"/>
+        <attr name="tabRippleColor" format="color" />
+        <attr name="tabIndicatorAnimationDuration" format="integer" />
         <attr name="tabMode" />
         <attr name="tabGravity" />
+        <attr name="tabInlineLabel" format="boolean" />
+        <attr name="tabUnboundedRipple" format="boolean" />
         <attr name="tabMinWidth" format="dimension"/>
         <attr name="tabMaxWidth" format="dimension"/>
         <attr name="tabTextAppearance" format="reference"/>

@@ -10,13 +10,12 @@
     <include layout="@layout/mesa_view_toolbar_layout"
         android:layout_width="fill_parent"
         android:layout_height="?actionBarSize"
-        android:layout_marginBottom="@dimen/sesl_material_extended_appbar_bottom_padding"/>
+        android:layout_marginBottom="@dimen/sesl_extended_appbar_bottom_padding"/>
 
     <com.mesalabs.cerberus.ui.widget.RoundFrameLayout
         android:id="@+id/mesa_container_baseactivity"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        app:cornersStroke="false"
         app:roundedCorners="top_left|top_right"/>
 
 </LinearLayout>

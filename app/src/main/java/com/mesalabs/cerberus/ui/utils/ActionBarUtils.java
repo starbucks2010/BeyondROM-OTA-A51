@@ -70,8 +70,7 @@ public class ActionBarUtils {
     private MoreMenuPopupAdapter moreMenuPopupAdapter;
 
     private View moreMenuPopupAnchor = null;
-    private int moreMenuPopupWidth;
-    private int moreMenuPopupHeight;
+    private int moreMenuPopupOffX;
 
     private float mAppBarHeightDp;
 
@@ -96,7 +95,7 @@ public class ActionBarUtils {
 
         ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams((int) activity.getResources().getDimension(big ? R.dimen.mesa_toolbar_imagebutton_width : R.dimen.sesl_action_button_min_width), (int) activity.getResources().getDimension(R.dimen.sesl_action_bar_default_height));
 
-        overflowButton.setBackgroundResource(isNightMode ? R.drawable.sesl_action_bar_item_background_dark : R.drawable.sesl_action_bar_item_background);
+        overflowButton.setBackgroundResource(R.drawable.sesl_action_bar_item_background);
         overflowButton.setImageResource(iconResId);
         overflowButton.setImageTintList(activity.getResources().getColorStateList(isNightMode ? R.color.sesl_action_menu_text_dark : R.color.sesl_action_menu_text, activity.getTheme()));
         overflowButton.setOnClickListener(ocl);
@@ -212,15 +211,14 @@ public class ActionBarUtils {
         moreMenuPopupAdapter = new MoreMenuPopupAdapter(activity, linkedHashMap);
         listView.setAdapter(moreMenuPopupAdapter);
         listView.setDivider(null);
-        listView.setSelector(activity.getResources().getDrawable(isNightMode ? R.drawable.mesa_menu_popup_list_selector_dark : R.drawable.mesa_menu_popup_list_selector_light, activity.getTheme()));
+        listView.setSelector(activity.getResources().getDrawable(isNightMode ? R.drawable.sesl_list_selector_dark : R.drawable.sesl_list_selector_light, activity.getTheme()));
         listView.setOnItemClickListener(ocl);
 
         if (ViewUtils.isRTLMode(activity)) {
-            moreMenuPopupWidth = getMoreMenuPopupWidth(moreMenuPopupAdapter);
+            moreMenuPopupOffX = getMoreMenuPopupWidth(moreMenuPopupAdapter);
         } else {
-            moreMenuPopupWidth = -getMoreMenuPopupWidth(moreMenuPopupAdapter);
+            moreMenuPopupOffX = -getMoreMenuPopupWidth(moreMenuPopupAdapter);
         }
-        moreMenuPopupHeight = ViewUtils.dp2px(activity, -12.0f);
 
         moreMenuPopupWindow = new PopupWindow(listView);
         moreMenuPopupWindow.setWidth(getMoreMenuPopupWidth(moreMenuPopupAdapter));
@@ -228,7 +226,7 @@ public class ActionBarUtils {
         moreMenuPopupWindow.setAnimationStyle(R.style.mesa_MenuPopupAnimStyle);
         moreMenuPopupWindow.setBackgroundDrawable(activity.getResources().getDrawable(isNightMode ? R.drawable.sesl_menu_popup_background_dark : R.drawable.sesl_menu_popup_background, activity.getTheme()));
         moreMenuPopupWindow.setOutsideTouchable(true);
-        moreMenuPopupWindow.setElevation(ViewUtils.getDIPForPX(activity, 3));
+        moreMenuPopupWindow.setElevation(ViewUtils.getDIPForPX(activity, 12));
         moreMenuPopupWindow.setFocusable(true);
         if (moreMenuPopupWindow.isClippingEnabled()) {
             moreMenuPopupWindow.setClippingEnabled(false);
@@ -295,7 +293,7 @@ public class ActionBarUtils {
                 appBarLayout.setExpanded(false, false);
                 appBarLayout.setActivated(false);
 
-                abBottomPadding = activity.getResources().getDimensionPixelSize(R.dimen.sesl_material_extended_appbar_bottom_padding);
+                abBottomPadding = activity.getResources().getDimensionPixelSize(R.dimen.sesl_extended_appbar_bottom_padding);
                 mAppBarHeightDp = activity.getResources().getDimension(abBottomPadding == 0 ? R.dimen.sesl_action_bar_default_height : R.dimen.sesl_action_bar_default_height_padding);
 
                 params.height = (int) mAppBarHeightDp;
@@ -311,11 +309,11 @@ public class ActionBarUtils {
                 appBarLayout.setExpanded(defaultExpandStatus, false);
                 appBarLayout.setActivated(true);
 
-                abBottomPadding = activity.getResources().getDimensionPixelSize(R.dimen.sesl_material_extended_appbar_bottom_padding);
+                abBottomPadding = activity.getResources().getDimensionPixelSize(R.dimen.sesl_extended_appbar_bottom_padding);
                 mAppBarHeightDp = activity.getResources().getDimension(R.dimen.sesl_action_bar_default_height_padding);
 
                 TypedValue outValue = new TypedValue();
-                activity.getResources().getValue(R.dimen.sesl_abl_height_proportion, outValue, true);
+                activity.getResources().getValue(R.dimen.sesl_appbar_height_proportion, outValue, true);
 
                 params.height = (int) ((float) windowHeight * outValue.getFloat());
             }
@@ -342,12 +340,12 @@ public class ActionBarUtils {
 
             toolbar.setPadding(0, 0, 0, 0);
 
-            toolbarHomeButton.setBackgroundResource(isNightMode ? R.drawable.sesl_action_bar_item_background_dark : R.drawable.sesl_action_bar_item_background);
+            toolbarHomeButton.setBackgroundResource(R.drawable.sesl_action_bar_item_background);
 
             if (iconResId > 0)
                 toolbarHomeButton.setImageResource(iconResId);
             else
-                toolbarHomeButton.setImageResource(isNightMode ? R.drawable.sesl_ic_ab_back_dark : R.drawable.sesl_ic_ab_back);
+                toolbarHomeButton.setImageResource(isNightMode ? R.drawable.sesl_ic_ab_back_dark : R.drawable.sesl_ic_ab_back_light);
 
             toolbarHomeButton.setImageTintList(activity.getResources().getColorStateList(isNightMode ? R.color.sesl_action_menu_text_dark : R.color.sesl_action_menu_text, activity.getTheme()));
 
@@ -376,8 +374,8 @@ public class ActionBarUtils {
             ViewGroup.LayoutParams lp2 = new ViewGroup.LayoutParams((int) activity.getResources().getDimension(R.dimen.mesa_toolbar_imagebutton_width),
                     (int) activity.getResources().getDimension(R.dimen.sesl_action_bar_default_height));
 
-            moreOverflowButton.setBackgroundResource(isNightMode ? R.drawable.sesl_action_bar_item_background_dark : R.drawable.sesl_action_bar_item_background);
-            moreOverflowButton.setImageResource(isNightMode ? R.drawable.sesl_ic_menu_overflow_dark : R.drawable.sesl_ic_menu_overflow);
+            moreOverflowButton.setBackgroundResource(R.drawable.sesl_action_bar_item_background);
+            moreOverflowButton.setImageResource(isNightMode ? R.drawable.sesl_ic_menu_overflow_dark : R.drawable.sesl_ic_menu_overflow_light);
             moreOverflowButton.setImageTintList(activity.getResources().getColorStateList(isNightMode ? R.color.sesl_action_menu_text_dark : R.color.sesl_action_menu_text, activity.getTheme()));
             moreOverflowButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -426,7 +424,7 @@ public class ActionBarUtils {
 
     public void showMoreMenuPopupWindow() {
         if (moreMenuPopupWindow != null || !moreMenuPopupWindow.isShowing())
-            moreMenuPopupWindow.showAsDropDown(moreMenuPopupAnchor, moreMenuPopupWidth, moreMenuPopupHeight);
+            moreMenuPopupWindow.showAsDropDown(moreMenuPopupAnchor, moreMenuPopupOffX, 0);
         else
             LogUtils.w(activity.getLocalClassName() + ".showMoreMenuPopupWindow", "moreMenuPopupWindow is null or already shown.");
     }
@@ -517,16 +515,6 @@ public class ActionBarUtils {
                 itemVar.badgeIcon.setVisibility(View.VISIBLE);
             } else {
                 itemVar.badgeIcon.setVisibility(View.GONE);
-            }
-
-            if (getCount() <= 1) {
-                view.setBackgroundResource(isNightMode ? R.drawable.mesa_menu_popup_item_bg_allr_dark : R.drawable.mesa_menu_popup_item_bg_allr_light);
-            } else if (index == 0) {
-                view.setBackgroundResource(isNightMode ? R.drawable.mesa_menu_popup_item_bg_topr_dark : R.drawable.mesa_menu_popup_item_bg_topr_light);
-            } else if (index == getCount() - 1) {
-                view.setBackgroundResource(isNightMode ? R.drawable.mesa_menu_popup_item_bg_bottomr_dark : R.drawable.mesa_menu_popup_item_bg_bottomr_light);
-            } else {
-                view.setBackgroundResource(isNightMode ? R.drawable.mesa_menu_popup_item_bg_nor_dark : R.drawable.mesa_menu_popup_item_bg_nor_light);
             }
 
             return view;

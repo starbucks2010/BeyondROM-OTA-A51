@@ -2,6 +2,7 @@ package com.samsung.android.ui.util;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Rect;
 import android.view.View;
 
 /*
@@ -24,36 +25,9 @@ public class SeslSubheaderRoundedCorner extends SeslRoundedCorner {
         super(context);
     }
 
-    public SeslSubheaderRoundedCorner(Context context, boolean isStrokeRoundedCorner) {
-        super(context, isStrokeRoundedCorner);
-    }
-
     public void drawRoundedCorner(int left, int top, int right, int bottom, Canvas canvas) {
         mRoundedCornerBounds.set(left, top, right, bottom);
-        if ((mRoundedCornerMode & 1) != 0) {
-            if (mIsStrokeRoundedCorner) {
-                mRoundStrokeBottom.setBounds(0, mRoundedCornerBounds.bottom, mRoundedCornerBounds.right, mRoundedCornerBounds.bottom + mRoundStrokeHeight);
-                mRoundStrokeBottom.draw(canvas);
-            }
-            mTopLeftRound.setBounds(mRoundedCornerBounds.left, mRoundedCornerBounds.bottom, mRoundedCornerBounds.left + mRoundRadius, mRoundedCornerBounds.bottom + mRoundRadius);
-            mTopLeftRound.draw(canvas);
-        }
-        if ((mRoundedCornerMode & 2) != 0) {
-            mTopRightRound.setBounds(mRoundedCornerBounds.right - mRoundRadius, mRoundedCornerBounds.bottom, mRoundedCornerBounds.right, mRoundedCornerBounds.bottom + mRoundRadius);
-            mTopRightRound.draw(canvas);
-        }
-        if ((mRoundedCornerMode & 4) != 0) {
-            if (mIsStrokeRoundedCorner) {
-                mRoundStrokeTop.setBounds(0, mRoundedCornerBounds.top - mRoundStrokeHeight, mRoundedCornerBounds.right, mRoundedCornerBounds.top);
-                mRoundStrokeTop.draw(canvas);
-            }
-            mBottomLeftRound.setBounds(mRoundedCornerBounds.left, mRoundedCornerBounds.top - mRoundRadius, mRoundedCornerBounds.left + mRoundRadius, mRoundedCornerBounds.top);
-            mBottomLeftRound.draw(canvas);
-        }
-        if ((mRoundedCornerMode & 8) != 0) {
-            mBottomRightRound.setBounds(mRoundedCornerBounds.right - mRoundRadius, mRoundedCornerBounds.top - mRoundRadius, mRoundedCornerBounds.right, mRoundedCornerBounds.top);
-            mBottomRightRound.draw(canvas);
-        }
+        drawRoundedCornerInternal(canvas);
     }
 
     @Override
@@ -65,28 +39,24 @@ public class SeslSubheaderRoundedCorner extends SeslRoundedCorner {
             mX = view.getLeft();
             mY = view.getTop();
         }
-        mRoundedCornerBounds.set(mX, mY, mX + view.getWidth(), mY + view.getHeight());
+        mRoundedCornerBounds.set(mX, this.mY, view.getWidth() + mX, mY + view.getHeight());
+        drawRoundedCornerInternal(canvas);
+    }
+
+    private void drawRoundedCornerInternal(Canvas canvas) {
         if ((mRoundedCornerMode & 1) != 0) {
-            if (mIsStrokeRoundedCorner) {
-                mRoundStrokeBottom.setBounds(0, mRoundedCornerBounds.bottom, mRoundedCornerBounds.right, mRoundedCornerBounds.bottom + mRoundStrokeHeight);
-                mRoundStrokeBottom.draw(canvas);
-            }
-            mTopLeftRound.setBounds(mRoundedCornerBounds.left, mRoundedCornerBounds.bottom, mRoundedCornerBounds.left + mRoundRadius, mRoundedCornerBounds.bottom + mRoundRadius);
+            mTopLeftRound.setBounds(mRoundedCornerBounds.left, mRoundedCornerBounds.bottom, mRoundedCornerBounds.left + mRoundRadius, mRoundRadius + mRoundedCornerBounds.bottom);
             mTopLeftRound.draw(canvas);
         }
         if ((mRoundedCornerMode & 2) != 0) {
-            mTopRightRound.setBounds(mRoundedCornerBounds.right - mRoundRadius, mRoundedCornerBounds.bottom, mRoundedCornerBounds.right, mRoundedCornerBounds.bottom + mRoundRadius);
+            mTopRightRound.setBounds(mRoundedCornerBounds.right - mRoundRadius, mRoundedCornerBounds.bottom, mRoundedCornerBounds.right, mRoundRadius + mRoundedCornerBounds.bottom);
             mTopRightRound.draw(canvas);
         }
         if ((mRoundedCornerMode & 4) != 0) {
-            if (mIsStrokeRoundedCorner) {
-                mRoundStrokeTop.setBounds(0, mRoundedCornerBounds.top - mRoundStrokeHeight, mRoundedCornerBounds.right, mRoundedCornerBounds.top);
-                mRoundStrokeTop.draw(canvas);
-            }
-            mBottomLeftRound.setBounds(mRoundedCornerBounds.left, mRoundedCornerBounds.top - mRoundRadius, mRoundedCornerBounds.left + mRoundRadius, mRoundedCornerBounds.top);
+            mBottomLeftRound.setBounds(mRoundedCornerBounds.left, mRoundedCornerBounds.top - mRoundRadius, mRoundRadius + mRoundedCornerBounds.left, mRoundedCornerBounds.top);
             mBottomLeftRound.draw(canvas);
         }
-        if ((mRoundedCornerMode & 8) != 0) {
+        if ((this.mRoundedCornerMode & 8) != 0) {
             mBottomRightRound.setBounds(mRoundedCornerBounds.right - mRoundRadius, mRoundedCornerBounds.top - mRoundRadius, mRoundedCornerBounds.right, mRoundedCornerBounds.top);
             mBottomRightRound.draw(canvas);
         }

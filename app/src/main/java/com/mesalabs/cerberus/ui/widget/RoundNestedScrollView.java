@@ -41,11 +41,7 @@ public class RoundNestedScrollView extends SeslNestedScrollView {
 
         TypedArray obtainStyledAttributes = mContext.obtainStyledAttributes(attrs, R.styleable.RoundNestedScrollView);
 
-        boolean cornersStroke = obtainStyledAttributes.getBoolean(R.styleable.RoundNestedScrollView_cornersStroke, false);
         int roundedCorners = obtainStyledAttributes.getInt(R.styleable.RoundNestedScrollView_roundedCorners, 15);
-
-        if (cornersStroke)
-            LogUtils.w("RoundNestedScrollView", "cornersStroke is not supported in this View!");
 
         mSeslRoundedCorner = new SeslRoundedCorner(mContext, false);
         mSeslRoundedCorner.setRoundedCorners(roundedCorners);

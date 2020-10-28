@@ -14,7 +14,7 @@
     <dimen name="sesl_action_button_padding_horizontal">12.0dip</dimen>
     <dimen name="sesl_action_button_src_size">24.0dip</dimen>
 
-    <item type="dimen" format="float" name="sesl_abl_height_proportion">0.0</item>
+    <item type="dimen" format="float" name="sesl_appbar_height_proportion">0.0</item>
     <dimen name="sesl_material_action_bar_default_height">56.0dip</dimen>
     <dimen name="sesl_material_action_bar_default_height_padding">68.0dip</dimen>
 
@@ -32,7 +32,7 @@
     <dimen name="sesl_action_bar_text_size_menu">18.0sp</dimen>
 
     <dimen name="sesl_appbar_bottom_padding">0.0dip</dimen>
-    <dimen name="sesl_material_extended_appbar_bottom_padding">0.0dip</dimen>
+    <dimen name="sesl_extended_appbar_bottom_padding">0.0dip</dimen>
     <dimen name="sesl_material_extended_appbar_title_padding">24.0dip</dimen>
 
     <dimen name="sesl_action_bar_text_size_title_extend">40.0sp</dimen>
@@ -53,13 +53,12 @@
     <dimen name="sesl_menu_popup_bottom_margin">6.0dip</dimen>
     <dimen name="sesl_menu_popup_bottom_padding">6.0dip</dimen>
     <dimen name="sesl_menu_popup_corner_radius">24.0dip</dimen>
-    <dimen name="sesl_menu_popup_elevation">3.0dip</dimen>
+    <dimen name="sesl_menu_popup_elevation">12.0dip</dimen>
     <dimen name="sesl_menu_popup_max_height">464.0dip</dimen>
     <dimen name="sesl_menu_popup_max_height_mobile_keyboard">320.0dip</dimen>
-    <dimen name="sesl_menu_popup_offset_horizontal">0.0dip</dimen>
+    <dimen name="sesl_menu_popup_offset_horizontal">12.0dip</dimen>
     <dimen name="sesl_menu_popup_offset_vertical">0.0dip</dimen>
     <dimen name="sesl_menu_popup_stroke_width">1.0px</dimen>
-    <dimen name="sesl_menu_popup_stroke_width_dark">1.0dip</dimen>
     <dimen name="sesl_menu_popup_top_margin">6.0dip</dimen>
     <dimen name="sesl_menu_popup_top_padding">6.0dip</dimen>
     <item type="dimen" name="sesl_menu_popup_scale_anim_pivot_x">100.0%</item>
@@ -146,7 +145,7 @@
     <dimen name="sesl_tooltip_y_offset_non_touch">0.0dip</dimen>
     <dimen name="sesl_tooltip_y_offset_touch">16.0dip</dimen>
     <dimen name="sesl_hover_popup_corner_radius">22.0dip</dimen>
-    <dimen name="sesl_hover_popup_elevation">2.0dip</dimen>
+    <dimen name="sesl_hover_popup_elevation">8.0dip</dimen>
     <dimen name="sesl_hover_popup_padding_bottom">16.0dip</dimen>
     <dimen name="sesl_hover_popup_padding_left">28.0dip</dimen>
     <dimen name="sesl_hover_popup_padding_right">28.0dip</dimen>
@@ -192,10 +191,14 @@
     <dimen name="sesl_tab_scrollable_min_width">72.0dip</dimen>
     <dimen name="sesl_tab_text_size">15.0sp</dimen>
     <dimen name="sesl_tab_text_size_2line">12.0sp</dimen>
-    <dimen name="sesl_tablayout_subtab_dot_badge_xoffset">4.0dip</dimen>
+    <dimen name="sesl_tablayout_subtab_dot_badge_offset_x">4.0dip</dimen>
     <dimen name="sesl_tablayout_subtab_indicator_height">36.0dip</dimen>
     <dimen name="sesl_tablayout_subtab_indicator_radius">18.0dip</dimen>
     <dimen name="sesl_tablayout_subtab_indicator_stroke_width">1.0dip</dimen>
+    <dimen name="sesl_tablayout_subtab_n_badge_xoffset">3.0dip</dimen>
+    <dimen name="sesl_tablayout_subtab_side_space">12.0dip</dimen>
+    <dimen name="sesl_tab_icon_size">24.0dip</dimen>
+
 
     <dimen name="sesl_go_to_top_scrollable_view_gap">20.0dip</dimen>
     <dimen name="sesl_go_to_top_scrollable_view_size">40.0dip</dimen>
@@ -285,6 +288,12 @@
     <dimen name="sesl_color_picker_used_color_item_gap_margin">10.0dip</dimen>
     <dimen name="sesl_color_picker_used_color_item_size">37.0dip</dimen>
     <dimen name="sesl_color_picker_used_color_item_stroke_size">1.0px</dimen>
+
+    <dimen name="sesl_action_button_icon_size">24.0dip</dimen>
+
+    <dimen name="sesl_list_image_end_padding">10.0dip</dimen>
+
+    <dimen name="sesl_list_widget_start_padding">16.0dip</dimen>
 
 
 

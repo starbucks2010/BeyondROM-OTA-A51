@@ -43,14 +43,10 @@ public class RoundLinearLayout extends LinearLayout {
 
         TypedArray obtainStyledAttributes = mContext.obtainStyledAttributes(attrs, R.styleable.RoundLinearLayout);
 
-        boolean cornersStroke = obtainStyledAttributes.getBoolean(R.styleable.RoundLinearLayout_cornersStroke, true);
         int roundedCorners = obtainStyledAttributes.getInt(R.styleable.RoundLinearLayout_roundedCorners, 15);
 
-        mSeslRoundedCorner = new SeslRoundedCorner(mContext, cornersStroke);
+        mSeslRoundedCorner = new SeslRoundedCorner(mContext);
         mSeslRoundedCorner.setRoundedCorners(roundedCorners);
-        if (!cornersStroke) {
-            mSeslRoundedCorner.setRoundedCornerColor(roundedCorners, ViewUtils.getRoundAndBgColor(mContext));
-        }
 
         obtainStyledAttributes.recycle();
     }

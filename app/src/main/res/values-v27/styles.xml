@@ -47,7 +47,7 @@
         <item name="actionBarTheme">@null</item>
         <item name="actionBarSize">@dimen/sesl_action_bar_default_height</item>
         <item name="actionBarDivider">@null</item>
-        <item name="actionBarItemBackground">@drawable/sesl_action_bar_item_background_dark</item>
+        <item name="actionBarItemBackground">@drawable/sesl_action_bar_item_background</item>
         <item name="actionMenuTextAppearance">@style/mesa_ActionBarMenuTextStyle</item>
         <item name="actionMenuTextColor">@color/sesl_action_menu_text_dark</item>
 
@@ -58,7 +58,7 @@
         <item name="actionModeStyle">@style/mesa_ActionModeStyle</item>
         <item name="actionModeBackground">@drawable/sesl_action_bar_background_dark</item>
         <item name="actionModeSplitBackground">?android:colorPrimaryDark</item>
-        <item name="actionModeCloseDrawable">@drawable/sesl_ic_cab_done_dark</item>
+        <item name="actionModeCloseDrawable">@drawable/sesl_ic_cab_done</item>
         <item name="actionModeCloseButtonStyle">@style/mesa_ActionButtonStyle</item>
 
         <item name="actionModeCutDrawable">@drawable/sesl_ic_menu_cut_dark</item>
@@ -181,8 +181,8 @@
         <item name="cardBgColor">@color/sesl_background_color_dark</item>
         <item name="goToTopStyle">@drawable/sesl_list_go_to_top_dark</item>
         <item name="roundedCornerColor">@color/sesl_round_and_bgcolor_dark</item>
-        <item name="roundedCornerStrokeColor">@color/sesl_round_stroke_dark</item>
         <item name="listDividerColor">@color/sesl_list_divider_color_dark</item>
+        <item name="switchDividerColor">@color/sesl_switch_divider_color_dark</item>
         <item name="primaryTextColor">@color/sesl_primary_text_dark</item>
         <item name="secondaryTextColor">@color/sesl_secondary_text_dark</item>
         <item name="buttonCornerRadius">@dimen/sesl_button_corner_radius</item>
@@ -222,7 +222,7 @@
 
         <item name="colorBackgroundFloating">@color/sesl_background_floating_light</item>
 
-        <item name="homeAsUpIndicator">@drawable/sesl_ic_ab_back</item>
+        <item name="homeAsUpIndicator">@drawable/sesl_ic_ab_back_light</item>
 
         <!-- Action Bar Styles -->
         <item name="actionButtonStyle">@style/mesa_ActionButtonStyle.Light</item>
@@ -244,16 +244,16 @@
 
         <!-- Action Mode -->
         <item name="actionModeStyle">@style/mesa_ActionModeStyle.Light</item>
-        <item name="actionModeBackground">@drawable/sesl_action_bar_background</item>
+        <item name="actionModeBackground">@drawable/sesl_action_bar_background_light</item>
         <item name="actionModeSplitBackground">?android:colorPrimaryDark</item>
         <item name="actionModeCloseDrawable">@drawable/sesl_ic_cab_done</item>
         <item name="actionModeCloseButtonStyle">@style/mesa_ActionButtonStyle.Light</item>
 
-        <item name="actionModeCutDrawable">@drawable/sesl_ic_menu_cut</item>
-        <item name="actionModeCopyDrawable">@drawable/sesl_ic_menu_copy</item>
-        <item name="actionModePasteDrawable">@drawable/sesl_ic_menu_paste</item>
-        <item name="actionModeSelectAllDrawable">@drawable/sesl_ic_menu_selectall</item>
-        <item name="actionModeShareDrawable">@drawable/sesl_ic_menu_share</item>
+        <item name="actionModeCutDrawable">@drawable/sesl_ic_menu_cut_light</item>
+        <item name="actionModeCopyDrawable">@drawable/sesl_ic_menu_copy_light</item>
+        <item name="actionModePasteDrawable">@drawable/sesl_ic_menu_paste_light</item>
+        <item name="actionModeSelectAllDrawable">@drawable/sesl_ic_menu_selectall_light</item>
+        <item name="actionModeShareDrawable">@drawable/sesl_ic_menu_share_light</item>
 
         <!-- Panel attributes -->
         <item name="panelMenuListWidth">@dimen/sesl_panel_menu_list_width</item>
@@ -369,8 +369,8 @@
         <item name="cardBgColor">@color/sesl_background_color_light</item>
         <item name="goToTopStyle">@drawable/sesl_list_go_to_top_light</item>
         <item name="roundedCornerColor">@color/sesl_round_and_bgcolor_light</item>
-        <item name="roundedCornerStrokeColor">@color/sesl_round_stroke_light</item>
         <item name="listDividerColor">@color/sesl_list_divider_color_light</item>
+        <item name="switchDividerColor">@color/sesl_switch_divider_color_light</item>
         <item name="primaryTextColor">@color/sesl_primary_text_light</item>
         <item name="secondaryTextColor">@color/sesl_secondary_text_light</item>
         <item name="buttonCornerRadius">@dimen/sesl_button_corner_radius</item>
