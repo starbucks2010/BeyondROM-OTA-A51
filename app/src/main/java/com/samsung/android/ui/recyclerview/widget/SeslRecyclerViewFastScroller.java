@@ -79,6 +79,7 @@ class SeslRecyclerViewFastScroller {
     private boolean mEnabled;
     private int mFirstVisibleItem;
     private int mHeaderCount;
+    private int mImmersiveBottomPadding;
     private float mInitialTouchY;
     private boolean mLayoutFromRight;
     private SeslRecyclerView.Adapter mListAdapter;
@@ -214,6 +215,7 @@ class SeslRecyclerViewFastScroller {
         mAdditionalTouchArea = mContext.getResources().getDimension(R.dimen.sesl_fast_scroll_additional_touch_area);
         mTrackPadding = mContext.getResources().getDimensionPixelOffset(R.dimen.sesl_fast_scroller_track_padding);
         mAdditionalBottomPadding = mContext.getResources().getDimensionPixelOffset(R.dimen.sesl_fast_scroller_additional_bottom_padding);
+        mImmersiveBottomPadding = 0;
         mPrimaryText.setPadding(mPreviewPadding, 0, mPreviewPadding, 0);
         mSecondaryText.setPadding(mPreviewPadding, 0, mPreviewPadding, 0);
         getSectionsFromIndexer();
@@ -366,6 +368,11 @@ class SeslRecyclerViewFastScroller {
 
     public void stop() {
         setState(EFFECT_STATE_CLOSE);
+    }
+
+    public void setImmersiveBottomPadding(int var1) {
+        this.mImmersiveBottomPadding = var1;
+        this.updateOffsetAndRange();
     }
 
     public void setScrollbarPosition(int position) {
@@ -620,7 +627,10 @@ class SeslRecyclerViewFastScroller {
             max = (float) trackImage.getBottom();
         }
         mThumbOffset = min;
-        mThumbRange = max - min;
+        mThumbRange = max - min - (float) mImmersiveBottomPadding;
+        if (mThumbRange < 0.0F) {
+            mThumbRange = 0.0F;
+        }
     }
 
     private void setState(int state) {

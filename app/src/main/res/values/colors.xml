@@ -229,12 +229,12 @@
     <color name="sesl_error_color">#F4511E</color>
 
     <color name="sesl_list_go_to_top_arrow_bottom_dark">#FAFAFA</color>
-    <color name="sesl_list_go_to_top_arrow_bottom_light">#797979</color>
+    <color name="sesl_list_go_to_top_arrow_bottom_light">#404040</color>
     <color name="sesl_list_go_to_top_arrow_top_dark">#AAAAAA</color>
-    <color name="sesl_list_go_to_top_arrow_top_light">#A9A9A9</color>
-    <color name="sesl_list_go_to_top_inner_round_dark">#343434</color>
-    <color name="sesl_list_go_to_top_inner_round_light">#F2F2F2</color>
-    <color name="sesl_list_go_to_top_outer_round_dark">#565656</color>
+    <color name="sesl_list_go_to_top_arrow_top_light">#888888</color>
+    <color name="sesl_list_go_to_top_inner_round_dark">#3D3D3D</color>
+    <color name="sesl_list_go_to_top_inner_round_light">#FCFCFC</color>
+    <color name="sesl_list_go_to_top_outer_round_dark">#5E5E5E</color>
     <color name="sesl_list_go_to_top_outer_round_light">#33252525</color>
     <color name="sesl_list_go_to_top_ripple_dark">@color/sesl_ripple_color_dark</color>
     <color name="sesl_list_go_to_top_ripple_light">@color/sesl_ripple_color_light</color>

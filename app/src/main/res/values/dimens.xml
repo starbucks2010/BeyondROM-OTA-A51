@@ -200,6 +200,7 @@
     <dimen name="sesl_tab_icon_size">24.0dip</dimen>
 
 
+    <dimen name="sesl_go_to_top_elevation">8.0dip</dimen>
     <dimen name="sesl_go_to_top_scrollable_view_gap">20.0dip</dimen>
     <dimen name="sesl_go_to_top_scrollable_view_size">40.0dip</dimen>
     <dimen name="sesl_fast_scroll_additional_touch_area">11.0dip</dimen>

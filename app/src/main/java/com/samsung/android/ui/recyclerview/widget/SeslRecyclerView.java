@@ -32,6 +32,7 @@ import android.provider.Settings.Global;
 import android.provider.Settings.Secure;
 import android.provider.Settings.SettingNotFoundException;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.SparseArray;
 import android.util.StateSet;
 import android.util.TypedValue;
@@ -49,6 +50,7 @@ import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityManager;
 import android.view.animation.Interpolator;
 import android.view.animation.PathInterpolator;
+import android.widget.ImageView;
 import android.widget.TextView;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -71,12 +73,15 @@ import androidx.core.view.ViewConfigurationCompat;
 import androidx.core.view.accessibility.AccessibilityEventCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.customview.view.AbsSavedState;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.mesalabs.on.update.R;
 import com.mesalabs.on.update.utils.LogUtils;
 
 import com.mesalabs.cerberus.utils.Utils;
 import com.samsung.android.ui.util.SeslSubheaderRoundedCorner;
+import com.samsung.android.ui.view.animation.SeslAnimationUtils;
 import com.samsung.android.ui.widget.SeslEdgeEffect;
 import com.samsung.android.ui.widget.SeslOverScroller;
 
@@ -193,16 +198,18 @@ public class SeslRecyclerView extends ViewGroup implements NestedScrollingChild2
     private final Runnable mGoToToFadeInRunnable;
     private final Runnable mGoToToFadeOutRunnable;
     private int mGoToTopBottomPadding;
+    private int mGoToTopElevation;
     private ValueAnimator mGoToTopFadeInAnimator;
     private ValueAnimator mGoToTopFadeOutAnimator;
-    private boolean mGoToTopFadeOutStart;
     private Drawable mGoToTopImage;
     private Drawable mGoToTopImageLight;
+    public int mGoToTopImmersiveBottomPadding;
     private int mGoToTopLastState;
     private boolean mGoToTopMoved;
     private Rect mGoToTopRect;
     private int mGoToTopSize;
     private int mGoToTopState;
+    public ImageView mGoToTopView;
     private boolean mGoToToping;
     boolean mHasFixedSize;
     private boolean mHasNestedScrollRange;
@@ -234,7 +241,6 @@ public class SeslRecyclerView extends ViewGroup implements NestedScrollingChild2
     private boolean mIsEnabledPaddingInHoverScroll;
     private boolean mIsFirstMultiSelectionMove;
     private boolean mIsFirstPenMoveEvent;
-    private boolean mIsGoToTopShown;
     private boolean mIsHoverOverscrolled;
     private boolean mIsLongPressMultiSelection;
     private boolean mIsMouseWheel;
@@ -500,8 +506,6 @@ public class SeslRecyclerView extends ViewGroup implements NestedScrollingChild2
         this.mShowGTPAtFirstTime = false;
         this.mShowFadeOutGTP = 0;
         this.GO_TO_TOP_HIDE = 2500;
-        this.mGoToTopFadeOutStart = false;
-        this.mIsGoToTopShown = false;
         this.mDrawRect = false;
         this.mDrawOutlineStroke = true;
         this.mDrawLastItemOutlineStoke = false;
@@ -1359,16 +1363,14 @@ public class SeslRecyclerView extends ViewGroup implements NestedScrollingChild2
         return var6;
     }
 
-    private void drawGoToTop(Canvas var1) {
-        int var2 = this.getScrollY();
-        int var3 = var1.save();
-        var1.translate(0.0F, (float)var2);
+    private void drawGoToTop() {
+        int var1 = this.getScrollY();
+        this.mGoToTopView.setTranslationY((float)var1);
         if (this.mGoToTopState != 0 && !this.canScrollUp()) {
             this.setupGoToTop(0);
         }
 
-        this.mGoToTopImage.draw(var1);
-        var1.restoreToCount(var3);
+        this.mGoToTopView.invalidate();
     }
 
     private int findFirstChildPosition() {
@@ -2140,10 +2142,9 @@ public class SeslRecyclerView extends ViewGroup implements NestedScrollingChild2
                 this.mGoToTopFadeOutAnimator.cancel();
             }
 
-            this.mGoToTopFadeInAnimator.setIntValues(new int[]{this.mGoToTopImage.getAlpha(), 255});
+            this.mGoToTopFadeInAnimator.setFloatValues(new float[]{this.mGoToTopView.getAlpha(), 1.0F});
             this.mGoToTopFadeInAnimator.start();
         }
-
     }
 
     private void playGotoToFadeOut() {
@@ -2152,10 +2153,9 @@ public class SeslRecyclerView extends ViewGroup implements NestedScrollingChild2
                 this.mGoToTopFadeOutAnimator.cancel();
             }
 
-            this.mGoToTopFadeOutAnimator.setIntValues(new int[]{this.mGoToTopImage.getAlpha(), 0});
+            this.mGoToTopFadeOutAnimator.setFloatValues(new float[]{this.mGoToTopView.getAlpha(), 0.0F});
             this.mGoToTopFadeOutAnimator.start();
         }
-
     }
 
     private boolean predictiveItemAnimationsEnabled() {
@@ -2419,10 +2419,8 @@ public class SeslRecyclerView extends ViewGroup implements NestedScrollingChild2
     private void setupGoToTop(int var1) {
         if (this.mEnableGoToTop) {
             this.removeCallbacks(this.mAutoHide);
-            if (var1 != this.mGoToTopLastState) {
-            }
-
-            int var2 = var1;
+            int var2 = this.mGoToTopLastState;
+            var2 = var1;
             if (var1 == 1) {
                 var2 = var1;
                 if (!this.canScrollUp()) {
@@ -2439,11 +2437,11 @@ public class SeslRecyclerView extends ViewGroup implements NestedScrollingChild2
             } else {
                 var1 = var2;
                 if (var2 == -1) {
-                    label89: {
+                    label74: {
                         if (!this.canScrollUp()) {
                             var1 = var2;
                             if (!this.canScrollDown()) {
-                                break label89;
+                                break label74;
                             }
                         }
 
@@ -2463,40 +2461,44 @@ public class SeslRecyclerView extends ViewGroup implements NestedScrollingChild2
             }
 
             if (var1 != 2) {
-                this.mGoToTopImage.setState(StateSet.NOTHING);
+                this.mGoToTopView.setPressed(false);
             }
 
             this.mGoToTopState = var1;
             int var3 = this.getWidth();
-            var2 = this.getHeight();
-            int var4 = this.getPaddingLeft();
-            int var5 = this.getPaddingRight();
-            var4 = this.getPaddingLeft() + (var3 - var4 - var5) / 2;
-            switch(var1) {
-                case 0:
-                    if (this.mShowFadeOutGTP == 2) {
-                        this.mGoToTopRect = new Rect(0, 0, 0, 0);
-                    }
-                    break;
-                case 1:
-                case 2:
+            var2 = this.getPaddingLeft();
+            int var4 = this.getPaddingRight();
+            int var5 = this.getPaddingLeft() + (var3 - var2 - var4) / 2;
+            Rect var6;
+            if (var1 != 0) {
+                if (var1 == 1 || var1 == 2) {
                     this.removeCallbacks(this.mGoToToFadeOutRunnable);
-                    this.mGoToTopRect = new Rect(var4 - this.mGoToTopSize / 2, var2 - this.mGoToTopSize - this.mGoToTopBottomPadding, this.mGoToTopSize / 2 + var4, var2 - this.mGoToTopBottomPadding);
+                    var2 = this.getHeight();
+                    var6 = this.mGoToTopRect;
+                    int var7 = this.mGoToTopSize;
+                    int var8 = var7 / 2;
+                    var4 = this.mGoToTopBottomPadding;
+                    var3 = this.mGoToTopImmersiveBottomPadding;
+                    var6.set(var5 - var8, var2 - var7 - var4 - var3, var5 + var7 / 2, var2 - var4 - var3);
+                }
+            } else if (this.mShowFadeOutGTP == 2) {
+                this.mGoToTopRect.set(0, 0, 0, 0);
             }
 
             if (this.mShowFadeOutGTP == 2) {
                 this.mShowFadeOutGTP = 0;
             }
 
-            this.mGoToTopImage.setBounds(this.mGoToTopRect);
-            if (var1 == 1 && (this.mGoToTopLastState == 0 || this.mGoToTopImage.getAlpha() == 0 || this.mSizeChnage)) {
+            ImageView var9 = this.mGoToTopView;
+            var6 = this.mGoToTopRect;
+            var9.layout(var6.left, var6.top, var6.right, var6.bottom);
+            if (var1 == 1 && (this.mGoToTopLastState == 0 || this.mGoToTopView.getAlpha() == 0.0F || this.mSizeChnage)) {
                 this.post(this.mGoToToFadeInRunnable);
             }
 
             this.mSizeChnage = false;
             this.mGoToTopLastState = this.mGoToTopState;
         }
-
     }
 
     private boolean showPointerIcon(MotionEvent ev, int iconId) {
@@ -3543,10 +3545,8 @@ public class SeslRecyclerView extends ViewGroup implements NestedScrollingChild2
 
                     if (this.isSupportGotoTop() && this.mGoToTopState != 2 && this.mGoToTopRect.contains(var4, var5)) {
                         this.setupGoToTop(2);
-                        this.mGoToTopImage.setHotspot((float)var4, (float)var5);
-                        this.mGoToTopImage.setState(new int[]{16842919, 16842910, 16842913});
-                        var2 = true;
-                        return var2;
+                        this.mGoToTopView.setPressed(true);
+                        return true;
                     }
 
                     if (this.mIsCtrlKeyPressed && var1.getToolType(0) == 3) {
@@ -3577,7 +3577,7 @@ public class SeslRecyclerView extends ViewGroup implements NestedScrollingChild2
                     if (this.isSupportGotoTop() && this.mGoToTopState == 2) {
                         if (!this.mGoToTopRect.contains(var4, var5)) {
                             this.mGoToTopState = 1;
-                            this.mGoToTopImage.setState(StateSet.NOTHING);
+                            this.mGoToTopView.setPressed(false);
                             this.autoHide(1);
                             this.mGoToTopMoved = true;
                         }
@@ -3592,7 +3592,7 @@ public class SeslRecyclerView extends ViewGroup implements NestedScrollingChild2
                             this.mGoToTopState = 1;
                         }
 
-                        this.mGoToTopImage.setState(StateSet.NOTHING);
+                        this.mGoToTopView.setPressed(false);
                     }
                 case 1:
                     if (this.mIsCtrlMultiSelection) {
@@ -3634,24 +3634,26 @@ public class SeslRecyclerView extends ViewGroup implements NestedScrollingChild2
                 case 212:
                     if (this.isSupportGotoTop() && this.mGoToTopState == 2) {
                         if (this.canScrollUp()) {
-                            if (this.mSeslOnGoToTopClickListener != null && this.mSeslOnGoToTopClickListener.onGoToTopClick(this)) {
-                                var2 = true;
-                                return var2;
+                            SeslRecyclerView.SeslOnGoToTopClickListener var10 = this.mSeslOnGoToTopClickListener;
+                            if (var10 != null && var10.onGoToTopClick(this)) {
+                                return true;
                             }
 
-                            LogUtils.d("SeslRecyclerView", " can scroll top ");
-                            var6 = this.getChildCount();
+                            Log.d("SeslRecyclerView", " can scroll top ");
+                            var5 = this.getChildCount();
                             if (this.computeVerticalScrollOffset() != 0) {
                                 this.stopScroll();
-                                if (this.mLayout instanceof StaggeredGridLayoutManager) {
-                                    ((StaggeredGridLayoutManager)this.mLayout).scrollToPositionWithOffset(0, 0);
+                                SeslRecyclerView.LayoutManager var11 = this.mLayout;
+                                if (var11 instanceof StaggeredGridLayoutManager) {
+                                    ((StaggeredGridLayoutManager)var11).scrollToPositionWithOffset(0, 0);
                                 } else {
                                     this.mGoToToping = true;
-                                    if (var6 > 0 && var6 < this.findFirstVisibleItemPosition()) {
-                                        if (this.mLayout instanceof SeslLinearLayoutManager) {
-                                            ((SeslLinearLayoutManager)this.mLayout).scrollToPositionWithOffset(var6, 0);
+                                    if (var5 > 0 && var5 < this.findFirstVisibleItemPosition()) {
+                                        var11 = this.mLayout;
+                                        if (var11 instanceof SeslLinearLayoutManager) {
+                                            ((SeslLinearLayoutManager)var11).scrollToPositionWithOffset(var5, 0);
                                         } else {
-                                            this.scrollToPosition(var6);
+                                            this.scrollToPosition(var5);
                                         }
                                     }
 
@@ -3662,18 +3664,13 @@ public class SeslRecyclerView extends ViewGroup implements NestedScrollingChild2
                                     });
                                 }
 
-                                if (this.mTopGlow != null) {
-                                    this.seslShowGoToTopEdge(500.0F / (float)this.getHeight(), (float)var4 / (float)this.getWidth(), 150);
-                                } else {
-                                    LogUtils.d("SeslRecyclerView", " There is no mTopGlow");
-                                }
+                                this.seslShowGoToTopEdge(500.0F / (float)this.getHeight(), (float)var3 / (float)this.getWidth(), 150);
                             }
                         }
 
                         this.seslHideGoToTop();
                         this.playSoundEffect(0);
-                        var2 = true;
-                        return var2;
+                        return true;
                     }
 
                     if (this.mGoToTopMoved) {
@@ -3828,7 +3825,7 @@ public class SeslRecyclerView extends ViewGroup implements NestedScrollingChild2
         }
 
         if (this.mEnableGoToTop) {
-            this.drawGoToTop(var1);
+            this.drawGoToTop();
         }
 
         if (this.mIsPenDragBlockEnabled && !this.mIsLongPressMultiSelection && this.mLayout != null && (this.mPenDragBlockLeft != 0 || this.mPenDragBlockTop != 0)) {
@@ -5341,6 +5338,7 @@ public class SeslRecyclerView extends ViewGroup implements NestedScrollingChild2
 
         if (var1) {
             this.mSizeChnage = true;
+            this.seslSetImmersiveScrollBottomPadding(0);
             this.setupGoToTop(-1);
             this.autoHide(1);
             this.mHasNestedScrollRange = false;
@@ -6258,7 +6256,7 @@ public class SeslRecyclerView extends ViewGroup implements NestedScrollingChild2
 
     public void seslHideGoToTop() {
         this.autoHide(0);
-        this.mGoToTopImage.setState(StateSet.NOTHING);
+        this.mGoToTopView.setPressed(false);
     }
 
     public void seslInitConfigurations(Context var1) {
@@ -6274,7 +6272,9 @@ public class SeslRecyclerView extends ViewGroup implements NestedScrollingChild2
         this.mHoverTopAreaHeight = (int)(TypedValue.applyDimension(1, 25.0F, var3.getDisplayMetrics()) + 0.5F);
         this.mHoverBottomAreaHeight = (int)(TypedValue.applyDimension(1, 25.0F, var3.getDisplayMetrics()) + 0.5F);
         this.mGoToTopBottomPadding = var3.getDimensionPixelSize(R.dimen.sesl_go_to_top_scrollable_view_gap);
+        this.mGoToTopImmersiveBottomPadding = 0;
         this.mGoToTopSize = var3.getDimensionPixelSize(R.dimen.sesl_go_to_top_scrollable_view_size);
+        this.mGoToTopElevation = var3.getDimensionPixelSize(R.dimen.sesl_go_to_top_elevation);
         this.mNavigationBarHeight = var3.getDimensionPixelSize(R.dimen.sesl_navigation_bar_height);
         this.mStrokeHeight = var3.getDimensionPixelSize(R.dimen.sesl_round_stroke_height);
     }
@@ -6333,11 +6333,6 @@ public class SeslRecyclerView extends ViewGroup implements NestedScrollingChild2
 
     public void seslSetGoToTopBottomPadding(int var1) {
         this.mGoToTopBottomPadding = var1;
-        if (this.mGoToTopState == 1) {
-            this.setupGoToTop(-1);
-            this.autoHide(1);
-        }
-
     }
 
     public void seslSetGoToTopEnabled(boolean var1) {
@@ -6354,39 +6349,56 @@ public class SeslRecyclerView extends ViewGroup implements NestedScrollingChild2
 
         this.mGoToTopImage = var3;
         if (this.mGoToTopImage != null) {
-            this.mEnableGoToTop = var1;
-            Drawable var4 = this.mGoToTopImage;
-            SeslRecyclerView var5;
-            if (var1) {
-                var5 = this;
+            if (!var1) {
+                if (this.mEnableGoToTop) {
+                    this.getOverlay().remove(this.mGoToTopView);
+                }
             } else {
-                var5 = null;
+                if (this.mGoToTopView == null) {
+                    this.mGoToTopView = new ImageView(this.mContext);
+                    boolean var4 = !Utils.isNightMode(this.mContext);
+                    if (VERSION.SDK_INT >= 26) {
+                        ImageView var5 = this.mGoToTopView;
+                        if (var4 && var2) {
+                            var3 = this.mContext.getResources().getDrawable(R.drawable.sesl_go_to_top_background_light, (Resources.Theme)null);
+                        } else {
+                            var3 = this.mContext.getResources().getDrawable(R.drawable.sesl_go_to_top_background_dark, (Resources.Theme)null);
+                        }
+
+                        var5.setBackground(var3);
+                        this.mGoToTopView.setElevation((float)this.mGoToTopElevation);
+                    }
+
+                    this.mGoToTopView.setImageDrawable(this.mGoToTopImage);
+                }
+
+                this.mGoToTopView.setAlpha(0.0F);
+                if (!this.mEnableGoToTop) {
+                    this.getOverlay().add(this.mGoToTopView);
+                }
             }
 
-            var4.setCallback(var5);
-            this.mGoToTopFadeInAnimator = ValueAnimator.ofInt(new int[]{0, 255});
+            this.mEnableGoToTop = var1;
+            this.mGoToTopFadeInAnimator = ValueAnimator.ofFloat(new float[]{0.0F, 1.0F});
             this.mGoToTopFadeInAnimator.setDuration(333L);
-            this.mGoToTopFadeInAnimator.setInterpolator(new PathInterpolator(0.33F, 0.0F, 0.3F, 1.0F));
+            this.mGoToTopFadeInAnimator.setInterpolator(SeslAnimationUtils.SINE_IN_OUT_70);
             this.mGoToTopFadeInAnimator.addUpdateListener(new AnimatorUpdateListener() {
                 public void onAnimationUpdate(ValueAnimator var1) {
                     try {
-                        int var2 = (Integer)var1.getAnimatedValue();
-                        SeslRecyclerView.this.mGoToTopImage.setAlpha(var2);
-                    } catch (Exception var3) {
+                        SeslRecyclerView.this.mGoToTopView.setAlpha((Float)var1.getAnimatedValue());
+                    } catch (Exception var2) {
                     }
 
                 }
             });
-            this.mGoToTopFadeOutAnimator = ValueAnimator.ofInt(new int[]{0, 255});
+            this.mGoToTopFadeOutAnimator = ValueAnimator.ofFloat(new float[]{1.0F, 0.0F});
             this.mGoToTopFadeOutAnimator.setDuration(333L);
-            this.mGoToTopFadeOutAnimator.setInterpolator(new PathInterpolator(0.33F, 0.0F, 0.3F, 1.0F));
+            this.mGoToTopFadeOutAnimator.setInterpolator(SeslAnimationUtils.SINE_IN_OUT_70);
             this.mGoToTopFadeOutAnimator.addUpdateListener(new AnimatorUpdateListener() {
                 public void onAnimationUpdate(ValueAnimator var1) {
                     try {
-                        int var2 = (Integer)var1.getAnimatedValue();
-                        SeslRecyclerView.this.mGoToTopImage.setAlpha(var2);
-                        SeslRecyclerView.this.invalidate();
-                    } catch (Exception var3) {
+                        SeslRecyclerView.this.mGoToTopView.setAlpha((Float)var1.getAnimatedValue());
+                    } catch (Exception var2) {
                     }
 
                 }
@@ -6430,6 +6442,42 @@ public class SeslRecyclerView extends ViewGroup implements NestedScrollingChild2
 
     public void seslSetHoverTopPadding(int var1) {
         this.mHoverTopAreaHeight = var1;
+    }
+
+    public void seslSetImmersiveScrollBottomPadding(int var1) {
+        if (var1 >= 0) {
+            if (this.mEnableGoToTop) {
+                int var2 = this.getHeight() - this.mGoToTopSize - this.mGoToTopBottomPadding - var1;
+                if (var2 < 0) {
+                    this.mGoToTopImmersiveBottomPadding = 0;
+                    StringBuilder var9 = new StringBuilder();
+                    var9.append("The Immersive padding value (");
+                    var9.append(var1);
+                    var9.append(") was too large to draw GoToTop.");
+                    Log.e("SeslRecyclerView", var9.toString());
+                    return;
+                }
+
+                this.mGoToTopImmersiveBottomPadding = var1;
+                int var4 = this.getWidth();
+                int var5 = this.getPaddingLeft();
+                int var6 = this.getPaddingRight();
+                var6 = this.getPaddingLeft() + (var4 - var5 - var6) / 2;
+                Rect var3 = this.mGoToTopRect;
+                var4 = this.mGoToTopSize;
+                var3.set(var6 - var4 / 2, var2, var6 + var4 / 2, var4 + var2);
+                ImageView var7 = this.mGoToTopView;
+                var3 = this.mGoToTopRect;
+                var7.layout(var3.left, var3.top, var3.right, var3.bottom);
+            }
+
+            SeslRecyclerViewFastScroller var8 = this.mFastScroller;
+            if (var8 != null && this.mAdapter != null) {
+                var8.setImmersiveBottomPadding(var1);
+                this.mFastScroller.onScroll(this.findFirstVisibleItemPosition(), this.getChildCount(), this.mAdapter.getItemCount());
+            }
+        }
+
     }
 
     public void seslSetLastItemOutlineStrokeEnabled(boolean var1) {
