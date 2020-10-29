@@ -1125,20 +1125,20 @@
     <style name="mesa_SeslSwitchBar" parent="@android:style/Widget">
         <item name="seslSwitchBarBackgroundActivatedColor">@color/sesl_switchbar_on_background_color</item>
         <item name="seslSwitchBarBackgroundColor">@color/sesl_switchbar_off_background_color_dark</item>
-        <item name="seslSwitchBarTextActivatedColor">@color/sesl_switchbar_on_text_color_dark</item>
+        <item name="seslSwitchBarTextActivatedColor">?colorPrimaryDark</item>
         <item name="seslSwitchBarTextColor">@color/sesl_switchbar_off_text_color_dark</item>
     </style>
     <style name="mesa_SeslSwitchBar.Light" parent="@style/mesa_SeslSwitchBar">
         <item name="seslSwitchBarBackgroundColor">@color/sesl_switchbar_off_background_color_light</item>
-        <item name="seslSwitchBarTextActivatedColor">@color/sesl_switchbar_on_text_color_light</item>
+        <item name="seslSwitchBarTextActivatedColor">?colorPrimaryDark</item>
         <item name="seslSwitchBarTextColor">@color/sesl_switchbar_off_text_color_light</item>
     </style>
 
     <style name="mesa_SeslSwitchBarTextStyle" parent="TextAppearance.AppCompat">
         <item name="android:textSize">18.0sp</item>
-        <item name="android:textStyle">normal</item>
+        <item name="android:textStyle">bold</item>
         <item name="android:textColor">@android:color/white</item>
-        <item name="fontFamily">sec-roboto-light</item>
+        <item name="fontFamily">@string/sesl_font_family_regular</item>
         <item name="textAllCaps">false</item>
     </style>
 
