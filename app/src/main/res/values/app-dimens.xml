@@ -12,8 +12,6 @@
     <dimen name="mesa_menuview_badge_text_size">11.0dip</dimen>
     <dimen name="mesa_menuview_padding_inner">24.0dip</dimen>
 
-    <dimen name="mesa_changelogview_stroke">1.0px</dimen>
-
     <dimen name="mesa_widget_badge_size">17.0dip</dimen>
 
     <dimen name="mesa_ota_bottombtn_min_width">220.0dip</dimen>
