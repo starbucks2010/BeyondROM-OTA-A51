@@ -97,7 +97,7 @@ public class SwitchBar extends LinearLayout implements View.OnClickListener, Che
             alpha = 0x66000000;
         } else {
             color = 0xFFFFFF & bgActivatedColor;
-            alpha = 0xCC000000;
+            alpha = 0x55000000;
         }
         mBackgroundActivatedColor = color | alpha;
 
