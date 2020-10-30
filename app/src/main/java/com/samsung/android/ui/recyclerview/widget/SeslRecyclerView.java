@@ -32,7 +32,6 @@ import android.provider.Settings.Global;
 import android.provider.Settings.Secure;
 import android.provider.Settings.SettingNotFoundException;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.SparseArray;
 import android.util.StateSet;
 import android.util.TypedValue;
@@ -73,8 +72,6 @@ import androidx.core.view.ViewConfigurationCompat;
 import androidx.core.view.accessibility.AccessibilityEventCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.customview.view.AbsSavedState;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.mesalabs.on.update.R;
 import com.mesalabs.on.update.utils.LogUtils;
@@ -3639,7 +3636,7 @@ public class SeslRecyclerView extends ViewGroup implements NestedScrollingChild2
                                 return true;
                             }
 
-                            Log.d("SeslRecyclerView", " can scroll top ");
+                            LogUtils.d("SeslRecyclerView", " can scroll top ");
                             var5 = this.getChildCount();
                             if (this.computeVerticalScrollOffset() != 0) {
                                 this.stopScroll();
@@ -6454,7 +6451,7 @@ public class SeslRecyclerView extends ViewGroup implements NestedScrollingChild2
                     var9.append("The Immersive padding value (");
                     var9.append(var1);
                     var9.append(") was too large to draw GoToTop.");
-                    Log.e("SeslRecyclerView", var9.toString());
+                    LogUtils.e("SeslRecyclerView", var9.toString());
                     return;
                 }
 
