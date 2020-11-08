@@ -223,6 +223,7 @@
 
     <declare-styleable name="SeslProgressBar">
         <attr name="min" format="integer" />
+        <attr name="android:min" />
         <attr name="android:max" />
         <attr name="android:progress" />
         <attr name="android:secondaryProgress" />
@@ -260,6 +261,17 @@
         <attr name="tickMarkTint" format="color" />
         <attr name="tickMarkTintMode" />
         <attr name="useDisabledAlpha" />
+        <attr name="seslThumbRadius" format="dimension" />
+        <attr name="seslTrackMaxWidth" format="dimension" />
+        <attr name="seslTrackMinWidth" format="dimension" />
+        <attr name="seslSeekBarMode">
+            <enum name="expand" value="5" />
+            <enum name="expand_vertical" value="6" />
+            <enum name="split" value="4" />
+            <enum name="standard" value="0" />
+            <enum name="vertical" value="3" />
+            <enum name="warning" value="1" />
+        </attr>
     </declare-styleable>
     <declare-styleable name="AppCompatTheme">
         <attr name="android:disabledAlpha" />

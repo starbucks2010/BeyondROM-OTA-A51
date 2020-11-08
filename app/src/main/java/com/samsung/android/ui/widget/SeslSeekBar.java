@@ -24,22 +24,23 @@ import com.mesalabs.on.update.R;
  */
 
 public class SeslSeekBar extends SeslAbsSeekBar {
+    public int mOldValue;
     public SeslSeekBar.OnSeekBarChangeListener mOnSeekBarChangeListener;
     public SeslSeekBar.OnSeekBarHoverListener mOnSeekBarHoverListener;
 
-    public SeslSeekBar(Context var1) throws Throwable {
+    public SeslSeekBar(Context var1) {
         this(var1, (AttributeSet)null);
     }
 
-    public SeslSeekBar(Context var1, AttributeSet var2) throws Throwable {
+    public SeslSeekBar(Context var1, AttributeSet var2) {
         this(var1, var2, R.attr.seekBarStyle);
     }
 
-    public SeslSeekBar(Context var1, AttributeSet var2, int var3) throws Throwable {
+    public SeslSeekBar(Context var1, AttributeSet var2, int var3) {
         this(var1, var2, var3, 0);
     }
 
-    public SeslSeekBar(Context var1, AttributeSet var2, int var3, int var4) throws Throwable {
+    public SeslSeekBar(Context var1, AttributeSet var2, int var3, int var4) {
         super(var1, var2, var3, var4);
     }
 
@@ -64,11 +65,23 @@ public class SeslSeekBar extends SeslAbsSeekBar {
 
     }
 
-    public void onProgressRefresh(float var1, boolean var2, int var3) throws Throwable {
+    public void onProgressRefresh(float var1, boolean var2, int var3) {
         super.onProgressRefresh(var1, var2, var3);
-        SeslSeekBar.OnSeekBarChangeListener var4 = this.mOnSeekBarChangeListener;
-        if (var4 != null) {
-            var4.onProgressChanged(this, var3, var2);
+        SeslSeekBar.OnSeekBarChangeListener var4;
+        if (!super.mIsSeamless) {
+            var4 = this.mOnSeekBarChangeListener;
+            if (var4 != null) {
+                var4.onProgressChanged(this, var3, var2);
+            }
+        } else {
+            var3 = Math.round((float)var3 / 1000.0F);
+            if (this.mOldValue != var3) {
+                this.mOldValue = var3;
+                var4 = this.mOnSeekBarChangeListener;
+                if (var4 != null) {
+                    var4.onProgressChanged(this, var3, var2);
+                }
+            }
         }
 
     }

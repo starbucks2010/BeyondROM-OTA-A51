@@ -17,6 +17,7 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.graphics.drawable.Drawable.Callback;
+import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.os.Build.VERSION;
@@ -36,8 +37,6 @@ import android.view.animation.LinearInterpolator;
 import android.view.animation.Transformation;
 import android.widget.ProgressBar;
 import android.widget.RemoteViews.RemoteView;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
 
 import androidx.appcompat.widget.DrawableUtils;
@@ -67,16 +66,7 @@ import com.mesalabs.cerberus.utils.Utils;
 
 @RemoteView
 public class SeslProgressBar extends View {
-    public static final boolean IS_BASE_SDK_VERSION;
-    public static final int MAX_LEVEL = 10000;
-    public static final int MODE_DUAL_COLOR = 2;
-    public static final int MODE_SPLIT = 4;
-    public static final int MODE_STANDARD = 0;
-    public static final int MODE_VERTICAL = 3;
-    public static final int MODE_WARNING = 1;
-    public static final int PROGRESS_ANIM_DURATION = 80;
-    public static final DecelerateInterpolator PROGRESS_ANIM_INTERPOLATOR;
-    public static final int TIMEOUT_SEND_ACCESSIBILITY_EVENT = 200;
+    public static final DecelerateInterpolator PROGRESS_ANIM_INTERPOLATOR = new DecelerateInterpolator();
     public final FloatProperty<SeslProgressBar> VISUAL_PROGRESS;
     public SeslProgressBar.AccessibilityEventSender mAccessibilityEventSender;
     public boolean mAggregatedIsVisible;
@@ -116,38 +106,26 @@ public class SeslProgressBar extends View {
     public long mUiThreadId;
     public float mVisualProgress;
 
-    static {
-        boolean var0;
-        if (VERSION.SDK_INT <= 23) {
-            var0 = true;
-        } else {
-            var0 = false;
-        }
-
-        IS_BASE_SDK_VERSION = var0;
-        PROGRESS_ANIM_INTERPOLATOR = new DecelerateInterpolator();
-    }
-
-    public SeslProgressBar(Context var1) throws Throwable {
+    public SeslProgressBar(Context var1) {
         this(var1, (AttributeSet)null);
     }
 
-    public SeslProgressBar(Context var1, AttributeSet var2) throws Throwable {
+    public SeslProgressBar(Context var1, AttributeSet var2) {
         this(var1, var2, 16842871);
     }
 
-    public SeslProgressBar(Context var1, AttributeSet var2, int var3) throws Throwable {
+    public SeslProgressBar(Context var1, AttributeSet var2, int var3) {
         this(var1, var2, var3, 0);
     }
 
-    @SuppressLint({"WrongConstant", "RestrictedApi"})
-    public SeslProgressBar(Context var1, AttributeSet var2, int var3, int var4) throws Throwable {
+    @SuppressLint("RestrictedApi")
+    public SeslProgressBar(Context var1, AttributeSet var2, int var3, int var4) {
         super(var1, var2, var3, var4);
         boolean var5 = false;
+        this.mCurrentMode = 0;
         this.mSampleWidth = 0;
         this.mMirrorForRtl = false;
         this.mRefreshData = new ArrayList();
-        this.mCurrentMode = 0;
         this.VISUAL_PROGRESS = new FloatProperty<SeslProgressBar>("visual_progress") {
             public Float get(SeslProgressBar var1) {
                 return var1.mVisualProgress;
@@ -160,162 +138,167 @@ public class SeslProgressBar extends View {
         };
         this.mUiThreadId = Thread.currentThread().getId();
         this.initProgressBar();
-        TypedArray var7 = var1.obtainStyledAttributes(var2, R.styleable.SeslProgressBar, var3, var4);
+        TypedArray var6 = var1.obtainStyledAttributes(var2, R.styleable.SeslProgressBar, var3, var4);
+        if (VERSION.SDK_INT >= 29) {
+            this.saveAttributeDataForStyleable(var1, R.styleable.SeslProgressBar, var2, var6, var3, var4);
+        }
+
         this.mNoInvalidate = true;
-        Drawable var6 = var7.getDrawable(R.styleable.SeslProgressBar_android_progressDrawable);
-        if (var6 != null) {
-            if (needsTileify(var6)) {
-                this.setProgressDrawableTiled(var6);
+        Drawable var7 = var6.getDrawable(R.styleable.SeslProgressBar_android_progressDrawable);
+        if (var7 != null) {
+            if (needsTileify(var7)) {
+                this.setProgressDrawableTiled(var7);
             } else {
-                this.setProgressDrawable(var6);
+                this.setProgressDrawable(var7);
             }
         }
 
-        this.mDuration = var7.getInt(R.styleable.SeslProgressBar_android_indeterminateDuration, this.mDuration);
-        this.mMinWidth = var7.getDimensionPixelSize(R.styleable.SeslProgressBar_android_minWidth, this.mMinWidth);
-        this.mMaxWidth = var7.getDimensionPixelSize(R.styleable.SeslProgressBar_android_maxWidth, this.mMaxWidth);
-        this.mMinHeight = var7.getDimensionPixelSize(R.styleable.SeslProgressBar_android_minHeight, this.mMinHeight);
-        this.mMaxHeight = var7.getDimensionPixelSize(R.styleable.SeslProgressBar_android_maxHeight, this.mMaxHeight);
-        this.mBehavior = var7.getInt(R.styleable.SeslProgressBar_android_indeterminateBehavior, this.mBehavior);
-        var3 = var7.getResourceId(R.styleable.SeslProgressBar_android_interpolator, 17432587);
+        this.mDuration = var6.getInt(R.styleable.SeslProgressBar_android_indeterminateDuration, this.mDuration);
+        this.mMinWidth = var6.getDimensionPixelSize(R.styleable.SeslProgressBar_android_minWidth, this.mMinWidth);
+        this.mMaxWidth = var6.getDimensionPixelSize(R.styleable.SeslProgressBar_android_maxWidth, this.mMaxWidth);
+        this.mMinHeight = var6.getDimensionPixelSize(R.styleable.SeslProgressBar_android_minHeight, this.mMinHeight);
+        this.mMaxHeight = var6.getDimensionPixelSize(R.styleable.SeslProgressBar_android_maxHeight, this.mMaxHeight);
+        this.mBehavior = var6.getInt(R.styleable.SeslProgressBar_android_indeterminateBehavior, this.mBehavior);
+        var3 = var6.getResourceId(R.styleable.SeslProgressBar_android_interpolator, 17432587);
         if (var3 > 0) {
             this.setInterpolator(var1, var3);
         }
 
-        this.setMin(var7.getInt(R.styleable.SeslProgressBar_min, this.mMin));
-        this.setMax(var7.getInt(R.styleable.SeslProgressBar_android_max, this.mMax));
-        this.setProgress(var7.getInt(R.styleable.SeslProgressBar_android_progress, this.mProgress));
-        this.setSecondaryProgress(var7.getInt(R.styleable.SeslProgressBar_android_secondaryProgress, this.mSecondaryProgress));
-        var6 = var7.getDrawable(R.styleable.SeslProgressBar_android_indeterminateDrawable);
-        if (var6 != null) {
-            if (needsTileify(var6)) {
-                this.setIndeterminateDrawableTiled(var6);
+        this.setMin(var6.getInt(R.styleable.SeslProgressBar_android_min, this.mMin));
+        this.setMax(var6.getInt(R.styleable.SeslProgressBar_android_max, this.mMax));
+        this.setProgress(var6.getInt(R.styleable.SeslProgressBar_android_progress, this.mProgress));
+        this.setSecondaryProgress(var6.getInt(R.styleable.SeslProgressBar_android_secondaryProgress, this.mSecondaryProgress));
+        var7 = var6.getDrawable(R.styleable.SeslProgressBar_android_indeterminateDrawable);
+        if (var7 != null) {
+            if (needsTileify(var7)) {
+                this.setIndeterminateDrawableTiled(var7);
             } else {
-                this.setIndeterminateDrawable(var6);
+                this.setIndeterminateDrawable(var7);
             }
         }
 
-        this.mOnlyIndeterminate = var7.getBoolean(R.styleable.SeslProgressBar_android_indeterminateOnly, this.mOnlyIndeterminate);
+        this.mOnlyIndeterminate = var6.getBoolean(R.styleable.SeslProgressBar_android_indeterminateOnly, this.mOnlyIndeterminate);
         this.mNoInvalidate = false;
-        if (this.mOnlyIndeterminate || var7.getBoolean(R.styleable.SeslProgressBar_android_indeterminate, this.mIndeterminate)) {
+        if (this.mOnlyIndeterminate || var6.getBoolean(R.styleable.SeslProgressBar_android_indeterminate, this.mIndeterminate)) {
             var5 = true;
         }
 
         this.setIndeterminate(var5);
-        this.mMirrorForRtl = var7.getBoolean(R.styleable.SeslProgressBar_android_mirrorForRtl, this.mMirrorForRtl);
-        if (var7.hasValue(R.styleable.SeslProgressBar_android_progressTintMode)) {
+        this.mMirrorForRtl = var6.getBoolean(R.styleable.SeslProgressBar_android_mirrorForRtl, this.mMirrorForRtl);
+        if (var6.hasValue(R.styleable.SeslProgressBar_android_progressTintMode)) {
             if (this.mProgressTintInfo == null) {
                 this.mProgressTintInfo = new SeslProgressBar.ProgressTintInfo();
             }
 
-            this.mProgressTintInfo.mProgressTintMode = DrawableUtils.parseTintMode(var7.getInt(R.styleable.SeslProgressBar_android_progressTintMode, -1), (Mode)null);
+            this.mProgressTintInfo.mProgressTintMode = DrawableUtils.parseTintMode(var6.getInt(R.styleable.SeslProgressBar_android_progressTintMode, -1), (Mode)null);
             this.mProgressTintInfo.mHasProgressTintMode = true;
         }
 
-        if (var7.hasValue(R.styleable.SeslProgressBar_android_progressTint)) {
+        if (var6.hasValue(R.styleable.SeslProgressBar_android_progressTint)) {
             if (this.mProgressTintInfo == null) {
                 this.mProgressTintInfo = new SeslProgressBar.ProgressTintInfo();
             }
 
-            this.mProgressTintInfo.mProgressTintList = var7.getColorStateList(R.styleable.SeslProgressBar_android_progressTint);
+            this.mProgressTintInfo.mProgressTintList = var6.getColorStateList(R.styleable.SeslProgressBar_android_progressTint);
             this.mProgressTintInfo.mHasProgressTint = true;
         }
 
-        if (var7.hasValue(R.styleable.SeslProgressBar_android_progressBackgroundTintMode)) {
+        if (var6.hasValue(R.styleable.SeslProgressBar_android_progressBackgroundTintMode)) {
             if (this.mProgressTintInfo == null) {
                 this.mProgressTintInfo = new SeslProgressBar.ProgressTintInfo();
             }
 
-            this.mProgressTintInfo.mProgressBackgroundTintMode = DrawableUtils.parseTintMode(var7.getInt(R.styleable.SeslProgressBar_android_progressBackgroundTintMode, -1), (Mode)null);
+            this.mProgressTintInfo.mProgressBackgroundTintMode = DrawableUtils.parseTintMode(var6.getInt(R.styleable.SeslProgressBar_android_progressBackgroundTintMode, -1), (Mode)null);
             this.mProgressTintInfo.mHasProgressBackgroundTintMode = true;
         }
 
-        if (var7.hasValue(R.styleable.SeslProgressBar_android_progressBackgroundTint)) {
+        if (var6.hasValue(R.styleable.SeslProgressBar_android_progressBackgroundTint)) {
             if (this.mProgressTintInfo == null) {
                 this.mProgressTintInfo = new SeslProgressBar.ProgressTintInfo();
             }
 
-            this.mProgressTintInfo.mProgressBackgroundTintList = var7.getColorStateList(R.styleable.SeslProgressBar_android_progressBackgroundTint);
+            this.mProgressTintInfo.mProgressBackgroundTintList = var6.getColorStateList(R.styleable.SeslProgressBar_android_progressBackgroundTint);
             this.mProgressTintInfo.mHasProgressBackgroundTint = true;
         }
 
-        if (var7.hasValue(R.styleable.SeslProgressBar_android_secondaryProgressTintMode)) {
+        if (var6.hasValue(R.styleable.SeslProgressBar_android_secondaryProgressTintMode)) {
             if (this.mProgressTintInfo == null) {
                 this.mProgressTintInfo = new SeslProgressBar.ProgressTintInfo();
             }
 
-            this.mProgressTintInfo.mSecondaryProgressTintMode = DrawableUtils.parseTintMode(var7.getInt(R.styleable.SeslProgressBar_android_secondaryProgressTintMode, -1), (Mode)null);
+            this.mProgressTintInfo.mSecondaryProgressTintMode = DrawableUtils.parseTintMode(var6.getInt(R.styleable.SeslProgressBar_android_secondaryProgressTintMode, -1), (Mode)null);
             this.mProgressTintInfo.mHasSecondaryProgressTintMode = true;
         }
 
-        if (var7.hasValue(R.styleable.SeslProgressBar_android_secondaryProgressTint)) {
+        if (var6.hasValue(R.styleable.SeslProgressBar_android_secondaryProgressTint)) {
             if (this.mProgressTintInfo == null) {
                 this.mProgressTintInfo = new SeslProgressBar.ProgressTintInfo();
             }
 
-            this.mProgressTintInfo.mSecondaryProgressTintList = var7.getColorStateList(R.styleable.SeslProgressBar_android_secondaryProgressTint);
+            this.mProgressTintInfo.mSecondaryProgressTintList = var6.getColorStateList(R.styleable.SeslProgressBar_android_secondaryProgressTint);
             this.mProgressTintInfo.mHasSecondaryProgressTint = true;
         }
 
-        if (var7.hasValue(R.styleable.SeslProgressBar_android_indeterminateTintMode)) {
+        if (var6.hasValue(R.styleable.SeslProgressBar_android_indeterminateTintMode)) {
             if (this.mProgressTintInfo == null) {
                 this.mProgressTintInfo = new SeslProgressBar.ProgressTintInfo();
             }
 
-            this.mProgressTintInfo.mIndeterminateTintMode = DrawableUtils.parseTintMode(var7.getInt(R.styleable.SeslProgressBar_android_indeterminateTintMode, -1), (Mode)null);
+            this.mProgressTintInfo.mIndeterminateTintMode = DrawableUtils.parseTintMode(var6.getInt(R.styleable.SeslProgressBar_android_indeterminateTintMode, -1), (Mode)null);
             this.mProgressTintInfo.mHasIndeterminateTintMode = true;
         }
 
-        if (var7.hasValue(R.styleable.SeslProgressBar_android_indeterminateTint)) {
+        if (var6.hasValue(R.styleable.SeslProgressBar_android_indeterminateTint)) {
             if (this.mProgressTintInfo == null) {
                 this.mProgressTintInfo = new SeslProgressBar.ProgressTintInfo();
             }
 
-            this.mProgressTintInfo.mIndeterminateTintList = var7.getColorStateList(R.styleable.SeslProgressBar_android_indeterminateTint);
+            this.mProgressTintInfo.mIndeterminateTintList = var6.getColorStateList(R.styleable.SeslProgressBar_android_indeterminateTint);
             this.mProgressTintInfo.mHasIndeterminateTint = true;
         }
 
-        var7.recycle();
+        var6.recycle();
         this.applyProgressTints();
         this.applyIndeterminateTint();
-        if (ViewCompat.getImportantForAccessibility(this) == 0) {
-            ViewCompat.setImportantForAccessibility(this, 1);
+        if (ViewCompat.getImportantForAccessibility(this) == ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_AUTO) {
+            ViewCompat.setImportantForAccessibility(this, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_YES);
         }
 
         this.mDensity = var1.getResources().getDisplayMetrics().density;
     }
 
-    public static int StateListDrawable_getStateCount(StateListDrawable var0) {
-        if (IS_BASE_SDK_VERSION) {
-            Utils.genericInvokeMethod(var0, VERSION.SDK_INT >= 29 ? "hidden_getStateCount" : "getStateCount");
-        }
+    public static boolean needsTileify(Drawable var0) {
+        int var1;
+        int var2;
+        if (var0 instanceof LayerDrawable) {
+            LayerDrawable var4 = (LayerDrawable)var0;
+            var1 = var4.getNumberOfLayers();
 
-        return 0;
-    }
+            for(var2 = 0; var2 < var1; ++var2) {
+                if (needsTileify(var4.getDrawable(var2))) {
+                    return true;
+                }
+            }
 
-    public static Drawable StateListDrawable_getStateDrawable(StateListDrawable var0, int var1) {
-        Drawable var2;
-        if (IS_BASE_SDK_VERSION) {
-            var2 = (Drawable) Utils.genericInvokeMethod(var0, VERSION.SDK_INT >= 29 ? "hidden_getStateDrawable" : "getStateDrawable", var1);
+            return false;
+        } else if (var0 instanceof StateListDrawable) {
+            StateListDrawable var3 = (StateListDrawable)var0;
+            var1 = SeslProgressBar.StateListDrawableCompat.getStateCount(var3);
+
+            for(var2 = 0; var2 < var1; ++var2) {
+                var0 = SeslProgressBar.StateListDrawableCompat.getStateDrawable(var3, var2);
+                if (var0 != null && needsTileify(var0)) {
+                    return true;
+                }
+            }
+
+            return false;
         } else {
-            var2 = null;
+            return var0 instanceof BitmapDrawable;
         }
-
-        return var2;
     }
 
-    private int[] StateListDrawable_getStateSet(StateListDrawable var1, int var2) {
-        int[] var3;
-        if (IS_BASE_SDK_VERSION) {
-            var3 = (int[]) Utils.genericInvokeMethod(var1, VERSION.SDK_INT >= 29 ? "hidden_getStateSet" : "getStateSet", var2);
-        } else {
-            var3 = null;
-        }
-
-        return var3;
-    }
-
-    private void applyIndeterminateTint() {
+    public final void applyIndeterminateTint() {
         if (this.mIndeterminateDrawable != null) {
             SeslProgressBar.ProgressTintInfo var1 = this.mProgressTintInfo;
             if (var1 != null && (var1.mHasIndeterminateTint || var1.mHasIndeterminateTintMode)) {
@@ -336,7 +319,7 @@ public class SeslProgressBar extends View {
 
     }
 
-    private void applyPrimaryProgressTint() {
+    public final void applyPrimaryProgressTint() {
         SeslProgressBar.ProgressTintInfo var1 = this.mProgressTintInfo;
         if (var1.mHasProgressTint || var1.mHasProgressTintMode) {
             Drawable var3 = this.getTintTarget(R.id.progress, true);
@@ -359,7 +342,7 @@ public class SeslProgressBar extends View {
 
     }
 
-    private void applyProgressBackgroundTint() {
+    public final void applyProgressBackgroundTint() {
         SeslProgressBar.ProgressTintInfo var1 = this.mProgressTintInfo;
         if (var1.mHasProgressBackgroundTint || var1.mHasProgressBackgroundTintMode) {
             Drawable var3 = this.getTintTarget(R.id.background, false);
@@ -382,7 +365,7 @@ public class SeslProgressBar extends View {
 
     }
 
-    private void applyProgressTints() {
+    public final void applyProgressTints() {
         if (this.mProgressDrawable != null && this.mProgressTintInfo != null) {
             this.applyPrimaryProgressTint();
             this.applyProgressBackgroundTint();
@@ -391,7 +374,7 @@ public class SeslProgressBar extends View {
 
     }
 
-    private void applySecondaryProgressTint() {
+    public final void applySecondaryProgressTint() {
         SeslProgressBar.ProgressTintInfo var1 = this.mProgressTintInfo;
         if (var1.mHasSecondaryProgressTint || var1.mHasSecondaryProgressTintMode) {
             Drawable var3 = this.getTintTarget(R.id.secondaryProgress, false);
@@ -414,526 +397,278 @@ public class SeslProgressBar extends View {
 
     }
 
-    private void doRefreshProgress(int var1, int var2, boolean var3, boolean var4, boolean var5) throws Throwable {
+    public final void doRefreshProgress(int var1, int var2, boolean var3, boolean var4, boolean var5) {
         synchronized(this){}
 
         Throwable var10000;
-        label3095: {
+        label3794: {
             int var6;
             boolean var10001;
             try {
                 var6 = this.mMax - this.mMin;
-            } catch (Throwable var319) {
-                var10000 = var319;
+            } catch (Throwable var393) {
+                var10000 = var393;
                 var10001 = false;
-                break label3095;
+                break label3794;
             }
 
             float var7;
             if (var6 > 0) {
                 try {
                     var7 = (float)(var2 - this.mMin) / (float)var6;
-                } catch (Throwable var318) {
-                    var10000 = var318;
+                } catch (Throwable var392) {
+                    var10000 = var392;
                     var10001 = false;
-                    break label3095;
+                    break label3794;
                 }
             } else {
                 var7 = 0.0F;
             }
 
-            boolean var320;
-            label3075: {
-                label3074: {
+            boolean var394;
+            label3775: {
+                label3774: {
                     try {
                         if (var1 == R.id.progress) {
-                            break label3074;
+                            break label3774;
                         }
-                    } catch (Throwable var317) {
-                        var10000 = var317;
+                    } catch (Throwable var391) {
+                        var10000 = var391;
                         var10001 = false;
-                        break label3095;
+                        break label3794;
                     }
 
-                    var320 = false;
-                    break label3075;
+                    var394 = false;
+                    break label3775;
                 }
 
-                var320 = true;
+                var394 = true;
             }
 
-            int var8 = (int)(10000.0F * var7);
-
-            Drawable var9;
+            Drawable var8;
             try {
-                var9 = this.mCurrentDrawable;
-            } catch (Throwable var316) {
-                var10000 = var316;
+                var8 = this.mCurrentDrawable;
+            } catch (Throwable var390) {
+                var10000 = var390;
                 var10001 = false;
-                break label3095;
+                break label3794;
             }
 
-            if (var9 != null) {
-                label3090: {
+            if (var8 != null) {
+                label3790: {
+                    int var9 = (int)(10000.0F * var7);
+
                     Drawable var10;
-                    label3091: {
+                    label3791: {
                         try {
-                            if (var9 instanceof LayerDrawable) {
-                                var10 = ((LayerDrawable)var9).findDrawableByLayerId(var1);
-                                break label3091;
+                            if (var8 instanceof LayerDrawable) {
+                                var10 = ((LayerDrawable)var8).findDrawableByLayerId(var1);
+                                break label3791;
                             }
-                        } catch (Throwable var315) {
-                            var10000 = var315;
+                        } catch (Throwable var389) {
+                            var10000 = var389;
                             var10001 = false;
-                            break label3095;
+                            break label3794;
                         }
 
-                        label3092: {
-                            int var11;
+                        int var11;
+                        label3753: {
                             try {
-                                if (!(var9 instanceof StateListDrawable)) {
-                                    break label3092;
+                                if (var8 instanceof StateListDrawable) {
+                                    var11 = SeslProgressBar.StateListDrawableCompat.getStateCount((StateListDrawable)var8);
+                                    break label3753;
                                 }
-
-                                var11 = StateListDrawable_getStateCount((StateListDrawable)var9);
-                            } catch (Throwable var314) {
-                                var10000 = var314;
+                            } catch (Throwable var388) {
+                                var10000 = var388;
                                 var10001 = false;
-                                break label3095;
+                                break label3794;
                             }
 
-                            int var12 = 0;
+                            try {
+                                var8.setLevel(var9);
+                                break label3790;
+                            } catch (Throwable var380) {
+                                var10000 = var380;
+                                var10001 = false;
+                                break label3794;
+                            }
+                        }
 
-                            while(true) {
-                                if (var12 >= var11) {
-                                    break label3090;
-                                }
+                        int var12 = 0;
 
-                                try {
-                                    var10 = StateListDrawable_getStateDrawable((StateListDrawable)var9, var12);
-                                } catch (Throwable var309) {
-                                    var10000 = var309;
-                                    var10001 = false;
-                                    break label3095;
-                                }
+                        while(true) {
+                            if (var12 >= var11) {
+                                break label3790;
+                            }
 
-                                if (var10 == null) {
-                                    return;
-                                }
+                            try {
+                                var10 = SeslProgressBar.StateListDrawableCompat.getStateDrawable((StateListDrawable)var8, var12);
+                            } catch (Throwable var382) {
+                                var10000 = var382;
+                                var10001 = false;
+                                break label3794;
+                            }
 
-                                label3043: {
-                                    label3094: {
-                                        Drawable var13;
-                                        try {
-                                            if (!(var10 instanceof LayerDrawable)) {
-                                                break label3094;
-                                            }
+                            if (var10 == null) {
+                                return;
+                            }
 
-                                            var13 = ((LayerDrawable)var10).findDrawableByLayerId(var1);
-                                        } catch (Throwable var313) {
-                                            var10000 = var313;
-                                            var10001 = false;
-                                            break label3095;
+                            label3742: {
+                                label3793: {
+                                    Drawable var13;
+                                    try {
+                                        if (!(var10 instanceof LayerDrawable)) {
+                                            break label3793;
                                         }
 
-                                        var10 = var13;
-                                        if (var13 == null) {
-                                            break label3043;
-                                        }
-
-                                        var10 = var13;
-
-                                        try {
-                                            if (!this.canResolveLayoutDirection()) {
-                                                break label3043;
-                                            }
-
-                                            DrawableCompat.setLayoutDirection(var13, ViewCompat.getLayoutDirection(this));
-                                        } catch (Throwable var312) {
-                                            var10000 = var312;
-                                            var10001 = false;
-                                            break label3095;
-                                        }
-
-                                        var10 = var13;
-                                        break label3043;
+                                        var13 = ((LayerDrawable)var10).findDrawableByLayerId(var1);
+                                    } catch (Throwable var387) {
+                                        var10000 = var387;
+                                        var10001 = false;
+                                        break label3794;
                                     }
 
-                                    var10 = null;
+                                    var10 = var13;
+                                    if (var13 == null) {
+                                        break label3742;
+                                    }
+
+                                    var10 = var13;
+
+                                    try {
+                                        if (VERSION.SDK_INT <= 19) {
+                                            break label3742;
+                                        }
+                                    } catch (Throwable var386) {
+                                        var10000 = var386;
+                                        var10001 = false;
+                                        break label3794;
+                                    }
+
+                                    var10 = var13;
+
+                                    try {
+                                        if (!this.canResolveLayoutDirection()) {
+                                            break label3742;
+                                        }
+
+                                        DrawableCompat.setLayoutDirection(var13, ViewCompat.getLayoutDirection(this));
+                                    } catch (Throwable var385) {
+                                        var10000 = var385;
+                                        var10001 = false;
+                                        break label3794;
+                                    }
+
+                                    var10 = var13;
+                                    break label3742;
                                 }
 
-                                if (var10 == null) {
-                                    var10 = var9;
-                                }
-
-                                try {
-                                    var10.setLevel(var8);
-                                } catch (Throwable var308) {
-                                    var10000 = var308;
-                                    var10001 = false;
-                                    break label3095;
-                                }
-
-                                ++var12;
+                                var10 = null;
                             }
-                        }
 
-                        try {
-                            var9.setLevel(var8);
-                            break label3090;
-                        } catch (Throwable var307) {
-                            var10000 = var307;
-                            var10001 = false;
-                            break label3095;
+                            if (var10 == null) {
+                                var10 = var8;
+                            }
+
+                            try {
+                                var10.setLevel(var9);
+                            } catch (Throwable var381) {
+                                var10000 = var381;
+                                var10001 = false;
+                                break label3794;
+                            }
+
+                            ++var12;
                         }
                     }
 
                     if (var10 != null) {
                         try {
-                            if (this.canResolveLayoutDirection()) {
+                            if (VERSION.SDK_INT > 19 && this.canResolveLayoutDirection()) {
                                 DrawableCompat.setLayoutDirection(var10, ViewCompat.getLayoutDirection(this));
                             }
-                        } catch (Throwable var311) {
-                            var10000 = var311;
+                        } catch (Throwable var384) {
+                            var10000 = var384;
                             var10001 = false;
-                            break label3095;
+                            break label3794;
                         }
                     }
 
                     if (var10 != null) {
-                        var9 = var10;
+                        var8 = var10;
                     }
 
                     try {
-                        var9.setLevel(var8);
-                    } catch (Throwable var310) {
-                        var10000 = var310;
+                        var8.setLevel(var9);
+                    } catch (Throwable var383) {
+                        var10000 = var383;
                         var10001 = false;
-                        break label3095;
+                        break label3794;
                     }
                 }
             } else {
                 try {
                     this.invalidate();
-                } catch (Throwable var306) {
-                    var10000 = var306;
+                } catch (Throwable var379) {
+                    var10000 = var379;
                     var10001 = false;
-                    break label3095;
+                    break label3794;
                 }
             }
 
-            if (var320 && var5) {
+            if (var394 && var5) {
+                ObjectAnimator var395;
                 try {
-                    ObjectAnimator var321 = ObjectAnimator.ofFloat(this, this.VISUAL_PROGRESS, new float[]{var7});
-                    var321.setAutoCancel(true);
-                    var321.setDuration(80L);
-                    var321.setInterpolator(PROGRESS_ANIM_INTERPOLATOR);
-                    var321.start();
-                } catch (Throwable var305) {
-                    var10000 = var305;
+                    var395 = ObjectAnimator.ofFloat(this, this.VISUAL_PROGRESS, new float[]{var7});
+                    if (VERSION.SDK_INT > 18) {
+                        var395.setAutoCancel(true);
+                    }
+                } catch (Throwable var378) {
+                    var10000 = var378;
                     var10001 = false;
-                    break label3095;
+                    break label3794;
+                }
+
+                try {
+                    var395.setDuration(80L);
+                    var395.setInterpolator(PROGRESS_ANIM_INTERPOLATOR);
+                    var395.start();
+                } catch (Throwable var377) {
+                    var10000 = var377;
+                    var10001 = false;
+                    break label3794;
                 }
             } else {
                 try {
                     this.setVisualProgress(var1, var7);
-                } catch (Throwable var304) {
-                    var10000 = var304;
+                } catch (Throwable var376) {
+                    var10000 = var376;
                     var10001 = false;
-                    break label3095;
+                    break label3794;
                 }
             }
 
-            if (!var320 || !var4) {
+            if (!var394 || !var4) {
                 return;
             }
 
-            label3001:
+            label3691:
             try {
                 this.onProgressRefresh(var7, var3, var2);
                 return;
-            } catch (Throwable var303) {
-                var10000 = var303;
+            } catch (Throwable var375) {
+                var10000 = var375;
                 var10001 = false;
-                break label3001;
+                break label3691;
             }
         }
 
-        Throwable var322 = var10000;
-        throw var322;
-    }
-
-    private Drawable getTintTarget(int var1, boolean var2) {
-        Drawable var3 = this.mProgressDrawable;
-        Drawable var5;
-        if (var3 != null) {
-            this.mProgressDrawable = var3.mutate();
-            Drawable var4;
-            if (var3 instanceof LayerDrawable) {
-                var4 = ((LayerDrawable)var3).findDrawableByLayerId(var1);
-            } else {
-                var4 = null;
-            }
-
-            var5 = var4;
-            if (var2) {
-                var5 = var4;
-                if (var4 == null) {
-                    var5 = var3;
-                }
-            }
-        } else {
-            var5 = null;
-        }
-
-        return var5;
-    }
-
-    private void initProgressBar() {
-        this.mMin = 0;
-        this.mMax = 100;
-        this.mProgress = 0;
-        this.mSecondaryProgress = 0;
-        this.mIndeterminate = false;
-        this.mOnlyIndeterminate = false;
-        this.mDuration = 4000;
-        this.mBehavior = 1;
-        this.mMinWidth = 24;
-        this.mMaxWidth = 48;
-        this.mMinHeight = 24;
-        this.mMaxHeight = 48;
-    }
-
-    public static boolean needsTileify(Drawable var0) {
-        int var1;
-        int var2;
-        if (var0 instanceof LayerDrawable) {
-            LayerDrawable var4 = (LayerDrawable)var0;
-            var1 = var4.getNumberOfLayers();
-
-            for(var2 = 0; var2 < var1; ++var2) {
-                if (needsTileify(var4.getDrawable(var2))) {
-                    return true;
-                }
-            }
-
-            return false;
-        } else if (var0 instanceof StateListDrawable) {
-            StateListDrawable var3 = (StateListDrawable)var0;
-            var1 = StateListDrawable_getStateCount(var3);
-
-            for(var2 = 0; var2 < var1; ++var2) {
-                var0 = StateListDrawable_getStateDrawable(var3, var2);
-                if (var0 != null && needsTileify(var0)) {
-                    return true;
-                }
-            }
-
-            return false;
-        } else {
-            return var0 instanceof BitmapDrawable;
-        }
-    }
-
-    private void refreshProgress(int var1, int var2, boolean var3, boolean var4) throws Throwable {
-        synchronized(this){}
-
+        Throwable var396 = var10000;
         try {
-            if (this.mUiThreadId == Thread.currentThread().getId()) {
-                this.doRefreshProgress(var1, var2, var3, true, var4);
-            } else {
-                if (this.mRefreshProgressRunnable == null) {
-                    SeslProgressBar.RefreshProgressRunnable var5 = new SeslProgressBar.RefreshProgressRunnable();
-                    this.mRefreshProgressRunnable = var5;
-                }
-
-                SeslProgressBar.RefreshData var8 = SeslProgressBar.RefreshData.obtain(var1, var2, var3, var4);
-                this.mRefreshData.add(var8);
-                if (this.mAttached && !this.mRefreshIsPosted) {
-                    this.post(this.mRefreshProgressRunnable);
-                    this.mRefreshIsPosted = true;
-                }
-            }
-        } finally {
-            ;
+            throw var396;
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
         }
-
-    }
-
-    private void scheduleAccessibilityEventSender() {
-        SeslProgressBar.AccessibilityEventSender var1 = this.mAccessibilityEventSender;
-        if (var1 == null) {
-            this.mAccessibilityEventSender = new SeslProgressBar.AccessibilityEventSender();
-        } else {
-            this.removeCallbacks(var1);
-        }
-
-        this.postDelayed(this.mAccessibilityEventSender, 200L);
-    }
-
-    private void setVisualProgress(int var1, float var2) {
-        this.mVisualProgress = var2;
-        Drawable var3 = this.mCurrentDrawable;
-        Drawable var4 = var3;
-        if (var3 instanceof LayerDrawable) {
-            var3 = ((LayerDrawable)var3).findDrawableByLayerId(var1);
-            var4 = var3;
-            if (var3 == null) {
-                var4 = this.mCurrentDrawable;
-            }
-        }
-
-        if (var4 != null) {
-            var4.setLevel((int)(10000.0F * var2));
-        } else {
-            this.invalidate();
-        }
-
-        this.onVisualProgressChanged(var1, var2);
-    }
-
-    @SuppressLint("WrongConstant")
-    private void swapCurrentDrawable(Drawable var1) {
-        Drawable var2 = this.mCurrentDrawable;
-        this.mCurrentDrawable = var1;
-        if (var2 != this.mCurrentDrawable) {
-            if (var2 != null) {
-                var2.setVisible(false, false);
-            }
-
-            var1 = this.mCurrentDrawable;
-            if (var1 != null) {
-                boolean var3;
-                if (this.getWindowVisibility() == 0 && this.isShown()) {
-                    var3 = true;
-                } else {
-                    var3 = false;
-                }
-
-                var1.setVisible(var3, false);
-            }
-        }
-
-    }
-
-    private Drawable tileify(Drawable var1, boolean var2) {
-        boolean var3 = var1 instanceof LayerDrawable;
-        int var4 = 0;
-        byte var5 = 0;
-        if (!var3) {
-            if (var1 instanceof StateListDrawable) {
-                StateListDrawable var17 = (StateListDrawable)var1;
-                StateListDrawable var10 = new StateListDrawable();
-
-                for(int var13 = StateListDrawable_getStateCount(var17); var4 < var13; ++var4) {
-                    int[] var14 = this.StateListDrawable_getStateSet(var17, var4);
-                    var1 = StateListDrawable_getStateDrawable(var17, var4);
-                    if (var1 != null) {
-                        var10.addState(var14, this.tileify(var1, var2));
-                    }
-                }
-
-                return var10;
-            } else {
-                Object var16 = var1;
-                if (var1 instanceof BitmapDrawable) {
-                    BitmapDrawable var12 = (BitmapDrawable)var1.getConstantState().newDrawable(this.getResources());
-                    var12.setTileModeXY(TileMode.REPEAT, TileMode.CLAMP);
-                    if (this.mSampleWidth <= 0) {
-                        this.mSampleWidth = var12.getIntrinsicWidth();
-                    }
-
-                    var16 = var12;
-                    if (var2) {
-                        return new ClipDrawable(var12, 3, 1);
-                    }
-                }
-
-                return (Drawable)var16;
-            }
-        } else {
-            LayerDrawable var11 = (LayerDrawable)var1;
-            int var6 = var11.getNumberOfLayers();
-            Drawable[] var7 = new Drawable[var6];
-
-            for(var4 = 0; var4 < var6; ++var4) {
-                int var8 = var11.getId(var4);
-                Drawable var9 = var11.getDrawable(var4);
-                if (var8 != R.id.progress && var8 != R.id.secondaryProgress) {
-                    var2 = false;
-                } else {
-                    var2 = true;
-                }
-
-                var7[var4] = this.tileify(var9, var2);
-            }
-
-            LayerDrawable var15 = new LayerDrawable(var7);
-
-            for(var4 = var5; var4 < var6; ++var4) {
-                var15.setId(var4, var11.getId(var4));
-                if (VERSION.SDK_INT >= 23) {
-                    var15.setLayerGravity(var4, var11.getLayerGravity(var4));
-                    var15.setLayerWidth(var4, var11.getLayerWidth(var4));
-                    var15.setLayerHeight(var4, var11.getLayerHeight(var4));
-                    var15.setLayerInsetLeft(var4, var11.getLayerInsetLeft(var4));
-                    var15.setLayerInsetRight(var4, var11.getLayerInsetRight(var4));
-                    var15.setLayerInsetTop(var4, var11.getLayerInsetTop(var4));
-                    var15.setLayerInsetBottom(var4, var11.getLayerInsetBottom(var4));
-                    var15.setLayerInsetStart(var4, var11.getLayerInsetStart(var4));
-                    var15.setLayerInsetEnd(var4, var11.getLayerInsetEnd(var4));
-                }
-            }
-
-            return var15;
-        }
-    }
-
-    private Drawable tileifyIndeterminate(Drawable var1) {
-        Object var2 = var1;
-        if (var1 instanceof AnimationDrawable) {
-            AnimationDrawable var6 = (AnimationDrawable)var1;
-            int var3 = var6.getNumberOfFrames();
-            var2 = new AnimationDrawable();
-            ((AnimationDrawable)var2).setOneShot(var6.isOneShot());
-
-            for(int var4 = 0; var4 < var3; ++var4) {
-                Drawable var5 = this.tileify(var6.getFrame(var4), true);
-                var5.setLevel(10000);
-                ((AnimationDrawable)var2).addFrame(var5, var6.getDuration(var4));
-            }
-
-            ((AnimationDrawable)var2).setLevel(10000);
-        }
-
-        return (Drawable)var2;
-    }
-
-    private void updateDrawableState() {
-        int[] var1 = this.getDrawableState();
-        Drawable var2 = this.mProgressDrawable;
-        boolean var3 = false;
-        boolean var4 = var3;
-        if (var2 != null) {
-            var4 = var3;
-            if (var2.isStateful()) {
-                var4 = false | var2.setState(var1);
-            }
-        }
-
-        var2 = this.mIndeterminateDrawable;
-        var3 = var4;
-        if (var2 != null) {
-            var3 = var4;
-            if (var2.isStateful()) {
-                var3 = var4 | var2.setState(var1);
-            }
-        }
-
-        if (var3) {
-            this.invalidate();
-        }
-
     }
 
     @SuppressLint("RestrictedApi")
@@ -1048,6 +783,14 @@ public class SeslProgressBar extends View {
         return var1;
     }
 
+    public int getMaxHeight() {
+        return this.mMaxHeight;
+    }
+
+    public int getMaxWidth() {
+        return this.mMaxWidth;
+    }
+
     @ExportedProperty(
             category = "progress"
     )
@@ -1062,6 +805,14 @@ public class SeslProgressBar extends View {
         }
 
         return var1;
+    }
+
+    public int getMinHeight() {
+        return this.mMinHeight;
+    }
+
+    public int getMinWidth() {
+        return this.mMinWidth;
     }
 
     public boolean getMirrorForRtl() {
@@ -1206,6 +957,47 @@ public class SeslProgressBar extends View {
         return var2;
     }
 
+    public final Drawable getTintTarget(int var1, boolean var2) {
+        Drawable var3 = this.mProgressDrawable;
+        Drawable var5;
+        if (var3 != null) {
+            this.mProgressDrawable = var3.mutate();
+            Drawable var4;
+            if (var3 instanceof LayerDrawable) {
+                var4 = ((LayerDrawable)var3).findDrawableByLayerId(var1);
+            } else {
+                var4 = null;
+            }
+
+            var5 = var4;
+            if (var2) {
+                var5 = var4;
+                if (var4 == null) {
+                    var5 = var3;
+                }
+            }
+        } else {
+            var5 = null;
+        }
+
+        return var5;
+    }
+
+    public final void initProgressBar() {
+        this.mMin = 0;
+        this.mMax = 100;
+        this.mProgress = 0;
+        this.mSecondaryProgress = 0;
+        this.mIndeterminate = false;
+        this.mOnlyIndeterminate = false;
+        this.mDuration = 4000;
+        this.mBehavior = 1;
+        this.mMinWidth = 24;
+        this.mMaxWidth = 48;
+        this.mMinHeight = 24;
+        this.mMaxHeight = 48;
+    }
+
     public final void incrementProgressBy(int var1) throws Throwable {
         synchronized(this){}
 
@@ -1240,18 +1032,6 @@ public class SeslProgressBar extends View {
             }
         }
 
-    }
-
-    @SuppressLint("WrongConstant")
-    public boolean isAnimating() {
-        boolean var1;
-        if (this.isIndeterminate() && this.getWindowVisibility() == 0 && this.isShown()) {
-            var1 = true;
-        } else {
-            var1 = false;
-        }
-
-        return var1;
     }
 
     @ExportedProperty(
@@ -1386,8 +1166,8 @@ public class SeslProgressBar extends View {
 
     public void onInitializeAccessibilityNodeInfo(AccessibilityNodeInfo var1) {
         super.onInitializeAccessibilityNodeInfo(var1);
-        if (!this.isIndeterminate()) {
-            var1.setRangeInfo(RangeInfo.obtain(0, 0.0F, (float)this.getMax(), (float)this.getProgress()));
+        if (VERSION.SDK_INT >= 19 && !this.isIndeterminate()) {
+            var1.setRangeInfo(RangeInfo.obtain(0, (float)this.getMin(), (float)this.getMax(), (float)this.getProgress()));
         }
 
     }
@@ -1447,9 +1227,8 @@ public class SeslProgressBar extends View {
         }
     }
 
-    @SuppressLint("WrongConstant")
-    public void onProgressRefresh(float var1, boolean var2, int var3) throws Throwable {
-        if (((AccessibilityManager)this.getContext().getSystemService("accessibility")).isEnabled()) {
+    public void onProgressRefresh(float var1, boolean var2, int var3) {
+        if (((AccessibilityManager)this.getContext().getSystemService(Context.ACCESSIBILITY_SERVICE)).isEnabled()) {
             this.scheduleAccessibilityEventSender();
         }
 
@@ -1460,34 +1239,11 @@ public class SeslProgressBar extends View {
 
     }
 
-    public void onResolveDrawables(int var1) {
-        Drawable var2 = this.mCurrentDrawable;
-        var1 = ViewCompat.getLayoutDirection(this);
-        if (var2 != null) {
-            DrawableCompat.setLayoutDirection(var2, var1);
-        }
-
-        var2 = this.mIndeterminateDrawable;
-        if (var2 != null) {
-            DrawableCompat.setLayoutDirection(var2, var1);
-        }
-
-        var2 = this.mProgressDrawable;
-        if (var2 != null) {
-            DrawableCompat.setLayoutDirection(var2, var1);
-        }
-
-    }
-
     public void onRestoreInstanceState(Parcelable var1) {
         SeslProgressBar.SavedState var2 = (SeslProgressBar.SavedState)var1;
         super.onRestoreInstanceState(var2.getSuperState());
-        try {
-            this.setProgress(var2.progress);
-            this.setSecondaryProgress(var2.secondaryProgress);
-        } catch (Throwable throwable) {
-            throwable.printStackTrace();
-        }
+        this.setProgress(var2.progress);
+        this.setSecondaryProgress(var2.secondaryProgress);
     }
 
     public Parcelable onSaveInstanceState() {
@@ -1536,18 +1292,6 @@ public class SeslProgressBar extends View {
 
     }
 
-    public void onVisibilityChanged(View var1, int var2) {
-        super.onVisibilityChanged(var1, var2);
-        if (this.mIndeterminate) {
-            if (var2 != 8 && var2 != 4) {
-                this.startAnimation();
-            } else {
-                this.stopAnimation();
-            }
-        }
-
-    }
-
     public void onVisualProgressChanged(int var1, float var2) {
     }
 
@@ -1558,7 +1302,43 @@ public class SeslProgressBar extends View {
 
     }
 
-    public void setIndeterminate(boolean var1) throws Throwable {
+    public final void refreshProgress(int var1, int var2, boolean var3, boolean var4) {
+        synchronized(this){}
+
+        try {
+            if (this.mUiThreadId == Thread.currentThread().getId()) {
+                this.doRefreshProgress(var1, var2, var3, true, var4);
+            } else {
+                if (this.mRefreshProgressRunnable == null) {
+                    SeslProgressBar.RefreshProgressRunnable var5 = new SeslProgressBar.RefreshProgressRunnable();
+                    this.mRefreshProgressRunnable = var5;
+                }
+
+                SeslProgressBar.RefreshData var8 = SeslProgressBar.RefreshData.obtain(var1, var2, var3, var4);
+                this.mRefreshData.add(var8);
+                if (this.mAttached && !this.mRefreshIsPosted) {
+                    this.post(this.mRefreshProgressRunnable);
+                    this.mRefreshIsPosted = true;
+                }
+            }
+        } finally {
+            ;
+        }
+
+    }
+
+    public final void scheduleAccessibilityEventSender() {
+        SeslProgressBar.AccessibilityEventSender var1 = this.mAccessibilityEventSender;
+        if (var1 == null) {
+            this.mAccessibilityEventSender = new SeslProgressBar.AccessibilityEventSender();
+        } else {
+            this.removeCallbacks(var1);
+        }
+
+        this.postDelayed(this.mAccessibilityEventSender, 200L);
+    }
+
+    public void setIndeterminate(boolean var1) {
         synchronized(this){}
 
         Throwable var10000;
@@ -1610,7 +1390,11 @@ public class SeslProgressBar extends View {
         }
 
         Throwable var2 = var10000;
-        throw var2;
+        try {
+            throw var2;
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
+        }
     }
 
     public void setIndeterminateDrawable(Drawable var1) {
@@ -1679,7 +1463,7 @@ public class SeslProgressBar extends View {
         this.mInterpolator = var1;
     }
 
-    public void setMax(int var1) throws Throwable {
+    public void setMax(int var1) {
         synchronized(this){}
         int var2 = var1;
 
@@ -1749,10 +1533,24 @@ public class SeslProgressBar extends View {
         }
 
         Throwable var3 = var10000;
-        throw var3;
+        try {
+            throw var3;
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
+        }
     }
 
-    public void setMin(int var1) throws Throwable {
+    public void setMaxHeight(int var1) {
+        this.mMaxHeight = var1;
+        this.requestLayout();
+    }
+
+    public void setMaxWidth(int var1) {
+        this.mMaxWidth = var1;
+        this.requestLayout();
+    }
+
+    public void setMin(int var1) {
         synchronized(this){}
         int var2 = var1;
 
@@ -1822,10 +1620,24 @@ public class SeslProgressBar extends View {
         }
 
         Throwable var3 = var10000;
-        throw var3;
+        try {
+            throw var3;
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
+        }
     }
 
-    public void setMode(int var1) throws Throwable {
+    public void setMinHeight(int var1) {
+        this.mMinHeight = var1;
+        this.requestLayout();
+    }
+
+    public void setMinWidth(int var1) {
+        this.mMinWidth = var1;
+        this.requestLayout();
+    }
+
+    public void setMode(int var1) {
         this.mCurrentMode = var1;
         Drawable var2;
         if (var1 != 3) {
@@ -1844,7 +1656,7 @@ public class SeslProgressBar extends View {
 
     }
 
-    public void setProgress(int var1) throws Throwable {
+    public void setProgress(int var1) {
         synchronized(this){}
 
         try {
@@ -1853,10 +1665,6 @@ public class SeslProgressBar extends View {
             ;
         }
 
-    }
-
-    public void setProgress(int var1, boolean var2) throws Throwable {
-        this.setProgressInternal(var1, false, var2);
     }
 
     public void setProgressBackgroundTintList(ColorStateList var1) {
@@ -1887,7 +1695,7 @@ public class SeslProgressBar extends View {
 
     }
 
-    public void setProgressDrawable(Drawable var1) throws Throwable {
+    public void setProgressDrawable(Drawable var1) {
         Drawable var2 = this.mProgressDrawable;
         if (var2 != var1) {
             if (var2 != null) {
@@ -1934,7 +1742,7 @@ public class SeslProgressBar extends View {
 
     }
 
-    public void setProgressDrawableTiled(Drawable var1) throws Throwable {
+    public void setProgressDrawableTiled(Drawable var1) {
         Drawable var2 = var1;
         if (var1 != null) {
             var2 = this.tileify(var1, false);
@@ -1943,7 +1751,7 @@ public class SeslProgressBar extends View {
         this.setProgressDrawable(var2);
     }
 
-    public boolean setProgressInternal(int var1, boolean var2, boolean var3) throws Throwable {
+    public boolean setProgressInternal(int var1, boolean var2, boolean var3) {
         synchronized(this){}
 
         Throwable var10000;
@@ -1964,20 +1772,20 @@ public class SeslProgressBar extends View {
 
             int var5;
             try {
-                var1 = constrain(var1, this.mMin, this.mMax);
-                var5 = this.mProgress;
+                var5 = constrain(var1, this.mMin, this.mMax);
+                var1 = this.mProgress;
             } catch (Throwable var17) {
                 var10000 = var17;
                 var10001 = false;
                 break label140;
             }
 
-            if (var1 == var5) {
+            if (var5 == var1) {
                 return false;
             }
 
             try {
-                this.mProgress = var1;
+                this.mProgress = var5;
                 this.refreshProgress(R.id.progress, this.mProgress, var2, var3);
             } catch (Throwable var16) {
                 var10000 = var16;
@@ -1989,7 +1797,12 @@ public class SeslProgressBar extends View {
         }
 
         Throwable var6 = var10000;
-        throw var6;
+        try {
+            throw var6;
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
+            return false;
+        }
     }
 
     public void setProgressTintList(ColorStateList var1) {
@@ -2020,7 +1833,7 @@ public class SeslProgressBar extends View {
 
     }
 
-    public void setSecondaryProgress(int var1) throws Throwable {
+    public void setSecondaryProgress(int var1) {
         synchronized(this){}
 
         Throwable var10000;
@@ -2078,7 +1891,11 @@ public class SeslProgressBar extends View {
         }
 
         Throwable var4 = var10000;
-        throw var4;
+        try {
+            throw var4;
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
+        }
     }
 
     public void setSecondaryProgressTintList(ColorStateList var1) {
@@ -2109,23 +1926,30 @@ public class SeslProgressBar extends View {
 
     }
 
-    public void setVisibility(int var1) {
-        if (this.getVisibility() != var1) {
-            super.setVisibility(var1);
-            if (this.mIndeterminate) {
-                if (var1 != 8 && var1 != 4) {
-                    this.startAnimation();
-                } else {
-                    this.stopAnimation();
-                }
+    public final void setVisualProgress(int var1, float var2) {
+        this.mVisualProgress = var2;
+        Drawable var3 = this.mCurrentDrawable;
+        Drawable var4 = var3;
+        if (var3 instanceof LayerDrawable) {
+            var3 = ((LayerDrawable)var3).findDrawableByLayerId(var1);
+            var4 = var3;
+            if (var3 == null) {
+                var4 = this.mCurrentDrawable;
             }
         }
 
+        if (var4 != null) {
+            var4.setLevel((int)(10000.0F * var2));
+        } else {
+            this.invalidate();
+        }
+
+        this.onVisualProgressChanged(var1, var2);
     }
 
     @SuppressLint("WrongConstant")
-    public void startAnimation() {
-        if (this.getVisibility() == 0 && (!IS_BASE_SDK_VERSION || this.getWindowVisibility() == 0)) {
+    public final void startAnimation() {
+        if (this.getVisibility() == 0 && (VERSION.SDK_INT > 23 || this.getWindowVisibility() == 0)) {
             if (this.mIndeterminateDrawable instanceof Animatable) {
                 this.mShouldStartAnimationDrawable = true;
                 this.mHasAnimation = false;
@@ -2161,7 +1985,7 @@ public class SeslProgressBar extends View {
 
     }
 
-    public void stopAnimation() {
+    public final void stopAnimation() {
         this.mHasAnimation = false;
         Drawable var1 = this.mIndeterminateDrawable;
         if (var1 instanceof Animatable) {
@@ -2170,6 +1994,122 @@ public class SeslProgressBar extends View {
         }
 
         this.postInvalidate();
+    }
+
+    @SuppressLint("WrongConstant")
+    public final void swapCurrentDrawable(Drawable var1) {
+        Drawable var2 = this.mCurrentDrawable;
+        this.mCurrentDrawable = var1;
+        if (var2 != this.mCurrentDrawable) {
+            if (var2 != null) {
+                var2.setVisible(false, false);
+            }
+
+            var1 = this.mCurrentDrawable;
+            if (var1 != null) {
+                boolean var3;
+                if (this.getWindowVisibility() == 0 && this.isShown()) {
+                    var3 = true;
+                } else {
+                    var3 = false;
+                }
+
+                var1.setVisible(var3, false);
+            }
+        }
+
+    }
+
+    public final Drawable tileify(Drawable var1, boolean var2) {
+        boolean var3 = var1 instanceof LayerDrawable;
+        int var4 = 0;
+        byte var5 = 0;
+        if (!var3) {
+            if (var1 instanceof StateListDrawable) {
+                StateListDrawable var13 = (StateListDrawable)var1;
+                StateListDrawable var18 = new StateListDrawable();
+
+                for(int var14 = SeslProgressBar.StateListDrawableCompat.getStateCount(var13); var4 < var14; ++var4) {
+                    int[] var17 = SeslProgressBar.StateListDrawableCompat.getStateSet(var13, var4);
+                    Drawable var10 = SeslProgressBar.StateListDrawableCompat.getStateDrawable(var13, var4);
+                    if (var10 != null) {
+                        var18.addState(var17, this.tileify(var10, var2));
+                    }
+                }
+
+                return var18;
+            } else {
+                Object var16 = var1;
+                if (var1 instanceof BitmapDrawable) {
+                    BitmapDrawable var12 = (BitmapDrawable)var1.getConstantState().newDrawable(this.getResources());
+                    var12.setTileModeXY(TileMode.REPEAT, TileMode.CLAMP);
+                    if (this.mSampleWidth <= 0) {
+                        this.mSampleWidth = var12.getIntrinsicWidth();
+                    }
+
+                    var16 = var12;
+                    if (var2) {
+                        return new ClipDrawable(var12, 3, 1);
+                    }
+                }
+
+                return (Drawable)var16;
+            }
+        } else {
+            LayerDrawable var11 = (LayerDrawable)var1;
+            int var6 = var11.getNumberOfLayers();
+            Drawable[] var7 = new Drawable[var6];
+
+            for(var4 = 0; var4 < var6; ++var4) {
+                int var8 = var11.getId(var4);
+                Drawable var9 = var11.getDrawable(var4);
+                if (var8 != R.id.progress && var8 != R.id.secondaryProgress) {
+                    var2 = false;
+                } else {
+                    var2 = true;
+                }
+
+                var7[var4] = this.tileify(var9, var2);
+            }
+
+            LayerDrawable var15 = new LayerDrawable(var7);
+            if (VERSION.SDK_INT >= 23) {
+                for(var4 = var5; var4 < var6; ++var4) {
+                    var15.setId(var4, var11.getId(var4));
+                    var15.setLayerGravity(var4, var11.getLayerGravity(var4));
+                    var15.setLayerWidth(var4, var11.getLayerWidth(var4));
+                    var15.setLayerHeight(var4, var11.getLayerHeight(var4));
+                    var15.setLayerInsetLeft(var4, var11.getLayerInsetLeft(var4));
+                    var15.setLayerInsetRight(var4, var11.getLayerInsetRight(var4));
+                    var15.setLayerInsetTop(var4, var11.getLayerInsetTop(var4));
+                    var15.setLayerInsetBottom(var4, var11.getLayerInsetBottom(var4));
+                    var15.setLayerInsetStart(var4, var11.getLayerInsetStart(var4));
+                    var15.setLayerInsetEnd(var4, var11.getLayerInsetEnd(var4));
+                }
+            }
+
+            return var15;
+        }
+    }
+
+    public final Drawable tileifyIndeterminate(Drawable var1) {
+        Object var2 = var1;
+        if (var1 instanceof AnimationDrawable) {
+            AnimationDrawable var3 = (AnimationDrawable)var1;
+            int var4 = var3.getNumberOfFrames();
+            var2 = new AnimationDrawable();
+            ((AnimationDrawable)var2).setOneShot(var3.isOneShot());
+
+            for(int var5 = 0; var5 < var4; ++var5) {
+                var1 = this.tileify(var3.getFrame(var5), true);
+                var1.setLevel(10000);
+                ((AnimationDrawable)var2).addFrame(var1, var3.getDuration(var5));
+            }
+
+            ((AnimationDrawable)var2).setLevel(10000);
+        }
+
+        return (Drawable)var2;
     }
 
     @SuppressLint("RestrictedApi")
@@ -2183,9 +2123,9 @@ public class SeslProgressBar extends View {
             int var10;
             label32: {
                 if (this.mOnlyIndeterminate && !(var5 instanceof AnimationDrawable)) {
-                    var2 = var5.getIntrinsicWidth();
-                    var1 = this.mIndeterminateDrawable.getIntrinsicHeight();
-                    float var6 = (float)var2 / (float)var1;
+                    var1 = var5.getIntrinsicWidth();
+                    var2 = this.mIndeterminateDrawable.getIntrinsicHeight();
+                    float var6 = (float)var1 / (float)var2;
                     float var7 = (float)var3;
                     float var8 = (float)var4;
                     float var9 = var7 / var8;
@@ -2216,9 +2156,9 @@ public class SeslProgressBar extends View {
                 var2 = var3 - var2;
                 var1 = var3 - var1;
             } else {
-                var3 = var2;
-                var2 = var1;
-                var1 = var3;
+                var3 = var1;
+                var1 = var2;
+                var2 = var3;
             }
 
             this.mIndeterminateDrawable.setBounds(var2, var10, var1, var4);
@@ -2228,6 +2168,33 @@ public class SeslProgressBar extends View {
         var5 = this.mProgressDrawable;
         if (var5 != null) {
             var5.setBounds(0, 0, var1, var2);
+        }
+
+    }
+
+    public final void updateDrawableState() {
+        int[] var1 = this.getDrawableState();
+        Drawable var2 = this.mProgressDrawable;
+        boolean var3 = false;
+        boolean var4 = var3;
+        if (var2 != null) {
+            var4 = var3;
+            if (var2.isStateful()) {
+                var4 = false | var2.setState(var1);
+            }
+        }
+
+        var2 = this.mIndeterminateDrawable;
+        var3 = var4;
+        if (var2 != null) {
+            var3 = var4;
+            if (var2.isStateful()) {
+                var3 = var4 | var2.setState(var1);
+            }
+        }
+
+        if (var3) {
+            this.invalidate();
         }
 
     }
@@ -2275,7 +2242,6 @@ public class SeslProgressBar extends View {
     }
 
     private static class RefreshData {
-        public static final int POOL_MAX = 24;
         public static final Pools.SynchronizedPool<RefreshData> sPool = new Pools.SynchronizedPool(24);
         public boolean animate;
         public boolean fromUser;
@@ -2392,8 +2358,35 @@ public class SeslProgressBar extends View {
         }
     }
 
-    @Retention(RetentionPolicy.SOURCE)
-    public @interface SeekBarMode {
+    private static class StateListDrawableCompat {
+        public static final boolean IS_BASE_SDK_VERSION;
+
+        static {
+            boolean var0;
+            if (VERSION.SDK_INT <= 23) {
+                var0 = true;
+            } else {
+                var0 = false;
+            }
+
+            IS_BASE_SDK_VERSION = var0;
+        }
+
+        public static int getStateCount(StateListDrawable var0) {
+            if (IS_BASE_SDK_VERSION) {
+                Utils.genericInvokeMethod(var0, Build.VERSION.SDK_INT >= 29 ? "hidden_getStateCount" : "getStateCount");
+            }
+
+            return 0;
+        }
+
+        public static Drawable getStateDrawable(StateListDrawable var0, int var1) {
+            return IS_BASE_SDK_VERSION ? (Drawable) Utils.genericInvokeMethod(var0, Build.VERSION.SDK_INT >= 29 ? "hidden_getStateDrawable" : "getStateDrawable", var1) : null;
+        }
+
+        public static int[] getStateSet(StateListDrawable var0, int var1) {
+            return IS_BASE_SDK_VERSION ? (int[]) Utils.genericInvokeMethod(var0, Build.VERSION.SDK_INT >= 29 ? "hidden_getStateSet" : "getStateSet", var1) : null;
+        }
     }
 
     // kang
