@@ -21,8 +21,6 @@
     <string name="mesa_credits_gmaterial_description">"@Google - Licensed with Apache 2.0"</string>
     <string name="mesa_credits_oneui_title">Samsung Experience Software Library</string>
     <string name="mesa_credits_oneui_description">"@Samsung - Licensed with Apache 2.0"</string>
-    <string name="mesa_credits_spinkit_title">Android-SpinKit</string>
-    <string name="mesa_credits_spinkit_description">"@ybq - Licensed with MIT"</string>
     <string name="mesa_credits_fetch_title">Fetch</string>
     <string name="mesa_credits_fetch_description">"@tonyofrancis - Licensed with Apache 2.0"</string>
     <string name="mesa_credits_waitingdots_title">WaitingDots</string>

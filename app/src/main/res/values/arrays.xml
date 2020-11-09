@@ -4,7 +4,6 @@
         <item>@drawable/mesa_credits_androidx_icon</item>
         <item>@drawable/mesa_credits_gmaterial_icon</item>
         <item>@drawable/mesa_credits_oneui_icon</item>
-        <item>@drawable/mesa_credits_spinkit_icon</item>
         <item>@drawable/mesa_credits_fetch_icon</item>
         <item>@drawable/mesa_credits_waitingdots_icon</item>
     </array>
@@ -12,7 +11,6 @@
         <item>@string/mesa_credits_androidx_title</item>
         <item>@string/mesa_credits_gmaterial_title</item>
         <item>@string/mesa_credits_oneui_title</item>
-        <item>@string/mesa_credits_spinkit_title</item>
         <item>@string/mesa_credits_fetch_title</item>
         <item>@string/mesa_credits_waitingdots_title</item>
     </string-array>
@@ -20,15 +18,13 @@
         <item>@string/mesa_credits_androidx_description</item>
         <item>@string/mesa_credits_gmaterial_description</item>
         <item>@string/mesa_credits_oneui_description</item>
-        <item>@string/mesa_credits_spinkit_description</item>
         <item>@string/mesa_credits_fetch_description</item>
         <item>@string/mesa_credits_waitingdots_description</item>
     </string-array>
     <string-array name="mesa_creditspage_lib_web">
-        <item></item>
-        <item></item>
-        <item></item>
-        <item>https://github.com/ybq/Android-SpinKit</item>
+        <item>https://developer.android.com/jetpack/androidx</item>
+        <item>https://github.com/material-components/material-components-android</item>
+        <item>https://developer.samsung.com/one-ui</item>
         <item>https://github.com/tonyofrancis/Fetch</item>
         <item>https://github.com/tajchert/WaitingDots</item>
     </string-array>
