@@ -1,44 +1,47 @@
 package com.mesalabs.on.update.activity.home;
 
-import android.app.Dialog;
+import android.app.Activity;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.icu.text.SimpleDateFormat;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.util.TypedValue;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.StringWriter;
-import java.net.HttpURLConnection;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.util.Locale;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.graphics.ColorUtils;
 
 import com.mesalabs.cerberus.base.BaseAppBarActivity;
 import com.mesalabs.cerberus.ui.callback.OnSingleClickListener;
 import com.mesalabs.cerberus.ui.utils.ActionBarUtils;
+import com.mesalabs.cerberus.ui.widget.RoundNestedScrollView;
 import com.mesalabs.cerberus.utils.StateUtils;
 import com.mesalabs.cerberus.utils.Utils;
 import com.mesalabs.on.update.R;
 import com.mesalabs.on.update.ota.utils.PreferencesUtils;
 import com.mesalabs.on.update.utils.LogUtils;
 import com.samsung.android.ui.appbar.SeslAppBarLayout;
+import com.samsung.android.ui.appbar.ViewUtilsLollipop;
 
 /*
  * On Update
@@ -54,9 +57,11 @@ import com.samsung.android.ui.appbar.SeslAppBarLayout;
 
 public class ChangelogActivity extends BaseAppBarActivity {
     private boolean isBgColorDark;
-    private Dialog mProgressCircle;
 
     private ImageView mImageView;
+    private RoundNestedScrollView mNSVLayout;
+    private FrameLayout mProgressLayout;
+    private ConstraintLayout mContainerLayout;
     private TextView mContainerTitle;
     private TextView mContainerDate;
     private View mDivider;
@@ -72,30 +77,14 @@ public class ChangelogActivity extends BaseAppBarActivity {
             finish();
         }
 
-        // init UX
-        mProgressCircle = new Dialog(mContext, Utils.isNightMode(mContext) ? R.style.mesa_ProgressCircleDialogStyle : R.style.mesa_ProgressCircleDialogStyle_Light);
-        mProgressCircle.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        mProgressCircle.getWindow().setGravity(Gravity.CENTER);
-        mProgressCircle.setOnCancelListener(dialog -> finish());
-        mProgressCircle.setCanceledOnTouchOutside(false);
-        mProgressCircle.setContentView(LayoutInflater.from(mContext).inflate(R.layout.mesa_view_progress_circle_dialog_layout, null));
-        mProgressCircle.show();
-
         setBaseContentView(R.layout.mesa_ota_activity_changelogactivity_layout);
 
         appBar = new ActionBarUtils(this);
         appBar.initAppBar(true);
-        appBar.getAppBarLayout().addOnOffsetChangedListener(new AppBarStateChangeListener() {
+        appBar.getAppBarLayout().addOnOffsetChangedListener(new CustomAppBarListener() {
             @Override
-            public void onOffsetChanged(SeslAppBarLayout layout, int verticalOffset) {
-                super.onOffsetChanged(layout, verticalOffset);
-                float range = (float) -layout.getTotalScrollRange();
-                mImageView.setImageAlpha((int) (255 * (1.0f - (float) verticalOffset / range)));
-            }
-
-            @Override
-            public void onStateChanged(SeslAppBarLayout appBarLayout, State state) {
-                setLightStatusBar(state == State.COLLAPSED ? !Utils.isNightMode(mContext) : !isBgColorDark);
+            public void onStateChanged(SeslAppBarLayout appBarLayout, int state) {
+                setLightStatusBar(state == STATE_COLLAPSED ? !Utils.isNightMode(mContext) : !isBgColorDark);
             }
         });
         appBar.setHomeAsUpButton(new OnSingleClickListener() {
@@ -104,7 +93,6 @@ public class ChangelogActivity extends BaseAppBarActivity {
                 onBackPressed();
             }
         });
-        appBar.setTitleText(getString(R.string.mesa_whats_new));
 
         TypedValue outValue = new TypedValue();
         getResources().getValue(R.dimen.sesl_appbar_height_proportion, outValue, true);
@@ -112,11 +100,16 @@ public class ChangelogActivity extends BaseAppBarActivity {
         if (outValue.getFloat() == 0.0f)
             setFullscreen();
 
-        new LoadChangelogTask().execute(PreferencesUtils.ROM.getChangelogHeaderImgUrl(), PreferencesUtils.ROM.getChangelogUrl());
-    }
+        mImageView = findViewById(R.id.mesa_appbarbg_changelogactivity);
+        mNSVLayout = findViewById(R.id.mesa_nsv_changelogactivity);
+        mProgressLayout = findViewById(R.id.mesa_progresscontainer_changelogactivity);
+        mContainerLayout = findViewById(R.id.mesa_changelogcontainer_changelogactivity);
+        mContainerTitle = findViewById(R.id.mesa_title_container_changelogactivity);
+        mContainerDate = findViewById(R.id.mesa_date_container_changelogactivity);
+        mDivider = findViewById(R.id.mesa_divider_container_changelogactivity);
+        mContentText = findViewById(R.id.mesa_contenttext_container_changelogactivity);
 
-    private void dismissProgressCircleDialog() {
-        mProgressCircle.dismiss();
+        new LoadChangelogTask().execute(PreferencesUtils.ROM.getChangelogHeaderImgUrl(), PreferencesUtils.ROM.getChangelogUrl());
     }
 
     private void setLightStatusBar(boolean enable) {
@@ -144,50 +137,55 @@ public class ChangelogActivity extends BaseAppBarActivity {
     }
 
 
-    private abstract static class AppBarStateChangeListener implements SeslAppBarLayout.OnOffsetChangedListener {
-        public enum State {
-            EXPANDED,
-            COLLAPSED,
-            IDLE
-        }
+    private abstract class CustomAppBarListener implements SeslAppBarLayout.OnOffsetChangedListener {
+        public int STATE_EXPANDED = 0;
+        public int STATE_COLLAPSED = 1;
+        public int STATE_IDLE = 1;
 
-        private State mCurrentState = State.IDLE;
+        private int mCurrentState = STATE_IDLE;
 
         @Override
         public void onOffsetChanged(SeslAppBarLayout layout, int verticalOffset) {
+            int totalScrollRange = layout.getTotalScrollRange();
+            int inputMethodWindowVisibleHeight = (int) Utils.genericInvokeMethod(InputMethodManager.class, mContext.getSystemService(INPUT_METHOD_SERVICE), "getInputMethodWindowVisibleHeight");
+
             if (verticalOffset == 0) {
-                if (mCurrentState != State.EXPANDED) {
-                    onStateChanged(layout, State.EXPANDED);
+                if (mCurrentState != STATE_EXPANDED) {
+                    onStateChanged(layout, STATE_EXPANDED);
                 }
-                mCurrentState = State.EXPANDED;
+                mCurrentState = STATE_EXPANDED;
             } else if (Math.abs(verticalOffset) >= layout.getTotalScrollRange()) {
-                if (mCurrentState != State.COLLAPSED) {
-                    onStateChanged(layout, State.COLLAPSED);
+                if (mCurrentState != STATE_COLLAPSED) {
+                    onStateChanged(layout, STATE_COLLAPSED);
                 }
-                mCurrentState = State.COLLAPSED;
+                mCurrentState = STATE_COLLAPSED;
             } else {
-                if (mCurrentState != State.IDLE) {
-                    onStateChanged(layout, State.IDLE);
+                if (mCurrentState != STATE_IDLE) {
+                    onStateChanged(layout, STATE_IDLE);
                 }
-                mCurrentState = State.IDLE;
+                mCurrentState = STATE_IDLE;
+            }
+
+            mImageView.setImageAlpha((int) (255 * (1.0f - (float) verticalOffset / -totalScrollRange)));
+
+            if (mProgressLayout != null && mProgressLayout.getVisibility() == View.VISIBLE) {
+                if (totalScrollRange != 0) {
+                    mProgressLayout.setTranslationY(((float) (Math.abs(verticalOffset) - totalScrollRange)) / 2.0f);
+                } else if (Utils.isInMultiWindowMode(ChangelogActivity.this)) {
+                    mProgressLayout.setTranslationY(0.0f);
+                } else {
+                    mProgressLayout.setTranslationY(((float) (Math.abs(verticalOffset) - inputMethodWindowVisibleHeight)) / 2.0f);
+                }
             }
         }
 
-        public abstract void onStateChanged(SeslAppBarLayout layout, State state);
+        public abstract void onStateChanged(SeslAppBarLayout layout, int state);
     }
 
     private class LoadChangelogTask extends AsyncTask<String, Void, Bitmap> {
         String title;
         String date;
         String content = "";
-
-        public LoadChangelogTask() {
-            mImageView = findViewById(R.id.mesa_appbarbg_changelogactivity);
-            mContainerTitle = findViewById(R.id.mesa_title_container_changelogactivity);
-            mContainerDate = findViewById(R.id.mesa_date_container_changelogactivity);
-            mDivider = findViewById(R.id.mesa_divider_container_changelogactivity);
-            mContentText = findViewById(R.id.mesa_contenttext_container_changelogactivity);
-        }
 
         @Override
         protected Bitmap doInBackground(String... urls) {
@@ -227,18 +225,20 @@ public class ChangelogActivity extends BaseAppBarActivity {
         @Override
         protected void onPostExecute(Bitmap result) {
             if (result != null) {
-                appBar.setTitleText("");
                 mImageView.setImageBitmap(result);
                 isBgColorDark = isColorDark(getDominantColor(result));
                 setLightStatusBar(!isBgColorDark);
             } else {
                 LogUtils.e("DownloadHeaderImageTask", "result is null!!!");
             }
+            mNSVLayout.setBackgroundColor(mContext.getResources().getColor(Utils.isNightMode(mContext) ? R.color.sesl_background_color_dark : R.color.sesl_background_color_light, null));
+
+            mProgressLayout.setVisibility(View.GONE);
+            mContainerLayout.setVisibility(View.VISIBLE);
             mContainerTitle.setText(title);
             mContainerDate.setText(date);
             mDivider.setVisibility(View.VISIBLE);
             mContentText.setText(content);
-            dismissProgressCircleDialog();
         }
 
         private int getDominantColor(Bitmap bitmap) {
