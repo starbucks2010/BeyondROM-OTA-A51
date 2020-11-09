@@ -12,7 +12,7 @@
             android:summary="@string/mesa_bgservice_pref_sum"
             android:defaultValue="true" />
 
-        <com.samsung.android.ui.preference.DropDownPreference
+        <com.samsung.android.ui.preference.SeslListPreference
             android:key="mesa_bgservice_freq_pref"
             android:title="@string/mesa_bgservice_freq_pref_title"
             android:summary="@string/mesa_list_summary"
