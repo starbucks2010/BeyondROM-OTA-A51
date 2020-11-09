@@ -18,10 +18,7 @@ import android.widget.TextView;
 
 import com.mesalabs.on.update.R;
 import com.mesalabs.on.update.ota.ROMUpdate;
-
-import com.github.ybq.android.spinkit.SpinKitView;
-import com.github.ybq.android.spinkit.sprite.Sprite;
-import com.github.ybq.android.spinkit.style.MultiplePulse;
+import com.samsung.android.ui.widget.SeslProgressBar;
 
 /*
  * On Update
@@ -39,19 +36,17 @@ public class UpdateStatusView extends LinearLayout {
     private Context mContext;
     private int mCheckingStatus = 0;
 
+    private SeslProgressBar mProgress;
     private LinearLayout mContainerView;
     private TextView mTextView;
-    private String mText;
-    private SpinKitView mLoadingView;
     private ImageView mImageView;
     private Drawable mDrawable;
     private int mDrawableColor;
 
+    private String mText;
+
     private AlphaAnimation mFadeInAnim;
     private AlphaAnimation mFadeOutAnim;
-    private AlphaAnimation mFadeOutAnim_IV;
-    private AlphaAnimation mFadeOutAnim_LV;
-    private AlphaAnimation mFadeOutAnim_TV;
     private ObjectAnimator mMoveToZeroY_TV;
 
     public UpdateStatusView(Context context, AttributeSet attrs) {
@@ -66,9 +61,9 @@ public class UpdateStatusView extends LinearLayout {
 
         LayoutInflater.from(mContext).inflate(R.layout.mesa_ota_view_updatestatusview_layout, this);
 
+        mProgress = findViewById(R.id.mesa_progress_updatestatusview);
         mContainerView = findViewById(R.id.mesa_container_updatestatusview);
         mTextView = findViewById(R.id.mesa_textview_updatestatusview);
-        mLoadingView = findViewById(R.id.mesa_loading_updatestatusview);
         mImageView = findViewById(R.id.mesa_imageview_updatestatusview);
 
         initAnimationFields();
@@ -79,84 +74,6 @@ public class UpdateStatusView extends LinearLayout {
         mFadeInAnim.setDuration(1000);
         mFadeOutAnim = new AlphaAnimation(1.0f, 0.0f);
         mFadeOutAnim.setDuration(500);
-
-        mFadeOutAnim_IV = new AlphaAnimation(1.0f, 0.0f);
-        mFadeOutAnim_IV.setDuration(500);
-        mFadeOutAnim_IV.setAnimationListener(new Animation.AnimationListener(){
-            @Override
-            public void onAnimationStart(Animation animation) { }
-
-            @Override
-            public void onAnimationRepeat(Animation animation){}
-
-            @Override
-            public void onAnimationEnd(Animation animation){
-                mImageView.setVisibility(View.GONE);
-                mLoadingView.setVisibility(View.VISIBLE);
-
-                mImageView.setImageDrawable(null);
-                ((Sprite) mDrawable).setColor(mDrawableColor);
-                mLoadingView.setIndeterminate(true);
-                mLoadingView.setIndeterminateDrawable(mDrawable);
-            }
-        });
-
-        mFadeOutAnim_LV = new AlphaAnimation(1.0f, 0.0f);
-        mFadeOutAnim_LV.setDuration(500);
-        mFadeOutAnim_LV.setAnimationListener(new Animation.AnimationListener(){
-            @Override
-            public void onAnimationStart(Animation animation) { }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) { }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                mLoadingView.setVisibility(View.GONE);
-                mImageView.setVisibility(View.VISIBLE);
-
-                mImageView.setImageDrawable(mDrawable);
-                mImageView.setColorFilter(mDrawableColor, PorterDuff.Mode.SRC_IN);
-
-                switch(mCheckingStatus) {
-                    case ROMUpdate.STATE_NO_UPDATES:
-                        Animatable animatable = (Animatable) mImageView.getDrawable();
-                        animatable.start();
-                        break;
-                    case ROMUpdate.STATE_NEW_VERSION_AVAILABLE:
-                        mImageView.setScaleX(0.7f);
-                        mImageView.setScaleY(0.7f);
-                        ObjectAnimator scaleDown = ObjectAnimator.ofPropertyValuesHolder(mImageView,
-                                PropertyValuesHolder.ofFloat("scaleX", 1.0f),
-                                PropertyValuesHolder.ofFloat("scaleY", 1.0f));
-                        scaleDown.setDuration(1000);
-                        scaleDown.setInterpolator(new BounceInterpolator());
-                        scaleDown.start();
-                        mImageView.startAnimation(mFadeInAnim);
-                        break;
-                    case ROMUpdate.STATE_DOWNLOADED:
-                    case ROMUpdate.STATE_ERROR:
-                    default:
-                        mImageView.startAnimation(mFadeInAnim);
-                        break;
-                }
-            }
-        });
-
-        mFadeOutAnim_TV = new AlphaAnimation(1.0f, 0.0f);
-        mFadeOutAnim_TV.setDuration(500);
-        mFadeOutAnim_TV.setAnimationListener(new Animation.AnimationListener(){
-            @Override
-            public void onAnimationStart(Animation animation){}
-
-            @Override
-            public void onAnimationRepeat(Animation animation){}
-
-            @Override
-            public void onAnimationEnd(Animation animation){
-                setTextInternal();
-            }
-        });
 
         mMoveToZeroY_TV = ObjectAnimator.ofFloat(mTextView, "translationY", 0.0f);
         mMoveToZeroY_TV.setDuration(1000);
@@ -176,9 +93,9 @@ public class UpdateStatusView extends LinearLayout {
                 mDrawableColor = getResources().getColor(R.color.mesa_ota_primary_dark_color_light, null);
                 break;
             case ROMUpdate.STATE_CHECKING:
-                mText = getResources().getString(R.string.mesa_checking_updates);
-                mDrawable = new MultiplePulse();
-                mDrawableColor = getResources().getColor(R.color.mesa_ota_primary_dark_color_light, null);
+                mText = "";
+                mDrawable = null;
+                mDrawableColor = 0;
                 break;
             case ROMUpdate.STATE_NO_UPDATES:
                 mText = getResources().getString(R.string.mesa_no_updates_available);
@@ -199,19 +116,20 @@ public class UpdateStatusView extends LinearLayout {
         }
         setText(mText);
 
-        if (mDrawable instanceof Sprite)
+        if (mDrawable == null)
             disableImageView();
         else
-            disableLoadingView();
+            disableProgress();
     }
 
     public void setText(String text) {
         mText = text;
-
-        if (mTextView.getText() != "")
-            mTextView.startAnimation(mFadeOutAnim_TV);
-        else
-            setTextInternal();
+        mTextView.setText(mText);
+        mTextView.startAnimation(mFadeInAnim);
+        if (mTextView.getLineCount() <= 1) {
+            mTextView.setTranslationY(16.0f);
+            mMoveToZeroY_TV.start();
+        }
     }
 
     public void start(int status) {
@@ -223,19 +141,19 @@ public class UpdateStatusView extends LinearLayout {
                 mDrawable = getResources().getDrawable(R.drawable.mesa_ota_updatestatusview_dw_complete,null);
                 mDrawableColor = getResources().getColor(R.color.mesa_ota_primary_dark_color_light, null);
 
-                mLoadingView.setVisibility(View.GONE);
-                mImageView.setVisibility(View.VISIBLE);
+                mProgress.setVisibility(View.GONE);
+                mContainerView.setVisibility(View.VISIBLE);
                 mImageView.setImageDrawable(mDrawable);
                 mImageView.setColorFilter(mDrawableColor, PorterDuff.Mode.SRC_IN);
                 break;
             case ROMUpdate.STATE_CHECKING:
             default:
-                mText = getResources().getString(R.string.mesa_checking_updates);
-                mDrawable = new MultiplePulse();
-                mDrawableColor = getResources().getColor(R.color.mesa_ota_primary_dark_color_light, null);
+                mText = "";
+                mDrawable = null;
+                mDrawableColor = 0;
 
-                ((Sprite) mDrawable).setColor(mDrawableColor);
-                mLoadingView.setIndeterminateDrawable(mDrawable);
+                mProgress.setVisibility(View.VISIBLE);
+                mContainerView.setVisibility(View.GONE);
                 break;
         }
 
@@ -243,21 +161,40 @@ public class UpdateStatusView extends LinearLayout {
     }
 
     private void disableImageView() {
-        mImageView.startAnimation(mFadeOutAnim_IV);
-        mLoadingView.startAnimation(mFadeOutAnim);
+        mContainerView.setVisibility(View.GONE);
+        mContainerView.setAlpha(0.0f);
+        mProgress.setVisibility(View.VISIBLE);
     }
 
-    private void disableLoadingView() {
-        mImageView.startAnimation(mFadeOutAnim);
-        mLoadingView.startAnimation(mFadeOutAnim_LV);
-    }
+    private void disableProgress() {
+        mProgress.setVisibility(View.GONE);
+        mContainerView.setAlpha(1.0f);
+        mContainerView.setVisibility(View.VISIBLE);
 
-    private void setTextInternal() {
-        mTextView.setText(mText);
-        mTextView.startAnimation(mFadeInAnim);
-        if (mTextView.getLineCount() <= 1) {
-            mTextView.setTranslationY(16.0f);
-            mMoveToZeroY_TV.start();
+        mImageView.setImageDrawable(mDrawable);
+        mImageView.setColorFilter(mDrawableColor, PorterDuff.Mode.SRC_IN);
+
+        switch(mCheckingStatus) {
+            case ROMUpdate.STATE_NO_UPDATES:
+                Animatable animatable = (Animatable) mImageView.getDrawable();
+                animatable.start();
+                break;
+            case ROMUpdate.STATE_NEW_VERSION_AVAILABLE:
+                mImageView.setScaleX(0.7f);
+                mImageView.setScaleY(0.7f);
+                ObjectAnimator scaleDown = ObjectAnimator.ofPropertyValuesHolder(mImageView,
+                        PropertyValuesHolder.ofFloat("scaleX", 1.0f),
+                        PropertyValuesHolder.ofFloat("scaleY", 1.0f));
+                scaleDown.setDuration(1000);
+                scaleDown.setInterpolator(new BounceInterpolator());
+                scaleDown.start();
+                mImageView.startAnimation(mFadeInAnim);
+                break;
+            case ROMUpdate.STATE_DOWNLOADED:
+            case ROMUpdate.STATE_ERROR:
+            default:
+                mImageView.startAnimation(mFadeInAnim);
+                break;
         }
     }
 

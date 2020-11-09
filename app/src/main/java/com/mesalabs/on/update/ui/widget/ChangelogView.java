@@ -51,14 +51,11 @@ public class ChangelogView extends LinearLayout {
 
     private FrameLayout mMainContainer;
     private TextView mSuperText;
-    private SeslProgressBar mProgressBar;
     private LinearLayout mHeaderContainer;
     private LinearLayout mHeaderImgContainer;
     private TextView mErrorText;
 
     private AlphaAnimation mFadeInAnim;
-    private AlphaAnimation mFadeInAnim_PC;
-    private AlphaAnimation mFadeOutAnim_PC;
 
     public ChangelogView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -109,7 +106,6 @@ public class ChangelogView extends LinearLayout {
 
         mSuperText = findViewById(R.id.mesa_supertextview_changelogview);
         mMainContainer = findViewById(R.id.mesa_container_changelogview);
-        mProgressBar = findViewById(R.id.mesa_progressbar_changelogview);
         mHeaderContainer = findViewById(R.id.mesa_header_changelogview);
         mHeaderImgContainer = findViewById(R.id.mesa_img_container_header_changelogview);
         mErrorText = findViewById(R.id.mesa_errortextview_changelogview);
@@ -124,35 +120,6 @@ public class ChangelogView extends LinearLayout {
     private void initAnimationFields() {
         mFadeInAnim = new AlphaAnimation(0.0f, 1.0f);
         mFadeInAnim.setDuration(500);
-
-        mFadeInAnim_PC = new AlphaAnimation(0.0f, 1.0f);
-        mFadeInAnim_PC.setDuration(1000);
-        mFadeInAnim_PC.setAnimationListener(new Animation.AnimationListener(){
-            @Override
-            public void onAnimationStart(Animation animation) { }
-
-            @Override
-            public void onAnimationRepeat(Animation animation){}
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                mProgressBar.startAnimation(mFadeOutAnim_PC);
-            }
-        });
-        mFadeOutAnim_PC = new AlphaAnimation(1.0f, 0.0f);
-        mFadeOutAnim_PC.setDuration(500);
-        mFadeOutAnim_PC.setAnimationListener(new Animation.AnimationListener(){
-            @Override
-            public void onAnimationStart(Animation animation) { }
-
-            @Override
-            public void onAnimationRepeat(Animation animation){}
-
-            @Override
-            public void onAnimationEnd(Animation animation){
-                getChangelog();
-            }
-        });
     }
 
     private SpannableStringBuilder getSuperHeaderText() {
@@ -192,8 +159,8 @@ public class ChangelogView extends LinearLayout {
         mHeaderImgContainer.setLayoutParams(lp);
     }
 
-    public void getChangelog() {
-        mProgressBar.setVisibility(View.GONE);
+    public void start() {
+        this.setVisibility(View.VISIBLE);
         if (StateUtils.isNetworkConnected(mContext) && !PreferencesUtils.ROM.getChangelogUrl().equals("null")) {
             mSuperText.setVisibility(View.VISIBLE);
             mSuperText.setText(getSuperHeaderText());
@@ -206,19 +173,9 @@ public class ChangelogView extends LinearLayout {
         }
     }
 
-    public void start() {
-        this.setVisibility(View.VISIBLE);
-        mSuperText.setVisibility(View.GONE);
-        mProgressBar.setVisibility(View.VISIBLE);
-        mHeaderContainer.setVisibility(View.GONE);
-        mErrorText.setVisibility(View.GONE);
-        mProgressBar.startAnimation(mFadeInAnim_PC);
-    }
-
     public void stop() {
         this.setVisibility(View.GONE);
         mSuperText.setVisibility(View.GONE);
-        mProgressBar.setVisibility(View.GONE);
         mHeaderContainer.setVisibility(View.GONE);
         mErrorText.setVisibility(View.GONE);
     }

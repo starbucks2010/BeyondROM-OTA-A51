@@ -98,7 +98,7 @@ public class DownloadProgressFragment extends Fragment {
                 startActivity(new Intent(mContext, ChangelogActivity.class));
             }
         });
-        changelogView.getChangelog();
+        changelogView.start();
 
         preInstallWarningText = mRootView.findViewById(R.id.mesa_preinstall_warning_download_ota_mainactivity);
     }

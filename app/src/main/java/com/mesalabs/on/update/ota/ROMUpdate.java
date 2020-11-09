@@ -137,8 +137,6 @@ public class ROMUpdate {
         @Override
         protected Void doInBackground(Void... v) {
             try {
-                Thread.sleep(1000);
-
                 InputStream input = null;
 
                 URL url = new URL(Constants.OTA_MANIFEST_URL);
