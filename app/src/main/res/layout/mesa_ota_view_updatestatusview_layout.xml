@@ -1,4 +1,4 @@
-<FrameLayout android:layout_width="fill_parent" android:layout_height="@dimen/mesa_updatestatusview_size" android:paddingHorizontal="31.0dip" android:paddingVertical="12.0dip"
+<FrameLayout android:layout_width="fill_parent" android:layout_height="@dimen/mesa_updatestatusview_size" android:paddingHorizontal="32.0dip"
     xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
     <com.samsung.android.ui.widget.SeslProgressBar android:id="@+id/mesa_progress_updatestatusview" android:layout_gravity="center" android:layout_width="@dimen/mesa_updatestatusview_icon_size" android:layout_height="@dimen/mesa_updatestatusview_icon_size" android:indeterminate="true" style="?android:progressBarStyle" />
     <LinearLayout android:id="@+id/mesa_container_updatestatusview" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_gravity="center_horizontal" android:orientation="horizontal" android:visibility="gone">
