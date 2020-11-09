@@ -80,11 +80,6 @@ public class DownloadProgressView extends FrameLayout {
     public void setWaitingForNetworkStatus(boolean paused) {
         mDescTextView.setVisibility(paused ? GONE : VISIBLE);
         mTitleTextView.setText(paused ? R.string.mesa_downloadprogressview_waiting_for_network : R.string.mesa_downloadprogressview_downloading);
-        if (paused) {
-            if (mDotsTextView.isPlaying()) mDotsTextView.hideAndStop();
-        } else {
-            if (mDotsTextView.isHide()) mDotsTextView.showAndPlay();
-        }
         mProgressBar.setAlpha(paused ? 0.4f : 1.0f);
     }
 
@@ -100,7 +95,7 @@ public class DownloadProgressView extends FrameLayout {
         mProgress = progress;
         mTitleTextView.setText(R.string.mesa_downloadprogressview_downloading);
         if (mDotsTextView.isHide()) mDotsTextView.showAndPlay();
-        mProgressBar.setProgress(mProgress, true);
+        mProgressBar.setProgress(mProgress, false);
     }
 
     public void setTimeLeftText(String string) {
