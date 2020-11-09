@@ -140,30 +140,24 @@ public class ChangelogActivity extends BaseAppBarActivity {
     private abstract class CustomAppBarListener implements SeslAppBarLayout.OnOffsetChangedListener {
         public int STATE_EXPANDED = 0;
         public int STATE_COLLAPSED = 1;
-        public int STATE_IDLE = 1;
 
-        private int mCurrentState = STATE_IDLE;
+        private int mCurrentState = STATE_EXPANDED;
 
         @Override
         public void onOffsetChanged(SeslAppBarLayout layout, int verticalOffset) {
             int totalScrollRange = layout.getTotalScrollRange();
             int inputMethodWindowVisibleHeight = (int) Utils.genericInvokeMethod(InputMethodManager.class, mContext.getSystemService(INPUT_METHOD_SERVICE), "getInputMethodWindowVisibleHeight");
 
-            if (verticalOffset == 0) {
-                if (mCurrentState != STATE_EXPANDED) {
-                    onStateChanged(layout, STATE_EXPANDED);
-                }
-                mCurrentState = STATE_EXPANDED;
-            } else if (Math.abs(verticalOffset) >= layout.getTotalScrollRange()) {
+            if (Math.abs(verticalOffset) >= layout.getTotalScrollRange()) {
                 if (mCurrentState != STATE_COLLAPSED) {
                     onStateChanged(layout, STATE_COLLAPSED);
                 }
                 mCurrentState = STATE_COLLAPSED;
             } else {
-                if (mCurrentState != STATE_IDLE) {
-                    onStateChanged(layout, STATE_IDLE);
+                if (mCurrentState != STATE_EXPANDED) {
+                    onStateChanged(layout, STATE_EXPANDED);
                 }
-                mCurrentState = STATE_IDLE;
+                mCurrentState = STATE_EXPANDED;
             }
 
             mImageView.setImageAlpha((int) (255 * (1.0f - (float) verticalOffset / -totalScrollRange)));
@@ -227,7 +221,6 @@ public class ChangelogActivity extends BaseAppBarActivity {
             if (result != null) {
                 mImageView.setImageBitmap(result);
                 isBgColorDark = isColorDark(getDominantColor(result));
-                setLightStatusBar(!isBgColorDark);
             } else {
                 LogUtils.e("DownloadHeaderImageTask", "result is null!!!");
             }
