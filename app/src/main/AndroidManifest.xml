@@ -23,6 +23,7 @@
 
         <meta-data android:name="SamsungBasicInteraction" android:value="SEP10"/>
         <meta-data android:name="com.samsung.android.icon_container.has_icon_container" android:value="true"/>
+        <meta-data android:name="com.samsung.android.icon_container.feature_appicon" android:value="ADAPTIVEICON_SHADOW"/>
         <meta-data android:name="com.samsung.android.multidisplay.keep_process_alive" android:value="true"/>
         <meta-data android:name="com.samsung.android.sdk.multiwindow.enable" android:value="true"/>
         <meta-data android:name="android.max_aspect" android:value="2.4"/>
