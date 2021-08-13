@@ -211,7 +211,7 @@ public class ActionBarUtils {
         moreMenuPopupAdapter = new MoreMenuPopupAdapter(activity, linkedHashMap);
         listView.setAdapter(moreMenuPopupAdapter);
         listView.setDivider(null);
-        listView.setSelector(activity.getResources().getDrawable(isNightMode ? R.drawable.sesl_list_selector_dark : R.drawable.sesl_list_selector_light, activity.getTheme()));
+        listView.setSelector(activity.getResources().getDrawable(isNightMode ? R.drawable.mesa_menu_popup_list_selector_dark : R.drawable.mesa_menu_popup_list_selector_light, activity.getTheme()));
         listView.setOnItemClickListener(ocl);
 
         if (ViewUtils.isRTLMode(activity)) {
@@ -515,6 +515,16 @@ public class ActionBarUtils {
                 itemVar.badgeIcon.setVisibility(View.VISIBLE);
             } else {
                 itemVar.badgeIcon.setVisibility(View.GONE);
+            }
+
+            if (getCount() <= 1) {
+                view.setBackgroundResource(isNightMode ? R.drawable.mesa_menu_popup_item_bg_allr_dark : R.drawable.mesa_menu_popup_item_bg_allr_light);
+            } else if (index == 0) {
+                view.setBackgroundResource(isNightMode ? R.drawable.mesa_menu_popup_item_bg_topr_dark : R.drawable.mesa_menu_popup_item_bg_topr_light);
+            } else if (index == getCount() - 1) {
+                view.setBackgroundResource(isNightMode ? R.drawable.mesa_menu_popup_item_bg_bottomr_dark : R.drawable.mesa_menu_popup_item_bg_bottomr_light);
+            } else {
+                view.setBackgroundResource(isNightMode ? R.drawable.mesa_menu_popup_item_bg_nor_dark : R.drawable.mesa_menu_popup_item_bg_nor_light);
             }
 
             return view;
