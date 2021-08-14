@@ -1,21 +1,12 @@
 package com.mesalabs.cerberus.ui.widget;
 
 import android.content.Context;
-import android.content.res.Resources;
-import android.graphics.Point;
-import android.graphics.Rect;
 import android.util.AttributeSet;
-import android.util.DisplayMetrics;
-import android.view.Display;
 import android.view.MotionEvent;
-import android.view.View;
-import android.view.WindowManager;
 
 import androidx.annotation.DrawableRes;
 import androidx.appcompat.widget.AppCompatImageButton;
-import androidx.appcompat.widget.Toolbar;
 
-import com.mesalabs.on.update.R;
 import com.samsung.android.ui.widget.SeslTooltip;
 
 /*

@@ -20,8 +20,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.mesalabs.on.update.R;
-import com.mesalabs.on.update.utils.LogUtils;
+import com.mesalabs.ten.update.R;
+import com.mesalabs.ten.update.utils.LogUtils;
 import com.samsung.android.ui.util.SeslRoundedCorner;
 import com.samsung.android.ui.util.SeslSubheaderRoundedCorner;
 import com.samsung.android.ui.recyclerview.widget.SeslLinearLayoutManager;

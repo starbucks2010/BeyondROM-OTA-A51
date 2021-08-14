@@ -9,8 +9,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-import com.mesalabs.on.update.R;
-import com.mesalabs.on.update.utils.LogUtils;
+import com.mesalabs.ten.update.R;
+import com.mesalabs.ten.update.utils.LogUtils;
 
 /*
  * Cerberus Core App

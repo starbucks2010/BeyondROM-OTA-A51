@@ -6,9 +6,8 @@ import android.graphics.Canvas;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
 
-import com.mesalabs.on.update.R;
+import com.mesalabs.ten.update.R;
 import com.mesalabs.cerberus.utils.Utils;
-import com.mesalabs.cerberus.utils.ViewUtils;
 import com.samsung.android.ui.util.SeslRoundedCorner;
 
 /*

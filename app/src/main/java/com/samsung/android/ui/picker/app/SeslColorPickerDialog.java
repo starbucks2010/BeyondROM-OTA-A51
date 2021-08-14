@@ -7,7 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.mesalabs.on.update.R;
+import com.mesalabs.ten.update.R;
 import com.samsung.android.ui.app.SeslAlertDialog;
 import com.samsung.android.ui.picker.widget.SeslColorPicker;
 

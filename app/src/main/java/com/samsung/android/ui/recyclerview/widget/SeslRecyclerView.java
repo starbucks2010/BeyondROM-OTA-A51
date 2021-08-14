@@ -33,7 +33,6 @@ import android.provider.Settings.Secure;
 import android.provider.Settings.SettingNotFoundException;
 import android.util.AttributeSet;
 import android.util.SparseArray;
-import android.util.StateSet;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.FocusFinder;
@@ -48,7 +47,6 @@ import android.view.ViewParent;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityManager;
 import android.view.animation.Interpolator;
-import android.view.animation.PathInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
 import java.lang.annotation.Retention;
@@ -73,8 +71,8 @@ import androidx.core.view.accessibility.AccessibilityEventCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.customview.view.AbsSavedState;
 
-import com.mesalabs.on.update.R;
-import com.mesalabs.on.update.utils.LogUtils;
+import com.mesalabs.ten.update.R;
+import com.mesalabs.ten.update.utils.LogUtils;
 
 import com.mesalabs.cerberus.utils.Utils;
 import com.samsung.android.ui.util.SeslSubheaderRoundedCorner;

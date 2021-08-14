@@ -10,7 +10,7 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import com.google.android.material.internal.ThemeEnforcement;
-import com.mesalabs.on.update.R;
+import com.mesalabs.ten.update.R;
 
 /*
  * Cerberus Core App

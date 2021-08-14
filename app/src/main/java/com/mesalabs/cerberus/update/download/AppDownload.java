@@ -13,11 +13,11 @@ import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import com.mesalabs.on.update.OnUpdateApp;
-import com.mesalabs.on.update.R;
+import com.mesalabs.ten.update.TenUpdateApp;
+import com.mesalabs.ten.update.R;
 import com.mesalabs.cerberus.ui.app.ProgressDialog;
 import com.mesalabs.cerberus.update.content.GenericFileProvider;
-import com.mesalabs.on.update.utils.LogUtils;
+import com.mesalabs.ten.update.utils.LogUtils;
 
 /*
  * Cerberus Core App
@@ -150,7 +150,7 @@ public class AppDownload extends AsyncTask<Void, Integer, String> {
             LogUtils.e(TAG, e.toString());
             return;
         }
-        Uri data = GenericFileProvider.getUriForFile(mContext, OnUpdateApp.getAppPackageName() +".provider", file);
+        Uri data = GenericFileProvider.getUriForFile(mContext, TenUpdateApp.getAppPackageName() +".provider", file);
 
         intent.setDataAndType(data, "application/vnd.android.package-archive");
         mContext.startActivity(intent);

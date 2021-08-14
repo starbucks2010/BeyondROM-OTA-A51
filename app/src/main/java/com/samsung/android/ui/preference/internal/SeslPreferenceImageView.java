@@ -6,7 +6,7 @@ import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
-import com.mesalabs.on.update.R;
+import com.mesalabs.ten.update.R;
 
 /*
  * Cerberus Core App

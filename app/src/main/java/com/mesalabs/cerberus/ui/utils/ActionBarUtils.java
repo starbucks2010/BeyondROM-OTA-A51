@@ -24,10 +24,10 @@ import java.util.Locale;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import com.mesalabs.on.update.R;
+import com.mesalabs.ten.update.R;
 import com.mesalabs.cerberus.ui.widget.ToolbarImageButton;
 import com.mesalabs.cerberus.utils.CerberusException;
-import com.mesalabs.on.update.utils.LogUtils;
+import com.mesalabs.ten.update.utils.LogUtils;
 import com.mesalabs.cerberus.utils.Utils;
 import com.mesalabs.cerberus.utils.ViewUtils;
 import com.samsung.android.ui.appbar.SeslAppBarLayout;

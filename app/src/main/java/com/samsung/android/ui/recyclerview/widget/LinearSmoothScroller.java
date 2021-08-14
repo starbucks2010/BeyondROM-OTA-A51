@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.LinearInterpolator;
 
-import com.mesalabs.on.update.utils.LogUtils;
+import com.mesalabs.ten.update.utils.LogUtils;
 
 /*
  * Cerberus Core App

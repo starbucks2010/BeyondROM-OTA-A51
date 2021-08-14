@@ -8,7 +8,7 @@ import android.view.View;
 
 import androidx.appcompat.widget.TintTypedArray;
 
-import com.mesalabs.on.update.R;
+import com.mesalabs.ten.update.R;
 
 /*
  * Cerberus Core App

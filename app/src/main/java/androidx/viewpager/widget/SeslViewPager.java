@@ -58,7 +58,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.customview.view.AbsSavedState;
 
-import com.mesalabs.on.update.utils.LogUtils;
+import com.mesalabs.ten.update.utils.LogUtils;
 import com.samsung.android.ui.widget.SeslEdgeEffect;
 
 /*

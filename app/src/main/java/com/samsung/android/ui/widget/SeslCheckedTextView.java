@@ -24,7 +24,7 @@ import androidx.appcompat.widget.DrawableUtils;
 import androidx.appcompat.widget.ViewUtils;
 
 import com.mesalabs.cerberus.utils.Utils;
-import com.mesalabs.on.update.R;
+import com.mesalabs.ten.update.R;
 
 /*
  * Cerberus Core App

@@ -64,7 +64,7 @@ import com.google.android.material.internal.ViewUtils;
 import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.MaterialShapeUtils;
-import com.mesalabs.on.update.R;
+import com.mesalabs.ten.update.R;
 import com.mesalabs.cerberus.utils.Utils;
 import com.samsung.android.ui.view.animation.SeslAnimationUtils;
 

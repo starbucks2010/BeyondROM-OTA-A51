@@ -5,7 +5,7 @@ import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
 
-import com.mesalabs.on.update.R;
+import com.mesalabs.ten.update.R;
 import com.samsung.android.ui.preference.PreferenceCategory;
 import com.samsung.android.ui.preference.PreferenceViewHolder;
 

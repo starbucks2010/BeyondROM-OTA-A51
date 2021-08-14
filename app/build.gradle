@@ -9,7 +9,7 @@ android {
     compileSdkVersion 29
     buildToolsVersion "29.0.3"
     defaultConfig {
-        applicationId "com.mesalabs.on.update"
+        applicationId "com.mesalabs.ten.update"
         minSdkVersion 24
         targetSdkVersion 29
         versionCode generateVersionCode()

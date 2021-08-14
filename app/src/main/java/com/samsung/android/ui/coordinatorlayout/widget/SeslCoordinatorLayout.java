@@ -38,7 +38,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.customview.view.AbsSavedState;
 
-import com.mesalabs.on.update.R;
+import com.mesalabs.ten.update.R;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

@@ -14,10 +14,10 @@ import android.widget.Toast;
 
 import androidx.appcompat.widget.AppCompatButton;
 
-import com.mesalabs.on.update.OnUpdateApp;
-import com.mesalabs.on.update.R;
-import com.mesalabs.on.update.activity.aboutpage.CreditsActivity;
-import com.mesalabs.on.update.activity.aboutpage.OpenSourceLicenseActivity;
+import com.mesalabs.ten.update.TenUpdateApp;
+import com.mesalabs.ten.update.R;
+import com.mesalabs.ten.update.activity.aboutpage.CreditsActivity;
+import com.mesalabs.ten.update.activity.aboutpage.OpenSourceLicenseActivity;
 import com.mesalabs.cerberus.ui.callback.OnSingleClickListener;
 import com.mesalabs.cerberus.update.utils.AppUpdateUtils;
 import com.mesalabs.cerberus.utils.StateUtils;
@@ -86,13 +86,13 @@ public class BaseAboutActivity extends BaseAppBarActivity {
                 new OnSingleClickListener() {
                     @Override
                     public void onSingleClick(View view) {
-                        Intent intent = new Intent("android.settings.APPLICATION_DETAILS_SETTINGS", Uri.fromParts("package", OnUpdateApp.getAppPackageName(), null));
+                        Intent intent = new Intent("android.settings.APPLICATION_DETAILS_SETTINGS", Uri.fromParts("package", TenUpdateApp.getAppPackageName(), null));
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
                     }
                 });
 
-        mAppUpdate = new AppUpdateUtils(this, OnUpdateApp.getAppPackageName(), mStubListener);
+        mAppUpdate = new AppUpdateUtils(this, TenUpdateApp.getAppPackageName(), mStubListener);
 
         mBaseLayout = findViewById(R.id.mesa_aboutlayout_baseaboutactivity);
         mAppInfoView = findViewById(R.id.mesa_appinfolayout_baseaboutactivity);
@@ -122,7 +122,7 @@ public class BaseAboutActivity extends BaseAppBarActivity {
         mAppNameText.setText(getAppName());
 
         mVersionText = findViewById(R.id.mesa_versiontextview_appinfolayout_baseaboutactivity);
-        mVersionText.setText(getString(R.string.mesa_version) + " " + OnUpdateApp.getAppVersionString());
+        mVersionText.setText(getString(R.string.mesa_version) + " " + TenUpdateApp.getAppVersionString());
 
         if (getIsAppUpdateable()) {
             if (savedInstanceState != null) {
