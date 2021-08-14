@@ -14,7 +14,7 @@
     <color name="sesl_round_and_bgcolor_dark">#010101</color>
     <color name="sesl_round_and_bgcolor_light">#F2F2F2</color>
 
-    <color name="sesl_background_color_dark">@color/sesl_black</color>
+    <color name="sesl_background_color_dark">#171717</color>
     <color name="sesl_background_color_light">#FCFCFC</color>
 
     <color name="sesl_background_floating_dark">@color/sesl_black</color>
