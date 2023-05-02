@@ -69,7 +69,6 @@
 
     <string name="mesa_fwinfo_default_summary">Unknown</string>
     <string name="mesa_fwinfo_on_rom_version_title">ROM version</string>
-    <string name="mesa_fwinfo_on_enso_version_title">ensō version</string>
     <string name="mesa_fwinfo_oneui_version_title">One UI version</string>
     <string name="mesa_fwinfo_android_version_title">Android version</string>
     <string name="mesa_fwinfo_kernel_version_title">Kernel version</string>

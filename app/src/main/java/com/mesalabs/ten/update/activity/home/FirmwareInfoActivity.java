@@ -50,9 +50,6 @@ public class FirmwareInfoActivity extends BaseAppBarActivity {
         // ROM Version
         CardView rom = findViewById(R.id.mesa_card_rom_ota_firmwareinfo);
         setFwInfoCardSummary(rom, FirmwareInfoUtils.getROMVersion());
-        // On ensō Version
-        CardView enso = findViewById(R.id.mesa_card_enso_ota_firmwareinfo);
-        setFwInfoCardSummary(enso, FirmwareInfoUtils.getEnsoVersion());
         // OneUI Version
         CardView oneui = findViewById(R.id.mesa_card_oneui_ota_firmwareinfo);
         setFwInfoCardSummary(oneui, FirmwareInfoUtils.getOneUIVersion());
