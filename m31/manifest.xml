@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <OnOTAInfo>
   <RomName>TukiRom</RomName>
-  <VersionName>V1.7</VersionName>
-  <BuildNumber type="integer">17</BuildNumber>
-  <DownloadURL></DownloadURL>
+  <VersionName>1.7</VersionName>
+  <BuildNumber type="integer">A515FXXU7HWF1.V1.7</BuildNumber>
+  <DownloadURL>https://drive.usercontent.google.com/download?id=1LpHffpGw2h22Jt6wa7TWcCHsxnpTQw5m&export=download&authuser=1&confirm=t&uuid=7f4978f8-ca40-412f-9246-ddd9e5359282&at=APZUnTXkkYWEfDo7E9wc5MLltTkt:1700339826564</DownloadURL>
   <AndroidVer>13</AndroidVer>
   <OneUIVer>5.1</OneUIVer>
-  <CheckMD5>4be4affb4e76d67b1739e1c532f43a81</CheckMD5>
-  <FileSize type="long">990000000</FileSize>
-  <WebsiteURL>https://forum.xda-developers.com/apps/magisk/dev-magisk-canary-channel-bleeding-edge-t3839337</WebsiteURL>
+  <CheckMD5></CheckMD5>
+  <FileSize type="long">2820000000</FileSize>
+  <WebsiteURL>https://xdaforums.com/t/rom-13-port-one-ui-5-1-m31-m31s-a51-port-tuki-rom-v1-5.4586311/</WebsiteURL>
   <ChangelogHeader>https://i.ibb.co/92RxppQ/changelogheader1100.png</ChangelogHeader>
-  <ChangelogURL>https://raw.githubusercontent.com/ShaDisNX255/NcX_OnUpdate/main/a52q/changelog.txt</ChangelogURL>
+  <ChangelogURL>https://raw.githubusercontent.com/pachdomenic/TukiRom-OTA/manifest/m21/changelog.txt</ChangelogURL>
 </OnOTAInfo>
