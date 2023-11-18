@@ -1,4 +1,4 @@
-kipackage com.mesalabs.ten.update.ota.utils;
+package com.mesalabs.ten.update.ota.utils;
 
 /*
  * 십 Update
