@@ -1,6 +1,6 @@
 TukiRom V1.7
 
-Implement OTA (BETA)
+Implement OTA 
 Use different super packing method
 Fixed random crashing camera
 Fixed keyboard
@@ -8,6 +8,6 @@ Removed user manual and support buttons
 Updated version logo
 Removed OEM unlock button
 Changed bootanimation to Pixel
-Working without root (DEPRECATED!!)
+Working without root
 Fixed BT pairing after reboot 
 Perfomance Improvments
