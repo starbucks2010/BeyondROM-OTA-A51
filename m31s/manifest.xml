@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <OnOTAInfo>
   <RomName>TukiRom</RomName>
-  <VersionName>V1.8 Update</VersionName>
+  <VersionName>V1.7 Update</VersionName>
   <BuildNumber type="integer">20231101</BuildNumber>
-  <DownloadURL>https://wwh2tw.bl.files.1drv.com/y4mLyc4t3EVx7bVbdSbsE7L3C2v4kCsQBXR7A9WcluXquMO3dxhr8FlyIQ0HpXG8kE-aVU75t1wbaNxxaPDKNAWEVAJCJxvNkNfnj_OBe2L7Wm03vmfjMU_36rFeUooGoXIgQAW52pyjIAg7A-czvTzamkoK-FZqModh3q9ymUB7hzQ66Ly_AoCkI4c7RljzHiNn2xjH-DoejWua5AQMmKU4A/OTA-20230801-a52q.zip</DownloadURL>
+  <DownloadURL>https://drive.usercontent.google.com/download?id=1zQesFxYE6O2-dRdbJ2BV-m-rgvQo0UJl&export=download&authuser=1&confirm=t&uuid=496a9be9-1602-4bb1-99ad-050550af84d0&at=APZUnTVzfedz_kchpEoAnTs6Dw0i:1701035075832</DownloadURL>
   <AndroidVer>13</AndroidVer>
   <OneUIVer>5.1</OneUIVer>
-  <CheckMD5>4be4affb4e76d67b1739e1c532f43a81</CheckMD5>
-  <FileSize type="long">1970000000</FileSize>
+  <CheckMD5>5a0a850d77a521deda146d3e9b517fed1</CheckMD5>
+  <FileSize type="long">2201811281</FileSize>
   <WebsiteURL>https://forum.xda-developers.com/apps/magisk/dev-magisk-canary-channel-bleeding-edge-t3839337</WebsiteURL>
-  <ChangelogHeader>https://i.ibb.co/92RxppQ/changelogheader1100.png</ChangelogHeader>
+  <ChangelogHeader>https://raw.githubusercontent.com/pachdomenic/TukiRom-OTA/manifest/header.png</ChangelogHeader>
   <ChangelogURL>https://raw.githubusercontent.com/pachdomenic/TukiRom-OTA/manifest/m31/changelog.txt</ChangelogURL>
 </OnOTAInfo>
