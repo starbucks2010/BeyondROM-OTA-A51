@@ -9,6 +9,6 @@
   <CheckMD5>5a0a850d77a521deda146d3e9b517fed1</CheckMD5>
   <FileSize type="long">2201811281</FileSize>
   <WebsiteURL>https://forum.xda-developers.com/apps/magisk/dev-magisk-canary-channel-bleeding-edge-t3839337</WebsiteURL>
-  <ChangelogHeader>https://raw.githubusercontent.com/pachdomenic/TukiRom-OTA/manifest/header.png</ChangelogHeader>
+  <ChangelogHeader>https://raw.githubusercontent.com/pachdomenic/TukiRom-OTA/manifest/changelogheader1100.png</ChangelogHeader>
   <ChangelogURL>https://raw.githubusercontent.com/pachdomenic/TukiRom-OTA/manifest/m31/changelog.txt</ChangelogURL>
 </OnOTAInfo>
