@@ -3,11 +3,11 @@
   <RomName>TukiRom</RomName>
   <VersionName>OTA test DO NOT DOWNLOAD</VersionName>
   <BuildNumber type="integer">20231228</BuildNumber>
-  <DownloadURL>https://1drv.ms/u/s!Ajbp0f2zd4EKm3xBe9ONvinZ9EQG?e=Rh5UAL</DownloadURL>
+  <DownloadURL>https://1drv.ms/u/s!Ajbp0f2zd4EKm3-4XIp09pgGm9-t?e=LzBDN4</DownloadURL>
   <AndroidVer>14</AndroidVer>
   <OneUIVer>6.0</OneUIVer>
   <CheckMD5>ac4ee53951c4ad0669749d9d08941ff8</CheckMD5>
-  <FileSize type="long">2201811281</FileSize>
+  <FileSize type="long">957961</FileSize>
   <WebsiteURL>https://forum.xda-developers.com/apps/magisk/dev-magisk-canary-channel-bleeding-edge-t3839337</WebsiteURL>
   <ChangelogHeader>https://raw.githubusercontent.com/pachdomenic/TukiRom-OTA/manifest/changelogheader1100.png</ChangelogHeader>
   <ChangelogURL>https://raw.githubusercontent.com/pachdomenic/TukiRom-OTA/manifest/m31/changelog.txt</ChangelogURL>
