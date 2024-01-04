@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OnOTAInfo>
+  <RomName>TukiRom</RomName>
+  <VersionName>TukiOS V2.0</VersionName>
+  <BuildNumber type="integer">20240105</BuildNumber>
+  <DownloadURL>https://1drv.ms/u/s!Ajbp0f2zd4EKnAGDxhrr99q1zd-C?e=lodlHE</DownloadURL>
+  <AndroidVer>14</AndroidVer>
+  <OneUIVer>6.0</OneUIVer>
+  <CheckMD5>e562ba6ae4b954c580f2076263c12fcb</CheckMD5>
+  <FileSize type="long">18808562</FileSize>
+  <WebsiteURL>https://forum.xda-developers.com/apps/magisk/dev-magisk-canary-channel-bleeding-edge-t3839337</WebsiteURL>
+  <ChangelogHeader>https://raw.githubusercontent.com/pachdomenic/TukiRom-OTA/manifest/changelogheader1100.png</ChangelogHeader>
+  <ChangelogURL>https://raw.githubusercontent.com/pachdomenic/TukiRom-OTA/manifest/m31/changelog.txt</ChangelogURL>
+</OnOTAInfo>
