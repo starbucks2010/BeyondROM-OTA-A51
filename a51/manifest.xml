@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OnOTAInfo>
+  <RomName>BeyondRom</RomName>
+  <VersionName>BeyondRom v1.3</VersionName>
+  <BuildNumber type="integer">20240105</BuildNumber>
+  <DownloadURL>https://drive.google.com/file/d/1xAv5nBcwBbuDTjmiGmFKA6RRUTfuoRmo/view?usp=sharing#</DownloadURL>
+  <AndroidVer>13</AndroidVer>
+  <OneUIVer>5.1</OneUIVer>
+  <CheckMD5>3acd7c734bdcfe34e59063843fd096cc</CheckMD5>
+  <FileSize type="long">272829</FileSize>
+  <WebsiteURL>https://xdaforums.com/t/rom-beyondrom-v1-2-4-09-2023-hwf1-june-patch-a515f.4558615</WebsiteURL>
+  <ChangelogHeader>https://raw.githubusercontent.com/starbucks2010/BeyondROM-OTA-A51/manifest/beyondlogo.png</ChangelogHeader>
+  <ChangelogURL>https://raw.githubusercontent.com/starbucks2010/BeyondROM-OTA-A51/manifest/a51/changelog.txt</ChangelogURL>
+</OnOTAInfo>
