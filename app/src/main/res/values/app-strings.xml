@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="mesa_tenupdate">TukiRom Updater</string>
+    <string name="mesa_tenupdate">BeyondRom Updater</string>
 
     <string name="mesa_tenupdate_notichannel_main_name">General</string>
     <string name="mesa_tenupdate_notichannel_bg_name">Background</string>
