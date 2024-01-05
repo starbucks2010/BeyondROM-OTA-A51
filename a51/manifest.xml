@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <OnOTAInfo>
   <RomName>BeyondRom</RomName>
-  <VersionName>BeyondRom v1.3</VersionName>
+  <VersionName>v1.3</VersionName>
   <BuildNumber type="integer">20240105</BuildNumber>
   <DownloadURL>https://drive.google.com/file/d/1xAv5nBcwBbuDTjmiGmFKA6RRUTfuoRmo/view?usp=sharing#</DownloadURL>
   <AndroidVer>13</AndroidVer>
