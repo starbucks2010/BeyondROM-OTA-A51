@@ -3,11 +3,11 @@
   <RomName>BeyondRom</RomName>
   <VersionName>1.3</VersionName>
   <BuildNumber type="integer">20240114</BuildNumber>
-  <DownloadURL>https://www.mediafire.com/file/fzgt4dyc3dn4yay/_a515f_zwi9_ota_test_rc1.zip</DownloadURL>
+  <DownloadURL>https://ia601205.us.archive.org/27/items/TukiOS/aroma_installer-arm64.zip</DownloadURL>
   <AndroidVer>13</AndroidVer>
   <OneUIVer>5.1</OneUIVer>
-  <CheckMD5>e91d53049d8a95c892aa26c765257a3a</CheckMD5>
-  <FileSize type="long">1729570</FileSize>
+  <CheckMD5>1c5db8c93b5c6f21ced463564fc85bfe</CheckMD5>
+  <FileSize type="long">4395508</FileSize>
   <WebsiteURL>https://xdaforums.com/t/rom-beyondrom-v1-2-4-09-2023-hwf1-june-patch-a515f.4558615</WebsiteURL>
   <ChangelogHeader>https://raw.githubusercontent.com/starbucks2010/BeyondROM-OTA-A51/manifest/beyondlogo.png</ChangelogHeader>
   <ChangelogURL>https://raw.githubusercontent.com/starbucks2010/BeyondROM-OTA-A51/manifest/a51/changelog.txt</ChangelogURL>
